@@ -1,0 +1,276 @@
+import logging
+
+import config
+import modelCompactKiper
+import modelCompoRnn
+import modelKiperwasser
+import modelLinear
+import modelNonCompo
+import modelRnn
+import modelRnnNonCompo
+import oracle
+import reports
+from corpus import *
+from evaluation import evaluate, analyzePerformance
+from parser import parse
+import datetime
+import modelMultiTasking
+
+
+def identify(lang, foldId=-1):
+    corpus = Corpus(lang, foldId=foldId)
+    getDimsumStats(corpus)
+    oracle.parse(corpus)
+    startTime = datetime.datetime.now()
+    network, vectorizer = parseAndTrain(corpus)
+    if configuration['tmp']['dontParse']:
+        return corpus
+    getExcutionTime('Training time', startTime)
+    startTime = datetime.datetime.now()
+    parse(corpus.testingSents, network, vectorizer)
+    getExcutionTime('Parsing time', startTime)
+    evaluate(corpus.testingSents)
+    analyzePerformance(corpus)
+    if configuration['tmp']['outputDimsum']:
+        dimSum = corpus.toDiMSUM()
+        with open(os.path.join(configuration['path']['projectPath'], 'ressources/dimsum/scripts/EN.pred'), 'w') as ff:
+            ff.write(dimSum)
+    if configuration['tmp']['testOut']:
+        for s in corpus.testingSents:
+            s.initialTransition = None
+            sys.stdout.write(str(s))
+    return corpus
+
+
+def getDimsumStats(corpus):
+    if not configuration['tmp']['dimsulStats']:
+        return
+    sys.stdout.write('# MWEs\n')
+    for k in corpus.mweDictionary:
+        sys.stdout.write('{0} : {1}\n'.format(k, corpus.mweDictionary[k]))
+    seenToks, nonSeenToks = set(), set()
+    for s in corpus.testingSents:
+        for w in s.vMWEs:
+            for t in w.tokens:
+                if t.getLemma() in corpus.mweTokenDictionary:
+                    seenToks.add(t.getLemma())
+                else:
+                    nonSeenToks.add(t.getLemma())
+    sys.stdout.write('# seen tokens\n')
+    for t in seenToks:
+        sys.stdout.write('{0}\n' % t)
+    sys.stdout.write('# non seen tokens\n')
+    for t in nonSeenToks:
+        sys.stdout.write('{0}\n' % t)
+
+
+def identifyWithBoth(lang):
+    from xpTools import setXPMode, XpMode
+    setXPMode(XpMode.linear)
+    corpus = Corpus(lang)
+    oracle.parse(corpus)
+    startTime = datetime.datetime.now()
+    modifyConf(linear=True,tuning=False)
+    linearModel, linearVectorizer = parseAndTrain(corpus)
+    getExcutionTime('Training time', startTime)
+    setXPMode(None)
+    config.setOptimalRSGForMLP()
+    startTime = datetime.datetime.now()
+    mlpModel, mlpVectorizer = parseAndTrain(corpus)
+    getExcutionTime('Training time', startTime)
+    startTime = datetime.datetime.now()
+    setXPMode(XpMode.linear)
+    parse(corpus.testingSents, linearModel, linearVectorizer)
+    setXPMode(None)
+    parse(corpus.testingSents, mlpModel, mlpVectorizer, initialize=False)
+    getExcutionTime('Parsing time', startTime)
+    if configuration['others']['complInter']:
+        getIntersectedMWEs(corpus)
+    elif configuration['others']['complFreq']:
+        getMWEsAccFrequency(corpus)
+    evaluate(corpus.testingSents)
+    return corpus
+
+
+def getIntersectedMWEs(corpus):
+    for s in corpus.testingSents:
+        nonCorrectMWEIdxs = []
+        for v in s.identifiedVMWEs:
+            if v.predictingModel == 'linear' or v.predictingModel == 'mlp':
+                nonCorrectMWEIdxs.append(s.identifiedVMWEs.index(v))
+        for idx in sorted(nonCorrectMWEIdxs, reverse=True):
+            s.identifiedVMWEs.pop(idx)
+
+
+def getMWEsAccFrequency(corpus):
+    for s in corpus.testingSents:
+        nonCorrectMWEIdxs = []
+        for v in s.identifiedVMWEs:
+            partiallySeen = v.getLemmaString() not in corpus.mweDictionary
+            barelySeen = v.getLemmaString() in corpus.mweDictionary and corpus.mweDictionary[v.getLemmaString()] <= 5
+            if v.predictingModel in ['linear', 'mlp'] and (partiallySeen or barelySeen):
+                nonCorrectMWEIdxs.append(s.identifiedVMWEs.index(v))
+        for idx in sorted(nonCorrectMWEIdxs, reverse=True):
+            s.identifiedVMWEs.pop(idx)
+
+
+def identifyWithLinearInMlp(lang, tuning=False, seed=0):
+    linearModels, linearVecs = jackknifing(lang, True)
+    configuration['xp']['linear'] = False
+    modifyConf(linear=False, tuning=tuning)
+    corpus = Corpus(lang)
+    oracle.parse(corpus)
+    startTime = datetime.datetime.now()
+    model = modelNonCompo.Network(corpus, linearInMLP=True)
+    model.train(corpus, linearModels=linearModels, linearNormalizers=linearVecs)
+    getExcutionTime('Training time', startTime)
+    startTime = datetime.datetime.now()
+    parse(corpus.testingSents, model, linearModels=linearModels, linearVecs=linearVecs)
+    getExcutionTime('Parsing time', startTime)
+    evaluate(corpus.testingSents)
+    configuration['xp']['linear'] = False
+    return corpus
+
+
+def modifyConf(linear=False, tuning=False):
+    if linear:
+        if tuning:
+            config.generateLinearConf()
+        else:
+            if configuration['dataset']['ftb']:
+                config.setOptimalRSGFeaturesForFtbSVM()
+            elif configuration['dataset']['dimsum']:
+                config.setOptimalRSGFeaturesForDimsumSVM()
+            else:
+                config.setOptimalRSGFeaturesForSVM()
+        configuration['sampling'].update({
+            'overSampling': False,
+            'importantSentences': False,
+        })
+    else:
+        if tuning:
+            config.generateMLPConf()
+        else:
+            if configuration['dataset']['ftb']:
+                config.setOptimalRSGForMlpFTB()
+            elif configuration['dataset']['dimsum']:
+                config.setOptimalRSGForMlpDiMSUM()
+            else:
+                config.setOptimalRSGForMLP()
+
+
+def identifyWithMlpInLinear(lang, tuning=False):
+    mlpModels, mlpNormalizers = jackknifing(lang, False)
+    modifyConf(linear=True, tuning=tuning)
+    corpus = Corpus(lang)
+    oracle.parse(corpus)
+    startTime = datetime.datetime.now()
+    linearModel, linearVec = modelLinear.train(corpus, mlpModels=mlpModels)
+    getExcutionTime('Linear training time', startTime)
+    configuration['xp']['linear'] = True
+    startTime = datetime.datetime.now()
+    parse(corpus.testingSents, linearModel, linearVec, mlpModels=mlpModels)
+    getExcutionTime('Parsing time', startTime)
+    evaluate(corpus.testingSents)
+    configuration['xp']['linear'] = False
+    return corpus
+
+def getExcutionTime(label, start):
+    sys.stdout.write('{0}{1}: {2} minutes {3}'.format(reports.tabs,
+                                                      label.upper(),
+                                                      round((datetime.datetime.now() - start).seconds / 60., 2),
+                                                      reports.doubleSep))
+
+
+def jackknifing(lang, linear=True):
+    sys.stdout.write('Jacknfing:' + doubleSep)
+    configuration['others']['verbose'] = False
+    configuration['xp']['linear'] = linear
+    modifyConf(linear=linear, tuning=False)
+    models, normalizers = dict(), dict()
+    for i in range(5):
+        models[i], normalizers[i] = jackknifingAFold(lang, i, linear=linear)
+        sys.stdout.write('Finished training the fold {0}\n'.format(i))
+    models[5], normalizers[5] = jackknifingAFold(lang, linear=linear, all=True)
+    sys.stdout.write('Jacknfing Finshed' + doubleSep)
+    configuration['others']['verbose'] = True
+    return models, normalizers
+
+
+def jackknifingAFold(lang, foldIdx=-1, linear=True, all=False):
+    corpus = Corpus(lang)
+    if not all:
+        foldLength = int(len(corpus.trainingSents) / 5)
+        foldStart = foldIdx * foldLength
+        foldEnd = foldStart + foldLength
+        corpus.testingSents = corpus.trainingSents[foldStart:foldEnd]
+        corpus.trainingSents = corpus.trainingSents[:foldStart] + corpus.trainingSents[foldEnd:]
+    if not linear:
+        configuration['sampling']['importantSentences'] = True
+        corpus.trainingSents = corpus.filterImportatntSents()
+    oracle.parse(corpus)
+    vectorizer = None
+    if linear:
+        network, vectorizer = modelLinear.train(corpus)
+    else:
+        network = modelNonCompo.Network(corpus)
+        network.train(corpus)
+    # parse(corpus.testingSents, network, vectorizer)
+    # evaluate(corpus.testingSents)
+    # corpus.testingSents = corpus.trainingSents
+    # parse(corpus.testingSents, network, vectorizer)
+    # evaluate(corpus.testingSents)
+
+    return network, vectorizer
+
+
+def parseAndTrain(corpus):
+    if configuration['xp']['linear']:
+        return modelLinear.train(corpus)
+    if configuration['xp']['rnn']:
+        network = modelRnn.Network(corpus)
+        modelRnn.train(network, corpus)
+        return network, None
+    if configuration['xp']['compoRnn']:
+        network = modelCompoRnn.Network(corpus)
+        modelCompoRnn.train(network, corpus)
+        return network, None
+    if configuration['xp']['rnnNonCompo']:
+        network = modelRnnNonCompo.Network(corpus)
+        modelRnnNonCompo.train(network, corpus)
+        return network, None
+    if configuration['xp']['kiperwasser']:
+        network = modelKiperwasser.train(corpus, configuration)
+        return network, None
+    if configuration['xp']['kiperComp']:
+        network = modelCompactKiper.train(corpus, configuration)
+        return network, None
+
+    if configuration['xp']['multitasking']:
+        network = modelMultiTasking.Network(corpus)
+        network.trainIden(corpus)
+        # network.trainTagging(corpus)
+        # network.testTagging(corpus)
+        return network, None
+    network = modelNonCompo.Network(corpus)
+    network.train(corpus)
+    return network, None
+
+
+def analyzeCorporaAndOracle(langs):
+    header = 'Non recognizable,Interleaving,Embedded,Distributed Embedded,Left Embedded,Right Embedded,Middle Embedded'
+    analysisReport = header + '\n'
+    for lang in langs:
+        sys.stdout.write('Language = {0}\n'.format(lang))
+        corpus = Corpus(lang)
+        analysisReport += corpus.getVMWEReport() + '\n'
+        oracle.parse(corpus)
+        oracle.validate(corpus)
+    with open('../Results/VMWE.Analysis.csv', 'w') as ff:
+        ff.write(analysisReport)
+
+
+if __name__ == '__main__':
+    reload(sys)
+    sys.setdefaultencoding('utf8')
+    logging.basicConfig(level=logging.WARNING)
