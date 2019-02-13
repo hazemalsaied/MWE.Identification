@@ -105,6 +105,10 @@ venv.bak/
 Reports/
 ressources/sharedtask/bin
 ressources/wordEmb
+ressources/FacebookEmbsLight
+ressources/sharedtask/CS/train.conllu
+ressources/sharedtask/CS/train.conllu.autoPOS
+ressources/sharedtask/RO/train.cupt
 # OS generated files #
 ######################
 .DS_Store
