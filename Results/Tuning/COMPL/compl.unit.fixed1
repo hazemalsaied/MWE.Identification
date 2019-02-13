@@ -1,0 +1,407 @@
+INFO: activate-binutils_linux-64.sh made the following environmental changes:
++ADDR2LINE=/home/halsaied/miniconda2/bin/x86_64-conda_cos6-linux-gnu-addr2line
++AR=/home/halsaied/miniconda2/bin/x86_64-conda_cos6-linux-gnu-ar
++AS=/home/halsaied/miniconda2/bin/x86_64-conda_cos6-linux-gnu-as
++CXXFILT=/home/halsaied/miniconda2/bin/x86_64-conda_cos6-linux-gnu-c++filt
++ELFEDIT=/home/halsaied/miniconda2/bin/x86_64-conda_cos6-linux-gnu-elfedit
++GPROF=/home/halsaied/miniconda2/bin/x86_64-conda_cos6-linux-gnu-gprof
++HOST=x86_64-conda_cos6-linux-gnu
++LD_GOLD=/home/halsaied/miniconda2/bin/x86_64-conda_cos6-linux-gnu-ld.gold
++LD=/home/halsaied/miniconda2/bin/x86_64-conda_cos6-linux-gnu-ld
++NM=/home/halsaied/miniconda2/bin/x86_64-conda_cos6-linux-gnu-nm
++OBJCOPY=/home/halsaied/miniconda2/bin/x86_64-conda_cos6-linux-gnu-objcopy
++OBJDUMP=/home/halsaied/miniconda2/bin/x86_64-conda_cos6-linux-gnu-objdump
++RANLIB=/home/halsaied/miniconda2/bin/x86_64-conda_cos6-linux-gnu-ranlib
++READELF=/home/halsaied/miniconda2/bin/x86_64-conda_cos6-linux-gnu-readelf
++SIZE=/home/halsaied/miniconda2/bin/x86_64-conda_cos6-linux-gnu-size
++STRINGS=/home/halsaied/miniconda2/bin/x86_64-conda_cos6-linux-gnu-strings
++STRIP=/home/halsaied/miniconda2/bin/x86_64-conda_cos6-linux-gnu-strip
+INFO: activate-gcc_linux-64.sh made the following environmental changes:
++CC=/home/halsaied/miniconda2/bin/x86_64-conda_cos6-linux-gnu-cc
++CFLAGS=-march=nocona -mtune=haswell -ftree-vectorize -fPIC -fstack-protector-strong -fno-plt -O2 -pipe
++_CONDA_PYTHON_SYSCONFIGDATA_NAME=_sysconfigdata_x86_64_conda_cos6_linux_gnu
++CPPFLAGS=-DNDEBUG -D_FORTIFY_SOURCE=2 -O2
++CPP=/home/halsaied/miniconda2/bin/x86_64-conda_cos6-linux-gnu-cpp
++DEBUG_CFLAGS=-march=nocona -mtune=haswell -ftree-vectorize -fPIC -fstack-protector-all -fno-plt -Og -g -Wall -Wextra -fvar-tracking-assignments -pipe
++DEBUG_CPPFLAGS=-D_DEBUG -D_FORTIFY_SOURCE=2 -Og
++GCC_AR=/home/halsaied/miniconda2/bin/x86_64-conda_cos6-linux-gnu-gcc-ar
++GCC=/home/halsaied/miniconda2/bin/x86_64-conda_cos6-linux-gnu-gcc
++GCC_NM=/home/halsaied/miniconda2/bin/x86_64-conda_cos6-linux-gnu-gcc-nm
++GCC_RANLIB=/home/halsaied/miniconda2/bin/x86_64-conda_cos6-linux-gnu-gcc-ranlib
++LDFLAGS=-Wl,-O2 -Wl,--sort-common -Wl,--as-needed -Wl,-z,relro -Wl,-z,now
+INFO: activate-gxx_linux-64.sh made the following environmental changes:
++CXXFLAGS=-fvisibility-inlines-hidden -std=c++17 -fmessage-length=0 -march=nocona -mtune=haswell -ftree-vectorize -fPIC -fstack-protector-strong -fno-plt -O2 -pipe
++CXX=/home/halsaied/miniconda2/bin/x86_64-conda_cos6-linux-gnu-c++
++DEBUG_CXXFLAGS=-fvisibility-inlines-hidden -std=c++17 -fmessage-length=0 -march=nocona -mtune=haswell -ftree-vectorize -fPIC -fstack-protector-all -fno-plt -Og -g -Wall -Wextra -fvar-tracking-assignments -pipe
++GXX=/home/halsaied/miniconda2/bin/x86_64-conda_cos6-linux-gnu-g++
+Can not use cuDNN on context None: cannot compile with cuDNN. We got this error:
+/tmp/try_flags_jG_AA3.c:4:10: fatal error: cudnn.h: No such file or directory
+ #include <cudnn.h>
+          ^~~~~~~~~
+compilation terminated.
+
+Preallocating 5779/6083 Mb (0.950000) on cuda
+Mapped name None to device cuda: GeForce GTX TITAN Black (0000:03:00.0)
+/home/halsaied/miniconda2/lib/python2.7/site-packages/h5py/__init__.py:36: FutureWarning: Conversion of the second argument of issubdtype from `float` to `np.floating` is deprecated. In future, it will be treated as `np.float64 == np.dtype(float).type`.
+  from ._conv import register_converters as _register_converters
+Using Theano backend.
+	Mode: NON.COMPO
+==================================================================================================
+	Dataset: SHAREDTASK2
+==================================================================================================
+	Division: FIXEDSIZE
+==================================================================================================
+	GPU Enabled
+==================================================================================================
+# CTitles: xp, Dataset, Evaluation, lemma, compactVocab, favorisationCoeff, focused, importantSentences, importantTransitions, overSampling, sampleWeight, bPadding, batchSize, chickPoint, compactVocab, dense1, dense1Activation, dense1Dropout, dense1UnitNumber, dense2, dense2Activation, dense2Dropout, dense2UnitNumber, earlyStop, epochs, features, inputItems, lemma, loss, lr, minDelta, optimizer, posEmb, predictVerbose, s0Padding, s1Padding, tokenEmb, trainable, validationSplit, verbose
+==================================================================================================
+# Configs: NonCompo, sharedtask2, fixedSize, True, False, 1, False, False, False, False, False, 2, 64, False, False, True, relu, 0.43, 60, False, relu, 0, 0, True, 40, False, 4, True, categorical_crossentropy, 0.059, 0.2, adagrad, 42, False, 5, 5, 480, True, 0.1, 0
+==================================================================================================
+	Mode: LINEAR
+==================================================================================================
+	 Annotation issues
+==================================================================================================
+	Train deformed lemmas: 41 
+
+==================================================================================================
+	BG Train (11990)
+==================================================================================================
+	Important sentence: 3124
+	Token occurrences: 270011
+	MWE number: 1372
+	MWE occurrences: 3583
+	Continuous occurrences: 81.0 %
+	Frequent MWE occurences: 49.0 %
+	MWE length: 2.12
+	Recognizable MWEs: 100.0 %
+	MWT occurrences: 8
+
+==================================================================================================
+	 Test (1954)
+==================================================================================================
+	Important sentence: 574
+	Token occurrences: 42020
+	MWE number: 451
+	MWE occurrences: 670
+	Continuous occurrences: 75.0 %
+	MWE length: 2.14
+	Seen occurrences : 57% 
+	Recognizable MWEs: 100.0 %
+	MWT occurrences: 1
+
+==================================================================================================
+	Linear classifier:
+==================================================================================================
+LinearSVC(C=1.0, class_weight=None, dual=True, fit_intercept=True,
+     intercept_scaling=1, loss='squared_hinge', max_iter=1000,
+     multi_class='ovr', penalty='l2', random_state=0, tol=0.0001,
+     verbose=0)
+==================================================================================================
+	Feature number = 1062388
+==================================================================================================
+
+==================================================================================================
+	Training time : 0:01:56.281465
+==================================================================================================
+	Mode: NON.COMPO
+==================================================================================================
+	Non frequent word cleaning:
+==================================================================================================
+	Before : 15258
+	After : 12174
+# Parameters = 5975488
+__________________________________________________________________________________________________
+Layer (type)                    Output Shape         Param #     Connected to                     
+==================================================================================================
+input_1 (InputLayer)            (None, 4)            0                                            
+__________________________________________________________________________________________________
+input_2 (InputLayer)            (None, 4)            0                                            
+__________________________________________________________________________________________________
+embedding_1 (Embedding)         (None, 4, 480)       5843520     input_1[0][0]                    
+__________________________________________________________________________________________________
+embedding_2 (Embedding)         (None, 4, 42)        6384        input_2[0][0]                    
+__________________________________________________________________________________________________
+flatten_1 (Flatten)             (None, 1920)         0           embedding_1[0][0]                
+__________________________________________________________________________________________________
+flatten_2 (Flatten)             (None, 168)          0           embedding_2[0][0]                
+__________________________________________________________________________________________________
+concatenate_1 (Concatenate)     (None, 2088)         0           flatten_1[0][0]                  
+                                                                 flatten_2[0][0]                  
+__________________________________________________________________________________________________
+dense_1 (Dense)                 (None, 60)           125340      concatenate_1[0][0]              
+__________________________________________________________________________________________________
+dropout_1 (Dropout)             (None, 60)           0           dense_1[0][0]                    
+__________________________________________________________________________________________________
+dense_2 (Dense)                 (None, 4)            244         dropout_1[0][0]                  
+==================================================================================================
+Total params: 5,975,488
+Trainable params: 5,975,488
+Non-trainable params: 0
+__________________________________________________________________________________________________
+None
+
+__________________________________________________________________________________________________
+	Sampling
+==================================================================================================
+	4 Labels in train : Counter({0: 270011, 1: 265982, 2: 4029, 3: 3583})
+	4 Labels in valid : Counter({0: 27106, 1: 26494, 2: 407, 3: 354})
+
+__________________________________________________________________________________________________
+	Optimizer : Adagrad,  learning rate = 0.059
+__________________________________________________________________________________________________
+Train on 489244 samples, validate on 54361 samples
+Epoch 1/40
+ - 18s - loss: 0.0337 - acc: 0.9865 - val_loss: 0.0240 - val_acc: 0.9878
+Epoch 2/40
+ - 18s - loss: 0.0204 - acc: 0.9894 - val_loss: 0.0246 - val_acc: 0.9886
+Epoch 3/40
+ - 18s - loss: 0.0176 - acc: 0.9903 - val_loss: 0.0261 - val_acc: 0.9882
+
+==================================================================================================
+	Training time : 0:01:33.325217
+==================================================================================================
+	Mode: LINEAR
+==================================================================================================
+	Mode: NON.COMPO
+==================================================================================================
+
+==================================================================================================
+	Parsing time : 0:00:47.504432
+==================================================================================================
+	Identification : 0.603
+	P, R  : 0.766, 0.497
+
+*|*|*|*|*|*|*|*|*|*|*|*|*|*|*|*|*|*|*|*|*|*|*|*|*|*|*|*|*|*|*|*|*|*|*|*|*|*|*|*|*|*|*|*|*|*|*|*|*|
+ERROR:root:ATTENTION: Oracle problems with 2 sentences!
+	Mode: LINEAR
+==================================================================================================
+	 Annotation issues
+==================================================================================================
+	Train deformed lemmas: 23 
+
+==================================================================================================
+	PT Train (12631)
+==================================================================================================
+	Important sentence: 2305
+	Token occurrences: 270045
+	MWE number: 1412
+	MWE occurrences: 2542
+	Continuous occurrences: 58.0 %
+	Frequent MWE occurences: 21.0 %
+	MWE length: 2.22
+	Recognizable MWEs: 100.0 %
+	MWT occurrences: 1
+	Embedded occurrences: 5
+
+==================================================================================================
+	 Test (3117)
+==================================================================================================
+	Important sentence: 494
+	Token occurrences: 64078
+	MWE number: 429
+	MWE occurrences: 553
+	Continuous occurrences: 59.0 %
+	MWE length: 2.25
+	Seen occurrences : 62% 
+	Recognizable MWEs: 98.0 %
+	Embedded occurrences: 4
+	Interleaving occurrences: 8
+
+==================================================================================================
+	Linear classifier:
+==================================================================================================
+LinearSVC(C=1.0, class_weight=None, dual=True, fit_intercept=True,
+     intercept_scaling=1, loss='squared_hinge', max_iter=1000,
+     multi_class='ovr', penalty='l2', random_state=0, tol=0.0001,
+     verbose=0)
+==================================================================================================
+	Feature number = 1167626
+==================================================================================================
+
+==================================================================================================
+	Training time : 0:01:35.149054
+==================================================================================================
+	Mode: NON.COMPO
+==================================================================================================
+	Non frequent word cleaning:
+==================================================================================================
+	Before : 20029
+	After : 15311
+# Parameters = 7481962
+__________________________________________________________________________________________________
+Layer (type)                    Output Shape         Param #     Connected to                     
+==================================================================================================
+input_3 (InputLayer)            (None, 4)            0                                            
+__________________________________________________________________________________________________
+input_4 (InputLayer)            (None, 4)            0                                            
+__________________________________________________________________________________________________
+embedding_3 (Embedding)         (None, 4, 480)       7349280     input_3[0][0]                    
+__________________________________________________________________________________________________
+embedding_4 (Embedding)         (None, 4, 42)        7098        input_4[0][0]                    
+__________________________________________________________________________________________________
+flatten_3 (Flatten)             (None, 1920)         0           embedding_3[0][0]                
+__________________________________________________________________________________________________
+flatten_4 (Flatten)             (None, 168)          0           embedding_4[0][0]                
+__________________________________________________________________________________________________
+concatenate_2 (Concatenate)     (None, 2088)         0           flatten_3[0][0]                  
+                                                                 flatten_4[0][0]                  
+__________________________________________________________________________________________________
+dense_3 (Dense)                 (None, 60)           125340      concatenate_2[0][0]              
+__________________________________________________________________________________________________
+dropout_2 (Dropout)             (None, 60)           0           dense_3[0][0]                    
+__________________________________________________________________________________________________
+dense_4 (Dense)                 (None, 4)            244         dropout_2[0][0]                  
+==================================================================================================
+Total params: 7,481,962
+Trainable params: 7,481,962
+Non-trainable params: 0
+__________________________________________________________________________________________________
+None
+
+__________________________________________________________________________________________________
+	Sampling
+==================================================================================================
+	4 Labels in train : Counter({0: 270045, 1: 266950, 2: 3095, 3: 2540})
+	4 Labels in valid : Counter({0: 27129, 1: 26517, 2: 337, 3: 280})
+
+__________________________________________________________________________________________________
+	Optimizer : Adagrad,  learning rate = 0.059
+__________________________________________________________________________________________________
+Train on 488367 samples, validate on 54263 samples
+Epoch 1/40
+ - 20s - loss: 0.0312 - acc: 0.9883 - val_loss: 0.0198 - val_acc: 0.9905
+Epoch 2/40
+ - 20s - loss: 0.0174 - acc: 0.9918 - val_loss: 0.0204 - val_acc: 0.9910
+Epoch 3/40
+ - 20s - loss: 0.0145 - acc: 0.9927 - val_loss: 0.0221 - val_acc: 0.9908
+
+==================================================================================================
+	Training time : 0:01:22.942181
+==================================================================================================
+	Mode: LINEAR
+==================================================================================================
+	Mode: NON.COMPO
+==================================================================================================
+
+==================================================================================================
+	Parsing time : 0:01:14.957142
+==================================================================================================
+	Identification : 0.652
+	P, R  : 0.757, 0.573
+
+*|*|*|*|*|*|*|*|*|*|*|*|*|*|*|*|*|*|*|*|*|*|*|*|*|*|*|*|*|*|*|*|*|*|*|*|*|*|*|*|*|*|*|*|*|*|*|*|*|
+	Mode: LINEAR
+==================================================================================================
+	 Annotation issues
+==================================================================================================
+	Train deformed lemmas: 31277 
+	Train important deformed Lemmas: 3223 
+
+==================================================================================================
+	TR Train (13501)
+==================================================================================================
+	Important sentence: 3585
+	Token occurrences: 270001
+	MWE number: 2979
+	MWE occurrences: 4870
+	Continuous occurrences: 49.0 %
+	Frequent MWE occurences: 48.0 %
+	MWE length: 2.06
+	Recognizable MWEs: 100.0 %
+	MWT occurrences: 2
+
+==================================================================================================
+	 Test (1320)
+==================================================================================================
+	Important sentence: 385
+	Token occurrences: 27196
+	MWE number: 418
+	MWE occurrences: 510
+	Continuous occurrences: 50.0 %
+	MWE length: 2.07
+	Seen occurrences : 31% 
+	Recognizable MWEs: 100.0 %
+
+==================================================================================================
+	Linear classifier:
+==================================================================================================
+LinearSVC(C=1.0, class_weight=None, dual=True, fit_intercept=True,
+     intercept_scaling=1, loss='squared_hinge', max_iter=1000,
+     multi_class='ovr', penalty='l2', random_state=0, tol=0.0001,
+     verbose=0)
+==================================================================================================
+	Feature number = 1319927
+==================================================================================================
+
+==================================================================================================
+	Training time : 0:02:00.103676
+==================================================================================================
+	Mode: NON.COMPO
+==================================================================================================
+	Non frequent word cleaning:
+==================================================================================================
+	Before : 15508
+	After : 12561
+# Parameters = 6159484
+__________________________________________________________________________________________________
+Layer (type)                    Output Shape         Param #     Connected to                     
+==================================================================================================
+input_5 (InputLayer)            (None, 4)            0                                            
+__________________________________________________________________________________________________
+input_6 (InputLayer)            (None, 4)            0                                            
+__________________________________________________________________________________________________
+embedding_5 (Embedding)         (None, 4, 480)       6029280     input_5[0][0]                    
+__________________________________________________________________________________________________
+embedding_6 (Embedding)         (None, 4, 42)        4620        input_6[0][0]                    
+__________________________________________________________________________________________________
+flatten_5 (Flatten)             (None, 1920)         0           embedding_5[0][0]                
+__________________________________________________________________________________________________
+flatten_6 (Flatten)             (None, 168)          0           embedding_6[0][0]                
+__________________________________________________________________________________________________
+concatenate_3 (Concatenate)     (None, 2088)         0           flatten_5[0][0]                  
+                                                                 flatten_6[0][0]                  
+__________________________________________________________________________________________________
+dense_5 (Dense)                 (None, 60)           125340      concatenate_3[0][0]              
+__________________________________________________________________________________________________
+dropout_3 (Dropout)             (None, 60)           0           dense_5[0][0]                    
+__________________________________________________________________________________________________
+dense_6 (Dense)                 (None, 4)            244         dropout_3[0][0]                  
+==================================================================================================
+Total params: 6,159,484
+Trainable params: 6,159,484
+Non-trainable params: 0
+__________________________________________________________________________________________________
+None
+
+__________________________________________________________________________________________________
+	Sampling
+==================================================================================================
+	4 Labels in train : Counter({0: 270001, 1: 264843, 2: 5158, 3: 4870})
+	4 Labels in valid : Counter({0: 27051, 1: 26395, 2: 546, 3: 496})
+
+__________________________________________________________________________________________________
+	Optimizer : Adagrad,  learning rate = 0.059
+__________________________________________________________________________________________________
+Train on 490384 samples, validate on 54488 samples
+Epoch 1/40
+ - 18s - loss: 0.0491 - acc: 0.9797 - val_loss: 0.0354 - val_acc: 0.9818
+Epoch 2/40
+ - 18s - loss: 0.0333 - acc: 0.9828 - val_loss: 0.0353 - val_acc: 0.9823
+Epoch 3/40
+ - 18s - loss: 0.0302 - acc: 0.9836 - val_loss: 0.0361 - val_acc: 0.9823
+
+==================================================================================================
+	Training time : 0:01:19.624660
+==================================================================================================
+	Mode: LINEAR
+==================================================================================================
+	Mode: NON.COMPO
+==================================================================================================
+
+==================================================================================================
+	Parsing time : 0:00:39.091651
+==================================================================================================
+	Identification : 0.546
+	P, R  : 0.642, 0.475
+
+*|*|*|*|*|*|*|*|*|*|*|*|*|*|*|*|*|*|*|*|*|*|*|*|*|*|*|*|*|*|*|*|*|*|*|*|*|*|*|*|*|*|*|*|*|*|*|*|*|

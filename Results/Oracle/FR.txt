@@ -1,0 +1,3762 @@
+4236- :: initialement , il 1 **donna** 1 **son** 1 **appui** à les procès , mais changea d' avis lorsque sa deuxième femme fut accusée de sorcellerie . 
+MWEs:
+1- id: donner son appui (+)
+
+: L                
+
+SHIFT: L           
+
+REDUCE: L          
+S=[]                        B=[ ,,il, ..] Bx=initialement
+SHIFT: L           
+S=[,]                       B=[ il,donna, ..] Bx=initialement
+REDUCE: L          
+S=[]                        B=[ il,donna, ..] Bx=,
+SHIFT: L           
+S=[il]                      B=[ donna,son, ..] Bx=,
+REDUCE: L          
+S=[]                        B=[ donna,son, ..] Bx=il
+SHIFT: L           
+S=[donna]                   B=[ son,appui, ..] Bx=il
+SHIFT: L           
+S=[donna, son]              B=[ appui,à, ..] Bx=il
+MERGE: L           
+S=[[donna, son]]            B=[ appui,à, ..] Bx=il
+SHIFT: L           
+S=[[donna, son]appui]       B=[ à,les, ..] Bx=il
+MERGE: L           
+S=[[[donna, son]appui]]     B=[ à,les, ..] Bx=il
+SHIFT: L           
+S=[[[donna, son]appui]à]   B=[ les,procès, ..] Bx=il
+REDUCE: L          
+S=[[[donna, son]appui]]     B=[ les,procès, ..] Bx=à
+SHIFT: L           
+S=[[[donna, son]appui]les]  B=[ procès,,, ..] Bx=à
+REDUCE: L          
+S=[[[donna, son]appui]]     B=[ procès,,, ..] Bx=le
+SHIFT: L           
+S=[[[donna, son]appui]procès] B=[ ,,mais, ..] Bx=le
+REDUCE: L          
+S=[[[donna, son]appui]]     B=[ ,,mais, ..] Bx=procès
+SHIFT: L           
+S=[[[donna, son]appui],]    B=[ mais,changea, ..] Bx=procès
+REDUCE: L          
+S=[[[donna, son]appui]]     B=[ mais,changea, ..] Bx=,
+SHIFT: L           
+S=[[[donna, son]appui]mais] B=[ changea,d', ..] Bx=,
+REDUCE: L          
+S=[[[donna, son]appui]]     B=[ changea,d', ..] Bx=mais
+SHIFT: L           
+S=[[[donna, son]appui]changea] B=[ d',avis, ..] Bx=mais
+REDUCE: L          
+S=[[[donna, son]appui]]     B=[ d',avis, ..] Bx=changer
+SHIFT: L           
+S=[[[donna, son]appui]d']   B=[ avis,lorsque, ..] Bx=changer
+REDUCE: L          
+S=[[[donna, son]appui]]     B=[ avis,lorsque, ..] Bx=de
+SHIFT: L           
+S=[[[donna, son]appui]avis] B=[ lorsque,sa, ..] Bx=de
+REDUCE: L          
+S=[[[donna, son]appui]]     B=[ lorsque,sa, ..] Bx=avis
+SHIFT: L           
+S=[[[donna, son]appui]lorsque] B=[ sa,deuxième, ..] Bx=avis
+REDUCE: L          
+S=[[[donna, son]appui]]     B=[ sa,deuxième, ..] Bx=lorsque
+SHIFT: L           
+S=[[[donna, son]appui]sa]   B=[ deuxième,femme, ..] Bx=lorsque
+REDUCE: L          
+S=[[[donna, son]appui]]     B=[ deuxième,femme, ..] Bx=son
+SHIFT: L           
+S=[[[donna, son]appui]deuxième] B=[ femme,fut, ..] Bx=son
+REDUCE: L          
+S=[[[donna, son]appui]]     B=[ femme,fut, ..] Bx=deuxième
+SHIFT: L           
+S=[[[donna, son]appui]femme] B=[ fut,accusée, ..] Bx=deuxième
+REDUCE: L          
+S=[[[donna, son]appui]]     B=[ fut,accusée, ..] Bx=femme
+SHIFT: L           
+S=[[[donna, son]appui]fut]  B=[ accusée,de, ..] Bx=femme
+REDUCE: L          
+S=[[[donna, son]appui]]     B=[ accusée,de, ..] Bx=être
+SHIFT: L           
+S=[[[donna, son]appui]accusée] B=[ de,sorcellerie, ..] Bx=être
+REDUCE: L          
+S=[[[donna, son]appui]]     B=[ de,sorcellerie, ..] Bx=accuser
+SHIFT: L           
+S=[[[donna, son]appui]de]   B=[ sorcellerie,.,] Bx=accuser
+REDUCE: L          
+S=[[[donna, son]appui]]     B=[ sorcellerie,.,] Bx=de
+SHIFT: L           
+S=[[[donna, son]appui]sorcellerie] B=[ .,] Bx=de
+REDUCE: L          
+S=[[[donna, son]appui]]     B=[ .,] Bx=sorcellerie
+SHIFT: L           
+S=[[[donna, son]appui].]    B=[ ] Bx=sorcellerie
+REDUCE: L          
+S=[[[donna, son]appui]]     B=[ ] Bx=.
+REDUCE: L          
+S=[]                        B=[ ] Bx=.
+5648- :: son but est de proposer une offre de logements diversifiée afin de répondre à le mieux à les besoins de les plus fragiles et contribuer à 1 **assurer** un 1 **développement** urbain équilibré . 
+MWEs:
+1- lvc: assurer développement (+)
+
+: L                
+
+SHIFT: L           
+
+REDUCE: L          
+S=[]                        B=[ but,est, ..] Bx=son
+SHIFT: L           
+S=[but]                     B=[ est,de, ..] Bx=son
+REDUCE: L          
+S=[]                        B=[ est,de, ..] Bx=but
+SHIFT: L           
+S=[est]                     B=[ de,proposer, ..] Bx=but
+REDUCE: L          
+S=[]                        B=[ de,proposer, ..] Bx=être
+SHIFT: L           
+S=[de]                      B=[ proposer,une, ..] Bx=être
+REDUCE: L          
+S=[]                        B=[ proposer,une, ..] Bx=de
+SHIFT: L           
+S=[proposer]                B=[ une,offre, ..] Bx=de
+REDUCE: L          
+S=[]                        B=[ une,offre, ..] Bx=proposer
+SHIFT: L           
+S=[une]                     B=[ offre,de, ..] Bx=proposer
+REDUCE: L          
+S=[]                        B=[ offre,de, ..] Bx=un
+SHIFT: L           
+S=[offre]                   B=[ de,logements, ..] Bx=un
+REDUCE: L          
+S=[]                        B=[ de,logements, ..] Bx=offre
+SHIFT: L           
+S=[de]                      B=[ logements,diversifiée, ..] Bx=offre
+REDUCE: L          
+S=[]                        B=[ logements,diversifiée, ..] Bx=de
+SHIFT: L           
+S=[logements]               B=[ diversifiée,afin, ..] Bx=de
+REDUCE: L          
+S=[]                        B=[ diversifiée,afin, ..] Bx=logement
+SHIFT: L           
+S=[diversifiée]            B=[ afin,de, ..] Bx=logement
+REDUCE: L          
+S=[]                        B=[ afin,de, ..] Bx=diversifier
+SHIFT: L           
+S=[afin]                    B=[ de,répondre, ..] Bx=diversifier
+REDUCE: L          
+S=[]                        B=[ de,répondre, ..] Bx=afin
+SHIFT: L           
+S=[de]                      B=[ répondre,à, ..] Bx=afin
+REDUCE: L          
+S=[]                        B=[ répondre,à, ..] Bx=de
+SHIFT: L           
+S=[répondre]               B=[ à,le, ..] Bx=de
+REDUCE: L          
+S=[]                        B=[ à,le, ..] Bx=répondre
+SHIFT: L           
+S=[à]                      B=[ le,mieux, ..] Bx=répondre
+REDUCE: L          
+S=[]                        B=[ le,mieux, ..] Bx=à
+SHIFT: L           
+S=[le]                      B=[ mieux,à, ..] Bx=à
+REDUCE: L          
+S=[]                        B=[ mieux,à, ..] Bx=le
+SHIFT: L           
+S=[mieux]                   B=[ à,les, ..] Bx=le
+REDUCE: L          
+S=[]                        B=[ à,les, ..] Bx=mieux
+SHIFT: L           
+S=[à]                      B=[ les,besoins, ..] Bx=mieux
+REDUCE: L          
+S=[]                        B=[ les,besoins, ..] Bx=à
+SHIFT: L           
+S=[les]                     B=[ besoins,de, ..] Bx=à
+REDUCE: L          
+S=[]                        B=[ besoins,de, ..] Bx=le
+SHIFT: L           
+S=[besoins]                 B=[ de,les, ..] Bx=le
+REDUCE: L          
+S=[]                        B=[ de,les, ..] Bx=besoin
+SHIFT: L           
+S=[de]                      B=[ les,plus, ..] Bx=besoin
+REDUCE: L          
+S=[]                        B=[ les,plus, ..] Bx=de
+SHIFT: L           
+S=[les]                     B=[ plus,fragiles, ..] Bx=de
+REDUCE: L          
+S=[]                        B=[ plus,fragiles, ..] Bx=le
+SHIFT: L           
+S=[plus]                    B=[ fragiles,et, ..] Bx=le
+REDUCE: L          
+S=[]                        B=[ fragiles,et, ..] Bx=plus
+SHIFT: L           
+S=[fragiles]                B=[ et,contribuer, ..] Bx=plus
+REDUCE: L          
+S=[]                        B=[ et,contribuer, ..] Bx=fragile
+SHIFT: L           
+S=[et]                      B=[ contribuer,à, ..] Bx=fragile
+REDUCE: L          
+S=[]                        B=[ contribuer,à, ..] Bx=et
+SHIFT: L           
+S=[contribuer]              B=[ à,assurer, ..] Bx=et
+REDUCE: L          
+S=[]                        B=[ à,assurer, ..] Bx=contribuer
+SHIFT: L           
+S=[à]                      B=[ assurer,un, ..] Bx=contribuer
+REDUCE: L          
+S=[]                        B=[ assurer,un, ..] Bx=à
+SHIFT: L           
+S=[assurer]                 B=[ un,développement, ..] Bx=à
+SHIFT: L           
+S=[assurer, un]             B=[ développement,urbain, ..] Bx=à
+REDUCE: L          
+S=[assurer]                 B=[ développement,urbain, ..] Bx=un
+SHIFT: L           
+S=[assurer, développement] B=[ urbain,équilibré, ..] Bx=un
+MERGE: L           
+S=[[assurer, développement]] B=[ urbain,équilibré, ..] Bx=un
+SHIFT: L           
+S=[[assurer, développement]urbain] B=[ équilibré,.,] Bx=un
+REDUCE: L          
+S=[[assurer, développement]] B=[ équilibré,.,] Bx=urbain
+SHIFT: L           
+S=[[assurer, développement]équilibré] B=[ .,] Bx=urbain
+REDUCE: L          
+S=[[assurer, développement]] B=[ .,] Bx=équilibrer
+SHIFT: L           
+S=[[assurer, développement].] B=[ ] Bx=équilibrer
+REDUCE: L          
+S=[[assurer, développement]] B=[ ] Bx=.
+REDUCE: L          
+S=[]                        B=[ ] Bx=.
+13442- :: dans la foi , ce qui l' émeut , c' est la manière dont est 1 **reçu** ce 1 **don** de dieu dans une âme . 
+MWEs:
+1- lvc: recevoir don (+)
+
+: L                
+
+SHIFT: L           
+
+REDUCE: L          
+S=[]                        B=[ la,foi, ..] Bx=dans
+SHIFT: L           
+S=[la]                      B=[ foi,,, ..] Bx=dans
+REDUCE: L          
+S=[]                        B=[ foi,,, ..] Bx=le
+SHIFT: L           
+S=[foi]                     B=[ ,,ce, ..] Bx=le
+REDUCE: L          
+S=[]                        B=[ ,,ce, ..] Bx=foi
+SHIFT: L           
+S=[,]                       B=[ ce,qui, ..] Bx=foi
+REDUCE: L          
+S=[]                        B=[ ce,qui, ..] Bx=,
+SHIFT: L           
+S=[ce]                      B=[ qui,l', ..] Bx=,
+REDUCE: L          
+S=[]                        B=[ qui,l', ..] Bx=ce
+SHIFT: L           
+S=[qui]                     B=[ l',émeut, ..] Bx=ce
+REDUCE: L          
+S=[]                        B=[ l',émeut, ..] Bx=qui
+SHIFT: L           
+S=[l']                      B=[ émeut,,, ..] Bx=qui
+REDUCE: L          
+S=[]                        B=[ émeut,,, ..] Bx=le
+SHIFT: L           
+S=[émeut]                  B=[ ,,c', ..] Bx=le
+REDUCE: L          
+S=[]                        B=[ ,,c', ..] Bx=émouvoir
+SHIFT: L           
+S=[,]                       B=[ c',est, ..] Bx=émouvoir
+REDUCE: L          
+S=[]                        B=[ c',est, ..] Bx=,
+SHIFT: L           
+S=[c']                      B=[ est,la, ..] Bx=,
+REDUCE: L          
+S=[]                        B=[ est,la, ..] Bx=ce
+SHIFT: L           
+S=[est]                     B=[ la,manière, ..] Bx=ce
+REDUCE: L          
+S=[]                        B=[ la,manière, ..] Bx=être
+SHIFT: L           
+S=[la]                      B=[ manière,dont, ..] Bx=être
+REDUCE: L          
+S=[]                        B=[ manière,dont, ..] Bx=le
+SHIFT: L           
+S=[manière]                B=[ dont,est, ..] Bx=le
+REDUCE: L          
+S=[]                        B=[ dont,est, ..] Bx=manière
+SHIFT: L           
+S=[dont]                    B=[ est,reçu, ..] Bx=manière
+REDUCE: L          
+S=[]                        B=[ est,reçu, ..] Bx=dont
+SHIFT: L           
+S=[est]                     B=[ reçu,ce, ..] Bx=dont
+REDUCE: L          
+S=[]                        B=[ reçu,ce, ..] Bx=être
+SHIFT: L           
+S=[reçu]                   B=[ ce,don, ..] Bx=être
+SHIFT: L           
+S=[reçu, ce]               B=[ don,de, ..] Bx=être
+REDUCE: L          
+S=[reçu]                   B=[ don,de, ..] Bx=ce
+SHIFT: L           
+S=[reçu, don]              B=[ de,dieu, ..] Bx=ce
+MERGE: L           
+S=[[reçu, don]]            B=[ de,dieu, ..] Bx=ce
+SHIFT: L           
+S=[[reçu, don]de]          B=[ dieu,dans, ..] Bx=ce
+REDUCE: L          
+S=[[reçu, don]]            B=[ dieu,dans, ..] Bx=de
+SHIFT: L           
+S=[[reçu, don]dieu]        B=[ dans,une, ..] Bx=de
+REDUCE: L          
+S=[[reçu, don]]            B=[ dans,une, ..] Bx=dieu
+SHIFT: L           
+S=[[reçu, don]dans]        B=[ une,âme, ..] Bx=dieu
+REDUCE: L          
+S=[[reçu, don]]            B=[ une,âme, ..] Bx=dans
+SHIFT: L           
+S=[[reçu, don]une]         B=[ âme,.,] Bx=dans
+REDUCE: L          
+S=[[reçu, don]]            B=[ âme,.,] Bx=un
+SHIFT: L           
+S=[[reçu, don]âme]        B=[ .,] Bx=un
+REDUCE: L          
+S=[[reçu, don]]            B=[ .,] Bx=âme
+SHIFT: L           
+S=[[reçu, don].]           B=[ ] Bx=âme
+REDUCE: L          
+S=[[reçu, don]]            B=[ ] Bx=.
+REDUCE: L          
+S=[]                        B=[ ] Bx=.
+1383- :: Étant donné que la durée de vie de les avions est approximativement de trente ans , l' effet de ces améliorations techniques 1 **se** 1 **fait** 1 **attendre** longtemps . 
+MWEs:
+1- id: se faire attendre (+)
+
+: L                
+
+SHIFT: L           
+
+REDUCE: L          
+S=[]                        B=[ donné,que, ..] Bx=être
+SHIFT: L           
+S=[donné]                  B=[ que,la, ..] Bx=être
+REDUCE: L          
+S=[]                        B=[ que,la, ..] Bx=donner
+SHIFT: L           
+S=[que]                     B=[ la,durée, ..] Bx=donner
+REDUCE: L          
+S=[]                        B=[ la,durée, ..] Bx=que
+SHIFT: L           
+S=[la]                      B=[ durée,de, ..] Bx=que
+REDUCE: L          
+S=[]                        B=[ durée,de, ..] Bx=le
+SHIFT: L           
+S=[durée]                  B=[ de,vie, ..] Bx=le
+REDUCE: L          
+S=[]                        B=[ de,vie, ..] Bx=durée
+SHIFT: L           
+S=[de]                      B=[ vie,de, ..] Bx=durée
+REDUCE: L          
+S=[]                        B=[ vie,de, ..] Bx=de
+SHIFT: L           
+S=[vie]                     B=[ de,les, ..] Bx=de
+REDUCE: L          
+S=[]                        B=[ de,les, ..] Bx=vie
+SHIFT: L           
+S=[de]                      B=[ les,avions, ..] Bx=vie
+REDUCE: L          
+S=[]                        B=[ les,avions, ..] Bx=de
+SHIFT: L           
+S=[les]                     B=[ avions,est, ..] Bx=de
+REDUCE: L          
+S=[]                        B=[ avions,est, ..] Bx=le
+SHIFT: L           
+S=[avions]                  B=[ est,approximativement, ..] Bx=le
+REDUCE: L          
+S=[]                        B=[ est,approximativement, ..] Bx=avion
+SHIFT: L           
+S=[est]                     B=[ approximativement,de, ..] Bx=avion
+REDUCE: L          
+S=[]                        B=[ approximativement,de, ..] Bx=être
+SHIFT: L           
+S=[approximativement]       B=[ de,trente, ..] Bx=être
+REDUCE: L          
+S=[]                        B=[ de,trente, ..] Bx=approximativement
+SHIFT: L           
+S=[de]                      B=[ trente,ans, ..] Bx=approximativement
+REDUCE: L          
+S=[]                        B=[ trente,ans, ..] Bx=de
+SHIFT: L           
+S=[trente]                  B=[ ans,,, ..] Bx=de
+REDUCE: L          
+S=[]                        B=[ ans,,, ..] Bx=trente
+SHIFT: L           
+S=[ans]                     B=[ ,,l', ..] Bx=trente
+REDUCE: L          
+S=[]                        B=[ ,,l', ..] Bx=an
+SHIFT: L           
+S=[,]                       B=[ l',effet, ..] Bx=an
+REDUCE: L          
+S=[]                        B=[ l',effet, ..] Bx=,
+SHIFT: L           
+S=[l']                      B=[ effet,de, ..] Bx=,
+REDUCE: L          
+S=[]                        B=[ effet,de, ..] Bx=le
+SHIFT: L           
+S=[effet]                   B=[ de,ces, ..] Bx=le
+REDUCE: L          
+S=[]                        B=[ de,ces, ..] Bx=effet
+SHIFT: L           
+S=[de]                      B=[ ces,améliorations, ..] Bx=effet
+REDUCE: L          
+S=[]                        B=[ ces,améliorations, ..] Bx=de
+SHIFT: L           
+S=[ces]                     B=[ améliorations,techniques, ..] Bx=de
+REDUCE: L          
+S=[]                        B=[ améliorations,techniques, ..] Bx=ce
+SHIFT: L           
+S=[améliorations]          B=[ techniques,se, ..] Bx=ce
+REDUCE: L          
+S=[]                        B=[ techniques,se, ..] Bx=amélioration
+SHIFT: L           
+S=[techniques]              B=[ se,fait, ..] Bx=amélioration
+REDUCE: L          
+S=[]                        B=[ se,fait, ..] Bx=technique
+SHIFT: L           
+S=[se]                      B=[ fait,attendre, ..] Bx=technique
+SHIFT: L           
+S=[se, fait]                B=[ attendre,longtemps, ..] Bx=technique
+MERGE: L           
+S=[[se, fait]]              B=[ attendre,longtemps, ..] Bx=technique
+SHIFT: L           
+S=[[se, fait]attendre]      B=[ longtemps,.,] Bx=technique
+MERGE: L           
+S=[[[se, fait]attendre]]    B=[ longtemps,.,] Bx=technique
+SHIFT: L           
+S=[[[se, fait]attendre]longtemps] B=[ .,] Bx=technique
+REDUCE: L          
+S=[[[se, fait]attendre]]    B=[ .,] Bx=longtemps
+SHIFT: L           
+S=[[[se, fait]attendre].]   B=[ ] Bx=longtemps
+REDUCE: L          
+S=[[[se, fait]attendre]]    B=[ ] Bx=.
+REDUCE: L          
+S=[]                        B=[ ] Bx=.
+1166- :: je crois que nous devrions 1 **nous** 1 **pencher** sur ce problème . 
+MWEs:
+1- ireflv: se pencher (+)
+
+: L                
+
+SHIFT: L           
+
+REDUCE: L          
+S=[]                        B=[ crois,que, ..] Bx=il
+SHIFT: L           
+S=[crois]                   B=[ que,nous, ..] Bx=il
+REDUCE: L          
+S=[]                        B=[ que,nous, ..] Bx=croire
+SHIFT: L           
+S=[que]                     B=[ nous,devrions, ..] Bx=croire
+REDUCE: L          
+S=[]                        B=[ nous,devrions, ..] Bx=que
+SHIFT: L           
+S=[nous]                    B=[ devrions,nous, ..] Bx=que
+REDUCE: L          
+S=[]                        B=[ devrions,nous, ..] Bx=il
+SHIFT: L           
+S=[devrions]                B=[ nous,pencher, ..] Bx=il
+REDUCE: L          
+S=[]                        B=[ nous,pencher, ..] Bx=devoir
+SHIFT: L           
+S=[nous]                    B=[ pencher,sur, ..] Bx=devoir
+SHIFT: L           
+S=[nous, pencher]           B=[ sur,ce, ..] Bx=devoir
+MERGE: L           
+S=[[nous, pencher]]         B=[ sur,ce, ..] Bx=devoir
+SHIFT: L           
+S=[[nous, pencher]sur]      B=[ ce,problème, ..] Bx=devoir
+REDUCE: L          
+S=[[nous, pencher]]         B=[ ce,problème, ..] Bx=sur
+SHIFT: L           
+S=[[nous, pencher]ce]       B=[ problème,.,] Bx=sur
+REDUCE: L          
+S=[[nous, pencher]]         B=[ problème,.,] Bx=ce
+SHIFT: L           
+S=[[nous, pencher]problème] B=[ .,] Bx=ce
+REDUCE: L          
+S=[[nous, pencher]]         B=[ .,] Bx=problème
+SHIFT: L           
+S=[[nous, pencher].]        B=[ ] Bx=problème
+REDUCE: L          
+S=[[nous, pencher]]         B=[ ] Bx=.
+REDUCE: L          
+S=[]                        B=[ ] Bx=.
+13324- :: la couze d' ardes est une rivière française d' auvergne qui 1 **prend** 1 **sa** 1 **source** dans les monts de le cézallier et 2 **se** 2 **jette** dans l' allier . 
+MWEs:
+1- id: prendre son source (+)
+2- ireflv: se jeter (+)
+
+: L                
+
+SHIFT: L           
+
+REDUCE: L          
+S=[]                        B=[ couze,d', ..] Bx=le
+SHIFT: L           
+S=[couze]                   B=[ d',ardes, ..] Bx=le
+REDUCE: L          
+S=[]                        B=[ d',ardes, ..] Bx=couze
+SHIFT: L           
+S=[d']                      B=[ ardes,est, ..] Bx=couze
+REDUCE: L          
+S=[]                        B=[ ardes,est, ..] Bx=de
+SHIFT: L           
+S=[ardes]                   B=[ est,une, ..] Bx=de
+REDUCE: L          
+S=[]                        B=[ est,une, ..] Bx=ardes
+SHIFT: L           
+S=[est]                     B=[ une,rivière, ..] Bx=ardes
+REDUCE: L          
+S=[]                        B=[ une,rivière, ..] Bx=être
+SHIFT: L           
+S=[une]                     B=[ rivière,française, ..] Bx=être
+REDUCE: L          
+S=[]                        B=[ rivière,française, ..] Bx=un
+SHIFT: L           
+S=[rivière]                B=[ française,d', ..] Bx=un
+REDUCE: L          
+S=[]                        B=[ française,d', ..] Bx=rivière
+SHIFT: L           
+S=[française]              B=[ d',auvergne, ..] Bx=rivière
+REDUCE: L          
+S=[]                        B=[ d',auvergne, ..] Bx=français
+SHIFT: L           
+S=[d']                      B=[ auvergne,qui, ..] Bx=français
+REDUCE: L          
+S=[]                        B=[ auvergne,qui, ..] Bx=de
+SHIFT: L           
+S=[auvergne]                B=[ qui,prend, ..] Bx=de
+REDUCE: L          
+S=[]                        B=[ qui,prend, ..] Bx=auvergne
+SHIFT: L           
+S=[qui]                     B=[ prend,sa, ..] Bx=auvergne
+REDUCE: L          
+S=[]                        B=[ prend,sa, ..] Bx=qui
+SHIFT: L           
+S=[prend]                   B=[ sa,source, ..] Bx=qui
+SHIFT: L           
+S=[prend, sa]               B=[ source,dans, ..] Bx=qui
+MERGE: L           
+S=[[prend, sa]]             B=[ source,dans, ..] Bx=qui
+SHIFT: L           
+S=[[prend, sa]source]       B=[ dans,les, ..] Bx=qui
+MERGE: L           
+S=[[[prend, sa]source]]     B=[ dans,les, ..] Bx=qui
+SHIFT: L           
+S=[[[prend, sa]source]dans] B=[ les,monts, ..] Bx=qui
+REDUCE: L          
+S=[[[prend, sa]source]]     B=[ les,monts, ..] Bx=dans
+SHIFT: L           
+S=[[[prend, sa]source]les]  B=[ monts,de, ..] Bx=dans
+REDUCE: L          
+S=[[[prend, sa]source]]     B=[ monts,de, ..] Bx=le
+SHIFT: L           
+S=[[[prend, sa]source]monts] B=[ de,le, ..] Bx=le
+REDUCE: L          
+S=[[[prend, sa]source]]     B=[ de,le, ..] Bx=mont
+SHIFT: L           
+S=[[[prend, sa]source]de]   B=[ le,cézallier, ..] Bx=mont
+REDUCE: L          
+S=[[[prend, sa]source]]     B=[ le,cézallier, ..] Bx=de
+SHIFT: L           
+S=[[[prend, sa]source]le]   B=[ cézallier,et, ..] Bx=de
+REDUCE: L          
+S=[[[prend, sa]source]]     B=[ cézallier,et, ..] Bx=le
+SHIFT: L           
+S=[[[prend, sa]source]cézallier] B=[ et,se, ..] Bx=le
+REDUCE: L          
+S=[[[prend, sa]source]]     B=[ et,se, ..] Bx=cézallier
+SHIFT: L           
+S=[[[prend, sa]source]et]   B=[ se,jette, ..] Bx=cézallier
+REDUCE: L          
+S=[[[prend, sa]source]]     B=[ se,jette, ..] Bx=et
+SHIFT: L           
+S=[[[prend, sa]source]se]   B=[ jette,dans, ..] Bx=et
+SHIFT: L           
+S=[[[prend, sa]source]se, jette] B=[ dans,l', ..] Bx=et
+MERGE: L           
+S=[[[prend, sa]source][se, jette]] B=[ dans,l', ..] Bx=et
+MARK_AS_IREFLV: L  
+S=[[[[prend, sa]source][se, jette]]] B=[ dans,l', ..] Bx=et
+SHIFT: L           
+S=[[[[prend, sa]source][se, jette]]dans] B=[ l',allier, ..] Bx=et
+REDUCE: L          
+S=[[[[prend, sa]source][se, jette]]] B=[ l',allier, ..] Bx=dans
+SHIFT: L           
+S=[[[[prend, sa]source][se, jette]]l'] B=[ allier,.,] Bx=dans
+REDUCE: L          
+S=[[[[prend, sa]source][se, jette]]] B=[ allier,.,] Bx=le
+SHIFT: L           
+S=[[[[prend, sa]source][se, jette]]allier] B=[ .,] Bx=le
+REDUCE: L          
+S=[[[[prend, sa]source][se, jette]]] B=[ .,] Bx=allier
+SHIFT: L           
+S=[[[[prend, sa]source][se, jette]].] B=[ ] Bx=allier
+REDUCE: L          
+S=[[[[prend, sa]source][se, jette]]] B=[ ] Bx=.
+REDUCE: L          
+S=[]                        B=[ ] Bx=.
+2326- :: khaled hadadah , secrétaire général de le parti communiste libanais , s' est dit favorable à un soulèvement arabe de solidarité avec ce réveil de le monde arabe afin de 1 **mener** un seul et même 1 **combat** populaire pour la cause sahraouie . 
+MWEs:
+1- lvc: mener combat (+)
+
+: L                
+
+SHIFT: L           
+
+REDUCE: L          
+S=[]                        B=[ hadadah,,, ..] Bx=khaled
+SHIFT: L           
+S=[hadadah]                 B=[ ,,secrétaire, ..] Bx=khaled
+REDUCE: L          
+S=[]                        B=[ ,,secrétaire, ..] Bx=hadadah
+SHIFT: L           
+S=[,]                       B=[ secrétaire,général, ..] Bx=hadadah
+REDUCE: L          
+S=[]                        B=[ secrétaire,général, ..] Bx=,
+SHIFT: L           
+S=[secrétaire]             B=[ général,de, ..] Bx=,
+REDUCE: L          
+S=[]                        B=[ général,de, ..] Bx=secrétaire
+SHIFT: L           
+S=[général]               B=[ de,le, ..] Bx=secrétaire
+REDUCE: L          
+S=[]                        B=[ de,le, ..] Bx=général
+SHIFT: L           
+S=[de]                      B=[ le,parti, ..] Bx=général
+REDUCE: L          
+S=[]                        B=[ le,parti, ..] Bx=de
+SHIFT: L           
+S=[le]                      B=[ parti,communiste, ..] Bx=de
+REDUCE: L          
+S=[]                        B=[ parti,communiste, ..] Bx=le
+SHIFT: L           
+S=[parti]                   B=[ communiste,libanais, ..] Bx=le
+REDUCE: L          
+S=[]                        B=[ communiste,libanais, ..] Bx=parti
+SHIFT: L           
+S=[communiste]              B=[ libanais,,, ..] Bx=parti
+REDUCE: L          
+S=[]                        B=[ libanais,,, ..] Bx=communiste
+SHIFT: L           
+S=[libanais]                B=[ ,,s', ..] Bx=communiste
+REDUCE: L          
+S=[]                        B=[ ,,s', ..] Bx=libanais
+SHIFT: L           
+S=[,]                       B=[ s',est, ..] Bx=libanais
+REDUCE: L          
+S=[]                        B=[ s',est, ..] Bx=,
+SHIFT: L           
+S=[s']                      B=[ est,dit, ..] Bx=,
+REDUCE: L          
+S=[]                        B=[ est,dit, ..] Bx=se
+SHIFT: L           
+S=[est]                     B=[ dit,favorable, ..] Bx=se
+REDUCE: L          
+S=[]                        B=[ dit,favorable, ..] Bx=être
+SHIFT: L           
+S=[dit]                     B=[ favorable,à, ..] Bx=être
+REDUCE: L          
+S=[]                        B=[ favorable,à, ..] Bx=dire
+SHIFT: L           
+S=[favorable]               B=[ à,un, ..] Bx=dire
+REDUCE: L          
+S=[]                        B=[ à,un, ..] Bx=favorable
+SHIFT: L           
+S=[à]                      B=[ un,soulèvement, ..] Bx=favorable
+REDUCE: L          
+S=[]                        B=[ un,soulèvement, ..] Bx=à
+SHIFT: L           
+S=[un]                      B=[ soulèvement,arabe, ..] Bx=à
+REDUCE: L          
+S=[]                        B=[ soulèvement,arabe, ..] Bx=un
+SHIFT: L           
+S=[soulèvement]            B=[ arabe,de, ..] Bx=un
+REDUCE: L          
+S=[]                        B=[ arabe,de, ..] Bx=soulèvement
+SHIFT: L           
+S=[arabe]                   B=[ de,solidarité, ..] Bx=soulèvement
+REDUCE: L          
+S=[]                        B=[ de,solidarité, ..] Bx=arabe
+SHIFT: L           
+S=[de]                      B=[ solidarité,avec, ..] Bx=arabe
+REDUCE: L          
+S=[]                        B=[ solidarité,avec, ..] Bx=de
+SHIFT: L           
+S=[solidarité]             B=[ avec,ce, ..] Bx=de
+REDUCE: L          
+S=[]                        B=[ avec,ce, ..] Bx=solidarité
+SHIFT: L           
+S=[avec]                    B=[ ce,réveil, ..] Bx=solidarité
+REDUCE: L          
+S=[]                        B=[ ce,réveil, ..] Bx=avec
+SHIFT: L           
+S=[ce]                      B=[ réveil,de, ..] Bx=avec
+REDUCE: L          
+S=[]                        B=[ réveil,de, ..] Bx=ce
+SHIFT: L           
+S=[réveil]                 B=[ de,le, ..] Bx=ce
+REDUCE: L          
+S=[]                        B=[ de,le, ..] Bx=réveil
+SHIFT: L           
+S=[de]                      B=[ le,monde, ..] Bx=réveil
+REDUCE: L          
+S=[]                        B=[ le,monde, ..] Bx=de
+SHIFT: L           
+S=[le]                      B=[ monde,arabe, ..] Bx=de
+REDUCE: L          
+S=[]                        B=[ monde,arabe, ..] Bx=le
+SHIFT: L           
+S=[monde]                   B=[ arabe,afin, ..] Bx=le
+REDUCE: L          
+S=[]                        B=[ arabe,afin, ..] Bx=monde
+SHIFT: L           
+S=[arabe]                   B=[ afin,de, ..] Bx=monde
+REDUCE: L          
+S=[]                        B=[ afin,de, ..] Bx=arabe
+SHIFT: L           
+S=[afin]                    B=[ de,mener, ..] Bx=arabe
+REDUCE: L          
+S=[]                        B=[ de,mener, ..] Bx=afin
+SHIFT: L           
+S=[de]                      B=[ mener,un, ..] Bx=afin
+REDUCE: L          
+S=[]                        B=[ mener,un, ..] Bx=de
+SHIFT: L           
+S=[mener]                   B=[ un,seul, ..] Bx=de
+SHIFT: L           
+S=[mener, un]               B=[ seul,et, ..] Bx=de
+REDUCE: L          
+S=[mener]                   B=[ seul,et, ..] Bx=un
+SHIFT: L           
+S=[mener, seul]             B=[ et,même, ..] Bx=un
+REDUCE: L          
+S=[mener]                   B=[ et,même, ..] Bx=seul
+SHIFT: L           
+S=[mener, et]               B=[ même,combat, ..] Bx=seul
+REDUCE: L          
+S=[mener]                   B=[ même,combat, ..] Bx=et
+SHIFT: L           
+S=[mener, même]            B=[ combat,populaire, ..] Bx=et
+REDUCE: L          
+S=[mener]                   B=[ combat,populaire, ..] Bx=même
+SHIFT: L           
+S=[mener, combat]           B=[ populaire,pour, ..] Bx=même
+MERGE: L           
+S=[[mener, combat]]         B=[ populaire,pour, ..] Bx=même
+SHIFT: L           
+S=[[mener, combat]populaire] B=[ pour,la, ..] Bx=même
+REDUCE: L          
+S=[[mener, combat]]         B=[ pour,la, ..] Bx=populaire
+SHIFT: L           
+S=[[mener, combat]pour]     B=[ la,cause, ..] Bx=populaire
+REDUCE: L          
+S=[[mener, combat]]         B=[ la,cause, ..] Bx=pour
+SHIFT: L           
+S=[[mener, combat]la]       B=[ cause,sahraouie, ..] Bx=pour
+REDUCE: L          
+S=[[mener, combat]]         B=[ cause,sahraouie, ..] Bx=le
+SHIFT: L           
+S=[[mener, combat]cause]    B=[ sahraouie,.,] Bx=le
+REDUCE: L          
+S=[[mener, combat]]         B=[ sahraouie,.,] Bx=cause
+SHIFT: L           
+S=[[mener, combat]sahraouie] B=[ .,] Bx=cause
+REDUCE: L          
+S=[[mener, combat]]         B=[ .,] Bx=sahraoui
+SHIFT: L           
+S=[[mener, combat].]        B=[ ] Bx=sahraoui
+REDUCE: L          
+S=[[mener, combat]]         B=[ ] Bx=.
+REDUCE: L          
+S=[]                        B=[ ] Bx=.
+16444- :: en 1963 , la cour suprême reconnaît un droit à l' aide juridictionnelle dans les affaires criminelles , en 1 **s'** 1 **appuyant** sur le sixième amendement de la constitution ( gideon v. wainwright ) . 
+MWEs:
+1- ireflv: se appuyer (+)
+
+: L                
+
+SHIFT: L           
+
+REDUCE: L          
+S=[]                        B=[ 1963,,, ..] Bx=en
+SHIFT: L           
+S=[1963]                    B=[ ,,la, ..] Bx=en
+REDUCE: L          
+S=[]                        B=[ ,,la, ..] Bx=1963
+SHIFT: L           
+S=[,]                       B=[ la,cour, ..] Bx=1963
+REDUCE: L          
+S=[]                        B=[ la,cour, ..] Bx=,
+SHIFT: L           
+S=[la]                      B=[ cour,suprême, ..] Bx=,
+REDUCE: L          
+S=[]                        B=[ cour,suprême, ..] Bx=le
+SHIFT: L           
+S=[cour]                    B=[ suprême,reconnaît, ..] Bx=le
+REDUCE: L          
+S=[]                        B=[ suprême,reconnaît, ..] Bx=cour
+SHIFT: L           
+S=[suprême]                B=[ reconnaît,un, ..] Bx=cour
+REDUCE: L          
+S=[]                        B=[ reconnaît,un, ..] Bx=suprême
+SHIFT: L           
+S=[reconnaît]              B=[ un,droit, ..] Bx=suprême
+REDUCE: L          
+S=[]                        B=[ un,droit, ..] Bx=reconnaître
+SHIFT: L           
+S=[un]                      B=[ droit,à, ..] Bx=reconnaître
+REDUCE: L          
+S=[]                        B=[ droit,à, ..] Bx=un
+SHIFT: L           
+S=[droit]                   B=[ à,l', ..] Bx=un
+REDUCE: L          
+S=[]                        B=[ à,l', ..] Bx=droit
+SHIFT: L           
+S=[à]                      B=[ l',aide, ..] Bx=droit
+REDUCE: L          
+S=[]                        B=[ l',aide, ..] Bx=à
+SHIFT: L           
+S=[l']                      B=[ aide,juridictionnelle, ..] Bx=à
+REDUCE: L          
+S=[]                        B=[ aide,juridictionnelle, ..] Bx=le
+SHIFT: L           
+S=[aide]                    B=[ juridictionnelle,dans, ..] Bx=le
+REDUCE: L          
+S=[]                        B=[ juridictionnelle,dans, ..] Bx=aide
+SHIFT: L           
+S=[juridictionnelle]        B=[ dans,les, ..] Bx=aide
+REDUCE: L          
+S=[]                        B=[ dans,les, ..] Bx=juridictionnel
+SHIFT: L           
+S=[dans]                    B=[ les,affaires, ..] Bx=juridictionnel
+REDUCE: L          
+S=[]                        B=[ les,affaires, ..] Bx=dans
+SHIFT: L           
+S=[les]                     B=[ affaires,criminelles, ..] Bx=dans
+REDUCE: L          
+S=[]                        B=[ affaires,criminelles, ..] Bx=le
+SHIFT: L           
+S=[affaires]                B=[ criminelles,,, ..] Bx=le
+REDUCE: L          
+S=[]                        B=[ criminelles,,, ..] Bx=affaire
+SHIFT: L           
+S=[criminelles]             B=[ ,,en, ..] Bx=affaire
+REDUCE: L          
+S=[]                        B=[ ,,en, ..] Bx=criminel
+SHIFT: L           
+S=[,]                       B=[ en,s', ..] Bx=criminel
+REDUCE: L          
+S=[]                        B=[ en,s', ..] Bx=,
+SHIFT: L           
+S=[en]                      B=[ s',appuyant, ..] Bx=,
+REDUCE: L          
+S=[]                        B=[ s',appuyant, ..] Bx=en
+SHIFT: L           
+S=[s']                      B=[ appuyant,sur, ..] Bx=en
+SHIFT: L           
+S=[s', appuyant]            B=[ sur,le, ..] Bx=en
+MERGE: L           
+S=[[s', appuyant]]          B=[ sur,le, ..] Bx=en
+SHIFT: L           
+S=[[s', appuyant]sur]       B=[ le,sixième, ..] Bx=en
+REDUCE: L          
+S=[[s', appuyant]]          B=[ le,sixième, ..] Bx=sur
+SHIFT: L           
+S=[[s', appuyant]le]        B=[ sixième,amendement, ..] Bx=sur
+REDUCE: L          
+S=[[s', appuyant]]          B=[ sixième,amendement, ..] Bx=le
+SHIFT: L           
+S=[[s', appuyant]sixième]  B=[ amendement,de, ..] Bx=le
+REDUCE: L          
+S=[[s', appuyant]]          B=[ amendement,de, ..] Bx=sixième
+SHIFT: L           
+S=[[s', appuyant]amendement] B=[ de,la, ..] Bx=sixième
+REDUCE: L          
+S=[[s', appuyant]]          B=[ de,la, ..] Bx=amendement
+SHIFT: L           
+S=[[s', appuyant]de]        B=[ la,constitution, ..] Bx=amendement
+REDUCE: L          
+S=[[s', appuyant]]          B=[ la,constitution, ..] Bx=de
+SHIFT: L           
+S=[[s', appuyant]la]        B=[ constitution,(, ..] Bx=de
+REDUCE: L          
+S=[[s', appuyant]]          B=[ constitution,(, ..] Bx=le
+SHIFT: L           
+S=[[s', appuyant]constitution] B=[ (,gideon, ..] Bx=le
+REDUCE: L          
+S=[[s', appuyant]]          B=[ (,gideon, ..] Bx=constitution
+SHIFT: L           
+S=[[s', appuyant](]         B=[ gideon,v., ..] Bx=constitution
+REDUCE: L          
+S=[[s', appuyant]]          B=[ gideon,v., ..] Bx=(
+SHIFT: L           
+S=[[s', appuyant]gideon]    B=[ v.,wainwright, ..] Bx=(
+REDUCE: L          
+S=[[s', appuyant]]          B=[ v.,wainwright, ..] Bx=gideon
+SHIFT: L           
+S=[[s', appuyant]v.]        B=[ wainwright,), ..] Bx=gideon
+REDUCE: L          
+S=[[s', appuyant]]          B=[ wainwright,), ..] Bx=v.
+SHIFT: L           
+S=[[s', appuyant]wainwright] B=[ ),.,] Bx=v.
+REDUCE: L          
+S=[[s', appuyant]]          B=[ ),.,] Bx=wainwright
+SHIFT: L           
+S=[[s', appuyant])]         B=[ .,] Bx=wainwright
+REDUCE: L          
+S=[[s', appuyant]]          B=[ .,] Bx=)
+SHIFT: L           
+S=[[s', appuyant].]         B=[ ] Bx=)
+REDUCE: L          
+S=[[s', appuyant]]          B=[ ] Bx=.
+REDUCE: L          
+S=[]                        B=[ ] Bx=.
+2387- :: lorsque le projectile touche une cible , il garde sur une certaine distance une ligne droite appelée tunnel d' attrition ( neck ou narrow channel ) , puis , en fonction de sa forme , de son poids , de sa vitesse , ainsi que de la structure de le milieu , le projectile 1 **a** 1 **tendance** à 2 **se** 2 **mettre** en travers et à être brutalement freiné dans le milieu traversé . 
+MWEs:
+1- lvc: avoir tendance (+)
+2- ireflv: se mettre (+)
+
+: L                
+
+SHIFT: L           
+
+REDUCE: L          
+S=[]                        B=[ le,projectile, ..] Bx=lorsque
+SHIFT: L           
+S=[le]                      B=[ projectile,touche, ..] Bx=lorsque
+REDUCE: L          
+S=[]                        B=[ projectile,touche, ..] Bx=le
+SHIFT: L           
+S=[projectile]              B=[ touche,une, ..] Bx=le
+REDUCE: L          
+S=[]                        B=[ touche,une, ..] Bx=projectile
+SHIFT: L           
+S=[touche]                  B=[ une,cible, ..] Bx=projectile
+REDUCE: L          
+S=[]                        B=[ une,cible, ..] Bx=toucher
+SHIFT: L           
+S=[une]                     B=[ cible,,, ..] Bx=toucher
+REDUCE: L          
+S=[]                        B=[ cible,,, ..] Bx=un
+SHIFT: L           
+S=[cible]                   B=[ ,,il, ..] Bx=un
+REDUCE: L          
+S=[]                        B=[ ,,il, ..] Bx=cible
+SHIFT: L           
+S=[,]                       B=[ il,garde, ..] Bx=cible
+REDUCE: L          
+S=[]                        B=[ il,garde, ..] Bx=,
+SHIFT: L           
+S=[il]                      B=[ garde,sur, ..] Bx=,
+REDUCE: L          
+S=[]                        B=[ garde,sur, ..] Bx=il
+SHIFT: L           
+S=[garde]                   B=[ sur,une, ..] Bx=il
+REDUCE: L          
+S=[]                        B=[ sur,une, ..] Bx=garder
+SHIFT: L           
+S=[sur]                     B=[ une,certaine, ..] Bx=garder
+REDUCE: L          
+S=[]                        B=[ une,certaine, ..] Bx=sur
+SHIFT: L           
+S=[une]                     B=[ certaine,distance, ..] Bx=sur
+REDUCE: L          
+S=[]                        B=[ certaine,distance, ..] Bx=un
+SHIFT: L           
+S=[certaine]                B=[ distance,une, ..] Bx=un
+REDUCE: L          
+S=[]                        B=[ distance,une, ..] Bx=certain
+SHIFT: L           
+S=[distance]                B=[ une,ligne, ..] Bx=certain
+REDUCE: L          
+S=[]                        B=[ une,ligne, ..] Bx=distance
+SHIFT: L           
+S=[une]                     B=[ ligne,droite, ..] Bx=distance
+REDUCE: L          
+S=[]                        B=[ ligne,droite, ..] Bx=un
+SHIFT: L           
+S=[ligne]                   B=[ droite,appelée, ..] Bx=un
+REDUCE: L          
+S=[]                        B=[ droite,appelée, ..] Bx=ligne
+SHIFT: L           
+S=[droite]                  B=[ appelée,tunnel, ..] Bx=ligne
+REDUCE: L          
+S=[]                        B=[ appelée,tunnel, ..] Bx=droit
+SHIFT: L           
+S=[appelée]                B=[ tunnel,d', ..] Bx=droit
+REDUCE: L          
+S=[]                        B=[ tunnel,d', ..] Bx=appeler
+SHIFT: L           
+S=[tunnel]                  B=[ d',attrition, ..] Bx=appeler
+REDUCE: L          
+S=[]                        B=[ d',attrition, ..] Bx=tunnel
+SHIFT: L           
+S=[d']                      B=[ attrition,(, ..] Bx=tunnel
+REDUCE: L          
+S=[]                        B=[ attrition,(, ..] Bx=de
+SHIFT: L           
+S=[attrition]               B=[ (,neck, ..] Bx=de
+REDUCE: L          
+S=[]                        B=[ (,neck, ..] Bx=attrition
+SHIFT: L           
+S=[(]                       B=[ neck,ou, ..] Bx=attrition
+REDUCE: L          
+S=[]                        B=[ neck,ou, ..] Bx=(
+SHIFT: L           
+S=[neck]                    B=[ ou,narrow, ..] Bx=(
+REDUCE: L          
+S=[]                        B=[ ou,narrow, ..] Bx=neck
+SHIFT: L           
+S=[ou]                      B=[ narrow,channel, ..] Bx=neck
+REDUCE: L          
+S=[]                        B=[ narrow,channel, ..] Bx=ou
+SHIFT: L           
+S=[narrow]                  B=[ channel,), ..] Bx=ou
+REDUCE: L          
+S=[]                        B=[ channel,), ..] Bx=narrow
+SHIFT: L           
+S=[channel]                 B=[ ),,, ..] Bx=narrow
+REDUCE: L          
+S=[]                        B=[ ),,, ..] Bx=channel
+SHIFT: L           
+S=[)]                       B=[ ,,puis, ..] Bx=channel
+REDUCE: L          
+S=[]                        B=[ ,,puis, ..] Bx=)
+SHIFT: L           
+S=[,]                       B=[ puis,,, ..] Bx=)
+REDUCE: L          
+S=[]                        B=[ puis,,, ..] Bx=,
+SHIFT: L           
+S=[puis]                    B=[ ,,en, ..] Bx=,
+REDUCE: L          
+S=[]                        B=[ ,,en, ..] Bx=puis
+SHIFT: L           
+S=[,]                       B=[ en,fonction, ..] Bx=puis
+REDUCE: L          
+S=[]                        B=[ en,fonction, ..] Bx=,
+SHIFT: L           
+S=[en]                      B=[ fonction,de, ..] Bx=,
+REDUCE: L          
+S=[]                        B=[ fonction,de, ..] Bx=en
+SHIFT: L           
+S=[fonction]                B=[ de,sa, ..] Bx=en
+REDUCE: L          
+S=[]                        B=[ de,sa, ..] Bx=fonction
+SHIFT: L           
+S=[de]                      B=[ sa,forme, ..] Bx=fonction
+REDUCE: L          
+S=[]                        B=[ sa,forme, ..] Bx=de
+SHIFT: L           
+S=[sa]                      B=[ forme,,, ..] Bx=de
+REDUCE: L          
+S=[]                        B=[ forme,,, ..] Bx=son
+SHIFT: L           
+S=[forme]                   B=[ ,,de, ..] Bx=son
+REDUCE: L          
+S=[]                        B=[ ,,de, ..] Bx=forme
+SHIFT: L           
+S=[,]                       B=[ de,son, ..] Bx=forme
+REDUCE: L          
+S=[]                        B=[ de,son, ..] Bx=,
+SHIFT: L           
+S=[de]                      B=[ son,poids, ..] Bx=,
+REDUCE: L          
+S=[]                        B=[ son,poids, ..] Bx=de
+SHIFT: L           
+S=[son]                     B=[ poids,,, ..] Bx=de
+REDUCE: L          
+S=[]                        B=[ poids,,, ..] Bx=son
+SHIFT: L           
+S=[poids]                   B=[ ,,de, ..] Bx=son
+REDUCE: L          
+S=[]                        B=[ ,,de, ..] Bx=poids
+SHIFT: L           
+S=[,]                       B=[ de,sa, ..] Bx=poids
+REDUCE: L          
+S=[]                        B=[ de,sa, ..] Bx=,
+SHIFT: L           
+S=[de]                      B=[ sa,vitesse, ..] Bx=,
+REDUCE: L          
+S=[]                        B=[ sa,vitesse, ..] Bx=de
+SHIFT: L           
+S=[sa]                      B=[ vitesse,,, ..] Bx=de
+REDUCE: L          
+S=[]                        B=[ vitesse,,, ..] Bx=son
+SHIFT: L           
+S=[vitesse]                 B=[ ,,ainsi, ..] Bx=son
+REDUCE: L          
+S=[]                        B=[ ,,ainsi, ..] Bx=vitesse
+SHIFT: L           
+S=[,]                       B=[ ainsi,que, ..] Bx=vitesse
+REDUCE: L          
+S=[]                        B=[ ainsi,que, ..] Bx=,
+SHIFT: L           
+S=[ainsi]                   B=[ que,de, ..] Bx=,
+REDUCE: L          
+S=[]                        B=[ que,de, ..] Bx=ainsi
+SHIFT: L           
+S=[que]                     B=[ de,la, ..] Bx=ainsi
+REDUCE: L          
+S=[]                        B=[ de,la, ..] Bx=que
+SHIFT: L           
+S=[de]                      B=[ la,structure, ..] Bx=que
+REDUCE: L          
+S=[]                        B=[ la,structure, ..] Bx=de
+SHIFT: L           
+S=[la]                      B=[ structure,de, ..] Bx=de
+REDUCE: L          
+S=[]                        B=[ structure,de, ..] Bx=le
+SHIFT: L           
+S=[structure]               B=[ de,le, ..] Bx=le
+REDUCE: L          
+S=[]                        B=[ de,le, ..] Bx=structure
+SHIFT: L           
+S=[de]                      B=[ le,milieu, ..] Bx=structure
+REDUCE: L          
+S=[]                        B=[ le,milieu, ..] Bx=de
+SHIFT: L           
+S=[le]                      B=[ milieu,,, ..] Bx=de
+REDUCE: L          
+S=[]                        B=[ milieu,,, ..] Bx=le
+SHIFT: L           
+S=[milieu]                  B=[ ,,le, ..] Bx=le
+REDUCE: L          
+S=[]                        B=[ ,,le, ..] Bx=milieu
+SHIFT: L           
+S=[,]                       B=[ le,projectile, ..] Bx=milieu
+REDUCE: L          
+S=[]                        B=[ le,projectile, ..] Bx=,
+SHIFT: L           
+S=[le]                      B=[ projectile,a, ..] Bx=,
+REDUCE: L          
+S=[]                        B=[ projectile,a, ..] Bx=le
+SHIFT: L           
+S=[projectile]              B=[ a,tendance, ..] Bx=le
+REDUCE: L          
+S=[]                        B=[ a,tendance, ..] Bx=projectile
+SHIFT: L           
+S=[a]                       B=[ tendance,à, ..] Bx=projectile
+SHIFT: L           
+S=[a, tendance]             B=[ à,se, ..] Bx=projectile
+MERGE: L           
+S=[[a, tendance]]           B=[ à,se, ..] Bx=projectile
+SHIFT: L           
+S=[[a, tendance]à]         B=[ se,mettre, ..] Bx=projectile
+REDUCE: L          
+S=[[a, tendance]]           B=[ se,mettre, ..] Bx=à
+SHIFT: L           
+S=[[a, tendance]se]         B=[ mettre,en, ..] Bx=à
+SHIFT: L           
+S=[[a, tendance]se, mettre] B=[ en,travers, ..] Bx=à
+MERGE: L           
+S=[[a, tendance][se, mettre]] B=[ en,travers, ..] Bx=à
+MARK_AS_IREFLV: L  
+S=[[[a, tendance][se, mettre]]] B=[ en,travers, ..] Bx=à
+SHIFT: L           
+S=[[[a, tendance][se, mettre]]en] B=[ travers,et, ..] Bx=à
+REDUCE: L          
+S=[[[a, tendance][se, mettre]]] B=[ travers,et, ..] Bx=en
+SHIFT: L           
+S=[[[a, tendance][se, mettre]]travers] B=[ et,à, ..] Bx=en
+REDUCE: L          
+S=[[[a, tendance][se, mettre]]] B=[ et,à, ..] Bx=travers
+SHIFT: L           
+S=[[[a, tendance][se, mettre]]et] B=[ à,être, ..] Bx=travers
+REDUCE: L          
+S=[[[a, tendance][se, mettre]]] B=[ à,être, ..] Bx=et
+SHIFT: L           
+S=[[[a, tendance][se, mettre]]à] B=[ être,brutalement, ..] Bx=et
+REDUCE: L          
+S=[[[a, tendance][se, mettre]]] B=[ être,brutalement, ..] Bx=à
+SHIFT: L           
+S=[[[a, tendance][se, mettre]]être] B=[ brutalement,freiné, ..] Bx=à
+REDUCE: L          
+S=[[[a, tendance][se, mettre]]] B=[ brutalement,freiné, ..] Bx=être
+SHIFT: L           
+S=[[[a, tendance][se, mettre]]brutalement] B=[ freiné,dans, ..] Bx=être
+REDUCE: L          
+S=[[[a, tendance][se, mettre]]] B=[ freiné,dans, ..] Bx=brutalement
+SHIFT: L           
+S=[[[a, tendance][se, mettre]]freiné] B=[ dans,le, ..] Bx=brutalement
+REDUCE: L          
+S=[[[a, tendance][se, mettre]]] B=[ dans,le, ..] Bx=freiner
+SHIFT: L           
+S=[[[a, tendance][se, mettre]]dans] B=[ le,milieu, ..] Bx=freiner
+REDUCE: L          
+S=[[[a, tendance][se, mettre]]] B=[ le,milieu, ..] Bx=dans
+SHIFT: L           
+S=[[[a, tendance][se, mettre]]le] B=[ milieu,traversé, ..] Bx=dans
+REDUCE: L          
+S=[[[a, tendance][se, mettre]]] B=[ milieu,traversé, ..] Bx=le
+SHIFT: L           
+S=[[[a, tendance][se, mettre]]milieu] B=[ traversé,.,] Bx=le
+REDUCE: L          
+S=[[[a, tendance][se, mettre]]] B=[ traversé,.,] Bx=milieu
+SHIFT: L           
+S=[[[a, tendance][se, mettre]]traversé] B=[ .,] Bx=milieu
+REDUCE: L          
+S=[[[a, tendance][se, mettre]]] B=[ .,] Bx=traverser
+SHIFT: L           
+S=[[[a, tendance][se, mettre]].] B=[ ] Bx=traverser
+REDUCE: L          
+S=[[[a, tendance][se, mettre]]] B=[ ] Bx=.
+REDUCE: L          
+S=[]                        B=[ ] Bx=.
+14129- :: il a ainsi 1 **signé** des 1 **victoires** à le grand-prix de berne , à morat-fribourg et bien d' autres encore . 
+MWEs:
+1- lvc: signer victoire (+)
+
+: L                
+
+SHIFT: L           
+
+REDUCE: L          
+S=[]                        B=[ a,ainsi, ..] Bx=il
+SHIFT: L           
+S=[a]                       B=[ ainsi,signé, ..] Bx=il
+REDUCE: L          
+S=[]                        B=[ ainsi,signé, ..] Bx=avoir
+SHIFT: L           
+S=[ainsi]                   B=[ signé,des, ..] Bx=avoir
+REDUCE: L          
+S=[]                        B=[ signé,des, ..] Bx=ainsi
+SHIFT: L           
+S=[signé]                  B=[ des,victoires, ..] Bx=ainsi
+SHIFT: L           
+S=[signé, des]             B=[ victoires,à, ..] Bx=ainsi
+REDUCE: L          
+S=[signé]                  B=[ victoires,à, ..] Bx=un
+SHIFT: L           
+S=[signé, victoires]       B=[ à,le, ..] Bx=un
+MERGE: L           
+S=[[signé, victoires]]     B=[ à,le, ..] Bx=un
+SHIFT: L           
+S=[[signé, victoires]à]   B=[ le,grand-prix, ..] Bx=un
+REDUCE: L          
+S=[[signé, victoires]]     B=[ le,grand-prix, ..] Bx=à
+SHIFT: L           
+S=[[signé, victoires]le]   B=[ grand-prix,de, ..] Bx=à
+REDUCE: L          
+S=[[signé, victoires]]     B=[ grand-prix,de, ..] Bx=le
+SHIFT: L           
+S=[[signé, victoires]grand-prix] B=[ de,berne, ..] Bx=le
+REDUCE: L          
+S=[[signé, victoires]]     B=[ de,berne, ..] Bx=grand-prix
+SHIFT: L           
+S=[[signé, victoires]de]   B=[ berne,,, ..] Bx=grand-prix
+REDUCE: L          
+S=[[signé, victoires]]     B=[ berne,,, ..] Bx=de
+SHIFT: L           
+S=[[signé, victoires]berne] B=[ ,,à, ..] Bx=de
+REDUCE: L          
+S=[[signé, victoires]]     B=[ ,,à, ..] Bx=berne
+SHIFT: L           
+S=[[signé, victoires],]    B=[ à,morat-fribourg, ..] Bx=berne
+REDUCE: L          
+S=[[signé, victoires]]     B=[ à,morat-fribourg, ..] Bx=,
+SHIFT: L           
+S=[[signé, victoires]à]   B=[ morat-fribourg,et, ..] Bx=,
+REDUCE: L          
+S=[[signé, victoires]]     B=[ morat-fribourg,et, ..] Bx=à
+SHIFT: L           
+S=[[signé, victoires]morat-fribourg] B=[ et,bien, ..] Bx=à
+REDUCE: L          
+S=[[signé, victoires]]     B=[ et,bien, ..] Bx=morat-fribourg
+SHIFT: L           
+S=[[signé, victoires]et]   B=[ bien,d', ..] Bx=morat-fribourg
+REDUCE: L          
+S=[[signé, victoires]]     B=[ bien,d', ..] Bx=et
+SHIFT: L           
+S=[[signé, victoires]bien] B=[ d',autres, ..] Bx=et
+REDUCE: L          
+S=[[signé, victoires]]     B=[ d',autres, ..] Bx=bien
+SHIFT: L           
+S=[[signé, victoires]d']   B=[ autres,encore, ..] Bx=bien
+REDUCE: L          
+S=[[signé, victoires]]     B=[ autres,encore, ..] Bx=de
+SHIFT: L           
+S=[[signé, victoires]autres] B=[ encore,.,] Bx=de
+REDUCE: L          
+S=[[signé, victoires]]     B=[ encore,.,] Bx=autre
+SHIFT: L           
+S=[[signé, victoires]encore] B=[ .,] Bx=autre
+REDUCE: L          
+S=[[signé, victoires]]     B=[ .,] Bx=encore
+SHIFT: L           
+S=[[signé, victoires].]    B=[ ] Bx=encore
+REDUCE: L          
+S=[[signé, victoires]]     B=[ ] Bx=.
+REDUCE: L          
+S=[]                        B=[ ] Bx=.
+13881- :: théobald est déjà comte d' arles en juillet 879 et 1 **se** 1 **trouve** parmi les bourguignons de l' entourage de boson , initialement duc , puis après le coup d' État de le 15 octobre 879 roi de provence ; 
+MWEs:
+1- ireflv: se trouver (+)
+
+: L                
+
+SHIFT: L           
+
+REDUCE: L          
+S=[]                        B=[ est,déjà, ..] Bx=théobald
+SHIFT: L           
+S=[est]                     B=[ déjà,comte, ..] Bx=théobald
+REDUCE: L          
+S=[]                        B=[ déjà,comte, ..] Bx=être
+SHIFT: L           
+S=[déjà]                  B=[ comte,d', ..] Bx=être
+REDUCE: L          
+S=[]                        B=[ comte,d', ..] Bx=déjà
+SHIFT: L           
+S=[comte]                   B=[ d',arles, ..] Bx=déjà
+REDUCE: L          
+S=[]                        B=[ d',arles, ..] Bx=comte
+SHIFT: L           
+S=[d']                      B=[ arles,en, ..] Bx=comte
+REDUCE: L          
+S=[]                        B=[ arles,en, ..] Bx=de
+SHIFT: L           
+S=[arles]                   B=[ en,juillet, ..] Bx=de
+REDUCE: L          
+S=[]                        B=[ en,juillet, ..] Bx=arles
+SHIFT: L           
+S=[en]                      B=[ juillet,879, ..] Bx=arles
+REDUCE: L          
+S=[]                        B=[ juillet,879, ..] Bx=en
+SHIFT: L           
+S=[juillet]                 B=[ 879,et, ..] Bx=en
+REDUCE: L          
+S=[]                        B=[ 879,et, ..] Bx=juillet
+SHIFT: L           
+S=[879]                     B=[ et,se, ..] Bx=juillet
+REDUCE: L          
+S=[]                        B=[ et,se, ..] Bx=879
+SHIFT: L           
+S=[et]                      B=[ se,trouve, ..] Bx=879
+REDUCE: L          
+S=[]                        B=[ se,trouve, ..] Bx=et
+SHIFT: L           
+S=[se]                      B=[ trouve,parmi, ..] Bx=et
+SHIFT: L           
+S=[se, trouve]              B=[ parmi,les, ..] Bx=et
+MERGE: L           
+S=[[se, trouve]]            B=[ parmi,les, ..] Bx=et
+SHIFT: L           
+S=[[se, trouve]parmi]       B=[ les,bourguignons, ..] Bx=et
+REDUCE: L          
+S=[[se, trouve]]            B=[ les,bourguignons, ..] Bx=parmi
+SHIFT: L           
+S=[[se, trouve]les]         B=[ bourguignons,de, ..] Bx=parmi
+REDUCE: L          
+S=[[se, trouve]]            B=[ bourguignons,de, ..] Bx=le
+SHIFT: L           
+S=[[se, trouve]bourguignons] B=[ de,l', ..] Bx=le
+REDUCE: L          
+S=[[se, trouve]]            B=[ de,l', ..] Bx=bourguignon
+SHIFT: L           
+S=[[se, trouve]de]          B=[ l',entourage, ..] Bx=bourguignon
+REDUCE: L          
+S=[[se, trouve]]            B=[ l',entourage, ..] Bx=de
+SHIFT: L           
+S=[[se, trouve]l']          B=[ entourage,de, ..] Bx=de
+REDUCE: L          
+S=[[se, trouve]]            B=[ entourage,de, ..] Bx=le
+SHIFT: L           
+S=[[se, trouve]entourage]   B=[ de,boson, ..] Bx=le
+REDUCE: L          
+S=[[se, trouve]]            B=[ de,boson, ..] Bx=entourage
+SHIFT: L           
+S=[[se, trouve]de]          B=[ boson,,, ..] Bx=entourage
+REDUCE: L          
+S=[[se, trouve]]            B=[ boson,,, ..] Bx=de
+SHIFT: L           
+S=[[se, trouve]boson]       B=[ ,,initialement, ..] Bx=de
+REDUCE: L          
+S=[[se, trouve]]            B=[ ,,initialement, ..] Bx=boson
+SHIFT: L           
+S=[[se, trouve],]           B=[ initialement,duc, ..] Bx=boson
+REDUCE: L          
+S=[[se, trouve]]            B=[ initialement,duc, ..] Bx=,
+SHIFT: L           
+S=[[se, trouve]initialement] B=[ duc,,, ..] Bx=,
+REDUCE: L          
+S=[[se, trouve]]            B=[ duc,,, ..] Bx=initialement
+SHIFT: L           
+S=[[se, trouve]duc]         B=[ ,,puis, ..] Bx=initialement
+REDUCE: L          
+S=[[se, trouve]]            B=[ ,,puis, ..] Bx=duc
+SHIFT: L           
+S=[[se, trouve],]           B=[ puis,après, ..] Bx=duc
+REDUCE: L          
+S=[[se, trouve]]            B=[ puis,après, ..] Bx=,
+SHIFT: L           
+S=[[se, trouve]puis]        B=[ après,le, ..] Bx=,
+REDUCE: L          
+S=[[se, trouve]]            B=[ après,le, ..] Bx=puis
+SHIFT: L           
+S=[[se, trouve]après]      B=[ le,coup, ..] Bx=puis
+REDUCE: L          
+S=[[se, trouve]]            B=[ le,coup, ..] Bx=après
+SHIFT: L           
+S=[[se, trouve]le]          B=[ coup,d', ..] Bx=après
+REDUCE: L          
+S=[[se, trouve]]            B=[ coup,d', ..] Bx=le
+SHIFT: L           
+S=[[se, trouve]coup]        B=[ d',État, ..] Bx=le
+REDUCE: L          
+S=[[se, trouve]]            B=[ d',État, ..] Bx=coup
+SHIFT: L           
+S=[[se, trouve]d']          B=[ État,de, ..] Bx=coup
+REDUCE: L          
+S=[[se, trouve]]            B=[ État,de, ..] Bx=de
+SHIFT: L           
+S=[[se, trouve]État]       B=[ de,le, ..] Bx=de
+REDUCE: L          
+S=[[se, trouve]]            B=[ de,le, ..] Bx=État
+SHIFT: L           
+S=[[se, trouve]de]          B=[ le,15, ..] Bx=État
+REDUCE: L          
+S=[[se, trouve]]            B=[ le,15, ..] Bx=de
+SHIFT: L           
+S=[[se, trouve]le]          B=[ 15,octobre, ..] Bx=de
+REDUCE: L          
+S=[[se, trouve]]            B=[ 15,octobre, ..] Bx=le
+SHIFT: L           
+S=[[se, trouve]15]          B=[ octobre,879, ..] Bx=le
+REDUCE: L          
+S=[[se, trouve]]            B=[ octobre,879, ..] Bx=15
+SHIFT: L           
+S=[[se, trouve]octobre]     B=[ 879,roi, ..] Bx=15
+REDUCE: L          
+S=[[se, trouve]]            B=[ 879,roi, ..] Bx=octobre
+SHIFT: L           
+S=[[se, trouve]879]         B=[ roi,de, ..] Bx=octobre
+REDUCE: L          
+S=[[se, trouve]]            B=[ roi,de, ..] Bx=879
+SHIFT: L           
+S=[[se, trouve]roi]         B=[ de,provence, ..] Bx=879
+REDUCE: L          
+S=[[se, trouve]]            B=[ de,provence, ..] Bx=roi
+SHIFT: L           
+S=[[se, trouve]de]          B=[ provence,;,] Bx=roi
+REDUCE: L          
+S=[[se, trouve]]            B=[ provence,;,] Bx=de
+SHIFT: L           
+S=[[se, trouve]provence]    B=[ ;,] Bx=de
+REDUCE: L          
+S=[[se, trouve]]            B=[ ;,] Bx=provence
+SHIFT: L           
+S=[[se, trouve];]           B=[ ] Bx=provence
+REDUCE: L          
+S=[[se, trouve]]            B=[ ] Bx=;
+REDUCE: L          
+S=[]                        B=[ ] Bx=;
+9241- :: avec le retour de blessure de jean-luc ettori , l' as monaco 1 **effectuera** une remarquable seconde partie de 1 **saison** en ne concédant qu' une seule défaite pour finir le championnat à la place et gagner la coupe de france contre le paris saint-germain par un but à zéro . 
+MWEs:
+1- lvc: effectuer saison (+)
+
+: L                
+
+SHIFT: L           
+
+REDUCE: L          
+S=[]                        B=[ le,retour, ..] Bx=avec
+SHIFT: L           
+S=[le]                      B=[ retour,de, ..] Bx=avec
+REDUCE: L          
+S=[]                        B=[ retour,de, ..] Bx=le
+SHIFT: L           
+S=[retour]                  B=[ de,blessure, ..] Bx=le
+REDUCE: L          
+S=[]                        B=[ de,blessure, ..] Bx=retour
+SHIFT: L           
+S=[de]                      B=[ blessure,de, ..] Bx=retour
+REDUCE: L          
+S=[]                        B=[ blessure,de, ..] Bx=de
+SHIFT: L           
+S=[blessure]                B=[ de,jean-luc, ..] Bx=de
+REDUCE: L          
+S=[]                        B=[ de,jean-luc, ..] Bx=blessure
+SHIFT: L           
+S=[de]                      B=[ jean-luc,ettori, ..] Bx=blessure
+REDUCE: L          
+S=[]                        B=[ jean-luc,ettori, ..] Bx=de
+SHIFT: L           
+S=[jean-luc]                B=[ ettori,,, ..] Bx=de
+REDUCE: L          
+S=[]                        B=[ ettori,,, ..] Bx=jean-luc
+SHIFT: L           
+S=[ettori]                  B=[ ,,l', ..] Bx=jean-luc
+REDUCE: L          
+S=[]                        B=[ ,,l', ..] Bx=ettori
+SHIFT: L           
+S=[,]                       B=[ l',as, ..] Bx=ettori
+REDUCE: L          
+S=[]                        B=[ l',as, ..] Bx=,
+SHIFT: L           
+S=[l']                      B=[ as,monaco, ..] Bx=,
+REDUCE: L          
+S=[]                        B=[ as,monaco, ..] Bx=le
+SHIFT: L           
+S=[as]                      B=[ monaco,effectuera, ..] Bx=le
+REDUCE: L          
+S=[]                        B=[ monaco,effectuera, ..] Bx=as
+SHIFT: L           
+S=[monaco]                  B=[ effectuera,une, ..] Bx=as
+REDUCE: L          
+S=[]                        B=[ effectuera,une, ..] Bx=monaco
+SHIFT: L           
+S=[effectuera]              B=[ une,remarquable, ..] Bx=monaco
+SHIFT: L           
+S=[effectuera, une]         B=[ remarquable,seconde, ..] Bx=monaco
+REDUCE: L          
+S=[effectuera]              B=[ remarquable,seconde, ..] Bx=un
+SHIFT: L           
+S=[effectuera, remarquable] B=[ seconde,partie, ..] Bx=un
+REDUCE: L          
+S=[effectuera]              B=[ seconde,partie, ..] Bx=remarquable
+SHIFT: L           
+S=[effectuera, seconde]     B=[ partie,de, ..] Bx=remarquable
+REDUCE: L          
+S=[effectuera]              B=[ partie,de, ..] Bx=second
+SHIFT: L           
+S=[effectuera, partie]      B=[ de,saison, ..] Bx=second
+REDUCE: L          
+S=[effectuera]              B=[ de,saison, ..] Bx=partie
+SHIFT: L           
+S=[effectuera, de]          B=[ saison,en, ..] Bx=partie
+REDUCE: L          
+S=[effectuera]              B=[ saison,en, ..] Bx=de
+SHIFT: L           
+S=[effectuera, saison]      B=[ en,ne, ..] Bx=de
+MERGE: L           
+S=[[effectuera, saison]]    B=[ en,ne, ..] Bx=de
+SHIFT: L           
+S=[[effectuera, saison]en]  B=[ ne,concédant, ..] Bx=de
+REDUCE: L          
+S=[[effectuera, saison]]    B=[ ne,concédant, ..] Bx=en
+SHIFT: L           
+S=[[effectuera, saison]ne]  B=[ concédant,qu', ..] Bx=en
+REDUCE: L          
+S=[[effectuera, saison]]    B=[ concédant,qu', ..] Bx=ne
+SHIFT: L           
+S=[[effectuera, saison]concédant] B=[ qu',une, ..] Bx=ne
+REDUCE: L          
+S=[[effectuera, saison]]    B=[ qu',une, ..] Bx=concéder
+SHIFT: L           
+S=[[effectuera, saison]qu'] B=[ une,seule, ..] Bx=concéder
+REDUCE: L          
+S=[[effectuera, saison]]    B=[ une,seule, ..] Bx=que
+SHIFT: L           
+S=[[effectuera, saison]une] B=[ seule,défaite, ..] Bx=que
+REDUCE: L          
+S=[[effectuera, saison]]    B=[ seule,défaite, ..] Bx=un
+SHIFT: L           
+S=[[effectuera, saison]seule] B=[ défaite,pour, ..] Bx=un
+REDUCE: L          
+S=[[effectuera, saison]]    B=[ défaite,pour, ..] Bx=seul
+SHIFT: L           
+S=[[effectuera, saison]défaite] B=[ pour,finir, ..] Bx=seul
+REDUCE: L          
+S=[[effectuera, saison]]    B=[ pour,finir, ..] Bx=défaite
+SHIFT: L           
+S=[[effectuera, saison]pour] B=[ finir,le, ..] Bx=défaite
+REDUCE: L          
+S=[[effectuera, saison]]    B=[ finir,le, ..] Bx=pour
+SHIFT: L           
+S=[[effectuera, saison]finir] B=[ le,championnat, ..] Bx=pour
+REDUCE: L          
+S=[[effectuera, saison]]    B=[ le,championnat, ..] Bx=finir
+SHIFT: L           
+S=[[effectuera, saison]le]  B=[ championnat,à, ..] Bx=finir
+REDUCE: L          
+S=[[effectuera, saison]]    B=[ championnat,à, ..] Bx=le
+SHIFT: L           
+S=[[effectuera, saison]championnat] B=[ à,la, ..] Bx=le
+REDUCE: L          
+S=[[effectuera, saison]]    B=[ à,la, ..] Bx=championnat
+SHIFT: L           
+S=[[effectuera, saison]à]  B=[ la,place, ..] Bx=championnat
+REDUCE: L          
+S=[[effectuera, saison]]    B=[ la,place, ..] Bx=à
+SHIFT: L           
+S=[[effectuera, saison]la]  B=[ place,et, ..] Bx=à
+REDUCE: L          
+S=[[effectuera, saison]]    B=[ place,et, ..] Bx=le
+SHIFT: L           
+S=[[effectuera, saison]place] B=[ et,gagner, ..] Bx=le
+REDUCE: L          
+S=[[effectuera, saison]]    B=[ et,gagner, ..] Bx=place
+SHIFT: L           
+S=[[effectuera, saison]et]  B=[ gagner,la, ..] Bx=place
+REDUCE: L          
+S=[[effectuera, saison]]    B=[ gagner,la, ..] Bx=et
+SHIFT: L           
+S=[[effectuera, saison]gagner] B=[ la,coupe, ..] Bx=et
+REDUCE: L          
+S=[[effectuera, saison]]    B=[ la,coupe, ..] Bx=gagner
+SHIFT: L           
+S=[[effectuera, saison]la]  B=[ coupe,de, ..] Bx=gagner
+REDUCE: L          
+S=[[effectuera, saison]]    B=[ coupe,de, ..] Bx=le
+SHIFT: L           
+S=[[effectuera, saison]coupe] B=[ de,france, ..] Bx=le
+REDUCE: L          
+S=[[effectuera, saison]]    B=[ de,france, ..] Bx=coupe
+SHIFT: L           
+S=[[effectuera, saison]de]  B=[ france,contre, ..] Bx=coupe
+REDUCE: L          
+S=[[effectuera, saison]]    B=[ france,contre, ..] Bx=de
+SHIFT: L           
+S=[[effectuera, saison]france] B=[ contre,le, ..] Bx=de
+REDUCE: L          
+S=[[effectuera, saison]]    B=[ contre,le, ..] Bx=france
+SHIFT: L           
+S=[[effectuera, saison]contre] B=[ le,paris, ..] Bx=france
+REDUCE: L          
+S=[[effectuera, saison]]    B=[ le,paris, ..] Bx=contre
+SHIFT: L           
+S=[[effectuera, saison]le]  B=[ paris,saint-germain, ..] Bx=contre
+REDUCE: L          
+S=[[effectuera, saison]]    B=[ paris,saint-germain, ..] Bx=le
+SHIFT: L           
+S=[[effectuera, saison]paris] B=[ saint-germain,par, ..] Bx=le
+REDUCE: L          
+S=[[effectuera, saison]]    B=[ saint-germain,par, ..] Bx=paris
+SHIFT: L           
+S=[[effectuera, saison]saint-germain] B=[ par,un, ..] Bx=paris
+REDUCE: L          
+S=[[effectuera, saison]]    B=[ par,un, ..] Bx=saint-germain
+SHIFT: L           
+S=[[effectuera, saison]par] B=[ un,but, ..] Bx=saint-germain
+REDUCE: L          
+S=[[effectuera, saison]]    B=[ un,but, ..] Bx=par
+SHIFT: L           
+S=[[effectuera, saison]un]  B=[ but,à, ..] Bx=par
+REDUCE: L          
+S=[[effectuera, saison]]    B=[ but,à, ..] Bx=un
+SHIFT: L           
+S=[[effectuera, saison]but] B=[ à,zéro, ..] Bx=un
+REDUCE: L          
+S=[[effectuera, saison]]    B=[ à,zéro, ..] Bx=but
+SHIFT: L           
+S=[[effectuera, saison]à]  B=[ zéro,.,] Bx=but
+REDUCE: L          
+S=[[effectuera, saison]]    B=[ zéro,.,] Bx=à
+SHIFT: L           
+S=[[effectuera, saison]zéro] B=[ .,] Bx=à
+REDUCE: L          
+S=[[effectuera, saison]]    B=[ .,] Bx=zéro
+SHIFT: L           
+S=[[effectuera, saison].]   B=[ ] Bx=zéro
+REDUCE: L          
+S=[[effectuera, saison]]    B=[ ] Bx=.
+REDUCE: L          
+S=[]                        B=[ ] Bx=.
+565- :: un saignement majeur a été défini comme étant la survenue de l' un de les éléments suivants : hémorragie intracrânienne , hémorragie rétropéritonéale , perte de sang nécessitant la transfusion d' à le moins deux unités de sang complet ou d' hématies concentrées , ou saignement 1 **se** 1 **traduisant** par une chute de l' hémoglobine de plus de 3 g / dl ou une chute de l' hémoglobine supérieure à 4 g / dl ( ou 12 % de l' hématocrite ) sans site de saignement identifié . 
+MWEs:
+1- ireflv: se traduire (+)
+
+: L                
+
+SHIFT: L           
+
+REDUCE: L          
+S=[]                        B=[ saignement,majeur, ..] Bx=un
+SHIFT: L           
+S=[saignement]              B=[ majeur,a, ..] Bx=un
+REDUCE: L          
+S=[]                        B=[ majeur,a, ..] Bx=saignement
+SHIFT: L           
+S=[majeur]                  B=[ a,été, ..] Bx=saignement
+REDUCE: L          
+S=[]                        B=[ a,été, ..] Bx=majeur
+SHIFT: L           
+S=[a]                       B=[ été,défini, ..] Bx=majeur
+REDUCE: L          
+S=[]                        B=[ été,défini, ..] Bx=avoir
+SHIFT: L           
+S=[été]                   B=[ défini,comme, ..] Bx=avoir
+REDUCE: L          
+S=[]                        B=[ défini,comme, ..] Bx=être
+SHIFT: L           
+S=[défini]                 B=[ comme,étant, ..] Bx=être
+REDUCE: L          
+S=[]                        B=[ comme,étant, ..] Bx=définir
+SHIFT: L           
+S=[comme]                   B=[ étant,la, ..] Bx=définir
+REDUCE: L          
+S=[]                        B=[ étant,la, ..] Bx=comme
+SHIFT: L           
+S=[étant]                  B=[ la,survenue, ..] Bx=comme
+REDUCE: L          
+S=[]                        B=[ la,survenue, ..] Bx=être
+SHIFT: L           
+S=[la]                      B=[ survenue,de, ..] Bx=être
+REDUCE: L          
+S=[]                        B=[ survenue,de, ..] Bx=le
+SHIFT: L           
+S=[survenue]                B=[ de,l', ..] Bx=le
+REDUCE: L          
+S=[]                        B=[ de,l', ..] Bx=survenue
+SHIFT: L           
+S=[de]                      B=[ l',un, ..] Bx=survenue
+REDUCE: L          
+S=[]                        B=[ l',un, ..] Bx=de
+SHIFT: L           
+S=[l']                      B=[ un,de, ..] Bx=de
+REDUCE: L          
+S=[]                        B=[ un,de, ..] Bx=le
+SHIFT: L           
+S=[un]                      B=[ de,les, ..] Bx=le
+REDUCE: L          
+S=[]                        B=[ de,les, ..] Bx=un
+SHIFT: L           
+S=[de]                      B=[ les,éléments, ..] Bx=un
+REDUCE: L          
+S=[]                        B=[ les,éléments, ..] Bx=de
+SHIFT: L           
+S=[les]                     B=[ éléments,suivants, ..] Bx=de
+REDUCE: L          
+S=[]                        B=[ éléments,suivants, ..] Bx=le
+SHIFT: L           
+S=[éléments]              B=[ suivants,:, ..] Bx=le
+REDUCE: L          
+S=[]                        B=[ suivants,:, ..] Bx=élément
+SHIFT: L           
+S=[suivants]                B=[ :,hémorragie, ..] Bx=élément
+REDUCE: L          
+S=[]                        B=[ :,hémorragie, ..] Bx=suivant
+SHIFT: L           
+S=[:]                       B=[ hémorragie,intracrânienne, ..] Bx=suivant
+REDUCE: L          
+S=[]                        B=[ hémorragie,intracrânienne, ..] Bx=:
+SHIFT: L           
+S=[hémorragie]             B=[ intracrânienne,,, ..] Bx=:
+REDUCE: L          
+S=[]                        B=[ intracrânienne,,, ..] Bx=hémorragie
+SHIFT: L           
+S=[intracrânienne]         B=[ ,,hémorragie, ..] Bx=hémorragie
+REDUCE: L          
+S=[]                        B=[ ,,hémorragie, ..] Bx=intracrânien
+SHIFT: L           
+S=[,]                       B=[ hémorragie,rétropéritonéale, ..] Bx=intracrânien
+REDUCE: L          
+S=[]                        B=[ hémorragie,rétropéritonéale, ..] Bx=,
+SHIFT: L           
+S=[hémorragie]             B=[ rétropéritonéale,,, ..] Bx=,
+REDUCE: L          
+S=[]                        B=[ rétropéritonéale,,, ..] Bx=hémorragie
+SHIFT: L           
+S=[rétropéritonéale]     B=[ ,,perte, ..] Bx=hémorragie
+REDUCE: L          
+S=[]                        B=[ ,,perte, ..] Bx=rétropéritonéal
+SHIFT: L           
+S=[,]                       B=[ perte,de, ..] Bx=rétropéritonéal
+REDUCE: L          
+S=[]                        B=[ perte,de, ..] Bx=,
+SHIFT: L           
+S=[perte]                   B=[ de,sang, ..] Bx=,
+REDUCE: L          
+S=[]                        B=[ de,sang, ..] Bx=perte
+SHIFT: L           
+S=[de]                      B=[ sang,nécessitant, ..] Bx=perte
+REDUCE: L          
+S=[]                        B=[ sang,nécessitant, ..] Bx=de
+SHIFT: L           
+S=[sang]                    B=[ nécessitant,la, ..] Bx=de
+REDUCE: L          
+S=[]                        B=[ nécessitant,la, ..] Bx=sang
+SHIFT: L           
+S=[nécessitant]            B=[ la,transfusion, ..] Bx=sang
+REDUCE: L          
+S=[]                        B=[ la,transfusion, ..] Bx=nécessiter
+SHIFT: L           
+S=[la]                      B=[ transfusion,d', ..] Bx=nécessiter
+REDUCE: L          
+S=[]                        B=[ transfusion,d', ..] Bx=le
+SHIFT: L           
+S=[transfusion]             B=[ d',à, ..] Bx=le
+REDUCE: L          
+S=[]                        B=[ d',à, ..] Bx=transfusion
+SHIFT: L           
+S=[d']                      B=[ à,le, ..] Bx=transfusion
+REDUCE: L          
+S=[]                        B=[ à,le, ..] Bx=de
+SHIFT: L           
+S=[à]                      B=[ le,moins, ..] Bx=de
+REDUCE: L          
+S=[]                        B=[ le,moins, ..] Bx=à
+SHIFT: L           
+S=[le]                      B=[ moins,deux, ..] Bx=à
+REDUCE: L          
+S=[]                        B=[ moins,deux, ..] Bx=le
+SHIFT: L           
+S=[moins]                   B=[ deux,unités, ..] Bx=le
+REDUCE: L          
+S=[]                        B=[ deux,unités, ..] Bx=moins
+SHIFT: L           
+S=[deux]                    B=[ unités,de, ..] Bx=moins
+REDUCE: L          
+S=[]                        B=[ unités,de, ..] Bx=deux
+SHIFT: L           
+S=[unités]                 B=[ de,sang, ..] Bx=deux
+REDUCE: L          
+S=[]                        B=[ de,sang, ..] Bx=unité
+SHIFT: L           
+S=[de]                      B=[ sang,complet, ..] Bx=unité
+REDUCE: L          
+S=[]                        B=[ sang,complet, ..] Bx=de
+SHIFT: L           
+S=[sang]                    B=[ complet,ou, ..] Bx=de
+REDUCE: L          
+S=[]                        B=[ complet,ou, ..] Bx=sang
+SHIFT: L           
+S=[complet]                 B=[ ou,d', ..] Bx=sang
+REDUCE: L          
+S=[]                        B=[ ou,d', ..] Bx=complet
+SHIFT: L           
+S=[ou]                      B=[ d',hématies, ..] Bx=complet
+REDUCE: L          
+S=[]                        B=[ d',hématies, ..] Bx=ou
+SHIFT: L           
+S=[d']                      B=[ hématies,concentrées, ..] Bx=ou
+REDUCE: L          
+S=[]                        B=[ hématies,concentrées, ..] Bx=de
+SHIFT: L           
+S=[hématies]               B=[ concentrées,,, ..] Bx=de
+REDUCE: L          
+S=[]                        B=[ concentrées,,, ..] Bx=hématie
+SHIFT: L           
+S=[concentrées]            B=[ ,,ou, ..] Bx=hématie
+REDUCE: L          
+S=[]                        B=[ ,,ou, ..] Bx=concentrer
+SHIFT: L           
+S=[,]                       B=[ ou,saignement, ..] Bx=concentrer
+REDUCE: L          
+S=[]                        B=[ ou,saignement, ..] Bx=,
+SHIFT: L           
+S=[ou]                      B=[ saignement,se, ..] Bx=,
+REDUCE: L          
+S=[]                        B=[ saignement,se, ..] Bx=ou
+SHIFT: L           
+S=[saignement]              B=[ se,traduisant, ..] Bx=ou
+REDUCE: L          
+S=[]                        B=[ se,traduisant, ..] Bx=saignement
+SHIFT: L           
+S=[se]                      B=[ traduisant,par, ..] Bx=saignement
+SHIFT: L           
+S=[se, traduisant]          B=[ par,une, ..] Bx=saignement
+MERGE: L           
+S=[[se, traduisant]]        B=[ par,une, ..] Bx=saignement
+SHIFT: L           
+S=[[se, traduisant]par]     B=[ une,chute, ..] Bx=saignement
+REDUCE: L          
+S=[[se, traduisant]]        B=[ une,chute, ..] Bx=par
+SHIFT: L           
+S=[[se, traduisant]une]     B=[ chute,de, ..] Bx=par
+REDUCE: L          
+S=[[se, traduisant]]        B=[ chute,de, ..] Bx=un
+SHIFT: L           
+S=[[se, traduisant]chute]   B=[ de,l', ..] Bx=un
+REDUCE: L          
+S=[[se, traduisant]]        B=[ de,l', ..] Bx=chute
+SHIFT: L           
+S=[[se, traduisant]de]      B=[ l',hémoglobine, ..] Bx=chute
+REDUCE: L          
+S=[[se, traduisant]]        B=[ l',hémoglobine, ..] Bx=de
+SHIFT: L           
+S=[[se, traduisant]l']      B=[ hémoglobine,de, ..] Bx=de
+REDUCE: L          
+S=[[se, traduisant]]        B=[ hémoglobine,de, ..] Bx=le
+SHIFT: L           
+S=[[se, traduisant]hémoglobine] B=[ de,plus, ..] Bx=le
+REDUCE: L          
+S=[[se, traduisant]]        B=[ de,plus, ..] Bx=hémoglobine
+SHIFT: L           
+S=[[se, traduisant]de]      B=[ plus,de, ..] Bx=hémoglobine
+REDUCE: L          
+S=[[se, traduisant]]        B=[ plus,de, ..] Bx=de
+SHIFT: L           
+S=[[se, traduisant]plus]    B=[ de,3, ..] Bx=de
+REDUCE: L          
+S=[[se, traduisant]]        B=[ de,3, ..] Bx=plus
+SHIFT: L           
+S=[[se, traduisant]de]      B=[ 3,g, ..] Bx=plus
+REDUCE: L          
+S=[[se, traduisant]]        B=[ 3,g, ..] Bx=de
+SHIFT: L           
+S=[[se, traduisant]3]       B=[ g,/, ..] Bx=de
+REDUCE: L          
+S=[[se, traduisant]]        B=[ g,/, ..] Bx=3
+SHIFT: L           
+S=[[se, traduisant]g]       B=[ /,dl, ..] Bx=3
+REDUCE: L          
+S=[[se, traduisant]]        B=[ /,dl, ..] Bx=g
+SHIFT: L           
+S=[[se, traduisant]/]       B=[ dl,ou, ..] Bx=g
+REDUCE: L          
+S=[[se, traduisant]]        B=[ dl,ou, ..] Bx=/
+SHIFT: L           
+S=[[se, traduisant]dl]      B=[ ou,une, ..] Bx=/
+REDUCE: L          
+S=[[se, traduisant]]        B=[ ou,une, ..] Bx=dl
+SHIFT: L           
+S=[[se, traduisant]ou]      B=[ une,chute, ..] Bx=dl
+REDUCE: L          
+S=[[se, traduisant]]        B=[ une,chute, ..] Bx=ou
+SHIFT: L           
+S=[[se, traduisant]une]     B=[ chute,de, ..] Bx=ou
+REDUCE: L          
+S=[[se, traduisant]]        B=[ chute,de, ..] Bx=un
+SHIFT: L           
+S=[[se, traduisant]chute]   B=[ de,l', ..] Bx=un
+REDUCE: L          
+S=[[se, traduisant]]        B=[ de,l', ..] Bx=chute
+SHIFT: L           
+S=[[se, traduisant]de]      B=[ l',hémoglobine, ..] Bx=chute
+REDUCE: L          
+S=[[se, traduisant]]        B=[ l',hémoglobine, ..] Bx=de
+SHIFT: L           
+S=[[se, traduisant]l']      B=[ hémoglobine,supérieure, ..] Bx=de
+REDUCE: L          
+S=[[se, traduisant]]        B=[ hémoglobine,supérieure, ..] Bx=le
+SHIFT: L           
+S=[[se, traduisant]hémoglobine] B=[ supérieure,à, ..] Bx=le
+REDUCE: L          
+S=[[se, traduisant]]        B=[ supérieure,à, ..] Bx=hémoglobine
+SHIFT: L           
+S=[[se, traduisant]supérieure] B=[ à,4, ..] Bx=hémoglobine
+REDUCE: L          
+S=[[se, traduisant]]        B=[ à,4, ..] Bx=supérieur
+SHIFT: L           
+S=[[se, traduisant]à]      B=[ 4,g, ..] Bx=supérieur
+REDUCE: L          
+S=[[se, traduisant]]        B=[ 4,g, ..] Bx=à
+SHIFT: L           
+S=[[se, traduisant]4]       B=[ g,/, ..] Bx=à
+REDUCE: L          
+S=[[se, traduisant]]        B=[ g,/, ..] Bx=4
+SHIFT: L           
+S=[[se, traduisant]g]       B=[ /,dl, ..] Bx=4
+REDUCE: L          
+S=[[se, traduisant]]        B=[ /,dl, ..] Bx=g
+SHIFT: L           
+S=[[se, traduisant]/]       B=[ dl,(, ..] Bx=g
+REDUCE: L          
+S=[[se, traduisant]]        B=[ dl,(, ..] Bx=/
+SHIFT: L           
+S=[[se, traduisant]dl]      B=[ (,ou, ..] Bx=/
+REDUCE: L          
+S=[[se, traduisant]]        B=[ (,ou, ..] Bx=dl
+SHIFT: L           
+S=[[se, traduisant](]       B=[ ou,12, ..] Bx=dl
+REDUCE: L          
+S=[[se, traduisant]]        B=[ ou,12, ..] Bx=(
+SHIFT: L           
+S=[[se, traduisant]ou]      B=[ 12,%, ..] Bx=(
+REDUCE: L          
+S=[[se, traduisant]]        B=[ 12,%, ..] Bx=ou
+SHIFT: L           
+S=[[se, traduisant]12]      B=[ %,de, ..] Bx=ou
+REDUCE: L          
+S=[[se, traduisant]]        B=[ %,de, ..] Bx=12
+SHIFT: L           
+S=[[se, traduisant]%]       B=[ de,l', ..] Bx=12
+REDUCE: L          
+S=[[se, traduisant]]        B=[ de,l', ..] Bx=%
+SHIFT: L           
+S=[[se, traduisant]de]      B=[ l',hématocrite, ..] Bx=%
+REDUCE: L          
+S=[[se, traduisant]]        B=[ l',hématocrite, ..] Bx=de
+SHIFT: L           
+S=[[se, traduisant]l']      B=[ hématocrite,), ..] Bx=de
+REDUCE: L          
+S=[[se, traduisant]]        B=[ hématocrite,), ..] Bx=le
+SHIFT: L           
+S=[[se, traduisant]hématocrite] B=[ ),sans, ..] Bx=le
+REDUCE: L          
+S=[[se, traduisant]]        B=[ ),sans, ..] Bx=hématocrite
+SHIFT: L           
+S=[[se, traduisant])]       B=[ sans,site, ..] Bx=hématocrite
+REDUCE: L          
+S=[[se, traduisant]]        B=[ sans,site, ..] Bx=)
+SHIFT: L           
+S=[[se, traduisant]sans]    B=[ site,de, ..] Bx=)
+REDUCE: L          
+S=[[se, traduisant]]        B=[ site,de, ..] Bx=sans
+SHIFT: L           
+S=[[se, traduisant]site]    B=[ de,saignement, ..] Bx=sans
+REDUCE: L          
+S=[[se, traduisant]]        B=[ de,saignement, ..] Bx=site
+SHIFT: L           
+S=[[se, traduisant]de]      B=[ saignement,identifié, ..] Bx=site
+REDUCE: L          
+S=[[se, traduisant]]        B=[ saignement,identifié, ..] Bx=de
+SHIFT: L           
+S=[[se, traduisant]saignement] B=[ identifié,.,] Bx=de
+REDUCE: L          
+S=[[se, traduisant]]        B=[ identifié,.,] Bx=saignement
+SHIFT: L           
+S=[[se, traduisant]identifié] B=[ .,] Bx=saignement
+REDUCE: L          
+S=[[se, traduisant]]        B=[ .,] Bx=identifier
+SHIFT: L           
+S=[[se, traduisant].]       B=[ ] Bx=identifier
+REDUCE: L          
+S=[[se, traduisant]]        B=[ ] Bx=.
+REDUCE: L          
+S=[]                        B=[ ] Bx=.
+5306- :: qu' 1 **il** 1 **y** 1 **ait** moins de chômage , plus de croissance , plus de sécurité , plus de pouvoir d' achat ( ... ) je suis sûr qu' on va y arriver , que l' on est en train de sortir de la crise » , a -t -il dit . 
+MWEs:
+1- id: il y avoir (+)
+
+: L                
+
+SHIFT: L           
+
+REDUCE: L          
+S=[]                        B=[ il,y, ..] Bx=que
+SHIFT: L           
+S=[il]                      B=[ y,ait, ..] Bx=que
+SHIFT: L           
+S=[il, y]                   B=[ ait,moins, ..] Bx=que
+MERGE: L           
+S=[[il, y]]                 B=[ ait,moins, ..] Bx=que
+SHIFT: L           
+S=[[il, y]ait]              B=[ moins,de, ..] Bx=que
+MERGE: L           
+S=[[[il, y]ait]]            B=[ moins,de, ..] Bx=que
+SHIFT: L           
+S=[[[il, y]ait]moins]       B=[ de,chômage, ..] Bx=que
+REDUCE: L          
+S=[[[il, y]ait]]            B=[ de,chômage, ..] Bx=moins
+SHIFT: L           
+S=[[[il, y]ait]de]          B=[ chômage,,, ..] Bx=moins
+REDUCE: L          
+S=[[[il, y]ait]]            B=[ chômage,,, ..] Bx=de
+SHIFT: L           
+S=[[[il, y]ait]chômage]    B=[ ,,plus, ..] Bx=de
+REDUCE: L          
+S=[[[il, y]ait]]            B=[ ,,plus, ..] Bx=chômage
+SHIFT: L           
+S=[[[il, y]ait],]           B=[ plus,de, ..] Bx=chômage
+REDUCE: L          
+S=[[[il, y]ait]]            B=[ plus,de, ..] Bx=,
+SHIFT: L           
+S=[[[il, y]ait]plus]        B=[ de,croissance, ..] Bx=,
+REDUCE: L          
+S=[[[il, y]ait]]            B=[ de,croissance, ..] Bx=plus
+SHIFT: L           
+S=[[[il, y]ait]de]          B=[ croissance,,, ..] Bx=plus
+REDUCE: L          
+S=[[[il, y]ait]]            B=[ croissance,,, ..] Bx=de
+SHIFT: L           
+S=[[[il, y]ait]croissance]  B=[ ,,plus, ..] Bx=de
+REDUCE: L          
+S=[[[il, y]ait]]            B=[ ,,plus, ..] Bx=croissance
+SHIFT: L           
+S=[[[il, y]ait],]           B=[ plus,de, ..] Bx=croissance
+REDUCE: L          
+S=[[[il, y]ait]]            B=[ plus,de, ..] Bx=,
+SHIFT: L           
+S=[[[il, y]ait]plus]        B=[ de,sécurité, ..] Bx=,
+REDUCE: L          
+S=[[[il, y]ait]]            B=[ de,sécurité, ..] Bx=plus
+SHIFT: L           
+S=[[[il, y]ait]de]          B=[ sécurité,,, ..] Bx=plus
+REDUCE: L          
+S=[[[il, y]ait]]            B=[ sécurité,,, ..] Bx=de
+SHIFT: L           
+S=[[[il, y]ait]sécurité]  B=[ ,,plus, ..] Bx=de
+REDUCE: L          
+S=[[[il, y]ait]]            B=[ ,,plus, ..] Bx=sécurité
+SHIFT: L           
+S=[[[il, y]ait],]           B=[ plus,de, ..] Bx=sécurité
+REDUCE: L          
+S=[[[il, y]ait]]            B=[ plus,de, ..] Bx=,
+SHIFT: L           
+S=[[[il, y]ait]plus]        B=[ de,pouvoir, ..] Bx=,
+REDUCE: L          
+S=[[[il, y]ait]]            B=[ de,pouvoir, ..] Bx=plus
+SHIFT: L           
+S=[[[il, y]ait]de]          B=[ pouvoir,d', ..] Bx=plus
+REDUCE: L          
+S=[[[il, y]ait]]            B=[ pouvoir,d', ..] Bx=de
+SHIFT: L           
+S=[[[il, y]ait]pouvoir]     B=[ d',achat, ..] Bx=de
+REDUCE: L          
+S=[[[il, y]ait]]            B=[ d',achat, ..] Bx=pouvoir
+SHIFT: L           
+S=[[[il, y]ait]d']          B=[ achat,(, ..] Bx=pouvoir
+REDUCE: L          
+S=[[[il, y]ait]]            B=[ achat,(, ..] Bx=de
+SHIFT: L           
+S=[[[il, y]ait]achat]       B=[ (,..., ..] Bx=de
+REDUCE: L          
+S=[[[il, y]ait]]            B=[ (,..., ..] Bx=achat
+SHIFT: L           
+S=[[[il, y]ait](]           B=[ ...,), ..] Bx=achat
+REDUCE: L          
+S=[[[il, y]ait]]            B=[ ...,), ..] Bx=(
+SHIFT: L           
+S=[[[il, y]ait]...]         B=[ ),je, ..] Bx=(
+REDUCE: L          
+S=[[[il, y]ait]]            B=[ ),je, ..] Bx=...
+SHIFT: L           
+S=[[[il, y]ait])]           B=[ je,suis, ..] Bx=...
+REDUCE: L          
+S=[[[il, y]ait]]            B=[ je,suis, ..] Bx=)
+SHIFT: L           
+S=[[[il, y]ait]je]          B=[ suis,sûr, ..] Bx=)
+REDUCE: L          
+S=[[[il, y]ait]]            B=[ suis,sûr, ..] Bx=il
+SHIFT: L           
+S=[[[il, y]ait]suis]        B=[ sûr,qu', ..] Bx=il
+REDUCE: L          
+S=[[[il, y]ait]]            B=[ sûr,qu', ..] Bx=être
+SHIFT: L           
+S=[[[il, y]ait]sûr]        B=[ qu',on, ..] Bx=être
+REDUCE: L          
+S=[[[il, y]ait]]            B=[ qu',on, ..] Bx=sûr
+SHIFT: L           
+S=[[[il, y]ait]qu']         B=[ on,va, ..] Bx=sûr
+REDUCE: L          
+S=[[[il, y]ait]]            B=[ on,va, ..] Bx=que
+SHIFT: L           
+S=[[[il, y]ait]on]          B=[ va,y, ..] Bx=que
+REDUCE: L          
+S=[[[il, y]ait]]            B=[ va,y, ..] Bx=on
+SHIFT: L           
+S=[[[il, y]ait]va]          B=[ y,arriver, ..] Bx=on
+REDUCE: L          
+S=[[[il, y]ait]]            B=[ y,arriver, ..] Bx=aller
+SHIFT: L           
+S=[[[il, y]ait]y]           B=[ arriver,,, ..] Bx=aller
+REDUCE: L          
+S=[[[il, y]ait]]            B=[ arriver,,, ..] Bx=y
+SHIFT: L           
+S=[[[il, y]ait]arriver]     B=[ ,,que, ..] Bx=y
+REDUCE: L          
+S=[[[il, y]ait]]            B=[ ,,que, ..] Bx=arriver
+SHIFT: L           
+S=[[[il, y]ait],]           B=[ que,l', ..] Bx=arriver
+REDUCE: L          
+S=[[[il, y]ait]]            B=[ que,l', ..] Bx=,
+SHIFT: L           
+S=[[[il, y]ait]que]         B=[ l',on, ..] Bx=,
+REDUCE: L          
+S=[[[il, y]ait]]            B=[ l',on, ..] Bx=que
+SHIFT: L           
+S=[[[il, y]ait]l']          B=[ on,est, ..] Bx=que
+REDUCE: L          
+S=[[[il, y]ait]]            B=[ on,est, ..] Bx=l'
+SHIFT: L           
+S=[[[il, y]ait]on]          B=[ est,en, ..] Bx=l'
+REDUCE: L          
+S=[[[il, y]ait]]            B=[ est,en, ..] Bx=on
+SHIFT: L           
+S=[[[il, y]ait]est]         B=[ en,train, ..] Bx=on
+REDUCE: L          
+S=[[[il, y]ait]]            B=[ en,train, ..] Bx=être
+SHIFT: L           
+S=[[[il, y]ait]en]          B=[ train,de, ..] Bx=être
+REDUCE: L          
+S=[[[il, y]ait]]            B=[ train,de, ..] Bx=en
+SHIFT: L           
+S=[[[il, y]ait]train]       B=[ de,sortir, ..] Bx=en
+REDUCE: L          
+S=[[[il, y]ait]]            B=[ de,sortir, ..] Bx=train
+SHIFT: L           
+S=[[[il, y]ait]de]          B=[ sortir,de, ..] Bx=train
+REDUCE: L          
+S=[[[il, y]ait]]            B=[ sortir,de, ..] Bx=de
+SHIFT: L           
+S=[[[il, y]ait]sortir]      B=[ de,la, ..] Bx=de
+REDUCE: L          
+S=[[[il, y]ait]]            B=[ de,la, ..] Bx=sortir
+SHIFT: L           
+S=[[[il, y]ait]de]          B=[ la,crise, ..] Bx=sortir
+REDUCE: L          
+S=[[[il, y]ait]]            B=[ la,crise, ..] Bx=de
+SHIFT: L           
+S=[[[il, y]ait]la]          B=[ crise,», ..] Bx=de
+REDUCE: L          
+S=[[[il, y]ait]]            B=[ crise,», ..] Bx=le
+SHIFT: L           
+S=[[[il, y]ait]crise]       B=[ »,,, ..] Bx=le
+REDUCE: L          
+S=[[[il, y]ait]]            B=[ »,,, ..] Bx=crise
+SHIFT: L           
+S=[[[il, y]ait]»]          B=[ ,,a, ..] Bx=crise
+REDUCE: L          
+S=[[[il, y]ait]]            B=[ ,,a, ..] Bx=»
+SHIFT: L           
+S=[[[il, y]ait],]           B=[ a,-t, ..] Bx=»
+REDUCE: L          
+S=[[[il, y]ait]]            B=[ a,-t, ..] Bx=,
+SHIFT: L           
+S=[[[il, y]ait]a]           B=[ -t,-il, ..] Bx=,
+REDUCE: L          
+S=[[[il, y]ait]]            B=[ -t,-il, ..] Bx=avoir
+SHIFT: L           
+S=[[[il, y]ait]-t]          B=[ -il,dit, ..] Bx=avoir
+REDUCE: L          
+S=[[[il, y]ait]]            B=[ -il,dit, ..] Bx=t
+SHIFT: L           
+S=[[[il, y]ait]-il]         B=[ dit,.,] Bx=t
+REDUCE: L          
+S=[[[il, y]ait]]            B=[ dit,.,] Bx=il
+SHIFT: L           
+S=[[[il, y]ait]dit]         B=[ .,] Bx=il
+REDUCE: L          
+S=[[[il, y]ait]]            B=[ .,] Bx=dire
+SHIFT: L           
+S=[[[il, y]ait].]           B=[ ] Bx=dire
+REDUCE: L          
+S=[[[il, y]ait]]            B=[ ] Bx=.
+REDUCE: L          
+S=[]                        B=[ ] Bx=.
+15481- :: mais c' est la crise nucléaire , la plus grave dans le monde depuis tchernobyl en 1986 , qui 1 **suscite** l' 1 **inquiétude** . 
+MWEs:
+1- lvc: susciter inquiétude (+)
+
+: L                
+
+SHIFT: L           
+
+REDUCE: L          
+S=[]                        B=[ c',est, ..] Bx=mais
+SHIFT: L           
+S=[c']                      B=[ est,la, ..] Bx=mais
+REDUCE: L          
+S=[]                        B=[ est,la, ..] Bx=ce
+SHIFT: L           
+S=[est]                     B=[ la,crise, ..] Bx=ce
+REDUCE: L          
+S=[]                        B=[ la,crise, ..] Bx=être
+SHIFT: L           
+S=[la]                      B=[ crise,nucléaire, ..] Bx=être
+REDUCE: L          
+S=[]                        B=[ crise,nucléaire, ..] Bx=le
+SHIFT: L           
+S=[crise]                   B=[ nucléaire,,, ..] Bx=le
+REDUCE: L          
+S=[]                        B=[ nucléaire,,, ..] Bx=crise
+SHIFT: L           
+S=[nucléaire]              B=[ ,,la, ..] Bx=crise
+REDUCE: L          
+S=[]                        B=[ ,,la, ..] Bx=nucléaire
+SHIFT: L           
+S=[,]                       B=[ la,plus, ..] Bx=nucléaire
+REDUCE: L          
+S=[]                        B=[ la,plus, ..] Bx=,
+SHIFT: L           
+S=[la]                      B=[ plus,grave, ..] Bx=,
+REDUCE: L          
+S=[]                        B=[ plus,grave, ..] Bx=le
+SHIFT: L           
+S=[plus]                    B=[ grave,dans, ..] Bx=le
+REDUCE: L          
+S=[]                        B=[ grave,dans, ..] Bx=plus
+SHIFT: L           
+S=[grave]                   B=[ dans,le, ..] Bx=plus
+REDUCE: L          
+S=[]                        B=[ dans,le, ..] Bx=grave
+SHIFT: L           
+S=[dans]                    B=[ le,monde, ..] Bx=grave
+REDUCE: L          
+S=[]                        B=[ le,monde, ..] Bx=dans
+SHIFT: L           
+S=[le]                      B=[ monde,depuis, ..] Bx=dans
+REDUCE: L          
+S=[]                        B=[ monde,depuis, ..] Bx=le
+SHIFT: L           
+S=[monde]                   B=[ depuis,tchernobyl, ..] Bx=le
+REDUCE: L          
+S=[]                        B=[ depuis,tchernobyl, ..] Bx=monde
+SHIFT: L           
+S=[depuis]                  B=[ tchernobyl,en, ..] Bx=monde
+REDUCE: L          
+S=[]                        B=[ tchernobyl,en, ..] Bx=depuis
+SHIFT: L           
+S=[tchernobyl]              B=[ en,1986, ..] Bx=depuis
+REDUCE: L          
+S=[]                        B=[ en,1986, ..] Bx=tchernobyl
+SHIFT: L           
+S=[en]                      B=[ 1986,,, ..] Bx=tchernobyl
+REDUCE: L          
+S=[]                        B=[ 1986,,, ..] Bx=en
+SHIFT: L           
+S=[1986]                    B=[ ,,qui, ..] Bx=en
+REDUCE: L          
+S=[]                        B=[ ,,qui, ..] Bx=1986
+SHIFT: L           
+S=[,]                       B=[ qui,suscite, ..] Bx=1986
+REDUCE: L          
+S=[]                        B=[ qui,suscite, ..] Bx=,
+SHIFT: L           
+S=[qui]                     B=[ suscite,l', ..] Bx=,
+REDUCE: L          
+S=[]                        B=[ suscite,l', ..] Bx=qui
+SHIFT: L           
+S=[suscite]                 B=[ l',inquiétude, ..] Bx=qui
+SHIFT: L           
+S=[suscite, l']             B=[ inquiétude,.,] Bx=qui
+REDUCE: L          
+S=[suscite]                 B=[ inquiétude,.,] Bx=le
+SHIFT: L           
+S=[suscite, inquiétude]    B=[ .,] Bx=le
+MERGE: L           
+S=[[suscite, inquiétude]]  B=[ .,] Bx=le
+SHIFT: L           
+S=[[suscite, inquiétude].] B=[ ] Bx=le
+REDUCE: L          
+S=[[suscite, inquiétude]]  B=[ ] Bx=.
+REDUCE: L          
+S=[]                        B=[ ] Bx=.
+13432- :: en 1961 , sa relation avec gérard jarlot 1 **prend** 1 **fin** . 
+MWEs:
+1- lvc: prendre fin (+)
+
+: L                
+
+SHIFT: L           
+
+REDUCE: L          
+S=[]                        B=[ 1961,,, ..] Bx=en
+SHIFT: L           
+S=[1961]                    B=[ ,,sa, ..] Bx=en
+REDUCE: L          
+S=[]                        B=[ ,,sa, ..] Bx=1961
+SHIFT: L           
+S=[,]                       B=[ sa,relation, ..] Bx=1961
+REDUCE: L          
+S=[]                        B=[ sa,relation, ..] Bx=,
+SHIFT: L           
+S=[sa]                      B=[ relation,avec, ..] Bx=,
+REDUCE: L          
+S=[]                        B=[ relation,avec, ..] Bx=son
+SHIFT: L           
+S=[relation]                B=[ avec,gérard, ..] Bx=son
+REDUCE: L          
+S=[]                        B=[ avec,gérard, ..] Bx=relation
+SHIFT: L           
+S=[avec]                    B=[ gérard,jarlot, ..] Bx=relation
+REDUCE: L          
+S=[]                        B=[ gérard,jarlot, ..] Bx=avec
+SHIFT: L           
+S=[gérard]                 B=[ jarlot,prend, ..] Bx=avec
+REDUCE: L          
+S=[]                        B=[ jarlot,prend, ..] Bx=gérard
+SHIFT: L           
+S=[jarlot]                  B=[ prend,fin, ..] Bx=gérard
+REDUCE: L          
+S=[]                        B=[ prend,fin, ..] Bx=jarlot
+SHIFT: L           
+S=[prend]                   B=[ fin,.,] Bx=jarlot
+SHIFT: L           
+S=[prend, fin]              B=[ .,] Bx=jarlot
+MERGE: L           
+S=[[prend, fin]]            B=[ .,] Bx=jarlot
+SHIFT: L           
+S=[[prend, fin].]           B=[ ] Bx=jarlot
+REDUCE: L          
+S=[[prend, fin]]            B=[ ] Bx=.
+REDUCE: L          
+S=[]                        B=[ ] Bx=.
+3365- :: péchabou 1 **fait** 1 **partie** de la communauté d' agglomération de le sicoval . 
+MWEs:
+1- id: faire partie (+)
+
+: L                
+
+SHIFT: L           
+
+REDUCE: L          
+S=[]                        B=[ fait,partie, ..] Bx=péchabou
+SHIFT: L           
+S=[fait]                    B=[ partie,de, ..] Bx=péchabou
+SHIFT: L           
+S=[fait, partie]            B=[ de,la, ..] Bx=péchabou
+MERGE: L           
+S=[[fait, partie]]          B=[ de,la, ..] Bx=péchabou
+SHIFT: L           
+S=[[fait, partie]de]        B=[ la,communauté, ..] Bx=péchabou
+REDUCE: L          
+S=[[fait, partie]]          B=[ la,communauté, ..] Bx=de
+SHIFT: L           
+S=[[fait, partie]la]        B=[ communauté,d', ..] Bx=de
+REDUCE: L          
+S=[[fait, partie]]          B=[ communauté,d', ..] Bx=le
+SHIFT: L           
+S=[[fait, partie]communauté] B=[ d',agglomération, ..] Bx=le
+REDUCE: L          
+S=[[fait, partie]]          B=[ d',agglomération, ..] Bx=communauté
+SHIFT: L           
+S=[[fait, partie]d']        B=[ agglomération,de, ..] Bx=communauté
+REDUCE: L          
+S=[[fait, partie]]          B=[ agglomération,de, ..] Bx=de
+SHIFT: L           
+S=[[fait, partie]agglomération] B=[ de,le, ..] Bx=de
+REDUCE: L          
+S=[[fait, partie]]          B=[ de,le, ..] Bx=agglomération
+SHIFT: L           
+S=[[fait, partie]de]        B=[ le,sicoval, ..] Bx=agglomération
+REDUCE: L          
+S=[[fait, partie]]          B=[ le,sicoval, ..] Bx=de
+SHIFT: L           
+S=[[fait, partie]le]        B=[ sicoval,.,] Bx=de
+REDUCE: L          
+S=[[fait, partie]]          B=[ sicoval,.,] Bx=le
+SHIFT: L           
+S=[[fait, partie]sicoval]   B=[ .,] Bx=le
+REDUCE: L          
+S=[[fait, partie]]          B=[ .,] Bx=sicoval
+SHIFT: L           
+S=[[fait, partie].]         B=[ ] Bx=sicoval
+REDUCE: L          
+S=[[fait, partie]]          B=[ ] Bx=.
+REDUCE: L          
+S=[]                        B=[ ] Bx=.
+13480- :: 1 **il** 1 **faut** de plus une indication d' ordre énergétique . 
+MWEs:
+1- id: il falloir (+)
+
+: L                
+
+SHIFT: L           
+
+SHIFT: L           
+
+MERGE: L           
+
+SHIFT: L           
+
+REDUCE: L          
+S=[[il, faut]]              B=[ plus,une, ..] Bx=de
+SHIFT: L           
+S=[[il, faut]plus]          B=[ une,indication, ..] Bx=de
+REDUCE: L          
+S=[[il, faut]]              B=[ une,indication, ..] Bx=plus
+SHIFT: L           
+S=[[il, faut]une]           B=[ indication,d', ..] Bx=plus
+REDUCE: L          
+S=[[il, faut]]              B=[ indication,d', ..] Bx=un
+SHIFT: L           
+S=[[il, faut]indication]    B=[ d',ordre, ..] Bx=un
+REDUCE: L          
+S=[[il, faut]]              B=[ d',ordre, ..] Bx=indication
+SHIFT: L           
+S=[[il, faut]d']            B=[ ordre,énergétique, ..] Bx=indication
+REDUCE: L          
+S=[[il, faut]]              B=[ ordre,énergétique, ..] Bx=de
+SHIFT: L           
+S=[[il, faut]ordre]         B=[ énergétique,.,] Bx=de
+REDUCE: L          
+S=[[il, faut]]              B=[ énergétique,.,] Bx=ordre
+SHIFT: L           
+S=[[il, faut]énergétique] B=[ .,] Bx=ordre
+REDUCE: L          
+S=[[il, faut]]              B=[ .,] Bx=énergétique
+SHIFT: L           
+S=[[il, faut].]             B=[ ] Bx=énergétique
+REDUCE: L          
+S=[[il, faut]]              B=[ ] Bx=.
+REDUCE: L          
+S=[]                        B=[ ] Bx=.
+9295- :: 1 **il** 1 **y** 1 **avait** à ringendorf une synagogue qui a été détruite à la fin de le xxe siècle . 
+MWEs:
+1- id: il y avoir (+)
+
+: L                
+
+SHIFT: L           
+
+SHIFT: L           
+
+MERGE: L           
+
+SHIFT: L           
+
+MERGE: L           
+
+SHIFT: L           
+
+REDUCE: L          
+S=[[[il, y]avait]]          B=[ ringendorf,une, ..] Bx=à
+SHIFT: L           
+S=[[[il, y]avait]ringendorf] B=[ une,synagogue, ..] Bx=à
+REDUCE: L          
+S=[[[il, y]avait]]          B=[ une,synagogue, ..] Bx=ringendorf
+SHIFT: L           
+S=[[[il, y]avait]une]       B=[ synagogue,qui, ..] Bx=ringendorf
+REDUCE: L          
+S=[[[il, y]avait]]          B=[ synagogue,qui, ..] Bx=un
+SHIFT: L           
+S=[[[il, y]avait]synagogue] B=[ qui,a, ..] Bx=un
+REDUCE: L          
+S=[[[il, y]avait]]          B=[ qui,a, ..] Bx=synagogue
+SHIFT: L           
+S=[[[il, y]avait]qui]       B=[ a,été, ..] Bx=synagogue
+REDUCE: L          
+S=[[[il, y]avait]]          B=[ a,été, ..] Bx=qui
+SHIFT: L           
+S=[[[il, y]avait]a]         B=[ été,détruite, ..] Bx=qui
+REDUCE: L          
+S=[[[il, y]avait]]          B=[ été,détruite, ..] Bx=avoir
+SHIFT: L           
+S=[[[il, y]avait]été]     B=[ détruite,à, ..] Bx=avoir
+REDUCE: L          
+S=[[[il, y]avait]]          B=[ détruite,à, ..] Bx=être
+SHIFT: L           
+S=[[[il, y]avait]détruite] B=[ à,la, ..] Bx=être
+REDUCE: L          
+S=[[[il, y]avait]]          B=[ à,la, ..] Bx=détruire
+SHIFT: L           
+S=[[[il, y]avait]à]        B=[ la,fin, ..] Bx=détruire
+REDUCE: L          
+S=[[[il, y]avait]]          B=[ la,fin, ..] Bx=à
+SHIFT: L           
+S=[[[il, y]avait]la]        B=[ fin,de, ..] Bx=à
+REDUCE: L          
+S=[[[il, y]avait]]          B=[ fin,de, ..] Bx=le
+SHIFT: L           
+S=[[[il, y]avait]fin]       B=[ de,le, ..] Bx=le
+REDUCE: L          
+S=[[[il, y]avait]]          B=[ de,le, ..] Bx=fin
+SHIFT: L           
+S=[[[il, y]avait]de]        B=[ le,xxe, ..] Bx=fin
+REDUCE: L          
+S=[[[il, y]avait]]          B=[ le,xxe, ..] Bx=de
+SHIFT: L           
+S=[[[il, y]avait]le]        B=[ xxe,siècle, ..] Bx=de
+REDUCE: L          
+S=[[[il, y]avait]]          B=[ xxe,siècle, ..] Bx=le
+SHIFT: L           
+S=[[[il, y]avait]xxe]       B=[ siècle,.,] Bx=le
+REDUCE: L          
+S=[[[il, y]avait]]          B=[ siècle,.,] Bx=xxe
+SHIFT: L           
+S=[[[il, y]avait]siècle]   B=[ .,] Bx=xxe
+REDUCE: L          
+S=[[[il, y]avait]]          B=[ .,] Bx=siècle
+SHIFT: L           
+S=[[[il, y]avait].]         B=[ ] Bx=siècle
+REDUCE: L          
+S=[[[il, y]avait]]          B=[ ] Bx=.
+REDUCE: L          
+S=[]                        B=[ ] Bx=.
+14586- :: avec un peu de chance , on pouvait ainsi découvrir ainsi les chars silencieux qui 1 **se** 1 **rendaient** à le " rassemblement " , entourés de ses anges-gardiens-constructeurs . 
+MWEs:
+1- ireflv: se rendre (+)
+
+: L                
+
+SHIFT: L           
+
+REDUCE: L          
+S=[]                        B=[ un,peu, ..] Bx=avec
+SHIFT: L           
+S=[un]                      B=[ peu,de, ..] Bx=avec
+REDUCE: L          
+S=[]                        B=[ peu,de, ..] Bx=un
+SHIFT: L           
+S=[peu]                     B=[ de,chance, ..] Bx=un
+REDUCE: L          
+S=[]                        B=[ de,chance, ..] Bx=peu
+SHIFT: L           
+S=[de]                      B=[ chance,,, ..] Bx=peu
+REDUCE: L          
+S=[]                        B=[ chance,,, ..] Bx=de
+SHIFT: L           
+S=[chance]                  B=[ ,,on, ..] Bx=de
+REDUCE: L          
+S=[]                        B=[ ,,on, ..] Bx=chance
+SHIFT: L           
+S=[,]                       B=[ on,pouvait, ..] Bx=chance
+REDUCE: L          
+S=[]                        B=[ on,pouvait, ..] Bx=,
+SHIFT: L           
+S=[on]                      B=[ pouvait,ainsi, ..] Bx=,
+REDUCE: L          
+S=[]                        B=[ pouvait,ainsi, ..] Bx=on
+SHIFT: L           
+S=[pouvait]                 B=[ ainsi,découvrir, ..] Bx=on
+REDUCE: L          
+S=[]                        B=[ ainsi,découvrir, ..] Bx=pouvoir
+SHIFT: L           
+S=[ainsi]                   B=[ découvrir,ainsi, ..] Bx=pouvoir
+REDUCE: L          
+S=[]                        B=[ découvrir,ainsi, ..] Bx=ainsi
+SHIFT: L           
+S=[découvrir]              B=[ ainsi,les, ..] Bx=ainsi
+REDUCE: L          
+S=[]                        B=[ ainsi,les, ..] Bx=découvrir
+SHIFT: L           
+S=[ainsi]                   B=[ les,chars, ..] Bx=découvrir
+REDUCE: L          
+S=[]                        B=[ les,chars, ..] Bx=ainsi
+SHIFT: L           
+S=[les]                     B=[ chars,silencieux, ..] Bx=ainsi
+REDUCE: L          
+S=[]                        B=[ chars,silencieux, ..] Bx=le
+SHIFT: L           
+S=[chars]                   B=[ silencieux,qui, ..] Bx=le
+REDUCE: L          
+S=[]                        B=[ silencieux,qui, ..] Bx=char
+SHIFT: L           
+S=[silencieux]              B=[ qui,se, ..] Bx=char
+REDUCE: L          
+S=[]                        B=[ qui,se, ..] Bx=silencieux
+SHIFT: L           
+S=[qui]                     B=[ se,rendaient, ..] Bx=silencieux
+REDUCE: L          
+S=[]                        B=[ se,rendaient, ..] Bx=qui
+SHIFT: L           
+S=[se]                      B=[ rendaient,à, ..] Bx=qui
+SHIFT: L           
+S=[se, rendaient]           B=[ à,le, ..] Bx=qui
+MERGE: L           
+S=[[se, rendaient]]         B=[ à,le, ..] Bx=qui
+SHIFT: L           
+S=[[se, rendaient]à]       B=[ le,", ..] Bx=qui
+REDUCE: L          
+S=[[se, rendaient]]         B=[ le,", ..] Bx=à
+SHIFT: L           
+S=[[se, rendaient]le]       B=[ ",rassemblement, ..] Bx=à
+REDUCE: L          
+S=[[se, rendaient]]         B=[ ",rassemblement, ..] Bx=le
+SHIFT: L           
+S=[[se, rendaient]"]        B=[ rassemblement,", ..] Bx=le
+REDUCE: L          
+S=[[se, rendaient]]         B=[ rassemblement,", ..] Bx="
+SHIFT: L           
+S=[[se, rendaient]rassemblement] B=[ ",,, ..] Bx="
+REDUCE: L          
+S=[[se, rendaient]]         B=[ ",,, ..] Bx=rassemblement
+SHIFT: L           
+S=[[se, rendaient]"]        B=[ ,,entourés, ..] Bx=rassemblement
+REDUCE: L          
+S=[[se, rendaient]]         B=[ ,,entourés, ..] Bx="
+SHIFT: L           
+S=[[se, rendaient],]        B=[ entourés,de, ..] Bx="
+REDUCE: L          
+S=[[se, rendaient]]         B=[ entourés,de, ..] Bx=,
+SHIFT: L           
+S=[[se, rendaient]entourés] B=[ de,ses, ..] Bx=,
+REDUCE: L          
+S=[[se, rendaient]]         B=[ de,ses, ..] Bx=entourer
+SHIFT: L           
+S=[[se, rendaient]de]       B=[ ses,anges-gardiens-constructeurs, ..] Bx=entourer
+REDUCE: L          
+S=[[se, rendaient]]         B=[ ses,anges-gardiens-constructeurs, ..] Bx=de
+SHIFT: L           
+S=[[se, rendaient]ses]      B=[ anges-gardiens-constructeurs,.,] Bx=de
+REDUCE: L          
+S=[[se, rendaient]]         B=[ anges-gardiens-constructeurs,.,] Bx=son
+SHIFT: L           
+S=[[se, rendaient]anges-gardiens-constructeurs] B=[ .,] Bx=son
+REDUCE: L          
+S=[[se, rendaient]]         B=[ .,] Bx=ange-gardien-constructeur
+SHIFT: L           
+S=[[se, rendaient].]        B=[ ] Bx=ange-gardien-constructeur
+REDUCE: L          
+S=[[se, rendaient]]         B=[ ] Bx=.
+REDUCE: L          
+S=[]                        B=[ ] Bx=.
+107- :: À le mois de mars dernier , les enfants de ce2 de mme philippe avaient montré leur 1 **travail** 1 **réalisé** d' après " les contes de le chat perché " de marcel aimé . 
+MWEs:
+1- lvc: travail réaliser (+)
+
+: L                
+
+SHIFT: L           
+
+REDUCE: L          
+S=[]                        B=[ le,mois, ..] Bx=à
+SHIFT: L           
+S=[le]                      B=[ mois,de, ..] Bx=à
+REDUCE: L          
+S=[]                        B=[ mois,de, ..] Bx=le
+SHIFT: L           
+S=[mois]                    B=[ de,mars, ..] Bx=le
+REDUCE: L          
+S=[]                        B=[ de,mars, ..] Bx=mois
+SHIFT: L           
+S=[de]                      B=[ mars,dernier, ..] Bx=mois
+REDUCE: L          
+S=[]                        B=[ mars,dernier, ..] Bx=de
+SHIFT: L           
+S=[mars]                    B=[ dernier,,, ..] Bx=de
+REDUCE: L          
+S=[]                        B=[ dernier,,, ..] Bx=mars
+SHIFT: L           
+S=[dernier]                 B=[ ,,les, ..] Bx=mars
+REDUCE: L          
+S=[]                        B=[ ,,les, ..] Bx=dernier
+SHIFT: L           
+S=[,]                       B=[ les,enfants, ..] Bx=dernier
+REDUCE: L          
+S=[]                        B=[ les,enfants, ..] Bx=,
+SHIFT: L           
+S=[les]                     B=[ enfants,de, ..] Bx=,
+REDUCE: L          
+S=[]                        B=[ enfants,de, ..] Bx=le
+SHIFT: L           
+S=[enfants]                 B=[ de,ce2, ..] Bx=le
+REDUCE: L          
+S=[]                        B=[ de,ce2, ..] Bx=enfant
+SHIFT: L           
+S=[de]                      B=[ ce2,de, ..] Bx=enfant
+REDUCE: L          
+S=[]                        B=[ ce2,de, ..] Bx=de
+SHIFT: L           
+S=[ce2]                     B=[ de,mme, ..] Bx=de
+REDUCE: L          
+S=[]                        B=[ de,mme, ..] Bx=ce2
+SHIFT: L           
+S=[de]                      B=[ mme,philippe, ..] Bx=ce2
+REDUCE: L          
+S=[]                        B=[ mme,philippe, ..] Bx=de
+SHIFT: L           
+S=[mme]                     B=[ philippe,avaient, ..] Bx=de
+REDUCE: L          
+S=[]                        B=[ philippe,avaient, ..] Bx=monsieur
+SHIFT: L           
+S=[philippe]                B=[ avaient,montré, ..] Bx=monsieur
+REDUCE: L          
+S=[]                        B=[ avaient,montré, ..] Bx=philippe
+SHIFT: L           
+S=[avaient]                 B=[ montré,leur, ..] Bx=philippe
+REDUCE: L          
+S=[]                        B=[ montré,leur, ..] Bx=avoir
+SHIFT: L           
+S=[montré]                 B=[ leur,travail, ..] Bx=avoir
+REDUCE: L          
+S=[]                        B=[ leur,travail, ..] Bx=montrer
+SHIFT: L           
+S=[leur]                    B=[ travail,réalisé, ..] Bx=montrer
+REDUCE: L          
+S=[]                        B=[ travail,réalisé, ..] Bx=son
+SHIFT: L           
+S=[travail]                 B=[ réalisé,d', ..] Bx=son
+SHIFT: L           
+S=[travail, réalisé]      B=[ d',après, ..] Bx=son
+MERGE: L           
+S=[[travail, réalisé]]    B=[ d',après, ..] Bx=son
+SHIFT: L           
+S=[[travail, réalisé]d']  B=[ après,", ..] Bx=son
+REDUCE: L          
+S=[[travail, réalisé]]    B=[ après,", ..] Bx=de
+SHIFT: L           
+S=[[travail, réalisé]après] B=[ ",les, ..] Bx=de
+REDUCE: L          
+S=[[travail, réalisé]]    B=[ ",les, ..] Bx=après
+SHIFT: L           
+S=[[travail, réalisé]"]   B=[ les,contes, ..] Bx=après
+REDUCE: L          
+S=[[travail, réalisé]]    B=[ les,contes, ..] Bx="
+SHIFT: L           
+S=[[travail, réalisé]les] B=[ contes,de, ..] Bx="
+REDUCE: L          
+S=[[travail, réalisé]]    B=[ contes,de, ..] Bx=le
+SHIFT: L           
+S=[[travail, réalisé]contes] B=[ de,le, ..] Bx=le
+REDUCE: L          
+S=[[travail, réalisé]]    B=[ de,le, ..] Bx=conte
+SHIFT: L           
+S=[[travail, réalisé]de]  B=[ le,chat, ..] Bx=conte
+REDUCE: L          
+S=[[travail, réalisé]]    B=[ le,chat, ..] Bx=de
+SHIFT: L           
+S=[[travail, réalisé]le]  B=[ chat,perché, ..] Bx=de
+REDUCE: L          
+S=[[travail, réalisé]]    B=[ chat,perché, ..] Bx=le
+SHIFT: L           
+S=[[travail, réalisé]chat] B=[ perché,", ..] Bx=le
+REDUCE: L          
+S=[[travail, réalisé]]    B=[ perché,", ..] Bx=chat
+SHIFT: L           
+S=[[travail, réalisé]perché] B=[ ",de, ..] Bx=chat
+REDUCE: L          
+S=[[travail, réalisé]]    B=[ ",de, ..] Bx=perché
+SHIFT: L           
+S=[[travail, réalisé]"]   B=[ de,marcel, ..] Bx=perché
+REDUCE: L          
+S=[[travail, réalisé]]    B=[ de,marcel, ..] Bx="
+SHIFT: L           
+S=[[travail, réalisé]de]  B=[ marcel,aimé, ..] Bx="
+REDUCE: L          
+S=[[travail, réalisé]]    B=[ marcel,aimé, ..] Bx=de
+SHIFT: L           
+S=[[travail, réalisé]marcel] B=[ aimé,.,] Bx=de
+REDUCE: L          
+S=[[travail, réalisé]]    B=[ aimé,.,] Bx=marcel
+SHIFT: L           
+S=[[travail, réalisé]aimé] B=[ .,] Bx=marcel
+REDUCE: L          
+S=[[travail, réalisé]]    B=[ .,] Bx=aimé
+SHIFT: L           
+S=[[travail, réalisé].]   B=[ ] Bx=aimé
+REDUCE: L          
+S=[[travail, réalisé]]    B=[ ] Bx=.
+REDUCE: L          
+S=[]                        B=[ ] Bx=.
+4526- :: la décision de déclarer ouvertement l' alliance avec les ennemis de la cause arabe et musulmane est le dernier recours de le gouvernement de rabat pour 1 **s'** 1 **approprier** le sahara occidental . 
+MWEs:
+1- ireflv: se approprier (+)
+
+: L                
+
+SHIFT: L           
+
+REDUCE: L          
+S=[]                        B=[ décision,de, ..] Bx=le
+SHIFT: L           
+S=[décision]               B=[ de,déclarer, ..] Bx=le
+REDUCE: L          
+S=[]                        B=[ de,déclarer, ..] Bx=décision
+SHIFT: L           
+S=[de]                      B=[ déclarer,ouvertement, ..] Bx=décision
+REDUCE: L          
+S=[]                        B=[ déclarer,ouvertement, ..] Bx=de
+SHIFT: L           
+S=[déclarer]               B=[ ouvertement,l', ..] Bx=de
+REDUCE: L          
+S=[]                        B=[ ouvertement,l', ..] Bx=déclarer
+SHIFT: L           
+S=[ouvertement]             B=[ l',alliance, ..] Bx=déclarer
+REDUCE: L          
+S=[]                        B=[ l',alliance, ..] Bx=ouvertement
+SHIFT: L           
+S=[l']                      B=[ alliance,avec, ..] Bx=ouvertement
+REDUCE: L          
+S=[]                        B=[ alliance,avec, ..] Bx=le
+SHIFT: L           
+S=[alliance]                B=[ avec,les, ..] Bx=le
+REDUCE: L          
+S=[]                        B=[ avec,les, ..] Bx=alliance
+SHIFT: L           
+S=[avec]                    B=[ les,ennemis, ..] Bx=alliance
+REDUCE: L          
+S=[]                        B=[ les,ennemis, ..] Bx=avec
+SHIFT: L           
+S=[les]                     B=[ ennemis,de, ..] Bx=avec
+REDUCE: L          
+S=[]                        B=[ ennemis,de, ..] Bx=le
+SHIFT: L           
+S=[ennemis]                 B=[ de,la, ..] Bx=le
+REDUCE: L          
+S=[]                        B=[ de,la, ..] Bx=ennemi
+SHIFT: L           
+S=[de]                      B=[ la,cause, ..] Bx=ennemi
+REDUCE: L          
+S=[]                        B=[ la,cause, ..] Bx=de
+SHIFT: L           
+S=[la]                      B=[ cause,arabe, ..] Bx=de
+REDUCE: L          
+S=[]                        B=[ cause,arabe, ..] Bx=le
+SHIFT: L           
+S=[cause]                   B=[ arabe,et, ..] Bx=le
+REDUCE: L          
+S=[]                        B=[ arabe,et, ..] Bx=cause
+SHIFT: L           
+S=[arabe]                   B=[ et,musulmane, ..] Bx=cause
+REDUCE: L          
+S=[]                        B=[ et,musulmane, ..] Bx=arabe
+SHIFT: L           
+S=[et]                      B=[ musulmane,est, ..] Bx=arabe
+REDUCE: L          
+S=[]                        B=[ musulmane,est, ..] Bx=et
+SHIFT: L           
+S=[musulmane]               B=[ est,le, ..] Bx=et
+REDUCE: L          
+S=[]                        B=[ est,le, ..] Bx=musulman
+SHIFT: L           
+S=[est]                     B=[ le,dernier, ..] Bx=musulman
+REDUCE: L          
+S=[]                        B=[ le,dernier, ..] Bx=être
+SHIFT: L           
+S=[le]                      B=[ dernier,recours, ..] Bx=être
+REDUCE: L          
+S=[]                        B=[ dernier,recours, ..] Bx=le
+SHIFT: L           
+S=[dernier]                 B=[ recours,de, ..] Bx=le
+REDUCE: L          
+S=[]                        B=[ recours,de, ..] Bx=dernier
+SHIFT: L           
+S=[recours]                 B=[ de,le, ..] Bx=dernier
+REDUCE: L          
+S=[]                        B=[ de,le, ..] Bx=recours
+SHIFT: L           
+S=[de]                      B=[ le,gouvernement, ..] Bx=recours
+REDUCE: L          
+S=[]                        B=[ le,gouvernement, ..] Bx=de
+SHIFT: L           
+S=[le]                      B=[ gouvernement,de, ..] Bx=de
+REDUCE: L          
+S=[]                        B=[ gouvernement,de, ..] Bx=le
+SHIFT: L           
+S=[gouvernement]            B=[ de,rabat, ..] Bx=le
+REDUCE: L          
+S=[]                        B=[ de,rabat, ..] Bx=gouvernement
+SHIFT: L           
+S=[de]                      B=[ rabat,pour, ..] Bx=gouvernement
+REDUCE: L          
+S=[]                        B=[ rabat,pour, ..] Bx=de
+SHIFT: L           
+S=[rabat]                   B=[ pour,s', ..] Bx=de
+REDUCE: L          
+S=[]                        B=[ pour,s', ..] Bx=rabat
+SHIFT: L           
+S=[pour]                    B=[ s',approprier, ..] Bx=rabat
+REDUCE: L          
+S=[]                        B=[ s',approprier, ..] Bx=pour
+SHIFT: L           
+S=[s']                      B=[ approprier,le, ..] Bx=pour
+SHIFT: L           
+S=[s', approprier]          B=[ le,sahara, ..] Bx=pour
+MERGE: L           
+S=[[s', approprier]]        B=[ le,sahara, ..] Bx=pour
+SHIFT: L           
+S=[[s', approprier]le]      B=[ sahara,occidental, ..] Bx=pour
+REDUCE: L          
+S=[[s', approprier]]        B=[ sahara,occidental, ..] Bx=le
+SHIFT: L           
+S=[[s', approprier]sahara]  B=[ occidental,.,] Bx=le
+REDUCE: L          
+S=[[s', approprier]]        B=[ occidental,.,] Bx=sahara
+SHIFT: L           
+S=[[s', approprier]occidental] B=[ .,] Bx=sahara
+REDUCE: L          
+S=[[s', approprier]]        B=[ .,] Bx=occidental
+SHIFT: L           
+S=[[s', approprier].]       B=[ ] Bx=occidental
+REDUCE: L          
+S=[[s', approprier]]        B=[ ] Bx=.
+REDUCE: L          
+S=[]                        B=[ ] Bx=.
+6294- :: il fut en outre le héros de À l' heure zéro ( 1957 ) de hall bartlett , titre précurseur dont le scénario fut très fidèlement pastiché dans 1 **y** 1 **a** -t 1 **-il** un pilote dans l' avion ? 
+MWEs:
+1- id: y avoir il (+)
+
+: L                
+
+SHIFT: L           
+
+REDUCE: L          
+S=[]                        B=[ fut,en, ..] Bx=il
+SHIFT: L           
+S=[fut]                     B=[ en,outre, ..] Bx=il
+REDUCE: L          
+S=[]                        B=[ en,outre, ..] Bx=être
+SHIFT: L           
+S=[en]                      B=[ outre,le, ..] Bx=être
+REDUCE: L          
+S=[]                        B=[ outre,le, ..] Bx=en
+SHIFT: L           
+S=[outre]                   B=[ le,héros, ..] Bx=en
+REDUCE: L          
+S=[]                        B=[ le,héros, ..] Bx=outre
+SHIFT: L           
+S=[le]                      B=[ héros,de, ..] Bx=outre
+REDUCE: L          
+S=[]                        B=[ héros,de, ..] Bx=le
+SHIFT: L           
+S=[héros]                  B=[ de,À, ..] Bx=le
+REDUCE: L          
+S=[]                        B=[ de,À, ..] Bx=héros
+SHIFT: L           
+S=[de]                      B=[ À,l', ..] Bx=héros
+REDUCE: L          
+S=[]                        B=[ À,l', ..] Bx=de
+SHIFT: L           
+S=[À]                      B=[ l',heure, ..] Bx=de
+REDUCE: L          
+S=[]                        B=[ l',heure, ..] Bx=à
+SHIFT: L           
+S=[l']                      B=[ heure,zéro, ..] Bx=à
+REDUCE: L          
+S=[]                        B=[ heure,zéro, ..] Bx=le
+SHIFT: L           
+S=[heure]                   B=[ zéro,(, ..] Bx=le
+REDUCE: L          
+S=[]                        B=[ zéro,(, ..] Bx=heure
+SHIFT: L           
+S=[zéro]                   B=[ (,1957, ..] Bx=heure
+REDUCE: L          
+S=[]                        B=[ (,1957, ..] Bx=zéro
+SHIFT: L           
+S=[(]                       B=[ 1957,), ..] Bx=zéro
+REDUCE: L          
+S=[]                        B=[ 1957,), ..] Bx=(
+SHIFT: L           
+S=[1957]                    B=[ ),de, ..] Bx=(
+REDUCE: L          
+S=[]                        B=[ ),de, ..] Bx=1957
+SHIFT: L           
+S=[)]                       B=[ de,hall, ..] Bx=1957
+REDUCE: L          
+S=[]                        B=[ de,hall, ..] Bx=)
+SHIFT: L           
+S=[de]                      B=[ hall,bartlett, ..] Bx=)
+REDUCE: L          
+S=[]                        B=[ hall,bartlett, ..] Bx=de
+SHIFT: L           
+S=[hall]                    B=[ bartlett,,, ..] Bx=de
+REDUCE: L          
+S=[]                        B=[ bartlett,,, ..] Bx=hall
+SHIFT: L           
+S=[bartlett]                B=[ ,,titre, ..] Bx=hall
+REDUCE: L          
+S=[]                        B=[ ,,titre, ..] Bx=bartlett
+SHIFT: L           
+S=[,]                       B=[ titre,précurseur, ..] Bx=bartlett
+REDUCE: L          
+S=[]                        B=[ titre,précurseur, ..] Bx=,
+SHIFT: L           
+S=[titre]                   B=[ précurseur,dont, ..] Bx=,
+REDUCE: L          
+S=[]                        B=[ précurseur,dont, ..] Bx=titre
+SHIFT: L           
+S=[précurseur]             B=[ dont,le, ..] Bx=titre
+REDUCE: L          
+S=[]                        B=[ dont,le, ..] Bx=précurseur
+SHIFT: L           
+S=[dont]                    B=[ le,scénario, ..] Bx=précurseur
+REDUCE: L          
+S=[]                        B=[ le,scénario, ..] Bx=dont
+SHIFT: L           
+S=[le]                      B=[ scénario,fut, ..] Bx=dont
+REDUCE: L          
+S=[]                        B=[ scénario,fut, ..] Bx=le
+SHIFT: L           
+S=[scénario]               B=[ fut,très, ..] Bx=le
+REDUCE: L          
+S=[]                        B=[ fut,très, ..] Bx=scénario
+SHIFT: L           
+S=[fut]                     B=[ très,fidèlement, ..] Bx=scénario
+REDUCE: L          
+S=[]                        B=[ très,fidèlement, ..] Bx=être
+SHIFT: L           
+S=[très]                   B=[ fidèlement,pastiché, ..] Bx=être
+REDUCE: L          
+S=[]                        B=[ fidèlement,pastiché, ..] Bx=très
+SHIFT: L           
+S=[fidèlement]             B=[ pastiché,dans, ..] Bx=très
+REDUCE: L          
+S=[]                        B=[ pastiché,dans, ..] Bx=fidèlement
+SHIFT: L           
+S=[pastiché]               B=[ dans,y, ..] Bx=fidèlement
+REDUCE: L          
+S=[]                        B=[ dans,y, ..] Bx=pasticher
+SHIFT: L           
+S=[dans]                    B=[ y,a, ..] Bx=pasticher
+REDUCE: L          
+S=[]                        B=[ y,a, ..] Bx=dans
+SHIFT: L           
+S=[y]                       B=[ a,-t, ..] Bx=dans
+SHIFT: L           
+S=[y, a]                    B=[ -t,-il, ..] Bx=dans
+MERGE: L           
+S=[[y, a]]                  B=[ -t,-il, ..] Bx=dans
+SHIFT: L           
+S=[[y, a]-t]                B=[ -il,un, ..] Bx=dans
+REDUCE: L          
+S=[[y, a]]                  B=[ -il,un, ..] Bx=t
+SHIFT: L           
+S=[[y, a]-il]               B=[ un,pilote, ..] Bx=t
+MERGE: L           
+S=[[[y, a]-il]]             B=[ un,pilote, ..] Bx=t
+SHIFT: L           
+S=[[[y, a]-il]un]           B=[ pilote,dans, ..] Bx=t
+REDUCE: L          
+S=[[[y, a]-il]]             B=[ pilote,dans, ..] Bx=un
+SHIFT: L           
+S=[[[y, a]-il]pilote]       B=[ dans,l', ..] Bx=un
+REDUCE: L          
+S=[[[y, a]-il]]             B=[ dans,l', ..] Bx=pilote
+SHIFT: L           
+S=[[[y, a]-il]dans]         B=[ l',avion, ..] Bx=pilote
+REDUCE: L          
+S=[[[y, a]-il]]             B=[ l',avion, ..] Bx=dans
+SHIFT: L           
+S=[[[y, a]-il]l']           B=[ avion,?,] Bx=dans
+REDUCE: L          
+S=[[[y, a]-il]]             B=[ avion,?,] Bx=le
+SHIFT: L           
+S=[[[y, a]-il]avion]        B=[ ?,] Bx=le
+REDUCE: L          
+S=[[[y, a]-il]]             B=[ ?,] Bx=avion
+SHIFT: L           
+S=[[[y, a]-il]?]            B=[ ] Bx=avion
+REDUCE: L          
+S=[[[y, a]-il]]             B=[ ] Bx=?
+REDUCE: L          
+S=[]                        B=[ ] Bx=?
+3753- :: le rapport note néanmoins qu' « 3 **il** 3 **conviendrait** de 1 **s'** 1 **interroger** [ sur l' existence ] à le sein de le cabinet de le ministre d' une équipe dédiée à le traitement de situations fiscales individuelles [ qui ] nourrit la suspicion » et 2 **fait** par ailleurs 2 **état** d' une intervention de patrice de maistre auprès d' Éric woerth sur la situation d' un contribuable à lequel patrice de maistre est associé tout en restant toutefois silencieux sur son identité . 
+MWEs:
+3- id: il convenir (+)
+1- ireflv: se interroger (+)
+2- id: faire état (+)
+
+: L                
+
+SHIFT: L           
+
+REDUCE: L          
+S=[]                        B=[ rapport,note, ..] Bx=le
+SHIFT: L           
+S=[rapport]                 B=[ note,néanmoins, ..] Bx=le
+REDUCE: L          
+S=[]                        B=[ note,néanmoins, ..] Bx=rapport
+SHIFT: L           
+S=[note]                    B=[ néanmoins,qu', ..] Bx=rapport
+REDUCE: L          
+S=[]                        B=[ néanmoins,qu', ..] Bx=noter
+SHIFT: L           
+S=[néanmoins]              B=[ qu',«, ..] Bx=noter
+REDUCE: L          
+S=[]                        B=[ qu',«, ..] Bx=néanmoins
+SHIFT: L           
+S=[qu']                     B=[ «,il, ..] Bx=néanmoins
+REDUCE: L          
+S=[]                        B=[ «,il, ..] Bx=que
+SHIFT: L           
+S=[«]                      B=[ il,conviendrait, ..] Bx=que
+REDUCE: L          
+S=[]                        B=[ il,conviendrait, ..] Bx=«
+SHIFT: L           
+S=[il]                      B=[ conviendrait,de, ..] Bx=«
+SHIFT: L           
+S=[il, conviendrait]        B=[ de,s', ..] Bx=«
+MERGE: L           
+S=[[il, conviendrait]]      B=[ de,s', ..] Bx=«
+SHIFT: L           
+S=[[il, conviendrait]de]    B=[ s',interroger, ..] Bx=«
+REDUCE: L          
+S=[[il, conviendrait]]      B=[ s',interroger, ..] Bx=de
+SHIFT: L           
+S=[[il, conviendrait]s']    B=[ interroger,[, ..] Bx=de
+SHIFT: L           
+S=[[il, conviendrait]s', interroger] B=[ [,sur, ..] Bx=de
+MERGE: L           
+S=[[il, conviendrait][s', interroger]] B=[ [,sur, ..] Bx=de
+MARK_AS_IREFLV: L  
+S=[[[il, conviendrait][s', interroger]]] B=[ [,sur, ..] Bx=de
+SHIFT: L           
+S=[[[il, conviendrait][s', interroger]][] B=[ sur,l', ..] Bx=de
+REDUCE: L          
+S=[[[il, conviendrait][s', interroger]]] B=[ sur,l', ..] Bx=[
+SHIFT: L           
+S=[[[il, conviendrait][s', interroger]]sur] B=[ l',existence, ..] Bx=[
+REDUCE: L          
+S=[[[il, conviendrait][s', interroger]]] B=[ l',existence, ..] Bx=sur
+SHIFT: L           
+S=[[[il, conviendrait][s', interroger]]l'] B=[ existence,], ..] Bx=sur
+REDUCE: L          
+S=[[[il, conviendrait][s', interroger]]] B=[ existence,], ..] Bx=le
+SHIFT: L           
+S=[[[il, conviendrait][s', interroger]]existence] B=[ ],à, ..] Bx=le
+REDUCE: L          
+S=[[[il, conviendrait][s', interroger]]] B=[ ],à, ..] Bx=existence
+SHIFT: L           
+S=[[[il, conviendrait][s', interroger]]]] B=[ à,le, ..] Bx=existence
+REDUCE: L          
+S=[[[il, conviendrait][s', interroger]]] B=[ à,le, ..] Bx=]
+SHIFT: L           
+S=[[[il, conviendrait][s', interroger]]à] B=[ le,sein, ..] Bx=]
+REDUCE: L          
+S=[[[il, conviendrait][s', interroger]]] B=[ le,sein, ..] Bx=à
+SHIFT: L           
+S=[[[il, conviendrait][s', interroger]]le] B=[ sein,de, ..] Bx=à
+REDUCE: L          
+S=[[[il, conviendrait][s', interroger]]] B=[ sein,de, ..] Bx=le
+SHIFT: L           
+S=[[[il, conviendrait][s', interroger]]sein] B=[ de,le, ..] Bx=le
+REDUCE: L          
+S=[[[il, conviendrait][s', interroger]]] B=[ de,le, ..] Bx=sein
+SHIFT: L           
+S=[[[il, conviendrait][s', interroger]]de] B=[ le,cabinet, ..] Bx=sein
+REDUCE: L          
+S=[[[il, conviendrait][s', interroger]]] B=[ le,cabinet, ..] Bx=de
+SHIFT: L           
+S=[[[il, conviendrait][s', interroger]]le] B=[ cabinet,de, ..] Bx=de
+REDUCE: L          
+S=[[[il, conviendrait][s', interroger]]] B=[ cabinet,de, ..] Bx=le
+SHIFT: L           
+S=[[[il, conviendrait][s', interroger]]cabinet] B=[ de,le, ..] Bx=le
+REDUCE: L          
+S=[[[il, conviendrait][s', interroger]]] B=[ de,le, ..] Bx=cabinet
+SHIFT: L           
+S=[[[il, conviendrait][s', interroger]]de] B=[ le,ministre, ..] Bx=cabinet
+REDUCE: L          
+S=[[[il, conviendrait][s', interroger]]] B=[ le,ministre, ..] Bx=de
+SHIFT: L           
+S=[[[il, conviendrait][s', interroger]]le] B=[ ministre,d', ..] Bx=de
+REDUCE: L          
+S=[[[il, conviendrait][s', interroger]]] B=[ ministre,d', ..] Bx=le
+SHIFT: L           
+S=[[[il, conviendrait][s', interroger]]ministre] B=[ d',une, ..] Bx=le
+REDUCE: L          
+S=[[[il, conviendrait][s', interroger]]] B=[ d',une, ..] Bx=ministre
+SHIFT: L           
+S=[[[il, conviendrait][s', interroger]]d'] B=[ une,équipe, ..] Bx=ministre
+REDUCE: L          
+S=[[[il, conviendrait][s', interroger]]] B=[ une,équipe, ..] Bx=de
+SHIFT: L           
+S=[[[il, conviendrait][s', interroger]]une] B=[ équipe,dédiée, ..] Bx=de
+REDUCE: L          
+S=[[[il, conviendrait][s', interroger]]] B=[ équipe,dédiée, ..] Bx=un
+SHIFT: L           
+S=[[[il, conviendrait][s', interroger]]équipe] B=[ dédiée,à, ..] Bx=un
+REDUCE: L          
+S=[[[il, conviendrait][s', interroger]]] B=[ dédiée,à, ..] Bx=équipe
+SHIFT: L           
+S=[[[il, conviendrait][s', interroger]]dédiée] B=[ à,le, ..] Bx=équipe
+REDUCE: L          
+S=[[[il, conviendrait][s', interroger]]] B=[ à,le, ..] Bx=dédier
+SHIFT: L           
+S=[[[il, conviendrait][s', interroger]]à] B=[ le,traitement, ..] Bx=dédier
+REDUCE: L          
+S=[[[il, conviendrait][s', interroger]]] B=[ le,traitement, ..] Bx=à
+SHIFT: L           
+S=[[[il, conviendrait][s', interroger]]le] B=[ traitement,de, ..] Bx=à
+REDUCE: L          
+S=[[[il, conviendrait][s', interroger]]] B=[ traitement,de, ..] Bx=le
+SHIFT: L           
+S=[[[il, conviendrait][s', interroger]]traitement] B=[ de,situations, ..] Bx=le
+REDUCE: L          
+S=[[[il, conviendrait][s', interroger]]] B=[ de,situations, ..] Bx=traitement
+SHIFT: L           
+S=[[[il, conviendrait][s', interroger]]de] B=[ situations,fiscales, ..] Bx=traitement
+REDUCE: L          
+S=[[[il, conviendrait][s', interroger]]] B=[ situations,fiscales, ..] Bx=de
+SHIFT: L           
+S=[[[il, conviendrait][s', interroger]]situations] B=[ fiscales,individuelles, ..] Bx=de
+REDUCE: L          
+S=[[[il, conviendrait][s', interroger]]] B=[ fiscales,individuelles, ..] Bx=situation
+SHIFT: L           
+S=[[[il, conviendrait][s', interroger]]fiscales] B=[ individuelles,[, ..] Bx=situation
+REDUCE: L          
+S=[[[il, conviendrait][s', interroger]]] B=[ individuelles,[, ..] Bx=fiscal
+SHIFT: L           
+S=[[[il, conviendrait][s', interroger]]individuelles] B=[ [,qui, ..] Bx=fiscal
+REDUCE: L          
+S=[[[il, conviendrait][s', interroger]]] B=[ [,qui, ..] Bx=individuel
+SHIFT: L           
+S=[[[il, conviendrait][s', interroger]][] B=[ qui,], ..] Bx=individuel
+REDUCE: L          
+S=[[[il, conviendrait][s', interroger]]] B=[ qui,], ..] Bx=[
+SHIFT: L           
+S=[[[il, conviendrait][s', interroger]]qui] B=[ ],nourrit, ..] Bx=[
+REDUCE: L          
+S=[[[il, conviendrait][s', interroger]]] B=[ ],nourrit, ..] Bx=qui
+SHIFT: L           
+S=[[[il, conviendrait][s', interroger]]]] B=[ nourrit,la, ..] Bx=qui
+REDUCE: L          
+S=[[[il, conviendrait][s', interroger]]] B=[ nourrit,la, ..] Bx=]
+SHIFT: L           
+S=[[[il, conviendrait][s', interroger]]nourrit] B=[ la,suspicion, ..] Bx=]
+REDUCE: L          
+S=[[[il, conviendrait][s', interroger]]] B=[ la,suspicion, ..] Bx=nourrir
+SHIFT: L           
+S=[[[il, conviendrait][s', interroger]]la] B=[ suspicion,», ..] Bx=nourrir
+REDUCE: L          
+S=[[[il, conviendrait][s', interroger]]] B=[ suspicion,», ..] Bx=le
+SHIFT: L           
+S=[[[il, conviendrait][s', interroger]]suspicion] B=[ »,et, ..] Bx=le
+REDUCE: L          
+S=[[[il, conviendrait][s', interroger]]] B=[ »,et, ..] Bx=suspicion
+SHIFT: L           
+S=[[[il, conviendrait][s', interroger]]»] B=[ et,fait, ..] Bx=suspicion
+REDUCE: L          
+S=[[[il, conviendrait][s', interroger]]] B=[ et,fait, ..] Bx=»
+SHIFT: L           
+S=[[[il, conviendrait][s', interroger]]et] B=[ fait,par, ..] Bx=»
+REDUCE: L          
+S=[[[il, conviendrait][s', interroger]]] B=[ fait,par, ..] Bx=et
+SHIFT: L           
+S=[[[il, conviendrait][s', interroger]]fait] B=[ par,ailleurs, ..] Bx=et
+SHIFT: L           
+S=[[[il, conviendrait][s', interroger]]fait, par] B=[ ailleurs,état, ..] Bx=et
+REDUCE: L          
+S=[[[il, conviendrait][s', interroger]]fait] B=[ ailleurs,état, ..] Bx=par
+SHIFT: L           
+S=[[[il, conviendrait][s', interroger]]fait, ailleurs] B=[ état,d', ..] Bx=par
+REDUCE: L          
+S=[[[il, conviendrait][s', interroger]]fait] B=[ état,d', ..] Bx=ailleurs
+SHIFT: L           
+S=[[[il, conviendrait][s', interroger]]fait, état] B=[ d',une, ..] Bx=ailleurs
+MERGE: L           
+S=[[[il, conviendrait][s', interroger]][fait, état]] B=[ d',une, ..] Bx=ailleurs
+MARK_AS_ID: L      
+S=[[[[il, conviendrait][s', interroger]][fait, état]]] B=[ d',une, ..] Bx=ailleurs
+SHIFT: L           
+S=[[[[il, conviendrait][s', interroger]][fait, état]]d'] B=[ une,intervention, ..] Bx=ailleurs
+REDUCE: L          
+S=[[[[il, conviendrait][s', interroger]][fait, état]]] B=[ une,intervention, ..] Bx=de
+SHIFT: L           
+S=[[[[il, conviendrait][s', interroger]][fait, état]]une] B=[ intervention,de, ..] Bx=de
+REDUCE: L          
+S=[[[[il, conviendrait][s', interroger]][fait, état]]] B=[ intervention,de, ..] Bx=un
+SHIFT: L           
+S=[[[[il, conviendrait][s', interroger]][fait, état]]intervention] B=[ de,patrice, ..] Bx=un
+REDUCE: L          
+S=[[[[il, conviendrait][s', interroger]][fait, état]]] B=[ de,patrice, ..] Bx=intervention
+SHIFT: L           
+S=[[[[il, conviendrait][s', interroger]][fait, état]]de] B=[ patrice,de, ..] Bx=intervention
+REDUCE: L          
+S=[[[[il, conviendrait][s', interroger]][fait, état]]] B=[ patrice,de, ..] Bx=de
+SHIFT: L           
+S=[[[[il, conviendrait][s', interroger]][fait, état]]patrice] B=[ de,maistre, ..] Bx=de
+REDUCE: L          
+S=[[[[il, conviendrait][s', interroger]][fait, état]]] B=[ de,maistre, ..] Bx=patrice
+SHIFT: L           
+S=[[[[il, conviendrait][s', interroger]][fait, état]]de] B=[ maistre,auprès, ..] Bx=patrice
+REDUCE: L          
+S=[[[[il, conviendrait][s', interroger]][fait, état]]] B=[ maistre,auprès, ..] Bx=de
+SHIFT: L           
+S=[[[[il, conviendrait][s', interroger]][fait, état]]maistre] B=[ auprès,d', ..] Bx=de
+REDUCE: L          
+S=[[[[il, conviendrait][s', interroger]][fait, état]]] B=[ auprès,d', ..] Bx=maistre
+SHIFT: L           
+S=[[[[il, conviendrait][s', interroger]][fait, état]]auprès] B=[ d',Éric, ..] Bx=maistre
+REDUCE: L          
+S=[[[[il, conviendrait][s', interroger]][fait, état]]] B=[ d',Éric, ..] Bx=auprès
+SHIFT: L           
+S=[[[[il, conviendrait][s', interroger]][fait, état]]d'] B=[ Éric,woerth, ..] Bx=auprès
+REDUCE: L          
+S=[[[[il, conviendrait][s', interroger]][fait, état]]] B=[ Éric,woerth, ..] Bx=de
+SHIFT: L           
+S=[[[[il, conviendrait][s', interroger]][fait, état]]Éric] B=[ woerth,sur, ..] Bx=de
+REDUCE: L          
+S=[[[[il, conviendrait][s', interroger]][fait, état]]] B=[ woerth,sur, ..] Bx=Éric
+SHIFT: L           
+S=[[[[il, conviendrait][s', interroger]][fait, état]]woerth] B=[ sur,la, ..] Bx=Éric
+REDUCE: L          
+S=[[[[il, conviendrait][s', interroger]][fait, état]]] B=[ sur,la, ..] Bx=woerth
+SHIFT: L           
+S=[[[[il, conviendrait][s', interroger]][fait, état]]sur] B=[ la,situation, ..] Bx=woerth
+REDUCE: L          
+S=[[[[il, conviendrait][s', interroger]][fait, état]]] B=[ la,situation, ..] Bx=sur
+SHIFT: L           
+S=[[[[il, conviendrait][s', interroger]][fait, état]]la] B=[ situation,d', ..] Bx=sur
+REDUCE: L          
+S=[[[[il, conviendrait][s', interroger]][fait, état]]] B=[ situation,d', ..] Bx=le
+SHIFT: L           
+S=[[[[il, conviendrait][s', interroger]][fait, état]]situation] B=[ d',un, ..] Bx=le
+REDUCE: L          
+S=[[[[il, conviendrait][s', interroger]][fait, état]]] B=[ d',un, ..] Bx=situation
+SHIFT: L           
+S=[[[[il, conviendrait][s', interroger]][fait, état]]d'] B=[ un,contribuable, ..] Bx=situation
+REDUCE: L          
+S=[[[[il, conviendrait][s', interroger]][fait, état]]] B=[ un,contribuable, ..] Bx=de
+SHIFT: L           
+S=[[[[il, conviendrait][s', interroger]][fait, état]]un] B=[ contribuable,à, ..] Bx=de
+REDUCE: L          
+S=[[[[il, conviendrait][s', interroger]][fait, état]]] B=[ contribuable,à, ..] Bx=un
+SHIFT: L           
+S=[[[[il, conviendrait][s', interroger]][fait, état]]contribuable] B=[ à,lequel, ..] Bx=un
+REDUCE: L          
+S=[[[[il, conviendrait][s', interroger]][fait, état]]] B=[ à,lequel, ..] Bx=contribuable
+SHIFT: L           
+S=[[[[il, conviendrait][s', interroger]][fait, état]]à] B=[ lequel,patrice, ..] Bx=contribuable
+REDUCE: L          
+S=[[[[il, conviendrait][s', interroger]][fait, état]]] B=[ lequel,patrice, ..] Bx=à
+SHIFT: L           
+S=[[[[il, conviendrait][s', interroger]][fait, état]]lequel] B=[ patrice,de, ..] Bx=à
+REDUCE: L          
+S=[[[[il, conviendrait][s', interroger]][fait, état]]] B=[ patrice,de, ..] Bx=lequel
+SHIFT: L           
+S=[[[[il, conviendrait][s', interroger]][fait, état]]patrice] B=[ de,maistre, ..] Bx=lequel
+REDUCE: L          
+S=[[[[il, conviendrait][s', interroger]][fait, état]]] B=[ de,maistre, ..] Bx=patrice
+SHIFT: L           
+S=[[[[il, conviendrait][s', interroger]][fait, état]]de] B=[ maistre,est, ..] Bx=patrice
+REDUCE: L          
+S=[[[[il, conviendrait][s', interroger]][fait, état]]] B=[ maistre,est, ..] Bx=de
+SHIFT: L           
+S=[[[[il, conviendrait][s', interroger]][fait, état]]maistre] B=[ est,associé, ..] Bx=de
+REDUCE: L          
+S=[[[[il, conviendrait][s', interroger]][fait, état]]] B=[ est,associé, ..] Bx=maistre
+SHIFT: L           
+S=[[[[il, conviendrait][s', interroger]][fait, état]]est] B=[ associé,tout, ..] Bx=maistre
+REDUCE: L          
+S=[[[[il, conviendrait][s', interroger]][fait, état]]] B=[ associé,tout, ..] Bx=être
+SHIFT: L           
+S=[[[[il, conviendrait][s', interroger]][fait, état]]associé] B=[ tout,en, ..] Bx=être
+REDUCE: L          
+S=[[[[il, conviendrait][s', interroger]][fait, état]]] B=[ tout,en, ..] Bx=associer
+SHIFT: L           
+S=[[[[il, conviendrait][s', interroger]][fait, état]]tout] B=[ en,restant, ..] Bx=associer
+REDUCE: L          
+S=[[[[il, conviendrait][s', interroger]][fait, état]]] B=[ en,restant, ..] Bx=tout
+SHIFT: L           
+S=[[[[il, conviendrait][s', interroger]][fait, état]]en] B=[ restant,toutefois, ..] Bx=tout
+REDUCE: L          
+S=[[[[il, conviendrait][s', interroger]][fait, état]]] B=[ restant,toutefois, ..] Bx=en
+SHIFT: L           
+S=[[[[il, conviendrait][s', interroger]][fait, état]]restant] B=[ toutefois,silencieux, ..] Bx=en
+REDUCE: L          
+S=[[[[il, conviendrait][s', interroger]][fait, état]]] B=[ toutefois,silencieux, ..] Bx=rester
+SHIFT: L           
+S=[[[[il, conviendrait][s', interroger]][fait, état]]toutefois] B=[ silencieux,sur, ..] Bx=rester
+REDUCE: L          
+S=[[[[il, conviendrait][s', interroger]][fait, état]]] B=[ silencieux,sur, ..] Bx=toutefois
+SHIFT: L           
+S=[[[[il, conviendrait][s', interroger]][fait, état]]silencieux] B=[ sur,son, ..] Bx=toutefois
+REDUCE: L          
+S=[[[[il, conviendrait][s', interroger]][fait, état]]] B=[ sur,son, ..] Bx=silencieux
+SHIFT: L           
+S=[[[[il, conviendrait][s', interroger]][fait, état]]sur] B=[ son,identité, ..] Bx=silencieux
+REDUCE: L          
+S=[[[[il, conviendrait][s', interroger]][fait, état]]] B=[ son,identité, ..] Bx=sur
+SHIFT: L           
+S=[[[[il, conviendrait][s', interroger]][fait, état]]son] B=[ identité,.,] Bx=sur
+REDUCE: L          
+S=[[[[il, conviendrait][s', interroger]][fait, état]]] B=[ identité,.,] Bx=son
+SHIFT: L           
+S=[[[[il, conviendrait][s', interroger]][fait, état]]identité] B=[ .,] Bx=son
+REDUCE: L          
+S=[[[[il, conviendrait][s', interroger]][fait, état]]] B=[ .,] Bx=identité
+SHIFT: L           
+S=[[[[il, conviendrait][s', interroger]][fait, état]].] B=[ ] Bx=identité
+REDUCE: L          
+S=[[[[il, conviendrait][s', interroger]][fait, état]]] B=[ ] Bx=.
+REDUCE: L          
+S=[]                        B=[ ] Bx=.
+14800- :: l' avènement dans le nord de la chine , particulièrement à partir de le ive siècle , de royaumes dits dynasties de le nord fondés par des non-hans ou d' anciens hans « barbarisés » , moins attachés à le confucianisme ou à le taoïsme que les royaumes de le sud , 1 **donna** à des moines l' 1 **occasion** de devenir conseillers - voire magiciens - à le service de les souverains , parfois considérés comme des bodhisattvas . 
+MWEs:
+1- lvc: donner occasion (+)
+
+: L                
+
+SHIFT: L           
+
+REDUCE: L          
+S=[]                        B=[ avènement,dans, ..] Bx=le
+SHIFT: L           
+S=[avènement]              B=[ dans,le, ..] Bx=le
+REDUCE: L          
+S=[]                        B=[ dans,le, ..] Bx=avènement
+SHIFT: L           
+S=[dans]                    B=[ le,nord, ..] Bx=avènement
+REDUCE: L          
+S=[]                        B=[ le,nord, ..] Bx=dans
+SHIFT: L           
+S=[le]                      B=[ nord,de, ..] Bx=dans
+REDUCE: L          
+S=[]                        B=[ nord,de, ..] Bx=le
+SHIFT: L           
+S=[nord]                    B=[ de,la, ..] Bx=le
+REDUCE: L          
+S=[]                        B=[ de,la, ..] Bx=nord
+SHIFT: L           
+S=[de]                      B=[ la,chine, ..] Bx=nord
+REDUCE: L          
+S=[]                        B=[ la,chine, ..] Bx=de
+SHIFT: L           
+S=[la]                      B=[ chine,,, ..] Bx=de
+REDUCE: L          
+S=[]                        B=[ chine,,, ..] Bx=le
+SHIFT: L           
+S=[chine]                   B=[ ,,particulièrement, ..] Bx=le
+REDUCE: L          
+S=[]                        B=[ ,,particulièrement, ..] Bx=chine
+SHIFT: L           
+S=[,]                       B=[ particulièrement,à, ..] Bx=chine
+REDUCE: L          
+S=[]                        B=[ particulièrement,à, ..] Bx=,
+SHIFT: L           
+S=[particulièrement]       B=[ à,partir, ..] Bx=,
+REDUCE: L          
+S=[]                        B=[ à,partir, ..] Bx=particulièrement
+SHIFT: L           
+S=[à]                      B=[ partir,de, ..] Bx=particulièrement
+REDUCE: L          
+S=[]                        B=[ partir,de, ..] Bx=à
+SHIFT: L           
+S=[partir]                  B=[ de,le, ..] Bx=à
+REDUCE: L          
+S=[]                        B=[ de,le, ..] Bx=partir
+SHIFT: L           
+S=[de]                      B=[ le,ive, ..] Bx=partir
+REDUCE: L          
+S=[]                        B=[ le,ive, ..] Bx=de
+SHIFT: L           
+S=[le]                      B=[ ive,siècle, ..] Bx=de
+REDUCE: L          
+S=[]                        B=[ ive,siècle, ..] Bx=le
+SHIFT: L           
+S=[ive]                     B=[ siècle,,, ..] Bx=le
+REDUCE: L          
+S=[]                        B=[ siècle,,, ..] Bx=ive
+SHIFT: L           
+S=[siècle]                 B=[ ,,de, ..] Bx=ive
+REDUCE: L          
+S=[]                        B=[ ,,de, ..] Bx=siècle
+SHIFT: L           
+S=[,]                       B=[ de,royaumes, ..] Bx=siècle
+REDUCE: L          
+S=[]                        B=[ de,royaumes, ..] Bx=,
+SHIFT: L           
+S=[de]                      B=[ royaumes,dits, ..] Bx=,
+REDUCE: L          
+S=[]                        B=[ royaumes,dits, ..] Bx=de
+SHIFT: L           
+S=[royaumes]                B=[ dits,dynasties, ..] Bx=de
+REDUCE: L          
+S=[]                        B=[ dits,dynasties, ..] Bx=royaume
+SHIFT: L           
+S=[dits]                    B=[ dynasties,de, ..] Bx=royaume
+REDUCE: L          
+S=[]                        B=[ dynasties,de, ..] Bx=dire
+SHIFT: L           
+S=[dynasties]               B=[ de,le, ..] Bx=dire
+REDUCE: L          
+S=[]                        B=[ de,le, ..] Bx=dynastie
+SHIFT: L           
+S=[de]                      B=[ le,nord, ..] Bx=dynastie
+REDUCE: L          
+S=[]                        B=[ le,nord, ..] Bx=de
+SHIFT: L           
+S=[le]                      B=[ nord,fondés, ..] Bx=de
+REDUCE: L          
+S=[]                        B=[ nord,fondés, ..] Bx=le
+SHIFT: L           
+S=[nord]                    B=[ fondés,par, ..] Bx=le
+REDUCE: L          
+S=[]                        B=[ fondés,par, ..] Bx=nord
+SHIFT: L           
+S=[fondés]                 B=[ par,des, ..] Bx=nord
+REDUCE: L          
+S=[]                        B=[ par,des, ..] Bx=fonder
+SHIFT: L           
+S=[par]                     B=[ des,non-hans, ..] Bx=fonder
+REDUCE: L          
+S=[]                        B=[ des,non-hans, ..] Bx=par
+SHIFT: L           
+S=[des]                     B=[ non-hans,ou, ..] Bx=par
+REDUCE: L          
+S=[]                        B=[ non-hans,ou, ..] Bx=un
+SHIFT: L           
+S=[non-hans]                B=[ ou,d', ..] Bx=un
+REDUCE: L          
+S=[]                        B=[ ou,d', ..] Bx=non-hans
+SHIFT: L           
+S=[ou]                      B=[ d',anciens, ..] Bx=non-hans
+REDUCE: L          
+S=[]                        B=[ d',anciens, ..] Bx=ou
+SHIFT: L           
+S=[d']                      B=[ anciens,hans, ..] Bx=ou
+REDUCE: L          
+S=[]                        B=[ anciens,hans, ..] Bx=un
+SHIFT: L           
+S=[anciens]                 B=[ hans,«, ..] Bx=un
+REDUCE: L          
+S=[]                        B=[ hans,«, ..] Bx=ancien
+SHIFT: L           
+S=[hans]                    B=[ «,barbarisés, ..] Bx=ancien
+REDUCE: L          
+S=[]                        B=[ «,barbarisés, ..] Bx=hans
+SHIFT: L           
+S=[«]                      B=[ barbarisés,», ..] Bx=hans
+REDUCE: L          
+S=[]                        B=[ barbarisés,», ..] Bx=«
+SHIFT: L           
+S=[barbarisés]             B=[ »,,, ..] Bx=«
+REDUCE: L          
+S=[]                        B=[ »,,, ..] Bx=barbariser
+SHIFT: L           
+S=[»]                      B=[ ,,moins, ..] Bx=barbariser
+REDUCE: L          
+S=[]                        B=[ ,,moins, ..] Bx=»
+SHIFT: L           
+S=[,]                       B=[ moins,attachés, ..] Bx=»
+REDUCE: L          
+S=[]                        B=[ moins,attachés, ..] Bx=,
+SHIFT: L           
+S=[moins]                   B=[ attachés,à, ..] Bx=,
+REDUCE: L          
+S=[]                        B=[ attachés,à, ..] Bx=moins
+SHIFT: L           
+S=[attachés]               B=[ à,le, ..] Bx=moins
+REDUCE: L          
+S=[]                        B=[ à,le, ..] Bx=attacher
+SHIFT: L           
+S=[à]                      B=[ le,confucianisme, ..] Bx=attacher
+REDUCE: L          
+S=[]                        B=[ le,confucianisme, ..] Bx=à
+SHIFT: L           
+S=[le]                      B=[ confucianisme,ou, ..] Bx=à
+REDUCE: L          
+S=[]                        B=[ confucianisme,ou, ..] Bx=le
+SHIFT: L           
+S=[confucianisme]           B=[ ou,à, ..] Bx=le
+REDUCE: L          
+S=[]                        B=[ ou,à, ..] Bx=confucianisme
+SHIFT: L           
+S=[ou]                      B=[ à,le, ..] Bx=confucianisme
+REDUCE: L          
+S=[]                        B=[ à,le, ..] Bx=ou
+SHIFT: L           
+S=[à]                      B=[ le,taoïsme, ..] Bx=ou
+REDUCE: L          
+S=[]                        B=[ le,taoïsme, ..] Bx=à
+SHIFT: L           
+S=[le]                      B=[ taoïsme,que, ..] Bx=à
+REDUCE: L          
+S=[]                        B=[ taoïsme,que, ..] Bx=le
+SHIFT: L           
+S=[taoïsme]                B=[ que,les, ..] Bx=le
+REDUCE: L          
+S=[]                        B=[ que,les, ..] Bx=taoïsme
+SHIFT: L           
+S=[que]                     B=[ les,royaumes, ..] Bx=taoïsme
+REDUCE: L          
+S=[]                        B=[ les,royaumes, ..] Bx=que
+SHIFT: L           
+S=[les]                     B=[ royaumes,de, ..] Bx=que
+REDUCE: L          
+S=[]                        B=[ royaumes,de, ..] Bx=le
+SHIFT: L           
+S=[royaumes]                B=[ de,le, ..] Bx=le
+REDUCE: L          
+S=[]                        B=[ de,le, ..] Bx=royaume
+SHIFT: L           
+S=[de]                      B=[ le,sud, ..] Bx=royaume
+REDUCE: L          
+S=[]                        B=[ le,sud, ..] Bx=de
+SHIFT: L           
+S=[le]                      B=[ sud,,, ..] Bx=de
+REDUCE: L          
+S=[]                        B=[ sud,,, ..] Bx=le
+SHIFT: L           
+S=[sud]                     B=[ ,,donna, ..] Bx=le
+REDUCE: L          
+S=[]                        B=[ ,,donna, ..] Bx=sud
+SHIFT: L           
+S=[,]                       B=[ donna,à, ..] Bx=sud
+REDUCE: L          
+S=[]                        B=[ donna,à, ..] Bx=,
+SHIFT: L           
+S=[donna]                   B=[ à,des, ..] Bx=,
+SHIFT: L           
+S=[donna, à]               B=[ des,moines, ..] Bx=,
+REDUCE: L          
+S=[donna]                   B=[ des,moines, ..] Bx=à
+SHIFT: L           
+S=[donna, des]              B=[ moines,l', ..] Bx=à
+REDUCE: L          
+S=[donna]                   B=[ moines,l', ..] Bx=un
+SHIFT: L           
+S=[donna, moines]           B=[ l',occasion, ..] Bx=un
+REDUCE: L          
+S=[donna]                   B=[ l',occasion, ..] Bx=moine
+SHIFT: L           
+S=[donna, l']               B=[ occasion,de, ..] Bx=moine
+REDUCE: L          
+S=[donna]                   B=[ occasion,de, ..] Bx=le
+SHIFT: L           
+S=[donna, occasion]         B=[ de,devenir, ..] Bx=le
+MERGE: L           
+S=[[donna, occasion]]       B=[ de,devenir, ..] Bx=le
+SHIFT: L           
+S=[[donna, occasion]de]     B=[ devenir,conseillers, ..] Bx=le
+REDUCE: L          
+S=[[donna, occasion]]       B=[ devenir,conseillers, ..] Bx=de
+SHIFT: L           
+S=[[donna, occasion]devenir] B=[ conseillers,-, ..] Bx=de
+REDUCE: L          
+S=[[donna, occasion]]       B=[ conseillers,-, ..] Bx=devenir
+SHIFT: L           
+S=[[donna, occasion]conseillers] B=[ -,voire, ..] Bx=devenir
+REDUCE: L          
+S=[[donna, occasion]]       B=[ -,voire, ..] Bx=conseiller
+SHIFT: L           
+S=[[donna, occasion]-]      B=[ voire,magiciens, ..] Bx=conseiller
+REDUCE: L          
+S=[[donna, occasion]]       B=[ voire,magiciens, ..] Bx=-
+SHIFT: L           
+S=[[donna, occasion]voire]  B=[ magiciens,-, ..] Bx=-
+REDUCE: L          
+S=[[donna, occasion]]       B=[ magiciens,-, ..] Bx=voire
+SHIFT: L           
+S=[[donna, occasion]magiciens] B=[ -,à, ..] Bx=voire
+REDUCE: L          
+S=[[donna, occasion]]       B=[ -,à, ..] Bx=magicien
+SHIFT: L           
+S=[[donna, occasion]-]      B=[ à,le, ..] Bx=magicien
+REDUCE: L          
+S=[[donna, occasion]]       B=[ à,le, ..] Bx=-
+SHIFT: L           
+S=[[donna, occasion]à]     B=[ le,service, ..] Bx=-
+REDUCE: L          
+S=[[donna, occasion]]       B=[ le,service, ..] Bx=à
+SHIFT: L           
+S=[[donna, occasion]le]     B=[ service,de, ..] Bx=à
+REDUCE: L          
+S=[[donna, occasion]]       B=[ service,de, ..] Bx=le
+SHIFT: L           
+S=[[donna, occasion]service] B=[ de,les, ..] Bx=le
+REDUCE: L          
+S=[[donna, occasion]]       B=[ de,les, ..] Bx=service
+SHIFT: L           
+S=[[donna, occasion]de]     B=[ les,souverains, ..] Bx=service
+REDUCE: L          
+S=[[donna, occasion]]       B=[ les,souverains, ..] Bx=de
+SHIFT: L           
+S=[[donna, occasion]les]    B=[ souverains,,, ..] Bx=de
+REDUCE: L          
+S=[[donna, occasion]]       B=[ souverains,,, ..] Bx=le
+SHIFT: L           
+S=[[donna, occasion]souverains] B=[ ,,parfois, ..] Bx=le
+REDUCE: L          
+S=[[donna, occasion]]       B=[ ,,parfois, ..] Bx=souverain
+SHIFT: L           
+S=[[donna, occasion],]      B=[ parfois,considérés, ..] Bx=souverain
+REDUCE: L          
+S=[[donna, occasion]]       B=[ parfois,considérés, ..] Bx=,
+SHIFT: L           
+S=[[donna, occasion]parfois] B=[ considérés,comme, ..] Bx=,
+REDUCE: L          
+S=[[donna, occasion]]       B=[ considérés,comme, ..] Bx=parfois
+SHIFT: L           
+S=[[donna, occasion]considérés] B=[ comme,des, ..] Bx=parfois
+REDUCE: L          
+S=[[donna, occasion]]       B=[ comme,des, ..] Bx=considérer
+SHIFT: L           
+S=[[donna, occasion]comme]  B=[ des,bodhisattvas, ..] Bx=considérer
+REDUCE: L          
+S=[[donna, occasion]]       B=[ des,bodhisattvas, ..] Bx=comme
+SHIFT: L           
+S=[[donna, occasion]des]    B=[ bodhisattvas,.,] Bx=comme
+REDUCE: L          
+S=[[donna, occasion]]       B=[ bodhisattvas,.,] Bx=un
+SHIFT: L           
+S=[[donna, occasion]bodhisattvas] B=[ .,] Bx=un
+REDUCE: L          
+S=[[donna, occasion]]       B=[ .,] Bx=bodhisattva
+SHIFT: L           
+S=[[donna, occasion].]      B=[ ] Bx=bodhisattva
+REDUCE: L          
+S=[[donna, occasion]]       B=[ ] Bx=.
+REDUCE: L          
+S=[]                        B=[ ] Bx=.
