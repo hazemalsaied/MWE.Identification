@@ -1930,5 +1930,5 @@ def getLemmaString(tokens):
 if __name__ == '__main__':
     # sents = readFTB('/Users/halsaied/PycharmProjects/NNIdenSys/ressources/FTB/dev.expandedcpd.gold.conll')
     # Token(1,'1'), [[Token(2,'2'),Token(3,'3')], Token(4,'4')], [Token(5,'5')],
-    dimsumToCupt('/Users/halsaied/PycharmProjects/NNIdenSys/ressources/dimsum/dimsum16.test')
-    dimsumToCupt('/Users/halsaied/PycharmProjects/NNIdenSys/ressources/dimsum/dimsum16.train')
+    dimsumToCupt(os.path.join(configuration['path']['projectPath'] ,'/ressources/dimsum/dimsum16.test'))
+    dimsumToCupt(os.path.join(configuration['path']['projectPath'] ,'/ressources/dimsum/dimsum16.train'))

@@ -382,8 +382,8 @@ def getMWEBasedcNemarScore(args, goldenFile, sys1File, sys2File):
 
 def renameFolders():
     import os
-    folders = ['/Users/halsaied/PycharmProjects/NNIdenSys/Results/ST2/Linear',
-               '/Users/halsaied/PycharmProjects/NNIdenSys/Results/ST2/MLP']
+    folders = [os.path.join(configuration['path']['projectPath'] ,'/Results/ST2/Linear'),
+               os.path.join(configuration['path']['projectPath'] ,'/Results/ST2/MLP')]
     for folder in folders:
         for filename in os.listdir(folder):
             if filename.endswith('.txt'):
@@ -393,7 +393,7 @@ def renameFolders():
 def getMecNamers(division, tokenBased=False, ):
     divMaj = 'FixedSize' if division == Evaluation.fixedSize else 'Corpus'
     divMin = 'fixedsize' if division == Evaluation.fixedSize else 'corpus'
-    outPutFolder = '/Users/halsaied/PycharmProjects/NNIdenSys/Results/Output/'
+    outPutFolder = '/Users/halsaied/PycharmProjects/MWE.Identification/Results/Output/'
     goldTestFilePattern = outPutFolder + 'ST2/Linear/{0}/12.11.{1}.{2}.gold.cupt'
     sys1FilePattern = outPutFolder + '{0}/{1}/{2}/12.11.{3}.{4}.cupt'
     sys2FilePattern = outPutFolder + '{0}/{1}/{2}/12.11.{3}.{4}.cupt'

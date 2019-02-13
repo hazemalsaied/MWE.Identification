@@ -91,7 +91,7 @@ if __name__ == '__main__':
     # from corpus import *
     from xpTools import setXPMode, setDataSet, setTrainAndTest, Dataset, XpMode, Evaluation
 
-    folder = '/Users/halsaied/PycharmProjects/NNIdenSys/ressources/FacebookEmbs'
+    folder = os.path.join(configuration['path']['projectPath'] , '/ressources/FacebookEmbs')
     setXPMode(XpMode.linear)
     setTrainAndTest(Evaluation.corpus)
     setDataSet(Dataset.sharedtask2)

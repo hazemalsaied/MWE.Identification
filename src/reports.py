@@ -772,7 +772,7 @@ def DivideXPFile():
 
 
 def getSeenandNonSeenStats():
-    path = '/Users/halsaied/PycharmProjects/NNIdenSys/Results/Evaluation/Script/linear.fixedSize'
+    path = os.path.join(configuration['path']['projectPath'] , '/Results/Evaluation/Script/linear.fixedSize')
     with open(path, 'r') as ff:
         res = ''
         for l in ff:
