@@ -18,7 +18,7 @@ pilotLangs = ['BG', 'PT', 'TR']
 
 
 def xp(langs, dataset, xpMode, division, xpNum=1, seeds=[0], title='',
-       mlpInLinear=False, linearInMlp=False, complentary=False, outputCupt=False):
+       mlpInLinear=False, linearInMlp=False, complentary=False, outputCupt=True):
     initXp(xpMode, dataset, division, title, outputCupt)
     for lang in langs:
         for s in seeds:

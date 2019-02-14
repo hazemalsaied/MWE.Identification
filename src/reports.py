@@ -531,7 +531,7 @@ def getSeedScores(files, folder=None, pilot=False, withTitles=True, withTitle2=F
                                                                                                                :-1])
 
 
-def getNewScores(files, folder=None, pilot=False, withTitles=True, withTitle2=False):
+def getNewScores(files, folder=None, pilot=False, withTitles=True, onCorpus=False, onFixed=False):
     for f in files:
         titles, scores, params, langs, titles2, seeds, stats, precisions, recalls, misidentified, nonidentified = \
             mineNewFile(str(f), folder)
@@ -557,28 +557,30 @@ def getNewScores(files, folder=None, pilot=False, withTitles=True, withTitle2=Fa
                     scores[i * x + 5] if i * x + 5 < len(scores) else -1,
                     str(f)
                 ))
-        else:
+        elif onCorpus:
             for i, v in enumerate(scores):
                 line = ','.join(str(x) for x in [langs[i], v, precisions[i], recalls[i]])
                 print line
 
-        # else:
-        #     for i in range(len(titles)):
-        #         if i*2 + 1 < len(scores):
-        #             print str(scores[i*2]) +','+ str(scores[i*2 + 1]) + ',' + titles[i][:-1]
-        # else:
-        #     for i, v in enumerate(scores):
-        #         line = ','.join(str(x) for x in [langs[i], v, precisions[i], recalls[i]] +
-        #                                          stats[i * 48:(i + 1) * 48] +
-        #                                         misidentified[i*9: (i+1)*9]+
-        #                                         nonidentified[i * 13: (i + 1) * 13]
-        #                         ) + \
-        #                (',' + titles[i][:-1] + '\n' if withTitles else '') + '\n'
-        #         sys.stdout.write(line)
+        elif onFixed:
+            for i, v in enumerate(scores):
+                line = ','.join(str(x) for x in [langs[i], v, precisions[i], recalls[i]] +
+                                                 stats[i * 48:(i + 1) * 48] +
+                                                misidentified[i*9: (i+1)*9]+
+                                                nonidentified[i * 13: (i + 1) * 13]
+                                ) + \
+                       (',' + titles[i][:-1] + '\n' if withTitles else '') + '\n'
+                sys.stdout.write(line)
         #         # if i % 2 == 1 and v > scores[i - 1]:
         #         #     sys.stdout.write(line)
         #         # if i % 2 == 0 and v >= scores[i + 1] :
         #         #     sys.stdout.write(line)
+        else:
+            for i in range(len(scores)):
+                print ','.join(str(x) for x in [langs[i], scores[i], precisions[i], recalls[i]]) +',' + titles[i][:-1] if withTitles else ''
+            # for i in range(len(titles)):
+            #     if i*2 + 1 < len(scores):
+            #         print str(scores[i*2]) +','+ str(scores[i*2 + 1]) + ',' + titles[i][:-1]
 
 
 goldLine = '	Gold:'
@@ -603,7 +605,7 @@ def mineNewFile(newFile, folder=None):
             #         shouldContinue = False
             #     continue
             if line.startswith('Misidentified:'):
-                isMisidentified = True
+                isMisidentified = False #TODO
                 continue
             if isMisidentified and not line.startswith('='):
                 misidentified.append(line[:-1].split(':')[1])
@@ -611,7 +613,7 @@ def mineNewFile(newFile, folder=None):
                 isMisidentified = False
 
             if line.startswith('Non-identified:'):
-                isNonidentified = True
+                isNonidentified = False#TODO
                 continue
             if isNonidentified and not line.startswith('='):
                 nonIdentified.append(line[:-1].split(':')[1])
@@ -816,8 +818,8 @@ if __name__ == '__main__':
     #         os.remove('../Reports/MLP/' + f)
 
     getNewScores(
-        [f for f in os.listdir('../Reports/Reports/') if f.startswith('compo.rnn1.')], None
-        , pilot=True, withTitles=True, withTitle2=False)
+        [f for f in os.listdir('../Reports/Reports/') if f.startswith('eval.ftb.dim')], None
+        , pilot=False, withTitles=False, onFixed=False, onCorpus=True)
 
     # for subdir, dirs, files in os.walk('../Reports/Reports/MLP.New'):
     #    for dir in dirs:

@@ -249,8 +249,10 @@ def parseAndTrain(corpus):
     if configuration['xp']['multitasking']:
         network = modelMultiTasking.Network(corpus)
         network.trainIden(corpus)
+        network.testIden(corpus)
         # network.trainTagging(corpus)
         # network.testTagging(corpus)
+
         return network, None
     network = modelNonCompo.Network(corpus)
     network.train(corpus)

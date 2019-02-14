@@ -17,7 +17,7 @@ def runRSGSpontaneously(langs, dataset, xpMode, division,
         configuration.update(configs[i])
         xp(langs, dataset, xpMode, division, xpNum=xpNum, seeds=seeds,
            mlpInLinear=mlpInLinear, linearInMlp=linearInMlp,
-           complentary=complentary)
+           complentary=complentary, outputCupt=False)
 
 
 def runRSG(langs, dataset, xpMode, division, fileName,

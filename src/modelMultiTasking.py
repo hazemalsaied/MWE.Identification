@@ -2,6 +2,7 @@ from random import uniform
 
 import keras
 import numpy as np
+from imblearn.over_sampling import RandomOverSampler
 from keras import optimizers
 from keras.callbacks import ModelCheckpoint, EarlyStopping
 from keras.layers import Input, Dense, Flatten, Embedding
@@ -71,10 +72,12 @@ class Network:
     def trainIden(self, corpus):
         idenBatchSize = 32
         idenData, idenLbls = self.getIdenData(corpus)
-        idenLbls = to_categorical(idenLbls, num_classes=len(self.vocabulary.posIndices))
-        self.taggingModel.fit(idenData, idenLbls, validation_split=.2,
-                              epochs=100,
-                              batch_size=idenBatchSize, verbose=2, callbacks=[
+        # idenData, idenLbls = overSample(idenData, idenLbls)
+        print Counter(idenLbls)
+        idenLbls = to_categorical(idenLbls, num_classes=4)
+        self.idenModel.fit(idenData, idenLbls, validation_split=.2,
+                           epochs=100,
+                           batch_size=idenBatchSize, verbose=2, callbacks=[
                 EarlyStopping(monitor='val_loss',
                               min_delta=configuration['nn']['minDelta'],
                               patience=configuration['nn']['patience'],
@@ -92,11 +95,16 @@ class Network:
                               patience=configuration['nn']['patience'],
                               verbose=configuration['others']['verbose'])])
 
+    def testIden(self, corpus):
+        IdenData, IdenLbls = self.getIdenData(corpus, train=False)
+        IdenLbls = to_categorical(IdenLbls, num_classes=4)
+        results = self.idenModel.evaluate(IdenData, IdenLbls, batch_size=32, verbose=0)
+        sys.stdout.write('Loss = {0}, Accuracy = {1}'.format(round(results[0], 3), round(results[1] * 100, 1)))
+
     def testTagging(self, corpus):
         taggingData, taggingLbls = self.getTaggingData(corpus, train=False)
         taggingLbls = to_categorical(taggingLbls, num_classes=len(self.vocabulary.posIndices))
-        results = self.taggingModel.evaluate(taggingData, taggingLbls,
-                                             batch_size=32, verbose=0)
+        results = self.taggingModel.evaluate(taggingData, taggingLbls, batch_size=32, verbose=0)
         sys.stdout.write('Loss = {0}, Accuracy = {1}'.format(round(results[0], 3), round(results[1] * 100, 1)))
 
     def getTaggingData(self, corpus, train=True):
@@ -121,23 +129,32 @@ class Network:
             return [np.asarray(data1), np.asarray(data2), np.asarray(data4)], lbls
         return [np.asarray(data1), np.asarray(data2)], lbls
 
-    def getIdenData(self, corpus):
-        labels, data = [], [[]] * 20
-        for sent in corpus.trainingSents:
+    def getIdenData(self, corpus, train=True):
+        labels, data = [], []  # , data = [], [[]] * 20
+        for i in range(20):
+            data.append([])
+        for sent in corpus.trainingSents if train else corpus.testingSents:
             trans = sent.initialTransition
             while trans and trans.next:
                 focusedElems = [[trans.configuration.reduced]]
                 focusedElems.append([trans.configuration.buffer[1]] if len(trans.configuration.buffer) > 1 else [None])
-                focusedElems.append([trans.configuration.buffer[1]] if len(trans.configuration.buffer) > 0 else [None])
-                focusedElems.append(getTokens(trans.configuration.stack[-1]) if len(trans.configuration.stack) > 0 else [None])
-                focusedElems.append(getTokens(trans.configuration.stack[-2]) if len(trans.configuration.stack) > 1 else [None])
+                focusedElems.append([trans.configuration.buffer[0]] if len(trans.configuration.buffer) > 0 else [None])
+                focusedElems.append(
+                    getTokens(trans.configuration.stack[-1]) if len(trans.configuration.stack) > 0 else [None])
+                focusedElems.append(
+                    getTokens(trans.configuration.stack[-2]) if len(trans.configuration.stack) > 1 else [None])
                 for i in range(len(focusedElems)):
                     taggingEntry = self.getTaggingEntry(focusedElems[i], sent)
-                    for j in range(4): #i*4, i*4 + 4):
-                        data[i*4 + j].append(taggingEntry[j])
-                labels.append(trans.next.type.value)
+                    for j in range(4):  # i*4, i*4 + 4):
+                        data[i * 4 + j].append(np.asarray(taggingEntry[j]))
+                labels.append(trans.next.type.value if trans.next.type.value <= 2 else 3)
                 trans = trans.next
-        return labels, data
+        for i in range(20):
+            data[i] = np.asarray(data[i])
+        return data, labels
+
+
+
 
     def getAffixeIndices(self, tokens, s):
         affixes = []
@@ -571,6 +588,28 @@ class Vocabulary:
         sys.stdout.write(tabs + 'One occurrence keys in vocabulary {0} / {1}\n'.
                          format(dashedKeys, len(self.tokenFreqs)))
 
+
+def overSample(idenData, idenLbls):
+    newIdenData = []
+    for i in range(len(idenData[0])):
+        newIdenDataEntry = []
+        for j in range(20):
+            newIdenDataEntry += list(idenData[j][i])
+        newIdenData.append(newIdenDataEntry)
+    ros = RandomOverSampler(random_state=0)
+    newIdenData, newIdenLbls = ros.fit_sample(newIdenData, idenLbls)
+    idenData = []
+    dataDivision = [2* configuration['multitasking']['windowSize'] + 1, 12, 3, 1] * 5
+    for i in range(20):
+        idenData.append([])
+    for i in range(len(newIdenData)):
+        for j in range(20):
+            end = sum(dataDivision[:j+1])
+            start = end - dataDivision[j]
+            idenData[j].append(np.asarray(newIdenData[i][start:end]))
+    for i in range(20):
+        idenData[i] = np.asarray(idenData[i])
+    return idenData, newIdenLbls
 
 def addDynamicVersion(tokens, corpus):
     if not configuration['embedding']['dynamicVocab'] or not tokens or len(tokens) <= 1:

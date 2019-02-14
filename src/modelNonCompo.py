@@ -97,6 +97,7 @@ class Network:
                                        verbose=configuration['nn']['predictVerbose'])
         return oneHotRep[0]
 
+
     def trainWithDynamization(self, s, corpus):
         if configuration['embedding']['dynamicVocab']:
             for w in s.vMWEs:
