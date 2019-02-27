@@ -1,218 +1,160 @@
 ## 2.1 SEEN : PARTIALLY
 
-1. **aller** **dans** **le** sous-sol : 1  / 0 :
+1. **avoir** personne ) : 1  / 0 :
 
-		 se forme et va dans le sous-sol
+		 en plus y' a personne )
 
-2. **avoir** **le** tort : 1  / 0 :
+2. **conseil** **donner** : 1  / 0 :
 
-		 a -t -elle eu le tort , la veille ,
+		 Le conseil municipal donne son accord pour cette
 
-3. **avoir** **mois** : 1  / 0 :
+3. **donner** **score** global : 1  / 0 :
 
-		 que nous avons eu à le mois d' octobre sur le
+		 sont additionnés pour donner un score global
 
-4. **avoir** **objet** : 1  / 0 :
+4. **donner** **un** **entretien** : 1  / 0 :
 
-		 est une controverse ayant pour objet certains clichés " mis
+		 ) , il donne également des entretiens
 
-5. **avoir** société : 1  / 0 :
-
-		 personnel qui en a la charge et la société en général
-
-6. **conseil** **donner** : 1  / 0 :
-
-		 le conseil municipal donne son accord pour cette
-
-7. **donner** **un** **résultat** : 1  / 0 :
+5. **donner** **un** **résultat** : 1  / 0 :
 
 		 la loi ont donné des résultats
 
-8. **donner** information : 1  / 0 :
+6. **dresser** **le** **opinion** : 1  / 0 :
 
-		 plus grande diffusivité donne donc une information sur l' orientation locale
+		 Les comploteurs dressent l' opinion contre Honor et les
 
-9. **droit** **accorder** : 1  / 0 :
-
-		 exercice de les droits qui y sont accordés à le bénéficiaire
-
-10. **entraîner** **affaire** : 1  / 0 :
-
-		 cette révélation a entraîné une nouvelle affaire d' État dans l'
-
-11. **entraîner** **le** **déclin** **de** **le** espèce : 1  / 0 :
+7. **entraîner** **le** **déclin** **de** **le** espèce : 1  / 0 :
 
 		 y avaient aussi entraîné le déclin de l' espèce
 
-12. **entraîner** coût : 2  / 0 :
+8. **entraîner** coût : 1  / 0 :
 
 		 , ce qui entraînerait des coûts et de les incertitudes
 
-		ne ferait qu' entraîner des coûts inutiles et augmenterait encore
-
-13. **faire** **mort** : 1  / 0 :
-
-		 un conflit qui fit plus de 400 morts parmi les colons blancs
-
-14. **faire** **son** **révolution** : 1  / 0 :
-
-		 pays qui ont fait leur révolution , comme en tunisie
-
-15. **faire** **son** **témoin** : 1  / 0 :
+9. **faire** **son** **témoin** : 1  / 0 :
 
 		 , qui en fait son témoin
 
-16. **il** **y** construire : 1  / 0 :
-
-		 il y construit en 1887 l' actuel
-
-17. **il** **y** paraître : 1  / 0 :
+10. **il** **y** paraître : 1  / 0 :
 
 		 aussi anxieux qu' il y paraît
 
-18. **ordonnance** **ouvrir** : 1  / 0 :
+11. **ordonnance** **ouvrir** : 1  / 0 :
 
-		 dans son ordonnance de renvoi pour le procès de 49 prévenus qui s' est ouvert en janvier 2006 ,
+		 Dans son ordonnance de renvoi pour le procès de 49 prévenus qui s' est ouvert en janvier 2006 ,
 
-19. **prendre** **le** **parole** **en** plénière : 1  / 0 :
+12. **prendre** **à** **le** niveau international : 1  / 0 :
 
-		 fois que je prends la parole en plénière , il y a
+		 ces mesures soient prises à le niveau international
 
-20. **prendre** **temps** : 1  / 0 :
+13. **présenter** **problème** **rénal** aigu : 1  / 0 :
 
-		 sans que cela prenne trop de temps
+		 les patients qui présentent des problèmes rénaux aigus
 
-21. **prendre** **à** **le** **heure** : 1  / 0 :
+14. **présenter** **rapport** : 1  / 0 :
 
-		 médecin qui vous prend à l' heure ... trés compétente et
+		 onde électromagnétique ne présentant un rapport E / H constant
 
-22. **présenter** danger : 1  / 0 :
+15. **se** **en** inventer : 1  / 0 :
 
-		 alimentaires , a présenté un grand danger pour l' espèce qui
+		 son rôle et s' en inventer un éventuellement ... A
 
-23. **question** **servir** : 1  / 0 :
-
-		 cette question sert à vérifier que vous
-
-24. **se** **effectuer** : 2  / 0 :
-
-		 le paiement devait s' effectuer à l' étranger "
-
-		, la jonction s' effectuant à le niveau de
-
-25. **se** **en** inventer : 1  / 0 :
-
-		 son rôle et s' en inventer un éventuellement ... a
-
-26. **se** **exercer** : 1  / 0 :
-
-		 , transnationale qui s' exerce à le détriment de
-
-27. **se** **poser** : 1  / 0 :
-
-		 toutefois , je me pose des questions quant à
-
-28. **se** **rencontrer** : 1  / 0 :
-
-		 les deux équipes s' étaient cependant déjà rencontrées lors de matchs non
-
-29. **se** **y** positionner : 1  / 0 :
+16. **se** **y** positionner : 1  / 0 :
 
 		 compagnies aériennes européennes s' y positionnent de manière toujours plus
 
-30. **se** blesser : 1  / 0 :
+17. **se** allier **à** : 1  / 0 :
 
-		 2011 , elle se blesse à l' entrainement lors
+		 qui , après s' être alliés à les Alains , longèrent
 
-31. **se** détourner : 1  / 0 :
+18. **se** associer **de** **lumière** : 1  / 0 :
 
-		 électeurs noirs de se détourner de l' anc vers
+		 Les organismes qui s' étaient associés avec des champignons ont été récompensés , parce que les champignons n' ont pas besoin de lumière
 
-32. **se** efforcent : 1  / 0 :
+19. **signer** **le** **paix** : 1  / 0 :
 
-		 l' esprit , s' efforcent , par l' enseignement
+		 gouvernement russe de signer la paix avec l' Allemagne
 
-33. **se** maintenir : 1  / 0 :
+20. **tenir** **le** niveau **de** **le** investissement : 1  / 0 :
 
-		 lycée semble cependant se maintenir à le fil de
-
-34. **se** priver : 1  / 0 :
-
-		 cette victoire , se priva de le coup décisif
-
-35. **se** ridiculiser : 1  / 0 :
-
-		 il se ridiculise à un dîner d'
-
-36. **se** réchauffer : 1  / 0 :
-
-		 emmenait les gamins se réchauffer dans les camions de
-
-37. **se** stabiliser : 1  / 0 :
-
-		 les marqueurs osseux se stabilisent dans la gamme de
-
-38. **se** écrire **il** : 1  / 0 :
-
-		 3 fois 5 s' écrivait -il 3 in 5
-
-39. **subir** **haut** : 1  / 0 :
-
-		 activité taurine a subi des hauts et de bas liés
-
-40. **subir** chaque **jour** : 1  / 0 :
-
-		 toutes celles qui subissent , chaque jour , de grandes violences
+		 Compte tenu également de le niveau de les investissements , c' est aussi
 
 ## 2.2 SEEN : BARELY
 
-1. aller dans sens : 1  / 3 :
+1. aller dans sens : 1  / 5 :
 
-		 cette évolution va dans le sens de la recommandation de
+		 Cette évolution va dans le sens de la recommandation de
 
-2. avoir rôle : 1  / 2 :
+2. avoir charge : 1  / 1 :
+
+		 personnel qui en a la charge et la société en
+
+3. avoir rôle : 1  / 2 :
 
 		 , les historiens ont aussi leur rôle de citoyens à assumer
 
-3. cela faire : 1  / 3 :
+4. cela faire : 1  / 5 :
 
 		 , sachant que cela fait déjà plusieurs années que
 
-4. faire remarquer : 1  / 1 :
+5. droit accorder : 1  / 1 :
 
-		 azaila s' est fait remarquer
+		 exercice de les droits qui y sont accordés à le bénéficiaire
 
-5. se enfoncer : 1  / 1 :
+6. en avoir : 1  / 1 :
+
+		 Tous en avaient à raconter à les
+
+7. en revenir : 1  / 1 :
+
+		 La faute n' en revient certes pas à la
+
+8. faire remarquer : 1  / 3 :
+
+		 Azaila s' est fait remarquer
+
+9. prendre forme : 1  / 1 :
+
+		 , qui peut prendre d' ailleurs des formes diverses , pour l'
+
+10. prendre le parole : 1  / 1 :
+
+		 fois que je prends la parole en plénière , il
+
+11. prendre temps : 1  / 1 :
+
+		 sans que cela prenne trop de temps
+
+12. se enfoncer : 1  / 1 :
 
 		 corps glisse et s' enfonce tout droit dans la
 
-6. se mettre : 1  / 5 :
-
-		 mandelamania " qui se met alors en place est
-
-7. se tenir : 2  / 2 :
-
-		 le doubs qui se tenait le même jour ,
-
-		une compétition automobile se tenant à le mexique créée
-
-8. être le fait : 1  / 3 :
+13. être le fait : 1  / 3 :
 
 		 de la culture est le fait de pouvoir transmettre de
 
 ## 2.3 SEEN : FREQUENTLY
 
-1. avoir lieu : 1  / 60 :
+1. avoir droit : 1  / 13 :
 
-		 le vote aura lieu demain à 12 heures
+		 Ils ont des droits égaux à le regard
 
-2. il falloir : 2  / 80 :
+2. avoir lieu : 1  / 89 :
+
+		 Le vote aura lieu demain à 12 heures
+
+3. compte tenir : 1  / 10 :
+
+		 extrêmement dangereuse , compte tenu de la situation sur
+
+4. il falloir : 2  / 126 :
 
 		 élution ) , il faut déterminer la bonne température
 
 		être anglo-saxons , il ne faut pas s' étonner que
 
-3. il y avoir : 9  / 96 :
+5. il y avoir : 9  / 161 :
 
 		 a osé , il y a quelque temps , proposer
 
@@ -224,31 +166,41 @@
 
 		le parlement européen il y a quelques mois à peine
 
-		il y a quelques instants , m.
+		Il y a quelques instants , M.
 
 		on a fait il y a quelques années c' était
 
 		sur la terre il y a 1,3 milliards d' années
 
-		il y a 420 millions d' années
+		Il y a 420 millions d' années
 
-4. se exprimer : 2  / 6 :
+6. poser question : 1  / 7 :
+
+		 , je me pose des questions quant à la pertinence
+
+7. se exprimer : 2  / 10 :
 
 		 un principe qui s' exprime de la manière dont
 
-		cette volonté doit s' exprimer par des élections honnêtes
+		Cette volonté doit s' exprimer par des élections honnêtes
 
-5. se rendre : 1  / 23 :
+8. se mettre : 1  / 6 :
 
-		 elle se rend vite compte que le
+		 mandelamania " qui se met alors en place est
 
-6. se retrouver : 2  / 19 :
+9. se rendre : 1  / 42 :
 
-		 le même phénomène se retrouverait à les régionales si
+		 Elle se rend vite compte que le
+
+10. se retrouver : 2  / 27 :
+
+		 Le même phénomène se retrouverait à les régionales si
 
 		on s' y retrouve souvent le soir entre
 
-7. se voir : 1  / 12 :
+11. se tenir : 2  / 6 :
 
-		 opération et en me voyant crier , elle en
+		 le Doubs qui se tenait le même jour ,
+
+		une compétition automobile se tenant à le Mexique créée
 
