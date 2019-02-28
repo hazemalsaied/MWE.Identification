@@ -24,40 +24,44 @@ def xp(langs, dataset, xpMode, division, xpNum=1, seeds=[0], title='',
         for s in seeds:
             setSeed(s)
             for i in range(xpNum):
-                runXp(lang, mlpInLinear, linearInMlp, complentary, s)
+                runXp(lang, mlpInLinear, linearInMlp, complentary, s, cuptTitle=title)
 
 
-def runXp(lang, mlpInLinear, linearInMlp, complentary, seed):
+def runXp(lang, mlpInLinear, linearInMlp, complentary, seed, cuptTitle=''):
     now = datetime.datetime.now()
     sys.stdout.write('XP Starts: %d/%d (%dh:%d)' % (now.day, now.month, now.hour, now.minute) + doubleSep)
     if mlpInLinear:
         corpus = identifyWithMlpInLinear(lang, tuning=configuration['others']['tuneCoop'])
-        corpus.createMWEFiles(seed, 'mlpInSvm')
+        corpus.createMWEFiles(seed, 'mlpInSvm', title=cuptTitle)
     elif linearInMlp:
         corpus = identifyWithLinearInMlp(lang, tuning=configuration['others']['tuneCoop'])
-        corpus.createMWEFiles(seed, 'svmInMlp')
+        corpus.createMWEFiles(seed, 'svmInMlp', title=cuptTitle)
     elif complentary:
         corpus = identifyWithBoth(lang)
-        corpus.createMWEFiles(seed, 'complementary')
+        corpus.createMWEFiles(seed, 'complementary', title=cuptTitle)
     elif configuration['evaluation']['cv']:
         for j in range(configuration['others']['cvFolds']):
             sys.stdout.write(reports.tabs + 'Iteration {0}'.format(j))
             corpus = identify(lang, foldId=j)
-            corpus.createMWEFiles(seed, 'fold.{0}'.format(j))
+            corpus.createMWEFiles(seed, 'fold.{0}'.format(j), title=cuptTitle)
     else:
         corpus = identify(lang)
-        corpus.createMWEFiles(seed)
+        corpus.createMWEFiles(seed, title=cuptTitle)
     now = datetime.datetime.now()
-    sys.stdout.write(reports.tabs +'XP Ends: %d/%d (%d h:%d)' %
+    sys.stdout.write(reports.tabs + 'XP Ends: %d/%d (%d h:%d)' %
                      (now.day, now.month, now.hour, now.minute) + doubleSep)
     sys.stdout.flush()
 
 
 def initXp(xpMode, dataset, division, title, outputCupt):
-    configuration['tmp']['outputCupt'] = outputCupt
     setXPMode(xpMode)
     setDataSet(dataset)
     setTrainAndTest(division)
+    debug = True
+    for k in configuration['evaluation']:
+        if configuration['evaluation'][k] == True:
+            debug = False
+    configuration['tmp']['outputCupt'] = False if debug else outputCupt
     if xpMode != XpMode.linear:
         verifyGPU()
     getParameters(xpMode)

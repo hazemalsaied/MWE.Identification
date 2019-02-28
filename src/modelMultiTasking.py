@@ -73,7 +73,6 @@ class Network:
         idenBatchSize = 32
         idenData, idenLbls = self.getIdenData(corpus)
         # idenData, idenLbls = overSample(idenData, idenLbls)
-        print Counter(idenLbls)
         idenLbls = to_categorical(idenLbls, num_classes=4)
         self.idenModel.fit(idenData, idenLbls, validation_split=.2,
                            epochs=100,
@@ -153,9 +152,6 @@ class Network:
             data[i] = np.asarray(data[i])
         return data, labels
 
-
-
-
     def getAffixeIndices(self, tokens, s):
         affixes = []
         txts = getContextTexts(tokens, s)
@@ -192,7 +188,7 @@ class Network:
         tokenIdxs = self.getTokenIdxs(tokens, s)
         affixes = self.getAffixeIndices(tokens, s)
         capitalIdx = getCapitalizationInfo(tokens, s)
-        symbols = getSymbolIno(tokens)
+        symbols = getSymbolInfo(tokens)
         attachedPos = '_'.join(t.posTag.lower() for t in tokens)
         posIdx = self.vocabulary.posIndices[attachedPos.lower() if attachedPos in self.vocabulary.posIndices else unk]
         return tokenIdxs, affixes, capitalIdx, symbols, posIdx
@@ -391,7 +387,7 @@ def createTheModel(vocab):
     taggingAffixeFlatten = Flatten()(taggingAffixeEmb)
     concFlatten = [taggingFlatten, taggingAffixeFlatten]
     sharedCapitalEmb = Embedding(4, configuration['multitasking']['capitalDim'], name='capitalizationEmb')
-    sharedSymbolEmb = Embedding(10, configuration['multitasking']['symbolDim'], name='symbolsEmb')
+    sharedSymbolEmb = Embedding(20, configuration['multitasking']['symbolDim'], name='symbolsEmb')
     sharedLayers = [sharedTokEmb, sharedAffixeEmb]
     if configuration['multitasking']['useCapitalization']:
         inputCapital = Input((3,), dtype='int32', name='capitalization')
@@ -518,6 +514,7 @@ class Vocabulary:
         res += seperator
         return res
 
+
     def getAffixeDic(self, corpus):
         affixeDic = dict()
         for s in corpus.trainingSents:
@@ -530,6 +527,7 @@ class Vocabulary:
                         affixeDic[t.text[:3].lower()] = 0
         affixeDic[unk] = 0
         return affixeDic
+
 
     def getIndices(self, tokens, dynamicVocab=False, parse=False):
         if parse:
@@ -599,17 +597,18 @@ def overSample(idenData, idenLbls):
     ros = RandomOverSampler(random_state=0)
     newIdenData, newIdenLbls = ros.fit_sample(newIdenData, idenLbls)
     idenData = []
-    dataDivision = [2* configuration['multitasking']['windowSize'] + 1, 12, 3, 1] * 5
+    dataDivision = [2 * configuration['multitasking']['windowSize'] + 1, 12, 3, 1] * 5
     for i in range(20):
         idenData.append([])
     for i in range(len(newIdenData)):
         for j in range(20):
-            end = sum(dataDivision[:j+1])
+            end = sum(dataDivision[:j + 1])
             start = end - dataDivision[j]
             idenData[j].append(np.asarray(newIdenData[i][start:end]))
     for i in range(20):
         idenData[i] = np.asarray(idenData[i])
     return idenData, newIdenLbls
+
 
 def addDynamicVersion(tokens, corpus):
     if not configuration['embedding']['dynamicVocab'] or not tokens or len(tokens) <= 1:
@@ -699,7 +698,7 @@ def getContextTexts(tokens, s):
     return txts
 
 
-def getSymbolIno(tokens):
+def getSymbolInfo(tokens):
     hasDigit, hasHyphen, hasPunctuation = False, False, False
     txt = ' '.join(t.text for t in tokens)
     idx = 0
@@ -716,7 +715,7 @@ def getSymbolIno(tokens):
             if not hasPunctuation:
                 idx += 7
             hasPunctuation = True
-    return [idx]
+    return [int(idx)]
 
 
 def getCapitalizationInfo(tokens, s):

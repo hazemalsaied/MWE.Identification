@@ -74,7 +74,7 @@ def identifyWithBoth(lang):
     linearModel, linearVectorizer = parseAndTrain(corpus)
     getExcutionTime('Training time', startTime)
     setXPMode(None)
-    config.setOptimalRSGForMLP()
+    config.setMLPConf()
     startTime = datetime.datetime.now()
     mlpModel, mlpVectorizer = parseAndTrain(corpus)
     getExcutionTime('Training time', startTime)
@@ -138,11 +138,11 @@ def modifyConf(linear=False, tuning=False):
             config.generateLinearConf()
         else:
             if configuration['dataset']['ftb']:
-                config.setOptimalRSGFeaturesForFtbSVM()
+                config.setSvmFtbConf()
             elif configuration['dataset']['dimsum']:
-                config.setOptimalRSGFeaturesForDimsumSVM()
+                config.setSvmDiMSUMConf()
             else:
-                config.setOptimalRSGFeaturesForSVM()
+                config.setSVMConf()
         configuration['sampling'].update({
             'overSampling': False,
             'importantSentences': False,
@@ -152,11 +152,11 @@ def modifyConf(linear=False, tuning=False):
             config.generateMLPConf()
         else:
             if configuration['dataset']['ftb']:
-                config.setOptimalRSGForMlpFTB()
+                config.setMlpFtbConf()
             elif configuration['dataset']['dimsum']:
-                config.setOptimalRSGForMlpDiMSUM()
+                config.setMlpDiMSUMConf()
             else:
-                config.setOptimalRSGForMLP()
+                config.setMLPConf()
 
 
 def identifyWithMlpInLinear(lang, tuning=False):

@@ -1,6 +1,6 @@
 from statsmodels.stats.contingency_tables import mcnemar
 
-from evaluation import evaluate
+from evaluation import evaluate, analyzePerformance
 from xpTools import *
 
 testSetKey, misIdentifiedKey, nonIdentifiedKey, corIdentifiedKey = 'Test set', 'Misidentified', 'Non identified', \
@@ -11,12 +11,17 @@ interleavingKey, embeddedKey, newKey, freqSeenKey = '0.1 Interleaving', '0.2 Emb
                                                     '1.1 New', '2.3 Seen : frequently'
 
 
-def analyzeCorpus(xpMode, dataset, division):
+def analyzeCorpus(xpMode, dataset, division, seeds):
     for l in allSharedtask2Lang:
-        testFileName = '12.11.fixedsize.{0}.cupt'.format(l)
+        if l != 'FR':
+           continue
+        # seeds[allSharedtask2Lang.index(l)]
+        testFileName =  '/Users/halsaied/PycharmProjects/MWE.Identification/Results/ResultData/SVM/' + \
+                        'trainvsdev.{0}.{1}.Feb.{2}.{3}.cupt'.format('', 0, '18', l)
         setXPMode(xpMode)
         corpus = readIdentifiedCorpus(l, dataset, division, testFileName)
         evaluate(corpus.testingSents)
+        # analyzePerformance(corpus)
         catAnalysis = getCatAnalysis(corpus)
         analysis = getErrorAnalysis(corpus)
         report(analysis, catAnalysis, l)
@@ -288,20 +293,23 @@ def updateDict(dic, mwe, sent, trainMWEDic, mWETokenDic=None):
 def readIdentifiedCorpus(lang, dataset, division, testFileName):
     setTrainAndTest(division)
     setDataSet(dataset)
-    testFileName = getOutputFile(testFileName)
+    # testFileName = getOutputFile(testFileName)
     corpus = Corpus(lang)
+    goldTestSents = corpus.testingSents
     if dataset == Dataset.dimsum:
         testSents = readDiMSUM(testFileName)
     elif dataset == Dataset.ftb:
         testSents = readFTB(testFileName)
     else:
         testSents = readCuptFile(testFileName)
-    for i, s in enumerate(corpus.testingSents):
-        if i < len(testSents):
+        goldTestSents = readCuptFile('.'.join(x for x in testFileName.split('.')[:-1]) + '.gold.cupt')
+    for i, s in enumerate(goldTestSents):
+        if i < len(goldTestSents):
             s.identifiedVMWEs = testSents[i].vMWEs
         else:
             sys.stderr.write(
                 'Test languages are not equal {0} {1} {2}'.format(lang, len(testSents), len(corpus.testingSents)))
+    corpus.testingSents = goldTestSents
     return corpus
 
 
@@ -417,14 +425,18 @@ def getOutputFile(fileName):
     model = 'Linear' if modelConf['linear'] else (
         'Kiperwasser' if modelConf['kiperwasser'] else (
             'RNN' if modelConf['rnn'] else 'MLP'))
-    devision = 'FixedSize' if configuration['evaluation']['fixedSize'] else 'Corpus'
+    # devision = 'FixedSize' if configuration['evaluation']['fixedSize'] else 'Corpus'
     return os.path.join(configuration['path']['projectPath'],
                         configuration['path']['output'],
-                        dataset, model, devision, fileName)  # today + lang.upper() + '.cupt')
+                        dataset, model, fileName)  # today + lang.upper() + '.cupt')
 
 
 if __name__ == '__main__':
-    getMecNamers(Evaluation.corpus)
+    seeds = [0,0,0,0,1,0,0,1,0,1,0,1,1,1,0,0,1,0,1]
+    print "tendy.randInit"
+    analyzeCorpus(XpMode.linear, Dataset.sharedtask2, Evaluation.trainVsDev, seeds)
+
+    # getMecNamers(Evaluation.corpus)
     # errorAnalysis('FR', XpMode.linear, '../Results/ST2/MLP/FR.txt')
     # analyzeCorpus('FR', XpMode.linear, '../Results/ST2/MLP/FR.txt')
     # csvFile = ''

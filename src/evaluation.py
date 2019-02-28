@@ -16,12 +16,54 @@ def evaluate(sents, categorization=False, loggingg=True):
         for cat in catList:
             tp, p, t = getCategoryStatistics(sents, cat)
             scores += calculateScores(tp, p, t, cat, loggingg=loggingg)
+    tp, p, t = getTokenBasedStatistics(sents)
+    calculateScores(tp, p, t, 'Token-based', loggingg=loggingg)
+    if configuration['dataset']['dimsum']:
+        tp, p, t = getDiMSUMStatistics(sents)
+        calculateScores(tp, p, t, 'DiMSUM', loggingg=loggingg)
     if loggingg:
         sys.stdout.write(reports.doubleSep)
     # reports.saveSettings()
     # reports.saveScores(scores)
     # corpus.analyzeTestSet()
     return scores
+
+
+def getDiMSUMStatistics(sents):
+    ig, gold, identified = 0, 0, 0
+    for sent in sents:
+        gList, iList = [], []
+        for w in sent.vMWEs:
+            positions = sorted([t.position for t in w.tokens])
+            for i in range(len(positions) -1):
+                if i < len(positions):
+                    gList.append(str(positions[i]) + '.' + str(positions[i+1]))
+        for w in sent.identifiedVMWEs:
+            positions = sorted([t.position for t in w.tokens])
+            for j in range(len(positions) - 1):
+                if j < len(positions):
+                    iList.append(str(positions[j]) + '.' + str(positions[j + 1]))
+        identified += len(iList)
+        gold += len(gList)
+        for l in set(iList + gList):
+            if l in iList and l in gList:
+                ig += 1
+        for l in iList:
+            if int(l.split('.')[1]) - int(l.split('.')[0]) != 1 and l not in gList:
+                for w in sent.vMWEs:
+                    positions = sorted([t.position for t in w.tokens])
+                    ggList = []
+                    for i in range(len(positions) - 1):
+                        if i < len(positions):
+                            ggList.append(str(positions[i]) + '.' + str(positions[i + 1]))
+                    start, end = False, False
+                    for g in ggList:
+                        if g.startswith(l.split('.')[0]):
+                            start = True
+                        if g.endswith(l.split('.')[1]):
+                            end = True
+                    ig += 1 if start and end else 0
+    return ig, gold, identified
 
 
 def analyzePerformance(corpus):
@@ -73,10 +115,14 @@ def reportTokenFrequency(sents, corpusLemmaText):
 
 def reportMisIdentified(sents, mweDic, mweTokenDic, corpusLemmaText, threshold=100):
     wordcount = Counter(corpusLemmaText.split())
+    misIdentifiedNum, allIdentifiedNum = 0,0
     for s in sents:
         mweIdxs = set([mwe.getTokenPositionString() for mwe in s.vMWEs])
         for w in s.identifiedVMWEs:
             w.toDelete = False if w.getTokenPositionString() not in mweIdxs else True
+            if not w.toDelete:
+                misIdentifiedNum += 1
+            allIdentifiedNum += len(s.identifiedVMWEs)
     manipuleSents(sents, None)
     allMwes, mWTs, twoTokens, threeTokens, seens, nonSeens, partiallySeen, frequentlySeen, barelySeen, \
         partiallySeenWithoutNoise = 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
@@ -127,6 +173,9 @@ def reportMisIdentified(sents, mweDic, mweTokenDic, corpusLemmaText, threshold=1
     sys.stdout.write(reports.doubleSep)
     sys.stdout.write('Misidentified:')
     sys.stdout.write(reports.doubleSep)
+
+    sys.stdout.write(reports.tabs + 'Misidentified / identified: {0}\n'.format(round(float(misIdentifiedNum) * 100 /
+                                                                                     allIdentifiedNum, 1)))
     sys.stdout.write(reports.tabs + 'Seens: {0}\n'.format(round(float(seens) * 100 / allMwes, 1)))
     sys.stdout.write(
         reports.tabs + 'Non Seens: {0}\n'.format(round(float(nonSeens) * 100 / allMwes, 1)))
@@ -148,10 +197,14 @@ def reportMisIdentified(sents, mweDic, mweTokenDic, corpusLemmaText, threshold=1
 
 def reportNonIdentified(sents, mweDic, mweTokenDic, corpusLemmaText, threshold=100):
     wordcount = Counter(corpusLemmaText.split())
+    nonIdentifiedNum, allGold = 0, 0
     for s in sents:
         mweIdxs = set([mwe.getTokenPositionString() for mwe in s.identifiedVMWEs])
         for w in s.vMWEs:
             w.toDelete = False if w.getTokenPositionString() not in mweIdxs else True
+            if not w.toDelete:
+                nonIdentifiedNum += 1
+            allGold += len(s.vMWEs)
     manipuleSents(sents, None)
     allMwes, mWTs, twoTokens, threeTokens, seens, nonSeens, partiallySeen, partiallySeenWithoutNoise, frequentlySeen, \
         barelySeen = 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
@@ -186,6 +239,8 @@ def reportNonIdentified(sents, mweDic, mweTokenDic, corpusLemmaText, threshold=1
     sys.stdout.write(reports.doubleSep)
     sys.stdout.write('Non-identified:')
     sys.stdout.write(reports.doubleSep)
+    sys.stdout.write(
+        reports.tabs + 'Non-identified / Gold: {0}\n'.format(round(float(nonIdentifiedNum) * 100 / allGold, 1)))
     sys.stdout.write(reports.tabs + 'Seens: {0}\n'.format(round(float(seens) * 100 / allMwes, 1)))
     sys.stdout.write(reports.tabs + 'Non Seens: {0}\n'.format(round(float(nonSeens) * 100 / allMwes, 1)))
     sys.stdout.write(reports.tabs + 'Frequently Seen: {0}\n'.format(
@@ -445,6 +500,37 @@ def getStatistics(sents):
     return tp, p, t, tpCat, pCat, tCat
 
 
+def getTokenBasedStatistics(sents):
+    ig, g, i, tpCat, pCat, tCat = 0, 0, 0, 0, 0, 0
+    for sent in sents:
+        glabels = ['-'] * len(sent.tokens)
+        ilabels = ['-'] * len(sent.tokens)
+        idx = 1
+        for w in sent.vMWEs:
+            for t in w.tokens:
+                if glabels[t.position-1] == '-':
+                    glabels[t.position - 1] = str(idx)
+            if not glabels[w.tokens[0].position - 1].endswith(':oth'):
+                glabels[w.tokens[0].position - 1] += ':oth'
+            idx += 1
+        idx = 1
+        for w in sent.identifiedVMWEs:
+            for t in w.tokens:
+                if ilabels[t.position-1] == '-':
+                    ilabels[t.position - 1] = str(idx)
+            if not ilabels[w.tokens[0].position - 1].endswith(':oth'):
+                ilabels[w.tokens[0].position - 1] += ':oth'
+            idx += 1
+        for j in range(len(glabels)):
+            if glabels[j] != '-':
+                g+=1
+            if ilabels[j] != '-':
+                i+=1
+            if ilabels[j]!= '-' and glabels[j]!= '-':
+                ig += 1
+    return ig, g, i
+
+
 def getCategoryStatistics(sents, cat):
     tp, p, t = 0, 0, 0
     cat = cat.lower()
@@ -497,7 +583,7 @@ def calculateScores(ig, g, i, title, loggingg=True):
     :param loggingg:
     :return: Fscore, recall, precision
     """
-    title = 'F' if title != 'Identification' else 'Identification'
+    title = 'F' if title != 'Identification' and title != 'Token-based' and title != 'DiMSUM' else title
     r = round(float(ig / g) if g != 0 else 0, 3)
     p = round(float(ig / i) if i != 0 else 0, 3)
     f = round(2 * (r * p) / (r + p), 3) if r + p != 0 else 0
@@ -505,3 +591,4 @@ def calculateScores(ig, g, i, title, loggingg=True):
         sys.stdout.write(reports.tabs + '{0} : {1}\n'.format(title, f))
         sys.stdout.write(reports.tabs + 'P, R  : {0}, {1}\n'.format(p, r))
     return title, f, r, p
+

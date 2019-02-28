@@ -1,6 +1,6 @@
 # from rsg import *
 import config
-from config import setOptimalRSGForMLP, setOptimalRSGForMLPTendance
+from config import setMLPConf, setMlpOpenConf, setMlpTendanceConf, setSVMConf
 from xpTools import *
 
 
@@ -64,40 +64,52 @@ def getPOSTagEffect():
 
 
 def resamplingEffect():
-    setOptimalRSGForMLP()
+    setMLPConf()
     configuration['sampling'].update({
         'importantSentences': False,
         'overSampling': False,
         'sampleWeight': False,
         'focused': False})
-    xp(allSharedtask2Lang, Dataset.sharedtask2, None, Evaluation.fixedSize, seeds=[0], xpNum=3)
+    xp(allSharedtask2Lang, Dataset.sharedtask2, None, Evaluation.corpus, seeds=[0, 1], xpNum=3, outputCupt=False)
+    setMlpTendanceConf()
+    configuration['sampling'].update({
+        'importantSentences': False,
+        'overSampling': False,
+        'sampleWeight': False,
+        'focused': False})
+    xp(allSharedtask2Lang, Dataset.sharedtask2, None, Evaluation.corpus, seeds=[0, 1], xpNum=3, outputCupt=False)
 
 
 def evaluateST2EnFixed():
-    setOptimalRSGForMLP()
+    setMLPConf()
     xp(allSharedtask2Lang, Dataset.sharedtask2, None, Evaluation.fixedSize, seeds=range(2))
 
 
 def evaluateFTB():
-    setOptimalRSGForMLP()
+    setMLPConf()
     xp(['FR'], Dataset.ftb, None, Evaluation.corpus, seeds=range(2))
     xp(['FR'], Dataset.ftb, None, Evaluation.fixedSize, seeds=range(2))
-    setOptimalRSGForMLPTendance()
+    setMlpTendanceConf()
+    xp(['FR'], Dataset.ftb, None, Evaluation.corpus, seeds=range(2))
+    xp(['FR'], Dataset.ftb, None, Evaluation.fixedSize, seeds=range(2))
+    setMlpOpenConf()
     xp(['FR'], Dataset.ftb, None, Evaluation.corpus, seeds=range(2))
     xp(['FR'], Dataset.ftb, None, Evaluation.fixedSize, seeds=range(2))
 
 
 def evaluateDiMSUM():
-    setOptimalRSGForMLP()
+    setMLPConf()
     xp(['EN'], Dataset.dimsum, None, Evaluation.corpus, seeds=range(2))
     xp(['EN'], Dataset.dimsum, None, Evaluation.dev, seeds=range(2))
-    setOptimalRSGForMLPTendance()
+    setMlpTendanceConf()
+    xp(['EN'], Dataset.dimsum, None, Evaluation.corpus, seeds=range(2))
+    xp(['EN'], Dataset.dimsum, None, Evaluation.dev, seeds=range(2))
+    setMlpOpenConf()
     xp(['EN'], Dataset.dimsum, None, Evaluation.corpus, seeds=range(2))
     xp(['EN'], Dataset.dimsum, None, Evaluation.dev, seeds=range(2))
 
 
 def evaluateCoop():
-    # hours: 8
     xp(allSharedtask2Lang, Dataset.sharedtask2, None, Evaluation.corpus, seeds=range(2), mlpInLinear=True)
     xp(allSharedtask2Lang, Dataset.sharedtask2, None, Evaluation.fixedSize, seeds=range(2), mlpInLinear=True)
 
@@ -122,14 +134,43 @@ def tuneCompoRnn():
                             seeds=range(1), xpNum=1, xpNumByThread=50)
 
 
-bestTendySeeds = [0, 1, 0, 1, 1, 0, 0, 0, 0, 1, 0, 1, 1, 1, 0, 1, 1, 0, 0]
-bestConfSeeds =  [0, 1, 0, 1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 0]
-
 if __name__ == '__main__':
     reload(sys)
     sys.setdefaultencoding('utf8')
+    # generateOarsub(xpNum=5,duration=25,tourNum=1,name='mlp.dimsum')
 
-    resamplingEffect()
-    configuration['tmp']['dontParse'] = True
-    xp(['FR'], Dataset.sharedtask2, XpMode.multitasking, None, seeds=range(1))
+    setMlpTendanceConf()
+    configuration['sampling']['overSampling'] = False
+    configuration['sampling']['importantSentences'] = False
+    configuration['embedding']['pretrained'] = False
+    xp(allSharedtask2Lang, Dataset.sharedtask2, None, Evaluation.trainVsDev, seeds=[0], xpNum=1,
+       outputCupt=True, title='tendy.closed.sampling')
 
+    # configuration['tmp']['transOut'] = True
+    # configuration['tmp']['markObligatory'] = False
+    # configuration['tmp']['addTokens'] = False
+    # setSVMConf()
+    # configuration['tmp']['cleanSents'] = True
+    # configuration['tmp']['onGroup'] = False
+    # configuration['tmp']['group'] = 'tweebank'
+    # # configuration['sampling']['overSampling'] = True
+    # xp(['EN'], Dataset.dimsum, XpMode.linear, Evaluation.trainVsDev, seeds=[0], xpNum=1,
+    #     outputCupt=False, title='tendy.sampling')
+
+    # setMlpTendanceConf()
+    # configuration['sampling']['importantSentences'] = False
+    # configuration['sampling']['overSampling'] = False
+    # xp(allSharedtask2Lang, Dataset.sharedtask2, None, Evaluation.trainVsDev, seeds=[0], xpNum=1,
+    #    outputCupt=False, title='tendy.sampling')
+
+    # import rsg
+    # rsg.runRSGSpontaneously(['EN'], Dataset.dimsum, None, Evaluation.dev, seeds=range(1), xpNumByThread=500)
+
+    # configuration['tmp']['dontParse'] = True
+    # configuration['others']['debugTrainNum'] = 2000
+    # xp(['FR'], Dataset.sharedtask2, XpMode.multitasking, None, seeds=range(1))
+    # resamplingEffect()
+    # setOptimalRSGForMLP()
+    # xp(allSharedtask2Lang, Dataset.sharedtask2, None, Evaluation.fixedSize, seeds=range(1))
+    # setOptimalRSGForMLPTendance()
+    # xp(allSharedtask2Lang, Dataset.sharedtask2, None, Evaluation.fixedSize, seeds=range(1))

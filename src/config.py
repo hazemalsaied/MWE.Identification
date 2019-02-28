@@ -3,7 +3,7 @@ import os
 import random
 
 configuration = {
-    'multitasking':{
+    'multitasking': {
         'windowSize': 3,
         'tokenDim': 64,
         'affixeDim': 16,
@@ -13,7 +13,7 @@ configuration = {
         'useCapitalization': True,
         'useSymbols': True,
         'testOnToken': True
-    },'xp': {
+    }, 'xp': {
         'linear': False,
         'compo': False,
         'kiperwasser': False,
@@ -75,7 +75,11 @@ configuration = {
         'testOut': False,
         'outputDimsum': False,
         'dimsulStats': False,
-        'outputCupt': False
+        'outputCupt': False,
+        'markObligatory': False,
+        'addTokens': False,
+        'onGroup':False,
+        'group': 'tweebank'
     }, 'others': {
         'tuneCoop': False,
         'cvFolds': 5,
@@ -370,7 +374,7 @@ def setOptimalRSGFeaturesByLogReg():
     configuration['features'].update(conf)
 
 
-def setOptimalRSGFeaturesForSVM():
+def setSVMConf():
     configuration['features'].update({
         'lemma': True,
         'token': True,
@@ -394,7 +398,8 @@ def setOptimalRSGFeaturesForSVM():
     })
 
 
-def setOptimalRSGFeaturesForDimsumSVM():
+
+def setSvmDiMSUMConf():
     conf = {
         'lemma': True,
         'token': False,
@@ -419,7 +424,7 @@ def setOptimalRSGFeaturesForDimsumSVM():
     configuration['features'].update(conf)
 
 
-def setOptimalRSGFeaturesForFtbSVM():
+def setSvmFtbConf():
     conf = {
         'lemma': True,
         'token': True,
@@ -444,7 +449,7 @@ def setOptimalRSGFeaturesForFtbSVM():
     configuration['features'].update(conf)
 
 
-def setOptimalRSGForMlpFTB():
+def setMlpFtbConf():
     samling = configuration['sampling']
     samling['importantSentences'] = True
     samling['overSampling'] = True
@@ -464,7 +469,7 @@ def setOptimalRSGForMlpFTB():
     configuration['mlp']['dense1Dropout'] = 0.16
 
 
-def setOptimalRSGForMlpDiMSUM():
+def setMlpDiMSUMConf():
     samling = configuration['sampling']
     samling['importantSentences'] = True
     samling['overSampling'] = True
@@ -484,7 +489,7 @@ def setOptimalRSGForMlpDiMSUM():
     configuration['mlp']['dense1Dropout'] = 0.38
 
 
-def setOptimalRSGForMLP():
+def setMLPConf():
     configuration['sampling'].update({
         'importantSentences': True,
         'overSampling': True,
@@ -538,7 +543,146 @@ def setOptimalRSGForMLP():
     # })
 
 
-def setOptimalRSGForMLPTendance():
+def setMlpOpenConf():
+    configuration['sampling'].update({
+        'importantSentences': True,
+        'overSampling': True,
+        'sampleWeight': False,
+        'favorisationCoeff': 2,
+        'focused': False})
+    configuration['embedding'].update({
+        'useB1': 1,
+        'useB-1': 0,
+        'manual': False,
+        'keras': False,
+        'pretrained': True,
+        'average': True,
+        'compactVocab': False,
+        'lemma': True,
+        'dynamicVocab': False
+    })
+    configuration['mlp'].update({
+        'posEmb': 132,
+        'tokenEmb': 300,
+        'dense1UnitNumber': 56,
+        'dense1Dropout': 0.1,
+        'lr': 0.095,
+        'trainable': True,
+        'batchSize': 16,
+    })
+
+    # configuration['sampling'].update({
+    #     'importantSentences': True,
+    #     'overSampling': True,
+    #     'sampleWeight': True,
+    #     'favorisationCoeff': 6,
+    #     'focused': True})
+    # configuration['embedding'].update({
+    #     'lemma': True,
+    #     'compactVocab': False,
+    #     'dynamicVocab': False,
+    #     'useB-1': 0,
+    #     'useB1': 1
+    # })
+    # configuration['mlp'].update({
+    #     'posEmb': 42,
+    #     'tokenEmb': 480,
+    #     'dense1UnitNumber': 58,
+    #     'dense1Dropout': 0.429,
+    #     'lr': 0.059,
+    #     'optimizer': 'adagrad',
+    #     'trainable': True,
+    #     'batchSize': 64,
+    #
+    # })
+
+
+
+def setOptimalRSGForMLPFTB():
+    configuration['sampling'].update({
+        'importantSentences': True,
+        'overSampling': True,
+        'sampleWeight': False,
+        'favorisationCoeff': 2,
+        'mweRepeition': 10,
+        'focused': True})
+    configuration['embedding'].update({
+        'useB1': 1,
+        'useB-1': 1,
+        'manual': True,
+        'keras': False,
+        'pretrained': False,
+        'average': True,
+        'compactVocab': True,
+        'lemma': True,
+        'dynamicVocab': False
+    })
+    configuration['mlp'].update({
+        'posEmb': 15,
+        'tokenEmb': 383,
+        'dense1UnitNumber': 174,
+        'dense1Dropout': 0.3,
+        'lr': 0.015,
+        'trainable': True,
+        'batchSize': 64,
+    })
+
+
+def setMlpFtbOpenConf():
+    configuration['sampling'].update({
+        'importantSentences': True,
+        'overSampling': True,
+        'sampleWeight': False,
+        'favorisationCoeff': 2,
+        'focused': False})
+    configuration['embedding'].update({
+        'useB1': 1,
+        'useB-1': 0,
+        'manual': False,
+        'keras': False,
+        'pretrained': True,
+        'average': True,
+        'compactVocab': False,
+        'lemma': True,
+        'dynamicVocab': False
+    })
+    configuration['mlp'].update({
+        'posEmb': 125,
+        'tokenEmb': 300,
+        'dense1UnitNumber': 105,
+        'dense1Dropout': 0.1,
+        'lr': 0.067,
+        'trainable': True,
+        'batchSize': 128,
+    })
+
+    # configuration['sampling'].update({
+    #     'importantSentences': True,
+    #     'overSampling': True,
+    #     'sampleWeight': True,
+    #     'favorisationCoeff': 6,
+    #     'focused': True})
+    # configuration['embedding'].update({
+    #     'lemma': True,
+    #     'compactVocab': False,
+    #     'dynamicVocab': False,
+    #     'useB-1': 0,
+    #     'useB1': 1
+    # })
+    # configuration['mlp'].update({
+    #     'posEmb': 42,
+    #     'tokenEmb': 480,
+    #     'dense1UnitNumber': 58,
+    #     'dense1Dropout': 0.429,
+    #     'lr': 0.059,
+    #     'optimizer': 'adagrad',
+    #     'trainable': True,
+    #     'batchSize': 64,
+    #
+    # })
+
+
+def setMlpTendanceConf():
     configuration['sampling'].update({
         'importantSentences': True,
         'overSampling': True,
@@ -592,7 +736,7 @@ def setOptimalRSGForMLPTendance():
     # })
 
 
-def setOptimalRSGForRNN():
+def setRnnConf():
     configuration['rnn']['gru'] = True
     configuration['rnn']['useDense'] = True
     configuration['embedding']['compactVocab'] = True

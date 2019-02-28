@@ -29,6 +29,8 @@ class Corpus:
         self.cleanSents()
         self.extractDictionaries()
         self.deleteNonRecognizableMWE()
+        # for key, value in sorted(self.mweDictionary.iteritems(), key=lambda (k,v): (v,k)):
+        #    print "%s: %s" % (key, value)
         printStats(self.trainingSents, 'Train', mweDic=self.mweDictionary, langName=langName, test=False)
         printStats(self.testingSents, 'Test', mweDic=self.mweDictionary, test=True)
 
@@ -65,7 +67,11 @@ class Corpus:
         if sharedtaskVersion:
             configuration['others']['replaceNumbers'] = False
             self.trainDataSet = readCuptFile(os.path.join(path, 'train.cupt'))
-            self.devDataSet = readCuptFile(os.path.join(path, 'dev.cupt'))
+            devFile = os.path.join(path, 'dev.cupt')
+            if os.path.exists(devFile):
+                self.devDataSet = readCuptFile(devFile)
+            else:
+                self.devDataSet = []
             self.testDataSet = readCuptFile(os.path.join(path, 'test.cupt'))
         elif datasetConf['ftb']:
             configuration['others']['replaceNumbers'] = True
@@ -474,8 +480,13 @@ class Corpus:
             self.trainingSents = self.trainDataSet
             self.testingSents = self.testDataSet
         elif configuration['evaluation']['trainVsDev']:
-            self.trainingSents = self.trainDataSet
-            self.testingSents = self.devDataSet if self.devDataSet else self.testDataSet
+            if self.devDataSet:
+                self.trainingSents = self.trainDataSet
+                self.testingSents = self.devDataSet
+            else:
+                trainPointer = int(len(self.trainDataSet) * 0.8)
+                self.trainingSents = self.trainDataSet[:trainPointer]
+                self.testingSents = self.trainDataSet[trainPointer:]
         else:
             debugTrainNum, idx, self.trainingSents = configuration['others']['debugTrainNum'], 0, []
             for s in self.trainDataSet:
@@ -488,6 +499,14 @@ class Corpus:
                 self.testingSents = self.devDataSet if self.devDataSet else self.trainDataSet[-100:]
             else:
                 self.testingSents = self.trainingSents
+        if configuration['dataset']['dimsum'] and configuration['evaluation']['corpus'] and \
+            configuration['tmp']['onGroup']:
+            self.testingSents = []
+            for s in self.testDataSet:
+                if s.group != '' and s.group.startswith(configuration['tmp']['group']):
+                    self.testingSents.append(s)
+                elif s.group == '':
+                    pass
         if configuration['sampling']['importantSentences'] or configuration['sampling']['importantTransitions']:
             self.trainingSents = self.filterImportatntSents()
 
@@ -635,6 +654,7 @@ class Sentence:
         self.sentid = sentid
         self.id = idx
         self.text = ''
+        self.group = ''
         self.tokens = []
         self.vMWEs = []
         self.identifiedVMWEs = []
@@ -1868,7 +1888,8 @@ def readDiMSUM(dimsumFile, verbose=True):
                 continue
             if line.startswith('1\t'):
                 if sent:
-                    sent.text = ''.join([t.text.lower() for t in sent.tokens])
+                    sent.text = ' '.join([t.text.lower() for t in sent.tokens])
+                    sent.group = sent.tokens[0].line.split('\t')[-1].lower()
                     BMWEs, bMWEs = [], []
                 sent = Sentence(senIdx)
                 sentences.append(sent)

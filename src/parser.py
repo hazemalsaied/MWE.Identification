@@ -10,8 +10,10 @@ sequencialMarkAsNum = 0
 def parse(sents, model, vectorizer=None, linearModels=None, linearVecs=None, mlpModels=None, initialize=True):
     global sequencialMarkAsNum
     for sent in sents:
-        for w in sent.vMWEs:
-            if configuration['tmp']['transOut']:
+        if configuration['tmp']['transOut'] and sent.vMWEs:
+            sys.stdout.write('## ' + sent.text + '\n')
+            sys.stdout.write('### Annotated:\n')
+            for w in sent.vMWEs:
                 sys.stdout.write(w.getLemmaString()+'\n')
         if initialize:
             sent.identifiedVMWEs = []
@@ -31,12 +33,16 @@ def parse(sents, model, vectorizer=None, linearModels=None, linearVecs=None, mlp
             sequencialMarkAsNum = 1 + sequencialMarkAsNum if newT and newT.type and newT.type.value and newT.type.value > 2 else 0
             newT.apply(t, sent, parse=True, isClassified=newT.isClassified, secondParse=not initialize)
             if configuration['tmp']['transOut'] and newT and newT.type and newT.type.value >= 2:
-                sys.stdout.write(newT.type, t.configuration + '\n')
+                sys.stdout.write(str(newT.type) +  str(t.configuration) + '\n')
             t = newT
             if configuration['xp']['kiperComp']:
                 sentEmbs, tokens = refreshSentEmb(t, tokens, model, sentEmbs)
 
             sys.stdout.flush()
+        if configuration['tmp']['transOut'] and sent.identifiedVMWEs:
+            sys.stdout.write('### Identified: \n')
+            for w in sent.identifiedVMWEs:
+                sys.stdout.write(w.getLemmaString()+'\n')
         sent.recognizeEmbedded(annotated=False)
 
 
@@ -59,6 +65,26 @@ def nextTrans(t, sent, model, vectorizer, sentEmbs=None, tokens=None, linearMode
         else:
             sys.stderr.write('Reduce application is not possible for a long loop!\n')
             sys.stderr.write(str(t.configuration))
+
+    if configuration['tmp']['markObligatory']:
+        if len(t.configuration.buffer) == 0:
+            if t.configuration.stack[-1] and not str(t.configuration.stack[-1].__class__).endswith('corpus.Token'):
+                if TransitionType.REDUCE in legalTansDic and \
+                        configuration['tmp']['addTokens'] and sent.identifiedVMWEs:
+                    if configuration['tmp']['transOut']:
+                        sys.stdout.write('Obligatory mark (token extension):\n')
+                    for t in getTokens(t.configuration.stack[-1])[:2]:
+                        sent.identifiedVMWEs[-1].tokens.append(t)
+                    trans = legalTansDic[TransitionType.REDUCE]
+                    trans.isClassified = False
+                    return trans
+                if not configuration['tmp']['addTokens'] and TransitionType.MARK_AS_OTH in legalTansDic:
+                    if configuration['tmp']['transOut']:
+                        sys.stdout.write('Obligatory mark\n')
+                    trans = legalTansDic[TransitionType.MARK_AS_OTH]
+                    trans.isClassified = False
+                    return trans
+
 
     if len(legalTansDic) == 1:
         return initialize(legalTansDic.keys()[0], sent)
