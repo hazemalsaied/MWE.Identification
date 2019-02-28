@@ -1,0 +1,2325 @@
+/Users/halsaied/anaconda2/bin/python /Users/halsaied/PycharmProjects/MWE.Identification/src/xpNonCompo.py
+Using Theano backend.
+/Users/halsaied/anaconda2/lib/python2.7/site-packages/cryptography/hazmat/primitives/constant_time.py:26: CryptographyDeprecationWarning: Support for your Python version is deprecated. The next version of cryptography will remove support. Please upgrade to a 2.7.x release that supports hmac.compare_digest as soon as possible.
+  utils.DeprecatedIn23,
+	Mode: LINEAR
+==================================================================================================
+	Dataset: DIMSUM
+==================================================================================================
+	Division: TRAINVSDEV
+==================================================================================================
+# CTitles: xp, Dataset, Evaluation, favorisationCoeff, focused, importantSentences, importantTransitions, mweRepeition, overSampling, sampleWeight, b1, bigram, dictionary, distanceS0b0, distanceS0s1, history1, history2, history3, lemma, numeric, pos, reduced, s0TokenIsMWEToken, s0TokensAreMWE, s0b2, stackLength, suffix, superSense, syntax, syntaxAbstract, token, trigram
+==================================================================================================
+# Configs: linear, dimsum, trainVsDev, 1, False, False, False, 35, False, False, True, True, True, True, True, True, False, True, True, False, True, False, True, False, True, False, False, False, False, False, True, True
+==================================================================================================
+
+==================================================================================================
+
+==================================================================================================
+	tendy.sampling
+
+==================================================================================================
+# Seed: 0
+==================================================================================================
+XP Starts: 25/2 (11h:13)
+==================================================================================================
+
+==================================================================================================
+	EN Train (3839)
+==================================================================================================
+	Important sentence: 2153
+	Token occurrences: 60613
+	MWE number: 2504
+	MWE occurrences: 3521
+	Continuous occurrences: 89.0 %
+	Frequent MWE occurences: 15.0 %
+	MWE length: 2.34
+	Recognizable MWEs: 100.0 %
+
+==================================================================================================
+	 Test (960)
+==================================================================================================
+	Important sentence: 490
+	Token occurrences: 13213
+	MWE number: 517
+	MWE occurrences: 711
+	Continuous occurrences: 89.0 %
+	MWE length: 2.31
+	Seen occurrences : 43%
+	Recognizable MWEs: 100.0 %
+
+==================================================================================================
+	Linear classifier:
+==================================================================================================
+	LinearSVC(C=1.0, class_weight=None, dual=True, fit_intercept=True,
+     intercept_scaling=1, loss='squared_hinge', max_iter=1000,
+     multi_class='ovr', penalty='l2', random_state=0, tol=0.0001,
+     verbose=0)
+==================================================================================================
+	Feature number = 476843
+==================================================================================================
+	TRAINING TIME: 0.75 minutes
+==================================================================================================
+	PARSING TIME: 0.17 minutes
+==================================================================================================
+	Identification : 0.475
+	P, R  : 0.725, 0.353
+	Token-based : 0.48
+	P, R  : 0.778, 0.347
+
+==================================================================================================
+
+==================================================================================================
+Seen MWEs
+==================================================================================================
+	Gold: 43.7
+	Predicted: 99.1
+	F : 0.765
+	P, R  : 0.729, 0.804
+
+==================================================================================================
+Seen MWEs(Frequently)
+==================================================================================================
+	Gold: 17.9
+	Predicted: 39.3
+	F : 0.897
+	P, R  : 0.868, 0.929
+
+==================================================================================================
+Seen MWEs(Barely)
+==================================================================================================
+	Gold: 25.9
+	Predicted: 59.8
+	F : 0.675
+	P, R  : 0.638, 0.717
+
+==================================================================================================
+Partially-seen MWEs
+==================================================================================================
+	Gold: 51.8
+	Predicted: 0.9
+	F : 0.006
+	P, R  : 0.333, 0.003
+
+==================================================================================================
+Partially-seen MWEs (Without Noise)
+==================================================================================================
+	Gold: 44.0
+	Predicted: 0.9
+	F : 0.006
+	P, R  : 0.333, 0.003
+
+==================================================================================================
+Non-seen MWEs
+==================================================================================================
+	Gold: 56.3
+	Predicted: 0.9
+	F : 0.006
+	P, R  : 0.333, 0.003
+
+==================================================================================================
+Continuous MWEs
+==================================================================================================
+	Gold: 89.5
+	Predicted: 88.2
+	F : 0.493
+	P, R  : 0.761, 0.365
+
+==================================================================================================
+Discontinuous MWEs
+==================================================================================================
+	Gold: 10.5
+	Predicted: 11.8
+	F : 0.327
+	P, R  : 0.463, 0.253
+
+==================================================================================================
+Identic
+==================================================================================================
+	Gold: 34.0 / (all:seen + non seen)
+	Predicted: 79.5 / (all:seen + non seen)
+	F : 0.797
+	P, R  : 0.749, 0.851
+
+==================================================================================================
+Variant
+==================================================================================================
+	Gold: 9.7 / (all:seen + non seen)
+	Predicted: 19.7 / (all:seen + non seen)
+	F : 0.642
+	P, R  : 0.647, 0.638
+
+==================================================================================================
+Embeddeds
+==================================================================================================
+	Gold: 0.0
+	Predicted: 0.0
+	F : 0
+	P, R  : 0.0, 0.0
+
+==================================================================================================
+MWTs
+==================================================================================================
+	Gold: 0.0
+	Predicted: 0.0
+	F : 0
+	P, R  : 0.0, 0.0
+
+==================================================================================================
+Multitokens
+==================================================================================================
+	Gold: 100.0
+	Predicted: 100.0
+	F : 0.475
+	P, R  : 0.725, 0.353
+
+==================================================================================================
+Length(2)
+==================================================================================================
+	Gold: 76.2
+	Predicted: 88.7
+	F : 0.532
+	P, R  : 0.736, 0.417
+
+==================================================================================================
+Length(3)
+==================================================================================================
+	Gold: 18.6
+	Predicted: 10.7
+	F : 0.284
+	P, R  : 0.649, 0.182
+
+==================================================================================================
+4 < Length < 100
+==================================================================================================
+	Gold: 5.2
+	Predicted: 0.6
+	F : 0.051
+	P, R  : 0.5, 0.027
+
+==================================================================================================
+Misidentified:
+==================================================================================================
+	Seens: 97.9
+	Non Seens: 2.1
+	Frequently Seen: 18.9
+	Barely Seen: 78.9
+	Partially Seen: 2.1
+	Partially Seen (Without stop words): 2.1
+	Three Token MWEs: 13.7
+	Two Token MWEs: 85.3
+	MWTs: 0.0
+
+==================================================================================================
+Non-identified:
+==================================================================================================
+	Seens: 13.3
+	Non Seens: 86.7
+	Frequently Seen: 2.0
+	Barely Seen: 11.3
+	Partially Seen: 79.8
+	Partially Seen (Without stop words): 67.8
+	Three Token MWEs: 23.5
+	Two Token MWEs: 68.7
+	MWTs: 0.0
+
+==================================================================================================
+	XP Ends: 25/2 (11 h:15)
+==================================================================================================
+
+Process finished with exit code 0
+
+
+/Users/halsaied/anaconda2/bin/python /Users/halsaied/PycharmProjects/MWE.Identification/src/xpNonCompo.py
+Using Theano backend.
+/Users/halsaied/anaconda2/lib/python2.7/site-packages/cryptography/hazmat/primitives/constant_time.py:26: CryptographyDeprecationWarning: Support for your Python version is deprecated. The next version of cryptography will remove support. Please upgrade to a 2.7.x release that supports hmac.compare_digest as soon as possible.
+  utils.DeprecatedIn23,
+	Mode: LINEAR
+==================================================================================================
+	Dataset: DIMSUM
+==================================================================================================
+	Division: TRAINVSDEV
+==================================================================================================
+# CTitles: xp, Dataset, Evaluation, favorisationCoeff, focused, importantSentences, importantTransitions, mweRepeition, overSampling, sampleWeight, b1, bigram, dictionary, distanceS0b0, distanceS0s1, history1, history2, history3, lemma, numeric, pos, reduced, s0TokenIsMWEToken, s0TokensAreMWE, s0b2, stackLength, suffix, superSense, syntax, syntaxAbstract, token, trigram
+==================================================================================================
+# Configs: linear, dimsum, trainVsDev, 1, False, False, False, 35, False, False, False, True, False, False, False, False, False, False, True, False, True, False, False, False, False, False, False, False, False, False, False, False
+==================================================================================================
+
+==================================================================================================
+
+==================================================================================================
+	tendy.sampling
+
+==================================================================================================
+# Seed: 0
+==================================================================================================
+XP Starts: 22/2 (17h:44)
+==================================================================================================
+
+==================================================================================================
+	EN Train (3839)
+==================================================================================================
+	Important sentence: 2153
+	Token occurrences: 60613
+	MWE number: 2504
+	MWE occurrences: 3521
+	Continuous occurrences: 89.0 %
+	Frequent MWE occurences: 15.0 %
+	MWE length: 2.34
+	Recognizable MWEs: 100.0 %
+
+==================================================================================================
+	 Test (960)
+==================================================================================================
+	Important sentence: 490
+	Token occurrences: 13213
+	MWE number: 517
+	MWE occurrences: 711
+	Continuous occurrences: 89.0 %
+	MWE length: 2.31
+	Seen occurrences : 43%
+	Recognizable MWEs: 100.0 %
+
+==================================================================================================
+	Linear classifier:
+==================================================================================================
+	LinearSVC(C=1.0, class_weight=None, dual=True, fit_intercept=True,
+     intercept_scaling=1, loss='squared_hinge', max_iter=1000,
+     multi_class='ovr', penalty='l2', random_state=0, tol=0.0001,
+     verbose=0)
+==================================================================================================
+	Feature number = 191725
+==================================================================================================
+	TRAINING TIME: 0.78 minutes
+==================================================================================================
+have to
+TransitionType.MERGES=[have, to]                B=[ get,your, ..] Bx=you
+TransitionType.MARK_AS_OTHS=[[have, to]]              B=[ get,your, ..] Bx=you
+TransitionType.MERGES=[get, hair]               B=[ straightened,.,] Bx=your
+TransitionType.MERGES=[[get, hair]straightened] B=[ .,] Bx=your
+tell to face
+go to
+TransitionType.MERGES=[going, to]               B=[ trust,him, ..] Bx='m
+TransitionType.MARK_AS_OTHS=[[going, to]]             B=[ trust,him, ..] Bx='m
+TransitionType.MERGES=[turn, to]                B=[ the,price, ..] Bx=matter
+TransitionType.MARK_AS_OTHS=[[turn, to]]              B=[ the,price, ..] Bx=matter
+have to
+TransitionType.MERGES=[have, to]                B=[ trust,the, ..] Bx=you
+TransitionType.MARK_AS_OTHS=[[have, to]]              B=[ trust,the, ..] Bx=you
+go to
+go to
+leave it at that
+TransitionType.MERGES=[going, to]               B=[ use,them, ..] Bx=n't
+TransitionType.MARK_AS_OTHS=[[going, to]]             B=[ use,them, ..] Bx=n't
+TransitionType.MERGES=[going, to]               B=[ leave,it, ..] Bx=be
+TransitionType.MARK_AS_OTHS=[[going, to]]             B=[ leave,it, ..] Bx=be
+come from
+country girl
+TransitionType.MERGES=[bs, country]             B=[ girl,.,] Bx=no
+TransitionType.MERGES=[[bs, country]girl]       B=[ .,] Bx=no
+play dumb
+half truth
+TransitionType.MERGES=[a, few]                  B=[ falsehoods,.,] Bx=and
+TransitionType.MARK_AS_OTHS=[[a, few]]                B=[ falsehoods,.,] Bx=and
+over power
+years old
+TransitionType.MERGES=[work, done]              B=[ on,my, ..] Bx=have
+TransitionType.MARK_AS_OTHS=[[work, done]]            B=[ on,my, ..] Bx=have
+TransitionType.MERGES=[years, old]              B=[ now,and, ..] Bx=number
+TransitionType.MERGES=[[years, old]now]         B=[ and,getting, ..] Bx=number
+TransitionType.MERGES=[a, little]               B=[ suspicious,of, ..] Bx=also
+TransitionType.MARK_AS_OTHS=[[a, little]]             B=[ suspicious,of, ..] Bx=also
+rather than
+TransitionType.MERGES=[customers, safety]       B=[ rather,than, ..] Bx=the
+TransitionType.MERGES=[[customers, safety]rather] B=[ than,taking, ..] Bx=the
+grow up
+TransitionType.MERGES=[grew, up]                B=[ in,a, ..] Bx=i
+TransitionType.MARK_AS_OTHS=[[grew, up]]              B=[ in,a, ..] Bx=i
+TransitionType.MERGES=[small, town]             B=[ where,you, ..] Bx=a
+TransitionType.MARK_AS_OTHS=[[small, town]]           B=[ where,you, ..] Bx=a
+a lot
+TransitionType.MERGES=[a, lot]                  B=[ .,] Bx=place
+TransitionType.MARK_AS_OTHS=[[a, lot]]                B=[ .,] Bx=place
+tortilla soup
+use to
+you guy
+TransitionType.MERGES=[used, to]                B=[ be,fabulous, ..] Bx=it
+TransitionType.MARK_AS_OTHS=[[used, to]]              B=[ be,fabulous, ..] Bx=it
+never mind
+thank you
+thank you
+TransitionType.MERGE
+TransitionType.MARK_AS_OTH
+TransitionType.MERGES=[thank, you]              B=[ ] Bx=you
+TransitionType.MARK_AS_OTHS=[[thank, you]]            B=[ ] Bx=you
+garage door
+oh - so
+TransitionType.MERGES=[Garage, Door]            B=[ Repair,in, ..] Bx=google
+TransitionType.MARK_AS_OTHS=[[Garage, Door]]          B=[ Repair,in, ..] Bx=google
+sort of
+take off
+go ski
+TransitionType.MERGES=[day, off]                B=[ to,go, ..] Bx=the
+TransitionType.MARK_AS_OTHS=[[day, off]]              B=[ to,go, ..] Bx=the
+spread the word
+TransitionType.MERGES=[spread, the]             B=[ word,to, ..] Bx=will
+TransitionType.MERGES=[[spread, the]word]       B=[ to,my, ..] Bx=will
+TransitionType.MARK_AS_OTHS=[[[spread, the]word]]     B=[ to,my, ..] Bx=will
+roger m.
+TransitionType.MERGE
+TransitionType.MERGES=[[Roger, M.]Woodinville]  B=[ ] Bx=,
+in town
+TransitionType.MERGES=[in, Town]                B=[ ] Bx=deal
+TransitionType.MARK_AS_OTHS=[[in, Town]]              B=[ ] Bx=deal
+TransitionType.MERGES=[have, on]                B=[ a,given, ..] Bx=they
+TransitionType.MARK_AS_OTHS=[[have, on]]              B=[ a,given, ..] Bx=they
+TransitionType.MERGES=[given, week]             B=[ might,never, ..] Bx=a
+TransitionType.MERGES=[[given, week]might]      B=[ never,be, ..] Bx=a
+TransitionType.MERGES=[beauty, items]           B=[ and,household, ..] Bx=discount
+TransitionType.MERGES=[[beauty, items]and]      B=[ household,appliances, ..] Bx=discount
+TransitionType.MERGES=[household, appliances]   B=[ .,] Bx=and
+trust me
+thank you
+TransitionType.MERGE
+TransitionType.MARK_AS_OTH
+pay cash
+TransitionType.MERGES=[blown, motor]            B=[ .,] Bx=a
+so call
+wrong with
+jimmy rig
+auto shop
+TransitionType.MERGES=[took, it]                B=[ to,number, ..] Bx=i
+TransitionType.MARK_AS_OTHS=[[took, it]]              B=[ to,number, ..] Bx=i
+on hold
+call back
+TransitionType.MERGES=[calls, back]             B=[ .,] Bx=you
+TransitionType.MARK_AS_OTHS=[[calls, back]]           B=[ .,] Bx=you
+from standpoint
+gon na
+scrap metal
+TransitionType.MERGES=[take, bucks]             B=[ from,someone, ..] Bx=number
+TransitionType.MERGES=[[take, bucks]from]       B=[ someone,that, ..] Bx=number
+TransitionType.MERGES=[[[take, bucks]from]scrap, metal] B=[ ?,] Bx=of
+suck it up
+you guy
+TransitionType.MERGES=[system, Angels]          B=[ ] Bx=heating
+have to
+live through
+TransitionType.MERGES=[having, to]              B=[ live,through, ..] Bx=imagine
+TransitionType.MARK_AS_OTHS=[[having, to]]            B=[ live,through, ..] Bx=imagine
+TransitionType.MERGES=[live, through]           B=[ these,last, ..] Bx=to
+TransitionType.MERGES=[[live, through]these]    B=[ last,few, ..] Bx=to
+comfort zone
+come out
+on the cheap
+TransitionType.MERGE
+TransitionType.MERGE
+TransitionType.MERGE
+thank you
+comfort zone
+TransitionType.MERGE
+TransitionType.MARK_AS_OTH
+TransitionType.MERGES=[Comfort, Zone]           B=[ ] Bx=you
+over the phone
+in person
+TransitionType.MERGES=[over, the]               B=[ phone,and, ..] Bx=rude
+TransitionType.MERGES=[[over, the]phone]        B=[ and,in, ..] Bx=rude
+TransitionType.MARK_AS_OTHS=[[[over, the]phone]]      B=[ and,in, ..] Bx=rude
+talk down to
+supreme being
+TransitionType.MERGES=[talk, down]              B=[ to,you, ..] Bx=they
+TransitionType.MARK_AS_OTHS=[[talk, down]]            B=[ to,you, ..] Bx=they
+get away with
+be rude
+mind blow
+TransitionType.MERGES=[get, away]               B=[ with,being, ..] Bx=can
+TransitionType.MARK_AS_OTHS=[[get, away]]             B=[ with,being, ..] Bx=can
+do business
+sun toyota
+TransitionType.MERGES=[do, business]            B=[ with,Sun, ..] Bx=never
+TransitionType.MERGES=[[do, business]with]      B=[ Sun,Toyota, ..] Bx=never
+TransitionType.MARK_AS_OTHS=[[[do, business]with]]    B=[ Sun,Toyota, ..] Bx=never
+TransitionType.MERGES=[Sun, Toyota]             B=[ again,.,] Bx=with
+TransitionType.MERGES=[[Sun, Toyota]again]      B=[ .,] Bx=with
+thank god
+compare to
+TransitionType.MERGE
+TransitionType.MARK_AS_OTH
+deal with
+TransitionType.MERGES=[deal, with]              B=[ the,rudeness, ..] Bx=to
+TransitionType.MARK_AS_OTHS=[[deal, with]]            B=[ the,rudeness, ..] Bx=to
+fitness number
+TransitionType.MERGES=[FITNESS, number]         B=[ !,] Bx=-
+high class
+springfield , il
+kansas city
+TransitionType.MERGES=[Kansas, City]            B=[ .,] Bx=from
+situation be in
+sister - in - law
+master key
+TransitionType.MERGES=[job, master]             B=[ keying,our, ..] Bx=great
+TransitionType.MERGES=[[job, master]keying]     B=[ our,building, ..] Bx=great
+end up
+a little
+a lot
+TransitionType.MERGES=[end, up]                 B=[ buying,my, ..] Bx=n't
+TransitionType.MARK_AS_OTHS=[[end, up]]               B=[ buying,my, ..] Bx=n't
+TransitionType.MERGES=[a, little]               B=[ on,the, ..] Bx=budge
+TransitionType.MARK_AS_OTHS=[[a, little]]             B=[ on,the, ..] Bx=budge
+TransitionType.MERGES=[a, lot]                  B=[ to,me, ..] Bx=mean
+TransitionType.MARK_AS_OTHS=[[a, lot]]                B=[ to,me, ..] Bx=mean
+for free
+interested in
+TransitionType.MERGES=[interested, in]          B=[ selling,cars, ..] Bx=be
+TransitionType.MARK_AS_OTHS=[[interested, in]]        B=[ selling,cars, ..] Bx=be
+test - drive
+back to back
+TransitionType.MERGES=[Honda, models]           B=[ ,,so, ..] Bx=different
+TransitionType.MERGES=[[Honda, models],]        B=[ so,we, ..] Bx=different
+test drive
+TransitionType.MERGES=[test, drives]            B=[ .,] Bx=two
+TransitionType.MARK_AS_OTHS=[[test, drives]]          B=[ .,] Bx=two
+waste time
+stevens creek
+TransitionType.MERGES=[waste, time]             B=[ ,,just, ..] Bx=n't
+TransitionType.MARK_AS_OTHS=[[waste, time]]           B=[ ,,just, ..] Bx=n't
+TransitionType.MERGES=[Stevens, Creek]          B=[ ,,they, ..] Bx=to
+TransitionType.MERGES=[[Stevens, Creek],]       B=[ they,actually, ..] Bx=to
+TransitionType.MERGE
+TransitionType.MARK_AS_OTH
+a little
+on the side
+TransitionType.MERGES=[a, little]               B=[ on,the, ..] Bx=be
+TransitionType.MARK_AS_OTHS=[[a, little]]             B=[ on,the, ..] Bx=be
+come out
+month old
+have it
+TransitionType.MERGES=[come, out]               B=[ and,by, ..] Bx=to
+TransitionType.MARK_AS_OTHS=[[come, out]]             B=[ and,by, ..] Bx=to
+TransitionType.MERGES=[month, old]              B=[ had,it, ..] Bx=number
+TransitionType.MARK_AS_OTHS=[[month, old]]            B=[ had,it, ..] Bx=number
+texas roadhouse
+TransitionType.MERGE
+TransitionType.MARK_AS_OTH
+get do
+TransitionType.MERGES=[get, done]               B=[ .,] Bx=hair
+TransitionType.MARK_AS_OTHS=[[get, done]]             B=[ .,] Bx=hair
+time and again
+get do
+TransitionType.MERGES=[get, done]               B=[ or,when, ..] Bx=hair
+TransitionType.MARK_AS_OTHS=[[get, done]]             B=[ or,when, ..] Bx=hair
+get do
+TransitionType.MERGES=[get, done]               B=[ there,,, ..] Bx=hair
+TransitionType.MARK_AS_OTHS=[[get, done]]             B=[ there,,, ..] Bx=hair
+TransitionType.MERGES=[get, busy]               B=[ ,,but, ..] Bx=to
+TransitionType.MARK_AS_OTHS=[[get, busy]]             B=[ ,,but, ..] Bx=to
+little farmer
+TransitionType.MERGES=[Little, Farmer]          B=[ ] Bx=love
+go to school
+look forward to
+TransitionType.MERGES=[looks, forward]          B=[ to,seeing, ..] Bx=and
+TransitionType.MERGES=[[looks, forward]to]      B=[ seeing,his, ..] Bx=and
+TransitionType.MARK_AS_OTHS=[[[looks, forward]to]]    B=[ seeing,his, ..] Bx=and
+drop off
+pick up
+TransitionType.MERGES=[every, day]              B=[ when,I, ..] Bx=content
+TransitionType.MARK_AS_OTHS=[[every, day]]            B=[ when,I, ..] Bx=content
+TransitionType.MERGES=[drop, off]               B=[ and,pick, ..] Bx=i
+TransitionType.MARK_AS_OTHS=[[drop, off]]             B=[ and,pick, ..] Bx=i
+TransitionType.MERGES=[pick, up]                B=[ .,] Bx=and
+TransitionType.MARK_AS_OTHS=[[pick, up]]              B=[ .,] Bx=and
+dr. faris
+TransitionType.MERGE
+TransitionType.MERGE
+back pain
+TransitionType.MERGES=[back, pain]              B=[ to,the, ..] Bx=severe
+TransitionType.MARK_AS_OTHS=[[back, pain]]            B=[ to,the, ..] Bx=severe
+TransitionType.MERGES=[run, in]                 B=[ the,Crim, ..] Bx=to
+TransitionType.MERGES=[[run, in]the]            B=[ Crim,just, ..] Bx=to
+TransitionType.MERGES=[[[run, in]the]Crim]      B=[ just,a, ..] Bx=to
+utc la jolla
+TransitionType.MERGES=[UTC, La]                 B=[ Jolla,area, ..] Bx=the
+TransitionType.MERGES=[[UTC, La]Jolla]          B=[ area,for, ..] Bx=the
+TransitionType.MERGES=[[[UTC, La]Jolla]area]    B=[ for,many, ..] Bx=the
+TransitionType.MERGES=[pleased, with]           B=[ my,experience, ..] Bx=very
+TransitionType.MARK_AS_OTHS=[[pleased, with]]         B=[ my,experience, ..] Bx=very
+TransitionType.MERGES=[got, highlights]         B=[ ,,haircut, ..] Bx=i
+TransitionType.MERGES=[[got, highlights]haircut] B=[ ,,and, ..] Bx=,
+right off the bat
+all the time
+TransitionType.MERGES=[get, compliments]        B=[ all,the, ..] Bx=i
+TransitionType.MERGES=[[get, compliments]all]   B=[ the,time, ..] Bx=i
+thank you
+TransitionType.MERGES=[thank, you]              B=[ for,the, ..] Bx=to
+TransitionType.MARK_AS_OTHS=[[thank, you]]            B=[ for,the, ..] Bx=to
+pick up
+TransitionType.MERGES=[picked, up]              B=[ every,day, ..] Bx=and
+TransitionType.MARK_AS_OTHS=[[picked, up]]            B=[ every,day, ..] Bx=and
+TransitionType.MERGES=[every, day]              B=[ when,the, ..] Bx=up
+TransitionType.MARK_AS_OTHS=[[every, day]]            B=[ when,the, ..] Bx=up
+every thing
+clean up
+haul off
+TransitionType.MERGES=[every, thing]            B=[ was,cleaned, ..] Bx=done
+TransitionType.MARK_AS_OTHS=[[every, thing]]          B=[ was,cleaned, ..] Bx=done
+TransitionType.MERGES=[cleaned, up]             B=[ and,hauled, ..] Bx=be
+TransitionType.MARK_AS_OTHS=[[cleaned, up]]           B=[ and,hauled, ..] Bx=be
+spears roofing
+TransitionType.MERGES=[Spears, Roofing]         B=[ again,.,] Bx=use
+TransitionType.MERGES=[[Spears, Roofing]again]  B=[ .,] Bx=use
+TransitionType.MERGES=[have, sushi]             B=[ for,a, ..] Bx=good
+TransitionType.MERGES=[[have, sushi]for]        B=[ a,good, ..] Bx=good
+so far
+on the side
+TransitionType.MERGES=[on, the]                 B=[ small,side, ..] Bx=be
+TransitionType.MERGES=[[on, the]side]           B=[ and,atmosphere, ..] Bx=small
+TransitionType.MARK_AS_OTHS=[[[on, the]side]]         B=[ and,atmosphere, ..] Bx=small
+local business
+oil change
+TransitionType.MERGES=[oil, changes]            B=[ .,] Bx=and
+TransitionType.MARK_AS_OTHS=[[oil, changes]]          B=[ .,] Bx=and
+customer service
+TransitionType.MERGES=[customer, service]       B=[ .,] Bx=good
+TransitionType.MARK_AS_OTHS=[[customer, service]]     B=[ .,] Bx=good
+who give a crap
+as long as
+TransitionType.MERGES=[a, little]               B=[ surley,,, ..] Bx=be
+TransitionType.MARK_AS_OTHS=[[a, little]]             B=[ surley,,, ..] Bx=be
+TransitionType.MERGES=[gives, a]                B=[ crap,as, ..] Bx=who
+TransitionType.MERGES=[[gives, a]crap]          B=[ as,long, ..] Bx=who
+TransitionType.MARK_AS_OTHS=[[[gives, a]crap]]        B=[ as,long, ..] Bx=who
+TransitionType.MERGES=[as, long]                B=[ as,your, ..] Bx=crap
+TransitionType.MERGES=[[as, long]as]            B=[ your,car, ..] Bx=crap
+TransitionType.MARK_AS_OTHS=[[[as, long]as]]          B=[ your,car, ..] Bx=crap
+walk - in
+TransitionType.MERGES=[writer, friends]         B=[ describe,horror, ..] Bx=have
+TransitionType.MERGES=[[writer, friends]describe] B=[ horror,stories, ..] Bx=have
+TransitionType.MERGES=[horror, stories]         B=[ with,their, ..] Bx=describe
+TransitionType.MERGES=[[horror, stories]with]   B=[ their,printers, ..] Bx=describe
+go with
+richard joule
+TransitionType.MERGE
+TransitionType.MERGE
+set out
+TransitionType.MERGES=[set, out]                B=[ to,exceed, ..] Bx=they
+TransitionType.MERGES=[[set, out]to]            B=[ exceed,your, ..] Bx=they
+no other than
+atlanta paperback book printing
+TransitionType.MERGES=[other, than]             B=[ Atlanta,Paperback, ..] Bx=no
+TransitionType.MARK_AS_OTHS=[[other, than]]           B=[ Atlanta,Paperback, ..] Bx=no
+TransitionType.MERGES=[Atlanta, Paperback]      B=[ Book,Printing, ..] Bx=than
+TransitionType.MERGES=[[Atlanta, Paperback]Book] B=[ Printing,.,] Bx=than
+TransitionType.MERGES=[[[Atlanta, Paperback]Book]Printing] B=[ .,] Bx=than
+signs of saltford
+TransitionType.MERGE
+TransitionType.MERGE
+TransitionType.MERGES=[[[Signs, of]Saltford]money, signs] B=[ and,banners, ..] Bx=for
+TransitionType.MERGES=[[[Signs, of]Saltford][money, signs]and] B=[ banners,etc, ..] Bx=for
+signs of saltford
+TransitionType.MERGES=[Signs, of]               B=[ Saltford,for, ..] Bx=of
+TransitionType.MERGES=[[Signs, of]Saltford]     B=[ for,well, ..] Bx=of
+drive force
+pop - up
+over the years
+first class
+family business
+TransitionType.MERGES=[pleased, with]           B=[ the,signs, ..] Bx=extremely
+TransitionType.MARK_AS_OTHS=[[pleased, with]]         B=[ the,signs, ..] Bx=extremely
+TransitionType.MERGES=[pop, -]                  B=[ up,banners, ..] Bx=and
+TransitionType.MERGES=[[pop, -]up]              B=[ banners,she, ..] Bx=and
+TransitionType.MERGES=[[[pop, -]up]first, class] B=[ family,business, ..] Bx=truly
+TransitionType.MARK_AS_OTHS=[[[pop, -]up][first, class]] B=[ family,business, ..] Bx=truly
+TransitionType.MERGES=[[[pop, -]up]family, business] B=[ run,by, ..] Bx=class
+TransitionType.MERGES=[[[pop, -]up][family, business]run] B=[ by,Tina, ..] Bx=class
+keep it up
+shree ghatkopar bhatia mitra mandal
+TransitionType.MERGES=[Shree, Ghatkopar]        B=[ Bhatia,Mitra, ..] Bx=-
+TransitionType.MERGES=[[Shree, Ghatkopar]Bhatia] B=[ Mitra,Mandal,] Bx=-
+TransitionType.MERGES=[[[Shree, Ghatkopar]Bhatia]Mitra] B=[ Mandal,] Bx=-
+TransitionType.MERGES=[[[[Shree, Ghatkopar]Bhatia]Mitra]Mandal] B=[ ] Bx=-
+kobey s
+have do
+TransitionType.MERGES=[Kobey, s]                B=[ on,Saturday, ..] Bx=to
+TransitionType.MERGES=[[Kobey, s]on]            B=[ Saturday,and, ..] Bx=to
+less than
+top notch
+TransitionType.MERGES=[less, than]              B=[ half,of, ..] Bx=be
+TransitionType.MARK_AS_OTHS=[[less, than]]            B=[ half,of, ..] Bx=be
+TransitionType.MERGES=[top, notch]              B=[ .,] Bx=be
+TransitionType.MARK_AS_OTHS=[[top, notch]]            B=[ .,] Bx=be
+down to earth
+have do
+lab coat
+TransitionType.MERGES=[this, weekend]           B=[ !,] Bx=do
+TransitionType.MARK_AS_OTHS=[[this, weekend]]         B=[ !,] Bx=do
+TransitionType.MERGES=[out, night]              B=[ !,] Bx=great
+TransitionType.MERGES=[[out, night]!]           B=[ ] Bx=great
+ca n't go wrong
+mixed bag
+a bit
+be a nice touch
+TransitionType.MERGES=[had, a, bit]             B=[ more,on, ..] Bx=they
+TransitionType.MARK_AS_OTHS=[had[a, bit]]             B=[ more,on, ..] Bx=they
+chicken finger
+a little
+all round
+TransitionType.MERGES=[a, little]               B=[ better,but, ..] Bx=be
+TransitionType.MARK_AS_OTHS=[[a, little]]             B=[ better,but, ..] Bx=be
+go to school
+hair cut
+TransitionType.MERGES=[get, hair]               B=[ cut,.,] Bx=my
+TransitionType.MERGES=[[get, hair]cut]          B=[ .,] Bx=my
+grow up
+TransitionType.MERGES=[grow, up]                B=[ and,made, ..] Bx=to
+TransitionType.MARK_AS_OTHS=[[grow, up]]              B=[ and,made, ..] Bx=to
+TransitionType.MERGES=[made, appointment]       B=[ .,] Bx=an
+TransitionType.MERGES=[have, hair]              B=[ and,she, ..] Bx=wavy
+TransitionType.MERGES=[[have, hair]and]         B=[ she,cut, ..] Bx=wavy
+TransitionType.MERGES=[[[have, hair]and]hair, style] B=[ .,] Bx=my
+TransitionType.MARK_AS_OTHS=[[[have, hair]and][hair, style]] B=[ .,] Bx=my
+TransitionType.MERGES=[left, a]                 B=[ salon,with, ..] Bx=have
+TransitionType.MERGES=[[left, a]salon]          B=[ with,my, ..] Bx=have
+TransitionType.MERGES=[[[left, a]salon]with]    B=[ my,hair, ..] Bx=have
+dry out
+have to
+TransitionType.MERGES=[dry, out]                B=[ and,i, ..] Bx=it
+TransitionType.MARK_AS_OTHS=[[dry, out]]              B=[ and,i, ..] Bx=it
+TransitionType.MERGES=[have, to]                B=[ wait,until, ..] Bx=i
+TransitionType.MARK_AS_OTHS=[[have, to]]              B=[ wait,until, ..] Bx=i
+let know
+TransitionType.MERGES=[did, a]                  B=[ fabulous,job, ..] Bx=she
+TransitionType.MERGES=[[did, a]job]             B=[ letting,me, ..] Bx=fabulous
+TransitionType.MARK_AS_OTHS=[[[did, a]job]]           B=[ letting,me, ..] Bx=fabulous
+TransitionType.MERGES=[letting, know]           B=[ what,she, ..] Bx=me
+TransitionType.MARK_AS_OTHS=[[letting, know]]         B=[ what,she, ..] Bx=me
+over charge
+on line
+TransitionType.MERGES=[on, line]                B=[ to,check, ..] Bx=go
+TransitionType.MERGES=[[on, line]to]            B=[ check,my, ..] Bx=go
+make mistake
+TransitionType.MERGES=[made, a]                 B=[ mistake,but, ..] Bx=individual
+TransitionType.MERGES=[[made, a]mistake]        B=[ but,to, ..] Bx=individual
+TransitionType.MARK_AS_OTHS=[[[made, a]mistake]]      B=[ but,to, ..] Bx=individual
+sort out
+TransitionType.MERGES=[sort, out]               B=[ my,windscreen, ..] Bx=to
+TransitionType.MARK_AS_OTHS=[[sort, out]]             B=[ my,windscreen, ..] Bx=to
+at all
+TransitionType.MERGES=[at, all]                 B=[ and,I, ..] Bx=hassle
+TransitionType.MARK_AS_OTHS=[[at, all]]               B=[ and,I, ..] Bx=hassle
+customer service
+come across
+TransitionType.MERGES=[customer, service]       B=[ I,'ve, ..] Bx=best
+TransitionType.MARK_AS_OTHS=[[customer, service]]     B=[ I,'ve, ..] Bx=best
+TransitionType.MERGES=[come, across]            B=[ for,long, ..] Bx='ve
+TransitionType.MARK_AS_OTHS=[[come, across]]          B=[ for,long, ..] Bx='ve
+years old
+dental work
+TransitionType.MERGES=[work, scared]            B=[ me,!,] Bx=dental
+TransitionType.MERGES=[[work, scared]me]        B=[ !,] Bx=dental
+take courage
+make appointment
+TransitionType.MERGES=[took, the]               B=[ courage,I, ..] Bx=all
+TransitionType.MERGES=[[took, the]courage]      B=[ I,could, ..] Bx=all
+TransitionType.MERGES=[[[took, the]courage]make, appointment] B=[ .,] Bx=an
+TransitionType.MERGES=[[[took, the]courage][make, appointment]] B=[ ] Bx=.
+front door
+TransitionType.MERGES=[front, door]             B=[ of,his, ..] Bx=the
+TransitionType.MERGES=[[front, door]of]         B=[ his,office, ..] Bx=the
+TransitionType.MERGES=[turned, around]          B=[ .,] Bx=nearly
+TransitionType.MARK_AS_OTHS=[[turned, around]]        B=[ .,] Bx=nearly
+doctor gonzales
+deal with
+TransitionType.MERGE
+TransitionType.MERGE
+TransitionType.MERGES=[dealt, with]             B=[ .,] Bx=ever
+TransitionType.MARK_AS_OTHS=[[dealt, with]]           B=[ .,] Bx=ever
+new lease on life
+thank you
+doctor gonzales
+doctor stout
+eva marie
+TransitionType.MERGE
+TransitionType.MARK_AS_OTH
+TransitionType.MERGES=[Doctor, Gonzales]        B=[ ,,Doctor, ..] Bx=you
+TransitionType.MERGES=[[Doctor, Gonzales]Doctor] B=[ Stout,,, ..] Bx=,
+TransitionType.MERGES=[[[Doctor, Gonzales]Doctor]Stout] B=[ ,,Eva, ..] Bx=,
+TransitionType.MERGES=[[[[Doctor, Gonzales]Doctor]Stout]Eva] B=[ Marie,and, ..] Bx=,
+on time
+TransitionType.MERGES=[on, time]                B=[ ,,and, ..] Bx=job
+TransitionType.MARK_AS_OTHS=[[on, time]]              B=[ ,,and, ..] Bx=job
+have a problem
+come apart
+TransitionType.MERGES=[had, problem]            B=[ with,the, ..] Bx=a
+TransitionType.MARK_AS_OTHS=[[had, problem]]          B=[ with,the, ..] Bx=a
+nothing but
+come over
+who would have
+TransitionType.MERGES=[had, nothing, but]       B=[ compliments,on, ..] Bx=have
+TransitionType.MARK_AS_OTHS=[had[nothing, but]]       B=[ compliments,on, ..] Bx=have
+TransitionType.MERGES=[had, compliments]        B=[ on,our, ..] Bx=but
+TransitionType.MERGES=[[had, compliments]on]    B=[ our,bathroom, ..] Bx=but
+TransitionType.MERGES=[[[had, compliments]on]come, over] B=[ -,who, ..] Bx=guest
+TransitionType.MARK_AS_OTHS=[[[had, compliments]on][come, over]] B=[ -,who, ..] Bx=guest
+grow out
+go in
+take off
+TransitionType.MERGES=[growing, out]            B=[ for,number, ..] Bx=hair
+TransitionType.MARK_AS_OTHS=[[growing, out]]          B=[ for,number, ..] Bx=hair
+TransitionType.MERGES=[taken, off]              B=[ .,] Bx=inch
+TransitionType.MARK_AS_OTHS=[[taken, off]]            B=[ .,] Bx=inch
+TransitionType.MERGES=[brought, out]            B=[ as,much, ..] Bx=server
+TransitionType.MARK_AS_OTHS=[[brought, out]]          B=[ as,much, ..] Bx=server
+dress maker
+come across
+TransitionType.MERGES=[come, across]            B=[ in,my, ..] Bx=ever
+TransitionType.MARK_AS_OTHS=[[come, across]]          B=[ in,my, ..] Bx=ever
+home team
+TransitionType.MERGE
+TransitionType.MARK_AS_OTH
+as an example
+out of
+TransitionType.MERGES=[took, payment]           B=[ for,number, ..] Bx=they
+TransitionType.MERGES=[[took, payment]for]      B=[ number,out, ..] Bx=they
+TransitionType.MERGES=[[[took, payment]for]out, of] B=[ number,monthly, ..] Bx=number
+TransitionType.MARK_AS_OTHS=[[[took, payment]for][out, of]] B=[ number,monthly, ..] Bx=number
+TransitionType.MERGES=[[[took, payment]for]monthly, plan] B=[ premiums,for, ..] Bx=number
+TransitionType.MERGES=[[[took, payment]for][monthly, plan]premiums] B=[ for,a, ..] Bx=number
+as if
+over priced
+olive garden
+TransitionType.MERGES=[as, if]                  B=[ I,was, ..] Bx=felt
+TransitionType.MARK_AS_OTHS=[[as, if]]                B=[ I,was, ..] Bx=felt
+TransitionType.MERGES=[over, priced]            B=[ Olive,Garden, ..] Bx=an
+TransitionType.MARK_AS_OTHS=[[over, priced]]          B=[ Olive,Garden, ..] Bx=an
+TransitionType.MERGES=[Olive, Garden]           B=[ .,] Bx=priced
+in my opinon
+shut down
+health inspector
+TransitionType.MERGES=[shut, down]              B=[ by,the, ..] Bx=be
+TransitionType.MARK_AS_OTHS=[[shut, down]]            B=[ by,the, ..] Bx=be
+air duct
+home inspector
+united air duct
+TransitionType.MERGE
+TransitionType.MARK_AS_OTH
+TransitionType.MERGES=[air, duct]               B=[ quality,tested, ..] Bx=the
+TransitionType.MERGES=[[air, duct]quality]      B=[ tested,professionally, ..] Bx=the
+TransitionType.MERGES=[[[air, duct]quality]tested, professionally] B=[ by,the, ..] Bx=the
+TransitionType.MERGES=[[[air, duct]quality][tested, professionally]by] B=[ the,home, ..] Bx=the
+TransitionType.MERGES=[[[air, duct]quality][[tested, professionally]by]United, Air] B=[ Duct,performed, ..] Bx=after
+TransitionType.MERGES=[[[air, duct]quality][[tested, professionally]by][United, Air]Duct] B=[ performed,their, ..] Bx=after
+TransitionType.MERGES=[[[air, duct]quality][[tested, professionally]by][[United, Air]Duct]performed] B=[ their,work, ..] Bx=after
+marek dzida
+put heart in
+old fashion
+long beach
+TransitionType.MERGE
+TransitionType.MERGE
+TransitionType.MERGE
+TransitionType.MERGES=[[[[Marek, Dzida]the]owner]Long, Beach] B=[ as,I, ..] Bx=in
+TransitionType.MARK_AS_OTHS=[[[[Marek, Dzida]the]owner][Long, Beach]] B=[ as,I, ..] Bx=in
+as soon as
+TransitionType.MERGES=[as, soon]                B=[ as,I, ..] Bx=room
+TransitionType.MERGES=[[as, soon]as]            B=[ I,called, ..] Bx=room
+TransitionType.MARK_AS_OTHS=[[[as, soon]as]]          B=[ I,called, ..] Bx=room
+by far
+TransitionType.MERGES=[by, far]                 B=[ .,] Bx=period
+TransitionType.MARK_AS_OTHS=[[by, far]]               B=[ .,] Bx=period
+on time
+because of
+TransitionType.MERGES=[on, time]                B=[ ,,I, ..] Bx=execute
+TransitionType.MARK_AS_OTHS=[[on, time]]              B=[ ,,I, ..] Bx=execute
+TransitionType.MERGES=[because, of]             B=[ the,great, ..] Bx=can
+TransitionType.MARK_AS_OTHS=[[because, of]]           B=[ the,great, ..] Bx=can
+girl night
+catch up
+TransitionType.MERGES=[catch, up]               B=[ on,our, ..] Bx=,
+TransitionType.MARK_AS_OTHS=[[catch, up]]             B=[ on,our, ..] Bx=,
+TransitionType.MERGES=[lives, evening]          B=[ .,] Bx=our
+get away
+TransitionType.MERGES=[get, away]               B=[ from,our, ..] Bx=to
+TransitionType.MARK_AS_OTHS=[[get, away]]             B=[ from,our, ..] Bx=to
+have to
+put down
+year old
+TransitionType.MERGES=[had, to]                 B=[ put,our, ..] Bx=i
+TransitionType.MARK_AS_OTHS=[[had, to]]               B=[ put,our, ..] Bx=i
+TransitionType.MERGES=[year, old]               B=[ lab,down, ..] Bx=put
+TransitionType.MARK_AS_OTHS=[[year, old]]             B=[ lab,down, ..] Bx=put
+TransitionType.MERGES=[charged, for]            B=[ this,room, ..] Bx=be
+TransitionType.MARK_AS_OTHS=[[charged, for]]          B=[ this,room, ..] Bx=be
+call back
+put down
+n't budge
+TransitionType.MERGES=[called, back]            B=[ a,few, ..] Bx=them
+TransitionType.MARK_AS_OTHS=[[called, back]]          B=[ a,few, ..] Bx=them
+TransitionType.MERGES=[a, few]                  B=[ hours,after, ..] Bx=back
+TransitionType.MARK_AS_OTHS=[[a, few]]                B=[ hours,after, ..] Bx=back
+call back
+TransitionType.MERGES=[call, back]              B=[ .,] Bx=a
+TransitionType.MARK_AS_OTHS=[[call, back]]            B=[ .,] Bx=a
+mackinaw tourist
+TransitionType.MERGES=[Mackinaw, Tourist]       B=[ and,nothing, ..] Bx=email
+TransitionType.MERGES=[[Mackinaw, Tourist]and]  B=[ nothing,.,] Bx=email
+TransitionType.MERGES=[[[Mackinaw, Tourist]and]nothing] B=[ .,] Bx=email
+be a joke
+TransitionType.MERGES=[make, attempt]           B=[ to,misinform, ..] Bx=every
+TransitionType.MERGES=[[make, attempt]to]       B=[ misinform,and, ..] Bx=every
+make up
+in hope to
+TransitionType.MERGES=[make, up]                B=[ excuses,in, ..] Bx=they
+TransitionType.MARK_AS_OTHS=[[make, up]]              B=[ excuses,in, ..] Bx=they
+TransitionType.MERGES=[policy, holders]         B=[ with,misinformation, ..] Bx=their
+TransitionType.MERGES=[[policy, holders]with]   B=[ misinformation,.,] Bx=their
+home make
+TransitionType.MERGES=[made, product]           B=[ ] Bx=home
+to do
+home make
+stand the test of time
+TransitionType.MERGES=[compares, to]            B=[ a,home, ..] Bx=nothing
+TransitionType.MARK_AS_OTHS=[[compares, to]]          B=[ a,home, ..] Bx=nothing
+the brick
+leon 's
+TransitionType.MERGES=[Leon, 's]                B=[ have,their, ..] Bx=and
+TransitionType.MERGES=[[Leon, 's]have]          B=[ their,place, ..] Bx=and
+TransitionType.MERGES=[a, few]                  B=[ different,businesses, ..] Bx=call
+TransitionType.MARK_AS_OTHS=[[a, few]]                B=[ different,businesses, ..] Bx=call
+TransitionType.MERGES=[get, estimates]          B=[ ,,they, ..] Bx=to
+TransitionType.MERGES=[[get, estimates],]       B=[ they,were, ..] Bx=to
+TransitionType.MERGE
+TransitionType.MERGE
+TransitionType.MERGES=[[[The, best]part]got]    B=[ my,whole, ..] Bx=i
+TransitionType.MERGES=[[[[The, best]part]got]shower, tile] B=[ and,fixtures, ..] Bx=the
+TransitionType.MERGES=[[[[The, best]part]got][shower, tile]and] B=[ fixtures,.,] Bx=the
+TransitionType.MERGES=[spent, on]               B=[ remodeling,ever, ..] Bx='ve
+TransitionType.MERGES=[[spent, on]remodeling]   B=[ ever,.,] Bx='ve
+any one
+give a call
+TransitionType.MERGES=[give, a]                 B=[ call,.,] Bx=guy
+TransitionType.MERGES=[[give, a]call]           B=[ .,] Bx=guy
+TransitionType.MARK_AS_OTHS=[[[give, a]call]]         B=[ .,] Bx=guy
+get the job done
+mr. pozza
+TransitionType.MERGES=[Mr., Pozza]              B=[ and,his, ..] Bx=utilize
+TransitionType.MERGES=[[Mr., Pozza]and]         B=[ his,firm, ..] Bx=utilize
+give massage
+fall in love
+best of the best
+TransitionType.MERGES=[IN, LOVE]                B=[ SHE,IS, ..] Bx=fall
+TransitionType.MARK_AS_OTHS=[[IN, LOVE]]              B=[ SHE,IS, ..] Bx=fall
+united air duct cleaning
+TransitionType.MERGES=[United, Air]             B=[ Duct,Cleaning, ..] Bx=recommend
+TransitionType.MERGES=[[United, Air]Duct]       B=[ Cleaning,.,] Bx=recommend
+TransitionType.MERGES=[[[United, Air]Duct]Cleaning] B=[ .,] Bx=recommend
+TransitionType.MERGES=[thanks, again]           B=[ guys,.,] Bx=,
+TransitionType.MARK_AS_OTHS=[[thanks, again]]         B=[ guys,.,] Bx=,
+walk out
+TransitionType.MERGES=[walked, out]             B=[ with,number, ..] Bx=i
+TransitionType.MARK_AS_OTHS=[[walked, out]]           B=[ with,number, ..] Bx=i
+go through
+TransitionType.MERGES=[no, one]                 B=[ else,goes, ..] Bx=that
+TransitionType.MARK_AS_OTHS=[[no, one]]               B=[ else,goes, ..] Bx=that
+TransitionType.MERGES=[goes, through]           B=[ that,.,] Bx=else
+TransitionType.MARK_AS_OTHS=[[goes, through]]         B=[ that,.,] Bx=else
+do a favor
+your self
+hellada gallery
+TransitionType.MERGES=[Hellada, Gallery]        B=[ !,] Bx=love
+noonan 's liquor
+TransitionType.MERGES=[Noonan, 's]              B=[ Liquor,,, ..] Bx=for
+TransitionType.MERGES=[[Noonan, 's]Liquor]      B=[ ,,owners, ..] Bx=for
+money back
+use to
+all the time
+add on
+TransitionType.MERGES=[used, to]                B=[ take,my, ..] Bx=i
+TransitionType.MARK_AS_OTHS=[[used, to]]              B=[ take,my, ..] Bx=i
+TransitionType.MERGES=[hands, too]              B=[ frequently,,, ..] Bx=change
+TransitionType.MERGES=[[hands, too]frequently]  B=[ ,,the, ..] Bx=change
+bring in
+TransitionType.MERGES=[bring, in]               B=[ my,son, ..] Bx=i
+TransitionType.MARK_AS_OTHS=[[bring, in]]             B=[ my,son, ..] Bx=i
+drs. ali
+TransitionType.MERGE
+TransitionType.MERGE
+TransitionType.MERGE
+dental care
+TransitionType.MERGES=[team, focus]             B=[ is,prevention, ..] Bx=the
+TransitionType.MERGES=[[team, focus]is]         B=[ prevention,and, ..] Bx=the
+take pride
+TransitionType.MERGES=[take, care]              B=[ and,pride, ..] Bx=meticulous
+TransitionType.MERGES=[[take, care]and]         B=[ pride,in, ..] Bx=meticulous
+TransitionType.MERGES=[[[take, care]and]pride, in] B=[ accomplishing,their, ..] Bx=meticulous
+TransitionType.MERGES=[[[take, care]and][pride, in]accomplishing] B=[ their,work, ..] Bx=meticulous
+TransitionType.MERGES=[[[take, care]and][[pride, in]accomplishing]] B=[ ] Bx=.
+home inspector
+TransitionType.MERGE
+TransitionType.MARK_AS_OTH
+TransitionType.MERGES=[home, inspector]         B=[ stated,that, ..] Bx=the
+TransitionType.MERGES=[[home, inspector]stated] B=[ that,the, ..] Bx=the
+dr. shady
+TransitionType.MERGE
+hit the nail on the head
+TransitionType.MERGES=[hit, the]                B=[ nail,on, ..] Bx=kelly
+TransitionType.MERGES=[[hit, the]nail]          B=[ on,the, ..] Bx=kelly
+TransitionType.MERGES=[[[hit, the]nail]on]      B=[ the,head, ..] Bx=kelly
+dr. shady
+TransitionType.MERGES=[Dr., Shady]              B=[ ",is, ..] Bx="
+TransitionType.MERGES=[[Dr., Shady]"]           B=[ is,a, ..] Bx="
+good luck
+stick up
+dr. shady
+TransitionType.MERGE
+TransitionType.MARK_AS_OTH
+TransitionType.MERGES=[keeping, business]       B=[ with,that, ..] Bx=luck
+TransitionType.MERGES=[[keeping, business]with] B=[ that,stuck, ..] Bx=luck
+TransitionType.MERGES=[[[keeping, business]with]stuck, up] B=[ attitude,Dr., ..] Bx=that
+TransitionType.MARK_AS_OTHS=[[[keeping, business]with][stuck, up]] B=[ attitude,Dr., ..] Bx=that
+TransitionType.MERGES=[[[keeping, business]with]Dr., Shady] B=[ .,] Bx=attitude
+go to
+TransitionType.MERGES=[going, to]               B=[ be,me, ..] Bx=not
+TransitionType.MARK_AS_OTHS=[[going, to]]             B=[ be,me, ..] Bx=not
+dr. shady
+TransitionType.MERGE
+TransitionType.MERGE
+have to
+call back
+on the way
+TransitionType.MERGES=[had, to]                 B=[ call,back, ..] Bx=i
+TransitionType.MARK_AS_OTHS=[[had, to]]               B=[ call,back, ..] Bx=i
+TransitionType.MERGES=[call, back]              B=[ up,there, ..] Bx=to
+TransitionType.MARK_AS_OTHS=[[call, back]]            B=[ up,there, ..] Bx=to
+TransitionType.MERGES=[in, any]                 B=[ kind,of, ..] Bx=me
+TransitionType.MERGES=[[in, any]kind]           B=[ of,way, ..] Bx=me
+TransitionType.MERGES=[[[in, any]kind]of]       B=[ way,.,] Bx=me
+out ta
+TransitionType.MERGES=[has, to]                 B=[ offer,,, ..] Bx=tucson
+TransitionType.MERGES=[[has, to]offer]          B=[ ,,I, ..] Bx=tucson
+TransitionType.MARK_AS_OTHS=[[[has, to]offer]]        B=[ ,,I, ..] Bx=tucson
+TransitionType.MERGES=[out, ta]                 B=[ here,...,] Bx=be
+TransitionType.MARK_AS_OTHS=[[out, ta]]               B=[ here,...,] Bx=be
+a number
+TransitionType.MERGES=[a, number]               B=[ of,occasions, ..] Bx=on
+TransitionType.MARK_AS_OTHS=[[a, number]]             B=[ of,occasions, ..] Bx=on
+be suppose to
+TransitionType.MERGES=[supposed, to]            B=[ have,those, ..] Bx=only
+TransitionType.MARK_AS_OTHS=[[supposed, to]]          B=[ have,those, ..] Bx=only
+TransitionType.MERGES=[brought, out]            B=[ with,no, ..] Bx=be
+TransitionType.MARK_AS_OTHS=[[brought, out]]          B=[ with,no, ..] Bx=be
+sales man
+take out
+TransitionType.MERGES=[took, out]               B=[ to,lunch, ..] Bx=me
+TransitionType.MARK_AS_OTHS=[[took, out]]             B=[ to,lunch, ..] Bx=me
+year old
+TransitionType.MERGES=[year, old]               B=[ daughter,loves, ..] Bx=number
+TransitionType.MARK_AS_OTHS=[[year, old]]             B=[ daughter,loves, ..] Bx=number
+TransitionType.MERGES=[climbing, club]          B=[ around,.,] Bx=best
+TransitionType.MERGES=[[climbing, club]around]  B=[ .,] Bx=best
+all over
+fort lee
+TransitionType.MERGES=[all, over]               B=[ NY,/, ..] Bx=advertise
+TransitionType.MARK_AS_OTHS=[[all, over]]             B=[ NY,/, ..] Bx=advertise
+TransitionType.MERGES=[Fort, Lee]               B=[ .,] Bx=include
+have to
+TransitionType.MERGES=[have, to]                B=[ pay,all, ..] Bx=you
+TransitionType.MARK_AS_OTHS=[[have, to]]              B=[ pay,all, ..] Bx=you
+as well
+TransitionType.MERGES=[as, well]                B=[ .,] Bx=agreement
+TransitionType.MARK_AS_OTHS=[[as, well]]              B=[ .,] Bx=agreement
+TransitionType.MERGES=[moving, out]             B=[ from,number, ..] Bx=be
+TransitionType.MARK_AS_OTHS=[[moving, out]]           B=[ from,number, ..] Bx=be
+instead of
+TransitionType.MERGES=[giving, number, stars]   B=[ instead,of, ..] Bx='m
+TransitionType.MARK_AS_OTHS=[giving[number, stars]]   B=[ instead,of, ..] Bx='m
+TransitionType.MERGES=[giving[number, stars]]   B=[ instead,of, ..] Bx='m
+TransitionType.MERGES=[[giving[number, stars]]instead] B=[ of,number, ..] Bx='m
+one more thing
+credit cards
+TransitionType.MERGES=[take, credit]            B=[ cards,or, ..] Bx=any
+TransitionType.MERGES=[[take, credit]cards]     B=[ or,checks, ..] Bx=any
+have to
+TransitionType.MERGES=[have, to]                B=[ pay,CASH, ..] Bx=you
+TransitionType.MARK_AS_OTHS=[[have, to]]              B=[ pay,CASH, ..] Bx=you
+TransitionType.MERGES=[unloading, track]        B=[ on,your, ..] Bx=start
+TransitionType.MERGES=[[unloading, track]on]    B=[ your,destination, ..] Bx=start
+cut short
+TransitionType.MERGES=[cut, stay]               B=[ short,and, ..] Bx=out
+TransitionType.MERGES=[[cut, stay]short]        B=[ and,went, ..] Bx=out
+get the hell
+out of
+crap hole
+TransitionType.MERGE
+TransitionType.MARK_AS_OTH
+TransitionType.MERGES=[out, of]                 B=[ this,crap, ..] Bx=hell
+TransitionType.MARK_AS_OTHS=[[out, of]]               B=[ this,crap, ..] Bx=hell
+front desk
+TransitionType.MERGES=[front, desk]             B=[ .,] Bx=the
+TransitionType.MARK_AS_OTHS=[[front, desk]]           B=[ .,] Bx=the
+on top of
+TransitionType.MERGES=[on, top]                 B=[ of,everything, ..] Bx=and
+TransitionType.MERGES=[[on, top]of]             B=[ everything,!,] Bx=and
+TransitionType.MARK_AS_OTHS=[[[on, top]of]]           B=[ everything,!,] Bx=and
+be to
+TransitionType.MERGES=[been, to]                B=[ .,] Bx=ever
+TransitionType.MARK_AS_OTHS=[[been, to]]              B=[ .,] Bx=ever
+TransitionType.MERGES=[leaks, through]          B=[ the,ceiling, ..] Bx=constantly
+TransitionType.MERGES=[[leaks, through]the]     B=[ ceiling,,, ..] Bx=constantly
+TransitionType.MERGES=[[[leaks, through]the]ceiling] B=[ ,,and, ..] Bx=constantly
+make up
+TransitionType.MERGES=[make, up]                B=[ rediculous,rules, ..] Bx=they
+TransitionType.MARK_AS_OTHS=[[make, up]]              B=[ rediculous,rules, ..] Bx=they
+at best
+do a favor
+TransitionType.MERGES=[at, best]                B=[ ,,do, ..] Bx=horrible
+TransitionType.MARK_AS_OTHS=[[at, best]]              B=[ ,,do, ..] Bx=horrible
+TransitionType.MERGES=[do, society]             B=[ a,favor, ..] Bx=,
+TransitionType.MERGES=[[do, society]a]          B=[ favor,,, ..] Bx=,
+have an gift for
+dr. aster
+TransitionType.MERGE
+TransitionType.MERGE
+dr. aster
+to the point
+TransitionType.MERGE
+TransitionType.MERGE
+TransitionType.MERGE
+TransitionType.MARK_AS_OTH
+the libido band
+out of site
+TransitionType.MERGES=[out, of]                 B=[ site,!!,] Bx=be
+TransitionType.MERGES=[[out, of]site]           B=[ !!,] Bx=be
+fix problem
+TransitionType.MERGES=[take, money]             B=[ but,not, ..] Bx=to
+TransitionType.MERGES=[[take, money]but]        B=[ not,quick, ..] Bx=to
+come out
+give quote
+TransitionType.MERGES=[came, out]               B=[ very,quickly, ..] Bx=b&b
+TransitionType.MARK_AS_OTHS=[[came, out]]             B=[ very,quickly, ..] Bx=b&b
+TransitionType.MERGES=[to, begin]               B=[ installing,our, ..] Bx=vacation
+TransitionType.MERGES=[[to, begin]installing]   B=[ our,fence, ..] Bx=vacation
+take care of
+TransitionType.MERGES=[taken, care]             B=[ of,.,] Bx=it
+TransitionType.MERGES=[[taken, care]of]         B=[ .,] Bx=it
+TransitionType.MARK_AS_OTHS=[[[taken, care]of]]       B=[ .,] Bx=it
+come and go
+in my opinion
+due to
+TransitionType.MERGES=[due, to]                 B=[ a,nail, ..] Bx=split
+TransitionType.MARK_AS_OTHS=[[due, to]]               B=[ a,nail, ..] Bx=split
+at this point
+all of
+come by
+take the time
+TransitionType.MERGES=[at, this]                B=[ point,-, ..] Bx=frustrated
+TransitionType.MERGES=[[at, this]point]         B=[ -,it, ..] Bx=frustrated
+TransitionType.MARK_AS_OTHS=[[[at, this]point]]       B=[ -,it, ..] Bx=frustrated
+TransitionType.MERGES=[take, the]               B=[ time,to, ..] Bx=to
+TransitionType.MERGES=[[take, the]time]         B=[ to,bother, ..] Bx=to
+TransitionType.MARK_AS_OTHS=[[[take, the]time]]       B=[ to,bother, ..] Bx=to
+take the time
+take the time
+let know
+TransitionType.MERGES=[I, figure]               B=[ if,they, ..] Bx=so
+TransitionType.MARK_AS_OTHS=[[I, figure]]             B=[ if,they, ..] Bx=so
+TransitionType.MERGES=[take, the]               B=[ time,to, ..] Bx=to
+TransitionType.MERGES=[[take, the]time]         B=[ to,fix, ..] Bx=to
+TransitionType.MARK_AS_OTHS=[[[take, the]time]]       B=[ to,fix, ..] Bx=to
+TransitionType.MERGES=[take, the]               B=[ time,to, ..] Bx='ll
+TransitionType.MERGES=[[take, the]time]         B=[ to,let, ..] Bx='ll
+TransitionType.MARK_AS_OTHS=[[[take, the]time]]       B=[ to,let, ..] Bx='ll
+you get what you pay for
+follow - up
+one - star
+in opinion
+TransitionType.MERGES=[five, stars]             B=[ ,,now, ..] Bx=them
+TransitionType.MERGES=[[five, stars]for]        B=[ their,poor, ..] Bx=now
+TransitionType.MERGES=[[[five, stars]for]customer, follow] B=[ -,up, ..] Bx=poor
+TransitionType.MERGES=[[[five, stars]for][customer, follow]-] B=[ up,and, ..] Bx=poor
+TransitionType.MERGES=[[[five, stars]for][[customer, follow]-]up] B=[ and,unwillingness, ..] Bx=poor
+TransitionType.MERGES=[[[five, stars]for][[[customer, follow]-]up]one, -] B=[ star,in, ..] Bx=a
+TransitionType.MERGES=[[[five, stars]for][[[customer, follow]-]up][one, -]star] B=[ in,my, ..] Bx=a
+TransitionType.MARK_AS_OTHS=[[[five, stars]for][[[customer, follow]-]up][[one, -]star]] B=[ in,my, ..] Bx=a
+TransitionType.MERGES=[[[five, stars]for][[[customer, follow]-]up]] B=[ ] Bx=!
+good and bad
+have to
+take care of
+TransitionType.MERGES=[had, to]                 B=[ take,care, ..] Bx=i
+TransitionType.MARK_AS_OTHS=[[had, to]]               B=[ take,care, ..] Bx=i
+TransitionType.MERGES=[take, care]              B=[ of,the, ..] Bx=to
+TransitionType.MERGES=[[take, care]of]          B=[ the,ants, ..] Bx=to
+TransitionType.MARK_AS_OTHS=[[[take, care]of]]        B=[ the,ants, ..] Bx=to
+have a problem
+go wrong
+TransitionType.MERGES=[had, problem]            B=[ with,the, ..] Bx=a
+TransitionType.MARK_AS_OTHS=[[had, problem]]          B=[ with,the, ..] Bx=a
+because of
+number star
+TransitionType.MERGE
+TransitionType.MARK_AS_OTH
+TransitionType.MERGES=[number, star]            B=[ .,] Bx=a
+TransitionType.MARK_AS_OTHS=[[number, star]]          B=[ .,] Bx=a
+trust with
+doctor hank
+TransitionType.MERGES=[Doctor, Hank]            B=[ with,our, ..] Bx=trust
+TransitionType.MARK_AS_OTHS=[[Doctor, Hank]]          B=[ with,our, ..] Bx=trust
+on staff
+kitchen aid
+TransitionType.MERGES=[went, through]           B=[ Kitchen,Aid, ..] Bx=i
+TransitionType.MARK_AS_OTHS=[[went, through]]         B=[ Kitchen,Aid, ..] Bx=i
+TransitionType.MERGES=[Kitchen, Aid]            B=[ and,used, ..] Bx=through
+TransitionType.MERGES=[[Kitchen, Aid]and]       B=[ used,one, ..] Bx=through
+come in
+help out
+TransitionType.MERGES=[stayed, around]          B=[ to,help, ..] Bx=have
+TransitionType.MERGES=[[stayed, around]to]      B=[ help,me, ..] Bx=have
+TransitionType.MERGES=[[[stayed, around]to]help, out] B=[ when,needed, ..] Bx=me
+TransitionType.MARK_AS_OTHS=[[[stayed, around]to][help, out]] B=[ when,needed, ..] Bx=me
+the real deal
+take as far as can
+TransitionType.MERGES=[as, far]                 B=[ as,we, ..] Bx=this
+TransitionType.MERGES=[[as, far]as]             B=[ we,can, ..] Bx=this
+TransitionType.MARK_AS_OTHS=[[[as, far]as]]           B=[ we,can, ..] Bx=this
+in the middle of
+TransitionType.MERGES=[behind, desk]            B=[ said,:, ..] Bx=person
+TransitionType.MERGES=[[behind, desk]said]      B=[ :,", ..] Bx=person
+in between
+TransitionType.MERGES=[in, between]             B=[ his,rudeness, ..] Bx=somewhere
+TransitionType.MARK_AS_OTHS=[[in, between]]           B=[ his,rudeness, ..] Bx=somewhere
+on way
+as soon as
+gon na
+TransitionType.MERGES=[as, soon]                B=[ as,i, ..] Bx=there
+TransitionType.MERGES=[[as, soon]as]            B=[ i,could, ..] Bx=there
+TransitionType.MARK_AS_OTHS=[[[as, soon]as]]          B=[ i,could, ..] Bx=there
+would like
+depend on
+patient see
+call in
+pick up
+TransitionType.MERGES=[called, in]              B=[ my,order, ..] Bx=i
+TransitionType.MARK_AS_OTHS=[[called, in]]            B=[ my,order, ..] Bx=i
+TransitionType.MERGES=[pick, up]                B=[ ,,they, ..] Bx=it
+TransitionType.MARK_AS_OTHS=[[pick, up]]              B=[ ,,they, ..] Bx=it
+attention to detail
+set apart
+TransitionType.MERGES=[attention, to]           B=[ detail,and, ..] Bx=the
+TransitionType.MERGES=[[attention, to]detail]   B=[ and,the, ..] Bx=the
+TransitionType.MARK_AS_OTHS=[[[attention, to]detail]] B=[ and,the, ..] Bx=the
+TransitionType.MERGES=[apart, from]             B=[ the,others, ..] Bx=studio
+TransitionType.MARK_AS_OTHS=[[apart, from]]           B=[ the,others, ..] Bx=studio
+bradley chevron
+keep run
+TransitionType.MERGES=[Bradley, Chevron]        B=[ kept,my, ..] Bx=at
+TransitionType.MERGES=[[Bradley, Chevron]kept]  B=[ my,car, ..] Bx=at
+i hate to say
+check out
+all kidding aside
+number star
+TransitionType.MERGES=[check, out]              B=[ just,for, ..] Bx=them
+TransitionType.MARK_AS_OTHS=[[check, out]]            B=[ just,for, ..] Bx=them
+TransitionType.MERGES=[hard, time]              B=[ giving,any, ..] Bx=a
+TransitionType.MARK_AS_OTHS=[[hard, time]]            B=[ giving,any, ..] Bx=a
+TransitionType.MERGES=[giving, service]         B=[ biz,a, ..] Bx=any
+TransitionType.MERGES=[[giving, service]biz]    B=[ a,number, ..] Bx=any
+TransitionType.MERGES=[[[giving, service]biz]number, star] B=[ review,but, ..] Bx=a
+TransitionType.MARK_AS_OTHS=[[[giving, service]biz][number, star]] B=[ review,but, ..] Bx=a
+belong to
+under warranty
+on time
+at all
+TransitionType.MERGES=[on, time]                B=[ ,,NO, ..] Bx=home
+TransitionType.MARK_AS_OTHS=[[on, time]]              B=[ ,,NO, ..] Bx=home
+TransitionType.MERGES=[AT, ALL]                 B=[ !!!,] Bx=customer
+TransitionType.MARK_AS_OTHS=[[AT, ALL]]               B=[ !!!,] Bx=customer
+for age
+ball pit
+end up
+give liberty
+TransitionType.MERGES=[a, little]               B=[ padded,pyramid, ..] Bx=and
+TransitionType.MARK_AS_OTHS=[[a, little]]             B=[ padded,pyramid, ..] Bx=and
+TransitionType.MERGES=[winter, weekday]         B=[ and,ended, ..] Bx=a
+TransitionType.MERGES=[[winter, weekday]and]    B=[ ended,up, ..] Bx=a
+TransitionType.MERGES=[[[winter, weekday]and]ended, up] B=[ being,the, ..] Bx=a
+TransitionType.MARK_AS_OTHS=[[[winter, weekday]and][ended, up]] B=[ being,the, ..] Bx=a
+TransitionType.MERGES=[given, a]                B=[ little,more, ..] Bx=be
+TransitionType.MERGES=[[given, a]little]        B=[ more,liberty, ..] Bx=be
+TransitionType.MERGES=[[[given, a]little]have]  B=[ if,others, ..] Bx=would
+pick up
+TransitionType.MERGES=[pick, up]                B=[ an,order, ..] Bx=simply
+TransitionType.MARK_AS_OTHS=[[pick, up]]              B=[ an,order, ..] Bx=simply
+crust on broad
+the real thing
+dr. obina
+TransitionType.MERGE
+TransitionType.MERGE
+dr. olbina
+TransitionType.MERGES=[Dr., Olbina]             B=[ for,number, ..] Bx=of
+TransitionType.MERGES=[[Dr., Olbina]for]        B=[ number,years, ..] Bx=of
+in itself
+let alone
+TransitionType.MERGES=[let, alone]              B=[ adding,crossing, ..] Bx=itself
+TransitionType.MARK_AS_OTHS=[[let, alone]]            B=[ adding,crossing, ..] Bx=itself
+TransitionType.MERGES=[crossing, boarders]      B=[ for,the, ..] Bx=add
+TransitionType.MERGES=[[crossing, boarders]for] B=[ the,first, ..] Bx=add
+warner family
+a number
+TransitionType.MERGES=[Warner, Family]          B=[ for,a, ..] Bx=to
+TransitionType.MERGES=[[Warner, Family]for]     B=[ a,number, ..] Bx=to
+TransitionType.MERGES=[a, number]               B=[ of,years, ..] Bx=for
+TransitionType.MARK_AS_OTHS=[[a, number]]             B=[ of,years, ..] Bx=for
+five star
+lake forest tots
+TransitionType.MERGES=[Five, Stars]             B=[ for,Lake, ..] Bx=******
+TransitionType.MERGES=[[Five, Stars]for]        B=[ Lake,Forest, ..] Bx=******
+TransitionType.MERGES=[[[Five, Stars]for]Lake, Forest] B=[ Tots,.,] Bx=******
+TransitionType.MERGES=[[[Five, Stars]for][Lake, Forest]Tots] B=[ .,] Bx=******
+never mind
+disappointed in
+kitchen aid
+as well
+TransitionType.MERGES=[Kitchen, Aid]            B=[ as,well, ..] Bx=in
+TransitionType.MERGES=[[Kitchen, Aid]as]        B=[ well,,, ..] Bx=in
+nyc pizza
+nail it
+a little
+high dollar
+TransitionType.MERGES=[a, little]               B=[ to,high, ..] Bx=be
+TransitionType.MARK_AS_OTHS=[[a, little]]             B=[ to,high, ..] Bx=be
+compare to
+grammar structure
+TransitionType.MERGES=[a, little]               B=[ suspicious,that, ..] Bx=it
+TransitionType.MARK_AS_OTHS=[[a, little]]             B=[ suspicious,that, ..] Bx=it
+TransitionType.MERGES=[compared, to]            B=[ the,others, ..] Bx=number
+TransitionType.MARK_AS_OTHS=[[compared, to]]          B=[ the,others, ..] Bx=number
+TransitionType.MERGES=[grammar, structure]      B=[ ?,] Bx=unique
+tap water
+TransitionType.MERGES=[tap, water]              B=[ !,] Bx=for
+TransitionType.MARK_AS_OTHS=[[tap, water]]            B=[ !,] Bx=for
+i ca nt speak for
+in the best interest
+family practice
+warner family
+TransitionType.MERGES=[Warner, Family]          B=[ is,the, ..] Bx=...
+TransitionType.MERGES=[[Warner, Family]is]      B=[ the,place, ..] Bx=...
+dinner plate
+TransitionType.MERGES=[gave, dinner]            B=[ plates,instead, ..] Bx=two
+TransitionType.MERGES=[[gave, dinner]plates]    B=[ instead,.,] Bx=two
+have to
+bring in
+have to
+TransitionType.MERGES=[have, to]                B=[ bring,in, ..] Bx=you
+TransitionType.MARK_AS_OTHS=[[have, to]]              B=[ bring,in, ..] Bx=you
+TransitionType.MERGES=[bring, in]               B=[ your,own, ..] Bx=to
+TransitionType.MARK_AS_OTHS=[[bring, in]]             B=[ your,own, ..] Bx=to
+TransitionType.MERGES=[have, to]                B=[ pay,for, ..] Bx=they
+TransitionType.MARK_AS_OTHS=[[have, to]]              B=[ pay,for, ..] Bx=they
+take out
+TransitionType.MERGES=[take, out]               B=[ .,] Bx=for
+TransitionType.MARK_AS_OTHS=[[take, out]]             B=[ .,] Bx=for
+TransitionType.MERGES=[take, home]              B=[ for,dinner, ..] Bx=to
+TransitionType.MERGES=[[take, home]for]         B=[ dinner,.,] Bx=to
+be sure to
+TransitionType.MERGES=[be, sure]                B=[ to,ask, ..] Bx=,
+TransitionType.MARK_AS_OTHS=[[be, sure]]              B=[ to,ask, ..] Bx=,
+parking space
+mini cooper
+TransitionType.MERGES=[Mini, Cooper]            B=[ .,] Bx=a
+thank you
+customer service
+TransitionType.MERGE
+TransitionType.MARK_AS_OTH
+TransitionType.MERGES=[customer, service]       B=[ !,] Bx=great
+TransitionType.MARK_AS_OTHS=[[customer, service]]     B=[ !,] Bx=great
+too much trouble
+have to
+computer network
+on time
+TransitionType.MERGES=[had, to]                 B=[ travel,to, ..] Bx=and
+TransitionType.MARK_AS_OTHS=[[had, to]]               B=[ travel,to, ..] Bx=and
+TransitionType.MERGES=[computer, network]       B=[ equipment,was, ..] Bx=our
+TransitionType.MERGES=[[computer, network]equipment] B=[ was,installed, ..] Bx=our
+TransitionType.MERGES=[on, time]                B=[ .,] Bx=and
+TransitionType.MARK_AS_OTHS=[[on, time]]              B=[ .,] Bx=and
+pull over
+social security numbers
+TransitionType.MERGES=[pulled, over]            B=[ one,day, ..] Bx=be
+TransitionType.MERGES=[[pulled, over]one]       B=[ day,and, ..] Bx=be
+TransitionType.MERGES=[[[pulled, over]one]security, numbers] B=[ on,it, ..] Bx=social
+TransitionType.MERGES=[[[pulled, over]one][security, numbers]on] B=[ it,.,] Bx=social
+TransitionType.MERGES=[approval, process]       B=[ to,the, ..] Bx=the
+TransitionType.MERGES=[[approval, process]to]   B=[ the,actual, ..] Bx=the
+TransitionType.MERGES=[a, bit]                  B=[ surprised,by, ..] Bx='m
+TransitionType.MARK_AS_OTHS=[[a, bit]]                B=[ surprised,by, ..] Bx='m
+have to
+throw out
+TransitionType.MERGES=[had, to]                 B=[ throw,out, ..] Bx=we
+TransitionType.MARK_AS_OTHS=[[had, to]]               B=[ throw,out, ..] Bx=we
+TransitionType.MERGES=[throw, out]              B=[ about,number, ..] Bx=to
+TransitionType.MERGES=[[throw, out]about]       B=[ number,percent, ..] Bx=to
+youngstown sports grille
+TransitionType.MERGES=[Youngstown, Sports]      B=[ Grille,,, ..] Bx=the
+TransitionType.MERGES=[[Youngstown, Sports]Grille] B=[ ,,so, ..] Bx=the
+TransitionType.MERGES=[[[Youngstown, Sports]Grille]so] B=[ I,imagine, ..] Bx=,
+TransitionType.MERGES=[owned, /]                B=[ operated,by, ..] Bx=be
+TransitionType.MERGES=[[owned, /]operated]      B=[ by,the, ..] Bx=be
+go to
+TransitionType.MERGES=[going, to]               B=[ purchase,a, ..] Bx=not
+TransitionType.MARK_AS_OTHS=[[going, to]]             B=[ purchase,a, ..] Bx=not
+take out
+all the time
+TransitionType.MERGES=[take, out]               B=[ from,here, ..] Bx=order
+TransitionType.MARK_AS_OTHS=[[take, out]]             B=[ from,here, ..] Bx=order
+customer service
+TransitionType.MERGES=[took, Customer, Service] B=[ number,from, ..] Bx=guy
+TransitionType.MARK_AS_OTHS=[took[Customer, Service]] B=[ number,from, ..] Bx=guy
+specialize in
+TransitionType.MERGES=[specializes, in]         B=[ high,quality, ..] Bx=that
+TransitionType.MARK_AS_OTHS=[[specializes, in]]       B=[ high,quality, ..] Bx=that
+be no stranger to
+tight corner
+not to mention
+wait staff
+deal with
+TransitionType.MERGE
+TransitionType.MERGE
+TransitionType.MARK_AS_OTH
+TransitionType.MERGES=[wait, staff]             B=[ was,about, ..] Bx=the
+TransitionType.MARK_AS_OTHS=[[wait, staff]]           B=[ was,about, ..] Bx=the
+TransitionType.MERGES=[dealing, with]           B=[ an,angry, ..] Bx=as
+TransitionType.MARK_AS_OTHS=[[dealing, with]]         B=[ an,angry, ..] Bx=as
+by far
+TransitionType.MERGES=[by, far]                 B=[ the,worst, ..] Bx=be
+TransitionType.MARK_AS_OTHS=[[by, far]]               B=[ the,worst, ..] Bx=be
+orange chicken
+kung pao chicken
+as well as
+china delight
+TransitionType.MERGES=[make, orange]            B=[ chicken,,, ..] Bx=to
+TransitionType.MERGES=[[make, orange]chicken]   B=[ ,,sesame, ..] Bx=to
+TransitionType.MERGES=[[[make, orange]chicken]sesame, chicken] B=[ and,kung, ..] Bx=,
+TransitionType.MERGES=[[[make, orange]chicken][sesame, chicken]and] B=[ kung,pao, ..] Bx=,
+TransitionType.MERGES=[[[make, orange]chicken][[sesame, chicken]and]kung, pao] B=[ chicken,as, ..] Bx=,
+TransitionType.MERGES=[[[make, orange]chicken][[sesame, chicken]and][kung, pao]chicken] B=[ as,well, ..] Bx=,
+TransitionType.MERGES=[[[make, orange]chicken][[sesame, chicken]and][[kung, pao]chicken]as, well] B=[ as,cheese, ..] Bx=,
+TransitionType.MERGES=[[[make, orange]chicken][[sesame, chicken]and][[kung, pao]chicken][as, well]as] B=[ cheese,puffs, ..] Bx=,
+TransitionType.MARK_AS_OTHS=[[[make, orange]chicken][[sesame, chicken]and][[kung, pao]chicken][[as, well]as]] B=[ cheese,puffs, ..] Bx=,
+TransitionType.MERGES=[[[make, orange]chicken][[sesame, chicken]and][[kung, pao]chicken]cheese] B=[ puffs,taste, ..] Bx=as
+TransitionType.MERGES=[[[make, orange]chicken]China, Delight] B=[ accomplished,that, ..] Bx=but
+TransitionType.MERGES=[[[make, orange]chicken][China, Delight]accomplished] B=[ that,.,] Bx=but
+TransitionType.MERGES=[the, Hilton]             B=[ (,which, ..] Bx=over
+TransitionType.MARK_AS_OTHS=[[the, Hilton]]           B=[ (,which, ..] Bx=over
+as well
+bradley food and beverage
+TransitionType.MERGES=[as, well]                B=[ with,coffee, ..] Bx=location
+TransitionType.MARK_AS_OTHS=[[as, well]]              B=[ with,coffee, ..] Bx=location
+TransitionType.MERGES=[bradley, food]           B=[ and,beverage, ..] Bx=and
+TransitionType.MERGES=[[bradley, food]and]      B=[ beverage,right, ..] Bx=and
+TransitionType.MERGES=[[[bradley, food]and]beverage] B=[ right,around, ..] Bx=and
+at all
+TransitionType.MERGES=[at, all]                 B=[ about,wine, ..] Bx=anything
+TransitionType.MARK_AS_OTHS=[[at, all]]               B=[ about,wine, ..] Bx=anything
+do n't even get me start
+check in
+as well as
+TransitionType.MERGES=[check, in]               B=[ experience,and, ..] Bx=whole
+TransitionType.MARK_AS_OTHS=[[check, in]]             B=[ experience,and, ..] Bx=whole
+TransitionType.MERGES=[as, well]                B=[ as,the, ..] Bx=staff
+TransitionType.MERGES=[[as, well]as]            B=[ the,accommodations, ..] Bx=staff
+TransitionType.MARK_AS_OTHS=[[[as, well]as]]          B=[ the,accommodations, ..] Bx=staff
+less than
+TransitionType.MERGES=[less, than]              B=[ half,of, ..] Bx=(
+TransitionType.MARK_AS_OTHS=[[less, than]]            B=[ half,of, ..] Bx=(
+mix up
+TransitionType.MERGES=[mixed, up]               B=[ and,wanted, ..] Bx=order
+TransitionType.MERGES=[[mixed, up]and]          B=[ wanted,to, ..] Bx=order
+TransitionType.MERGES=[more, than]              B=[ what,she, ..] Bx=number
+TransitionType.MARK_AS_OTHS=[[more, than]]            B=[ what,she, ..] Bx=number
+all over
+TransitionType.MERGES=[all, over]               B=[ the,world, ..] Bx=from
+TransitionType.MARK_AS_OTHS=[[all, over]]             B=[ the,world, ..] Bx=from
+instead of
+waste time
+TransitionType.MERGES=[waste, time]             B=[ instead,.,] Bx=my
+TransitionType.MARK_AS_OTHS=[[waste, time]]           B=[ instead,.,] Bx=my
+mess up
+TransitionType.MERGES=[messed, up]              B=[ .,] Bx=everything
+TransitionType.MARK_AS_OTHS=[[messed, up]]            B=[ .,] Bx=everything
+lo mein
+TransitionType.MERGES=[lo, mein]                B=[ was,barely, ..] Bx=vegetable
+TransitionType.MERGES=[[lo, mein]was]           B=[ barely,tolerable, ..] Bx=vegetable
+lucky panda
+TransitionType.MERGE
+TransitionType.MERGE
+TransitionType.MERGE
+china delight
+number number
+TransitionType.MERGES=[China, Delight]          B=[ won,number, ..] Bx=how
+TransitionType.MERGES=[[China, Delight]won]     B=[ number,number, ..] Bx=how
+TransitionType.MERGES=[[[China, Delight]won]number] B=[ number,Chinese, ..] Bx=how
+be a joke
+be a joke
+over priced
+TransitionType.MERGES=[OVER, PRICED]            B=[ !!!!!!,] Bx=here
+TransitionType.MARK_AS_OTHS=[[OVER, PRICED]]          B=[ !!!!!!,] Bx=here
+TransitionType.MERGES=[under, educated]         B=[ .,] Bx=be
+over priced
+TransitionType.MERGE
+TransitionType.MARK_AS_OTH
+nail drill
+at all
+old fashioned
+TransitionType.MERGES=[AT, ALL]                 B=[ you,learn, ..] Bx=drill
+TransitionType.MARK_AS_OTHS=[[AT, ALL]]               B=[ you,learn, ..] Bx=drill
+at best
+TransitionType.MERGES=[at, best]                B=[ ,,and, ..] Bx=mediocre
+TransitionType.MARK_AS_OTHS=[[at, best]]              B=[ ,,and, ..] Bx=mediocre
+TransitionType.MERGES=[given, portion]          B=[ size,and, ..] Bx=the
+TransitionType.MERGES=[[given, portion]size]    B=[ and,quality, ..] Bx=the
+come across
+TransitionType.MERGES=[comes, across]           B=[ as,somewhat, ..] Bx=always
+TransitionType.MARK_AS_OTHS=[[comes, across]]         B=[ as,somewhat, ..] Bx=always
+la crosse
+TransitionType.MERGES=[La, Crosse]              B=[ to,go, ..] Bx=to
+TransitionType.MERGES=[[La, Crosse]to]          B=[ go,to, ..] Bx=to
+TransitionType.MERGES=[[[La, Crosse]to]go]      B=[ to,college, ..] Bx=to
+TransitionType.MERGES=[[[[La, Crosse]to]go]birthday, flowers] B=[ though,here, ..] Bx=me
+TransitionType.MERGES=[[[[La, Crosse]to]go][birthday, flowers]though] B=[ here,.,] Bx=me
+hands down
+TransitionType.MERGE
+TransitionType.MARK_AS_OTH
+amelia gentle dentistry
+TransitionType.MERGES=[Amelia, Gentle]          B=[ Dentistry,.,] Bx=to
+TransitionType.MERGES=[[Amelia, Gentle]Dentistry] B=[ .,] Bx=to
+TransitionType.MERGES=[even, if]                B=[ I,have, ..] Bx=need
+TransitionType.MARK_AS_OTHS=[[even, if]]              B=[ I,have, ..] Bx=need
+pizza place
+lake forest tots
+TransitionType.MERGES=[Lake, Forest]            B=[ Tots,.,] Bx=attend
+TransitionType.MERGES=[[Lake, Forest]Tots]      B=[ .,] Bx=attend
+good job
+lake forest tots
+TransitionType.MERGES=[Lake, Forest]            B=[ Tots,!,] Bx=,
+TransitionType.MERGES=[[Lake, Forest]Tots]      B=[ !,] Bx=,
+come out
+TransitionType.MERGES=[came, out]               B=[ ,,charged, ..] Bx=a&e
+TransitionType.MARK_AS_OTHS=[[came, out]]             B=[ ,,charged, ..] Bx=a&e
+deb watson
+TransitionType.MERGE
+TransitionType.MERGE
+patio world
+TransitionType.MERGES=[Patio, World]            B=[ and,can, ..] Bx=by
+TransitionType.MERGES=[[Patio, World]and]       B=[ can,say, ..] Bx=by
+TransitionType.MERGES=[have, to]                B=[ say,.,] Bx=bad
+TransitionType.MERGES=[[have, to]say]           B=[ .,] Bx=bad
+TransitionType.MARK_AS_OTHS=[[[have, to]say]]         B=[ .,] Bx=bad
+go with
+kal tire
+TransitionType.MERGES=[Kal, Tire]               B=[ location,.,] Bx=this
+TransitionType.MERGES=[[Kal, Tire]location]     B=[ .,] Bx=this
+rip off
+TransitionType.MERGE
+front desk
+TransitionType.MERGES=[front, desk]             B=[ staff,was, ..] Bx=the
+TransitionType.MARK_AS_OTHS=[[front, desk]]           B=[ staff,was, ..] Bx=the
+TransitionType.MERGES=[brought, car]            B=[ !!!!,!,] Bx=the
+TransitionType.MERGES=[[brought, car]!!!!]      B=[ !,] Bx=the
+go on a trip
+TransitionType.MERGES=[walking, around]         B=[ .,] Bx=be
+TransitionType.MARK_AS_OTHS=[[walking, around]]       B=[ .,] Bx=be
+TransitionType.MERGES=[salad, cream]            B=[ ,,not, ..] Bx=and
+TransitionType.MERGES=[[salad, cream],]         B=[ not,mayonnaise, ..] Bx=and
+on the side
+TransitionType.MERGES=[a, little]               B=[ on,the, ..] Bx=be
+TransitionType.MARK_AS_OTHS=[[a, little]]             B=[ on,the, ..] Bx=be
+a good few
+go back
+TransitionType.MERGES=[just, about]             B=[ the,money, ..] Bx=give
+TransitionType.MARK_AS_OTHS=[[just, about]]           B=[ the,money, ..] Bx=give
+over the years
+go - to
+east bay
+TransitionType.MERGES=[fallen, over]            B=[ the,years, ..] Bx=have
+TransitionType.MERGES=[[fallen, over]the]       B=[ years,,, ..] Bx=have
+TransitionType.MERGES=[[[fallen, over]the]years] B=[ ,,but, ..] Bx=have
+TransitionType.MERGES=[[[[fallen, over]the]years]go, -] B=[ to,burger, ..] Bx=best
+TransitionType.MERGES=[[[[fallen, over]the]years][go, -]to] B=[ burger,place, ..] Bx=best
+TransitionType.MARK_AS_OTHS=[[[[fallen, over]the]years][[go, -]to]] B=[ burger,place, ..] Bx=best
+TransitionType.MERGES=[[[[fallen, over]the]years]East, Bay] B=[ .,] Bx=the
+send over
+TransitionType.MERGES=[give, estimate]          B=[ .,] Bx=an
+pick up
+TransitionType.MERGES=[pick, up]                B=[ my,car, ..] Bx=could
+TransitionType.MARK_AS_OTHS=[[pick, up]]              B=[ my,car, ..] Bx=could
+TransitionType.MERGES=[car, number]             B=[ -,number, ..] Bx=my
+TransitionType.MERGES=[[car, number]number]     B=[ minutes,late, ..] Bx=-
+place order
+in person
+not a to be find
+pure pilate
+customer service
+TransitionType.MERGES=[Customer, Service]       B=[ ] Bx=no
+TransitionType.MARK_AS_OTHS=[[Customer, Service]]     B=[ ] Bx=no
+have a time
+TransitionType.MERGES=[each, other]             B=[ ,,while, ..] Bx=with
+TransitionType.MARK_AS_OTHS=[[each, other]]           B=[ ,,while, ..] Bx=with
+sales person
+TransitionType.MERGES=[sales, person]           B=[ s,attention, ..] Bx=a
+TransitionType.MERGES=[[sales, person]s]        B=[ attention,.,] Bx=a
+give up
+TransitionType.MERGES=[gave, up]                B=[ and,walked, ..] Bx=he
+TransitionType.MARK_AS_OTHS=[[gave, up]]              B=[ and,walked, ..] Bx=he
+TransitionType.MERGES=[river, road]             B=[ .,] Bx=the
+sport bar
+web site
+TransitionType.MERGES=[web, site]               B=[ improved,.,] Bx=hyatt
+TransitionType.MARK_AS_OTHS=[[web, site]]             B=[ improved,.,] Bx=hyatt
+check - out
+TransitionType.MERGES=[check, -]                B=[ out,.,] Bx=accurate
+TransitionType.MERGES=[[check, -]out]           B=[ .,] Bx=accurate
+TransitionType.MARK_AS_OTHS=[[[check, -]out]]         B=[ .,] Bx=accurate
+a +
+TransitionType.MERGE
+TransitionType.MARK_AS_OTH
+customer service
+TransitionType.MERGES=[customer, service]       B=[ and,honest, ..] Bx=excellent
+TransitionType.MARK_AS_OTHS=[[customer, service]]     B=[ and,honest, ..] Bx=excellent
+dr. rohatgi
+number star
+TransitionType.MERGES=[Dr., Rohatgi]            B=[ number,stars, ..] Bx=give
+TransitionType.MERGES=[[Dr., Rohatgi]number]    B=[ stars,because, ..] Bx=give
+TransitionType.MERGES=[[[Dr., Rohatgi]number]stars] B=[ because,her, ..] Bx=give
+tanglewood apartments
+TransitionType.MERGES=[Tanglewood, Apartments]  B=[ in,late, ..] Bx=the
+TransitionType.MERGES=[[Tanglewood, Apartments]in] B=[ late,number, ..] Bx=the
+TransitionType.MERGES=[[[Tanglewood, Apartments]in]late] B=[ number,and, ..] Bx=the
+use to
+TransitionType.MERGES=[used, to]                B=[ live,at, ..] Bx=i
+TransitionType.MARK_AS_OTHS=[[used, to]]              B=[ live,at, ..] Bx=i
+old time
+sure enough
+credit card
+TransitionType.MERGES=[credit, card]            B=[ .,] Bx=the
+TransitionType.MARK_AS_OTHS=[[credit, card]]          B=[ .,] Bx=the
+new yorker
+oxford , england
+TransitionType.MERGES=[New, Yorker]             B=[ who,has, ..] Bx=a
+TransitionType.MERGES=[[New, Yorker]who]        B=[ has,been, ..] Bx=a
+sam s club
+be to
+TransitionType.MERGES=[Sam, s]                  B=[ club,I, ..] Bx=worst
+TransitionType.MERGES=[[Sam, s]club]            B=[ I,'ve, ..] Bx=worst
+TransitionType.MERGES=[[[Sam, s]club]been, to]  B=[ ] Bx=ever
+TransitionType.MARK_AS_OTHS=[[[Sam, s]club][been, to]] B=[ ] Bx=ever
+clean up
+TransitionType.MERGES=[cleaned, up]             B=[ ,,they, ..] Bx=be
+TransitionType.MARK_AS_OTHS=[[cleaned, up]]           B=[ ,,they, ..] Bx=be
+anna marie
+take over
+whether or not
+pick up
+TransitionType.MERGE
+TransitionType.MERGE
+TransitionType.MERGE
+TransitionType.MERGES=[[[[Anna, Marie]and]Govind]takes, over] B=[ ,,and, ..] Bx=atmosphere
+TransitionType.MARK_AS_OTHS=[[[[Anna, Marie]and]Govind][takes, over]] B=[ ,,and, ..] Bx=atmosphere
+TransitionType.MERGES=[[[[Anna, Marie]and]Govind]pick, up] B=[ again,after, ..] Bx=them
+TransitionType.MARK_AS_OTHS=[[[[Anna, Marie]and]Govind][pick, up]] B=[ again,after, ..] Bx=them
+can be assure
+find out
+TransitionType.MERGES=[find, out]               B=[ the,person, ..] Bx=to
+TransitionType.MARK_AS_OTHS=[[find, out]]             B=[ the,person, ..] Bx=to
+year old
+TransitionType.MERGES=[number, -]               B=[ year,old, ..] Bx=a
+TransitionType.MERGES=[[number, -]year]         B=[ old,certified, ..] Bx=a
+check in
+check out
+TransitionType.MERGES=[check, in]               B=[ to,my, ..] Bx=at
+TransitionType.MARK_AS_OTHS=[[check, in]]             B=[ to,my, ..] Bx=at
+TransitionType.MERGES=[check, out]              B=[ I,found, ..] Bx=regrettable
+TransitionType.MARK_AS_OTHS=[[check, out]]            B=[ I,found, ..] Bx=regrettable
+TransitionType.MERGE
+TransitionType.MARK_AS_OTH
+jaw drop
+TransitionType.MERGES=[do, a]                   B=[ good,job, ..] Bx=n't
+TransitionType.MERGES=[[do, a]job]              B=[ and,they, ..] Bx=good
+TransitionType.MARK_AS_OTHS=[[[do, a]job]]            B=[ and,they, ..] Bx=good
+a short time
+TransitionType.MERGES=[Peterson, Family]        B=[ ] Bx=the
+TransitionType.MERGES=[pleased, with]           B=[ the,tattoos, ..] Bx=very
+TransitionType.MARK_AS_OTHS=[[pleased, with]]         B=[ the,tattoos, ..] Bx=very
+look to
+TransitionType.MERGES=[get, tattoo]             B=[ .,] Bx=a
+wildwood , nj
+number star
+TransitionType.MERGES=[number, stars]           B=[ .,] Bx=it
+TransitionType.MARK_AS_OTHS=[[number, stars]]         B=[ .,] Bx=it
+number star
+TransitionType.MERGES=[number, star]            B=[ hotel,.,] Bx=a
+TransitionType.MARK_AS_OTHS=[[number, star]]          B=[ hotel,.,] Bx=a
+number star
+TransitionType.MERGES=[number, star]            B=[ hotel,in, ..] Bx=a
+TransitionType.MARK_AS_OTHS=[[number, star]]          B=[ hotel,in, ..] Bx=a
+family emergency
+give instructions
+TransitionType.MERGES=[giving, instructions]    B=[ ",.,] Bx=in
+TransitionType.MERGES=[[giving, instructions]"] B=[ .,] Bx=in
+have to
+TransitionType.MERGES=[had, to]                 B=[ cancel,my, ..] Bx=i
+TransitionType.MARK_AS_OTHS=[[had, to]]               B=[ cancel,my, ..] Bx=i
+spice up
+in business
+TransitionType.MERGES=[spice, up]               B=[ or,they, ..] Bx=things
+TransitionType.MERGES=[[spice, up]or]           B=[ they,wo, ..] Bx=things
+TransitionType.MERGES=[in, business]            B=[ long,.,] Bx=be
+TransitionType.MARK_AS_OTHS=[[in, business]]          B=[ long,.,] Bx=be
+la hacienda
+TransitionType.MERGES=[La, Hacienda]            B=[ ] Bx=recommend
+customer service
+TransitionType.MERGES=[customer, service]       B=[ ] Bx=bad
+TransitionType.MARK_AS_OTHS=[[customer, service]]     B=[ ] Bx=bad
+dr mcdonald
+TransitionType.MERGE
+TransitionType.MERGE
+new born
+a lot
+TransitionType.MERGES=[a, lot]                  B=[ .,] Bx=with
+TransitionType.MARK_AS_OTHS=[[a, lot]]                B=[ .,] Bx=with
+TransitionType.MERGES=[DR, .]                   B=[ ] Bx=job
+sales guy
+TransitionType.MERGES=[Sales, Guy]              B=[ Is,] Bx=your
+TransitionType.MARK_AS_OTHS=[[Sales, Guy]]            B=[ Is,] Bx=your
+sales guy
+deal with
+TransitionType.MERGES=[dealt, with]             B=[ ruined,the, ..] Bx=i
+TransitionType.MARK_AS_OTHS=[[dealt, with]]           B=[ ruined,the, ..] Bx=i
+have to
+go cry
+TransitionType.MERGES=[got, so]                 B=[ incredibly,offended, ..] Bx=he
+TransitionType.MERGES=[[got, so]incredibly]     B=[ offended,at, ..] Bx=he
+TransitionType.MERGES=[[[got, so]incredibly]had, to] B=[ go,cry, ..] Bx=he
+TransitionType.MARK_AS_OTHS=[[[got, so]incredibly][had, to]] B=[ go,cry, ..] Bx=he
+test drive
+TransitionType.MERGES=[test, drive]             B=[ the,car, ..] Bx=and
+TransitionType.MARK_AS_OTHS=[[test, drive]]           B=[ the,car, ..] Bx=and
+environmentally friendly
+suzanne , vancouver
+a lot
+TransitionType.MERGES=[a, lot]                  B=[ lower,than, ..] Bx=price
+TransitionType.MARK_AS_OTHS=[[a, lot]]                B=[ lower,than, ..] Bx=price
+TransitionType.MERGES=[take, peiod]             B=[ .,] Bx=car
+come through
+TransitionType.MERGES=[came, through]           B=[ on,all, ..] Bx=they
+TransitionType.MARK_AS_OTHS=[[came, through]]         B=[ on,all, ..] Bx=they
+well know
+family bagels
+TransitionType.MERGES=[Family, Bagels]          B=[ are,nice, ..] Bx=but
+TransitionType.MERGES=[[Family, Bagels]are]     B=[ nice,people, ..] Bx=but
+town bagel
+family bagels
+TransitionType.MERGES=[in, line]                B=[ at,Town, ..] Bx=wait
+TransitionType.MARK_AS_OTHS=[[in, line]]              B=[ at,Town, ..] Bx=wait
+TransitionType.MERGES=[Family, Bagels]          B=[ ] Bx=at
+take a chance on
+TransitionType.MERGES=[in, line]                B=[ at,Outback, ..] Bx=wait
+TransitionType.MARK_AS_OTHS=[[in, line]]              B=[ at,Outback, ..] Bx=wait
+TransitionType.MERGES=[Cuban, cuisine]          B=[ ;,fresh, ..] Bx=authentic
+TransitionType.MERGES=[[Cuban, cuisine];]       B=[ fresh,ingredients, ..] Bx=authentic
+down side
+a lot
+TransitionType.MERGES=[a, lot]                  B=[ of,noise, ..] Bx=be
+TransitionType.MARK_AS_OTHS=[[a, lot]]                B=[ of,noise, ..] Bx=be
+TransitionType.MERGES=[felt, like]              B=[ it,was, ..] Bx=i
+TransitionType.MARK_AS_OTHS=[[felt, like]]            B=[ it,was, ..] Bx=i
+customer service
+TransitionType.MERGES=[Customer, Service]       B=[ ] Bx=and
+TransitionType.MARK_AS_OTHS=[[Customer, Service]]     B=[ ] Bx=and
+have to
+out of way
+TransitionType.MERGES=[have, to]                B=[ drive,a, ..] Bx='ll
+TransitionType.MARK_AS_OTHS=[[have, to]]              B=[ drive,a, ..] Bx='ll
+TransitionType.MERGES=[out, of]                 B=[ my,way, ..] Bx=little
+TransitionType.MARK_AS_OTHS=[[out, of]]               B=[ my,way, ..] Bx=little
+TransitionType.MERGES=[way, to]                 B=[ go,there, ..] Bx=my
+TransitionType.MERGES=[[way, to]go]             B=[ there,,, ..] Bx=my
+TransitionType.MARK_AS_OTHS=[[[way, to]go]]           B=[ there,,, ..] Bx=my
+number star
+TransitionType.MERGES=[number, star]            B=[ reviews,!!,] Bx=many
+TransitionType.MARK_AS_OTHS=[[number, star]]          B=[ reviews,!!,] Bx=many
+ham s
+TransitionType.MERGE
+TransitionType.MERGE
+ham 's
+be no more
+hard times
+TransitionType.MERGES=[hard, times]             B=[ and,I, ..] Bx=of
+TransitionType.MARK_AS_OTHS=[[hard, times]]           B=[ and,I, ..] Bx=of
+accord to
+TransitionType.MERGE
+TransitionType.MARK_AS_OTH
+so long
+ham s
+TransitionType.MERGES=[Ham, s]                  B=[ ...,you, ..] Bx=long
+TransitionType.MERGES=[[Ham, s]...]             B=[ you,will, ..] Bx=long
+have to
+TransitionType.MERGES=[have, to]                B=[ say,it, ..] Bx=i
+TransitionType.MARK_AS_OTHS=[[have, to]]              B=[ say,it, ..] Bx=i
+TransitionType.MERGES=[had, on]                 B=[ the,coast, ..] Bx=ever
+TransitionType.MARK_AS_OTHS=[[had, on]]               B=[ the,coast, ..] Bx=ever
+kind of
+TransitionType.MERGES=[kind, of]                B=[ like,visiting, ..] Bx='s
+TransitionType.MERGES=[[kind, of]like]          B=[ visiting,family, ..] Bx='s
+check out
+TransitionType.MERGES=[checking, out]           B=[ !,] Bx=worth
+TransitionType.MARK_AS_OTHS=[[checking, out]]         B=[ !,] Bx=worth
+waffle maker
+use to
+TransitionType.MERGES=[used, to]                B=[ go,here, ..] Bx=i
+TransitionType.MARK_AS_OTHS=[[used, to]]              B=[ go,here, ..] Bx=i
+TransitionType.MERGES=[meatball, sandwiches]    B=[ .,] Bx=and
+chicken salad
+TransitionType.MERGES=[salad, salad]            B=[ is,great, ..] Bx=chicken
+TransitionType.MERGES=[[salad, salad]great]     B=[ too,.,] Bx=be
+quick on foot
+have to
+TransitionType.MERGES=[have, to]                B=[ be,the, ..] Bx=)
+TransitionType.MARK_AS_OTHS=[[have, to]]              B=[ be,the, ..] Bx=)
+TransitionType.MERGES=[in, town]                B=[ .,] Bx=best
+TransitionType.MARK_AS_OTHS=[[in, town]]              B=[ .,] Bx=best
+do job
+TransitionType.MERGES=[get, to]                 B=[ know,regulars, ..] Bx=staff
+TransitionType.MARK_AS_OTHS=[[get, to]]               B=[ know,regulars, ..] Bx=staff
+at that
+TransitionType.MERGES=[lunch, sandwich]         B=[ place,and, ..] Bx=a
+TransitionType.MERGES=[[lunch, sandwich]place]  B=[ and,a, ..] Bx=a
+TransitionType.MERGES=[repeat, customer]        B=[ with,discount, ..] Bx=a
+TransitionType.MARK_AS_OTHS=[[repeat, customer]]      B=[ with,discount, ..] Bx=a
+beg to differ
+at best
+TransitionType.MERGES=[at, best]                B=[ .,] Bx=marginal
+TransitionType.MARK_AS_OTHS=[[at, best]]              B=[ .,] Bx=marginal
+class act
+TransitionType.MERGE
+an arm and a leg
+have to
+TransitionType.MERGES=[in, the]                 B=[ day,and, ..] Bx=late
+TransitionType.MERGES=[[in, the]day]            B=[ and,I, ..] Bx=late
+TransitionType.MERGES=[[[in, the]day]and]       B=[ I,was, ..] Bx=late
+TransitionType.MERGES=[[[[in, the]day]and]get, charged] B=[ an,arm, ..] Bx=would
+TransitionType.MERGES=[[[[in, the]day]and][get, charged]arm] B=[ and,a, ..] Bx=an
+TransitionType.MERGES=[[[[in, the]day]and][[get, charged]arm]have, to] B=[ wait,forever, ..] Bx=and
+TransitionType.MARK_AS_OTHS=[[[[in, the]day]and][[get, charged]arm][have, to]] B=[ wait,forever, ..] Bx=and
+do business
+TransitionType.MERGES=[do, business]            B=[ with,them, ..] Bx=would
+TransitionType.MERGES=[[do, business]with]      B=[ them,again, ..] Bx=would
+TransitionType.MARK_AS_OTHS=[[[do, business]with]]    B=[ them,again, ..] Bx=would
+trust the midas touch
+TransitionType.MERGE
+TransitionType.MERGE
+TransitionType.MERGE
+up front
+TransitionType.MERGES=[up, front]               B=[ will,surely, ..] Bx=staff
+TransitionType.MARK_AS_OTHS=[[up, front]]             B=[ will,surely, ..] Bx=staff
+TransitionType.MERGES=[make, sure]              B=[ you,get, ..] Bx=surely
+TransitionType.MARK_AS_OTHS=[[make, sure]]            B=[ you,get, ..] Bx=surely
+TransitionType.MERGES=[get, in]                 B=[ a,timely, ..] Bx=back
+TransitionType.MARK_AS_OTHS=[[get, in]]               B=[ a,timely, ..] Bx=back
+the world revolve around
+high tech
+in town
+in deed
+TransitionType.MERGES=[in, town]                B=[ &,I, ..] Bx=equipment
+TransitionType.MARK_AS_OTHS=[[in, town]]              B=[ &,I, ..] Bx=equipment
+put on a pedestal
+TransitionType.MERGES=[honest, business]        B=[ owners,in, ..] Bx=most
+TransitionType.MERGES=[[honest, business]owners] B=[ in,this, ..] Bx=most
+rod jacobsen
+TransitionType.MERGES=[Rod, Jacobsen]           B=[ was,my, ..] Bx=with
+TransitionType.MERGES=[[Rod, Jacobsen]was]      B=[ my,first, ..] Bx=with
+TransitionType.MERGES=[experience, working]     B=[ with,a, ..] Bx=first
+TransitionType.MERGES=[[experience, working]with] B=[ a,CPA, ..] Bx=first
+that say
+TransitionType.MERGES=[well, enough]            B=[ .,] Bx=do
+be say and do
+TransitionType.MERGES=[no, /]                   B=[ little,tax, ..] Bx=with
+TransitionType.MERGES=[[no, /]little]           B=[ tax,liability, ..] Bx=with
+TransitionType.MERGES=[[[no, /]little]tax, liability] B=[ at,the, ..] Bx=with
+TransitionType.MERGES=[[[no, /]little][tax, liability]at] B=[ the,end, ..] Bx=with
+face with
+have to
+TransitionType.MERGES=[has, to]                 B=[ say,to, ..] Bx=rod
+TransitionType.MERGES=[[has, to]say]            B=[ to,the, ..] Bx=rod
+TransitionType.MARK_AS_OTHS=[[[has, to]say]]          B=[ to,the, ..] Bx=rod
+TransitionType.MERGES=[have, to]                B=[ pay,a, ..] Bx=n't
+TransitionType.MARK_AS_OTHS=[[have, to]]              B=[ pay,a, ..] Bx=n't
+have to
+have in mind
+TransitionType.MERGES=[have, to]                B=[ pay,a, ..] Bx=not
+TransitionType.MARK_AS_OTHS=[[have, to]]              B=[ pay,a, ..] Bx=not
+TransitionType.MERGES=[had, in]                 B=[ mind,when, ..] Bx=i
+TransitionType.MERGES=[[had, in]mind]           B=[ when,hired, ..] Bx=i
+let down
+TransitionType.MERGE
+TransitionType.MERGE
+TransitionType.MERGE
+TransitionType.MERGES=[[[[In, the]words]of]LET, DOWN] B=[ !,] Bx=me
+TransitionType.MARK_AS_OTHS=[[[[In, the]words]of][LET, DOWN]] B=[ !,] Bx=me
+high hope
+turn out
+TransitionType.MERGES=[turn, out]               B=[ that,way, ..] Bx=nt
+TransitionType.MARK_AS_OTHS=[[turn, out]]             B=[ that,way, ..] Bx=nt
+foie gras
+TransitionType.MERGES=[foie, gras]              B=[ was,cold, ..] Bx=the
+TransitionType.MARK_AS_OTHS=[[foie, gras]]            B=[ was,cold, ..] Bx=the
+top notch
+TransitionType.MERGE
+TransitionType.MARK_AS_OTH
+hole in the wall
+TransitionType.MERGES=[main, street]            B=[ .,] Bx=the
+TransitionType.MERGES=[wine, selections]        B=[ .,] Bx=price
+wine tasting
+TransitionType.MERGES=[wine, tasting]           B=[ .,] Bx=of
+mr. squeege
+TransitionType.MERGE
+TransitionType.MERGE
+on the planet
+world 's finest donair
+TransitionType.MERGES=[World, 's]               B=[ Finest,Donair, ..] Bx=to
+TransitionType.MERGES=[[World, 's]Finest]       B=[ Donair,.,] Bx=to
+thumb up
+bon appetit
+craft wonderland
+TransitionType.MERGE
+TransitionType.MERGE
+TransitionType.MERGES=[doing, origami]          B=[ jewelry,and, ..] Bx=be
+TransitionType.MERGES=[[doing, origami]jewelry] B=[ and,found, ..] Bx=be
+sense of humor
+TransitionType.MERGES=[has, to]                 B=[ offer,the, ..] Bx=much
+TransitionType.MERGES=[[has, to]offer]          B=[ the,serious, ..] Bx=much
+TransitionType.MARK_AS_OTHS=[[[has, to]offer]]        B=[ the,serious, ..] Bx=much
+barbara quimba
+TransitionType.MERGE
+TransitionType.MERGE
+nova scotia
+TransitionType.MERGES=[Nova, Scotia]            B=[ Cottage,] Bx=fantastic
+TransitionType.MERGES=[[Nova, Scotia]Cottage]   B=[ ] Bx=fantastic
+have a time
+sand hill park
+TransitionType.MERGE
+TransitionType.MERGE
+TransitionType.MERGE
+thank - you
+TransitionType.MERGES=[honest, establishment]   B=[ !,] Bx=and
+try out
+rip off
+TransitionType.MERGES=[tried, out]              B=[ few,place, ..] Bx=have
+TransitionType.MARK_AS_OTHS=[[tried, out]]            B=[ few,place, ..] Bx=have
+TransitionType.MERGES=[ripped, off]             B=[ a,few, ..] Bx=be
+TransitionType.MERGES=[[ripped, off]a, few]     B=[ times,.,] Bx=be
+TransitionType.MARK_AS_OTHS=[[ripped, off][a, few]]   B=[ times,.,] Bx=be
+TransitionType.MERGES=[[ripped, off][a, few]]   B=[ times,.,] Bx=be
+phet and g&g automotive
+give a try
+TransitionType.MERGES=[G&G, Automotive]         B=[ so,I, ..] Bx=and
+TransitionType.MERGES=[[G&G, Automotive]so]     B=[ I,decided, ..] Bx=and
+TransitionType.MERGES=[give, a]                 B=[ try,.,] Bx=him
+TransitionType.MERGES=[[give, a]try]            B=[ .,] Bx=him
+TransitionType.MARK_AS_OTHS=[[[give, a]try]]          B=[ .,] Bx=him
+check out
+do work
+do work
+TransitionType.MERGES=[checked, out]            B=[ what,I, ..] Bx=he
+TransitionType.MARK_AS_OTHS=[[checked, out]]          B=[ what,I, ..] Bx=he
+TransitionType.MERGES=[have, done]              B=[ told,me, ..] Bx=to
+TransitionType.MARK_AS_OTHS=[[have, done]]            B=[ told,me, ..] Bx=to
+TransitionType.MERGES=[did, work]               B=[ and,did, ..] Bx=any
+TransitionType.MARK_AS_OTHS=[[did, work]]             B=[ and,did, ..] Bx=any
+used to
+work do
+come in
+pick up
+TransitionType.MERGES=[compared, to]            B=[ other,places, ..] Bx=to
+TransitionType.MARK_AS_OTHS=[[compared, to]]          B=[ other,places, ..] Bx=to
+TransitionType.MERGES=[work, did]               B=[ when,I, ..] Bx=he
+TransitionType.MARK_AS_OTHS=[[work, did]]             B=[ when,I, ..] Bx=he
+TransitionType.MERGES=[came, in]                B=[ to,pick, ..] Bx=i
+TransitionType.MARK_AS_OTHS=[[came, in]]              B=[ to,pick, ..] Bx=i
+TransitionType.MERGES=[pick, up]                B=[ the,car, ..] Bx=to
+TransitionType.MARK_AS_OTHS=[[pick, up]]              B=[ the,car, ..] Bx=to
+call up
+let know
+TransitionType.MERGES=[called, up]              B=[ to,see, ..] Bx=me
+TransitionType.MARK_AS_OTHS=[[called, up]]            B=[ to,see, ..] Bx=me
+TransitionType.MERGES=[let, know]               B=[ that,they, ..] Bx=me
+TransitionType.MARK_AS_OTHS=[[let, know]]             B=[ that,they, ..] Bx=me
+unheard of
+these days
+common room
+parisian croissant
+bus line
+opera plaza
+galleries lafayette
+flea market
+TransitionType.MERGES=[close, to]               B=[ bus,lines, ..] Bx=be
+TransitionType.MARK_AS_OTHS=[[close, to]]             B=[ bus,lines, ..] Bx=be
+TransitionType.MERGES=[Opera, Plaza]            B=[ ,,Galleries, ..] Bx=for
+TransitionType.MERGES=[[Opera, Plaza]Galleries] B=[ Lafayette,,, ..] Bx=,
+TransitionType.MERGES=[[[Opera, Plaza]Galleries]Lafayette] B=[ ,,and, ..] Bx=,
+TransitionType.MERGES=[flea, Market]            B=[ .,] Bx=famous
+vintage hostel
+TransitionType.MERGES=[Vintage, Hostel]         B=[ again,.,] Bx=the
+TransitionType.MERGES=[[Vintage, Hostel]again]  B=[ .,] Bx=the
+rocky m. lange
+clark county school district
+TransitionType.MERGE
+TransitionType.MERGE
+TransitionType.MERGE
+TransitionType.MERGES=[Clark, County]           B=[ School,District,] Bx=,
+TransitionType.MERGES=[[Clark, County]School]   B=[ District,] Bx=,
+TransitionType.MERGES=[[[Clark, County]School]District] B=[ ] Bx=,
+mind blow
+TransitionType.MERGES=[blowing, servicing]      B=[ ] Bx=mind
+prominent builders
+TransitionType.MERGE
+TransitionType.MERGE
+prominent builder
+new jersey
+TransitionType.MERGES=[New, Jersey]             B=[ are,one, ..] Bx=in
+TransitionType.MERGES=[[New, Jersey]are]        B=[ one,the, ..] Bx=in
+bj s
+TransitionType.MERGES=[BJ, s]                   B=[ restaurant,,, ..] Bx=this
+TransitionType.MERGES=[[BJ, s]restaurant]       B=[ ,,and, ..] Bx=this
+have a time
+bj s
+TransitionType.MERGES=[BJ, s]                   B=[ for,making, ..] Bx=appreciate
+TransitionType.MERGES=[[BJ, s]for]              B=[ making,that, ..] Bx=appreciate
+german bedding
+TransitionType.MERGES=[a, little]               B=[ girl,and, ..] Bx=be
+TransitionType.MARK_AS_OTHS=[[a, little]]             B=[ girl,and, ..] Bx=be
+dr. stiefvater
+TransitionType.MERGE
+TransitionType.MERGE
+bayside chiropractic
+in need
+TransitionType.MERGES=[Bayside, Chiropractic]   B=[ to,anyone, ..] Bx=recommend
+TransitionType.MERGES=[[Bayside, Chiropractic]to] B=[ anyone,who, ..] Bx=recommend
+TransitionType.MERGES=[is, in]                  B=[ need,of, ..] Bx=who
+TransitionType.MARK_AS_OTHS=[[is, in]]                B=[ need,of, ..] Bx=who
+veggie dog
+TransitionType.MERGES=[movie, posters]          B=[ and,memorabilia, ..] Bx=old
+TransitionType.MERGES=[[movie, posters]and]     B=[ memorabilia,from, ..] Bx=old
+over cooked
+TransitionType.MERGES=[over, cooked]            B=[ .,] Bx=and
+first time
+soccer mom
+TransitionType.MERGES=[soccer, mom]             B=[ so,I, ..] Bx=a
+TransitionType.MERGES=[[soccer, mom]so]         B=[ I,was, ..] Bx=a
+peking garden
+TransitionType.MERGES=[Peking, Garden]          B=[ are,the, ..] Bx=store
+TransitionType.MERGES=[[Peking, Garden]are]     B=[ the,worst, ..] Bx=store
+rip off
+get it
+credit card
+TransitionType.MERGES=[credit, card]            B=[ receipt,.,] Bx=your
+TransitionType.MERGES=[[credit, card]receipt]   B=[ .,] Bx=your
+sales men
+TransitionType.MERGES=[sales, men]              B=[ who,put, ..] Bx=excellent
+TransitionType.MARK_AS_OTHS=[[sales, men]]            B=[ who,put, ..] Bx=excellent
+TransitionType.MERGES=[put, needs]              B=[ first,.,] Bx=my
+TransitionType.MERGES=[[put, needs]first]       B=[ .,] Bx=my
+TransitionType.MERGE
+emission test
+TransitionType.MERGES=[emissions, test]         B=[ .,] Bx=simple
+emission test
+with fly colors
+TransitionType.MERGES=[took, down]              B=[ the,street, ..] Bx=car
+TransitionType.MERGES=[[took, down]street]      B=[ and,it, ..] Bx=the
+TransitionType.MERGES=[[[took, down]street]passed, the] B=[ emissions,test, ..] Bx=it
+TransitionType.MERGES=[[[took, down]street][passed, the]emissions] B=[ test,with, ..] Bx=it
+TransitionType.MERGES=[[[took, down]street][[passed, the]emissions]test] B=[ with,flying, ..] Bx=it
+rip off
+child molester
+TransitionType.MERGES=[a, fan]                  B=[ of,herpes, ..] Bx='re
+TransitionType.MERGES=[[a, fan]of]              B=[ herpes,,, ..] Bx='re
+TransitionType.MERGES=[[[a, fan]of]ripped, off] B=[ ,,and, ..] Bx=be
+TransitionType.MERGES=[[[a, fan]of][ripped, off],] B=[ and,child, ..] Bx=be
+TransitionType.MERGES=[[[a, fan]of][[ripped, off],]child, molesters] B=[ ,,this, ..] Bx=and
+TransitionType.MERGES=[[[a, fan]of][[ripped, off],][child, molesters]] B=[ ,,this, ..] Bx=and
+TransitionType.MERGES=[[[a, fan]of][[[ripped, off],][child, molesters]]] B=[ ] Bx=.
+TransitionType.MERGE
+TransitionType.MERGE
+prestige hino
+TransitionType.MERGES=[Prestige, Hino]          B=[ !,] Bx=congratulations
+TransitionType.MERGES=[Hino, Dealer]            B=[ of,the, ..] Bx=converted
+TransitionType.MERGES=[[Hino, Dealer]of]        B=[ the,Year, ..] Bx=converted
+TransitionType.MERGES=[Hino, dealer]            B=[ of,the, ..] Bx=overall
+TransitionType.MERGES=[[Hino, dealer]of]        B=[ the,year, ..] Bx=overall
+TransitionType.MERGES=[finance, dealer]         B=[ of,the, ..] Bx=hino
+TransitionType.MERGES=[[finance, dealer]of]     B=[ the,year, ..] Bx=hino
+TransitionType.MERGES=[Dandenong, PMA]          B=[ ,,sales, ..] Bx=,
+TransitionType.MERGES=[[Dandenong, PMA]sales]   B=[ .,] Bx=,
+medium duty
+TransitionType.MERGES=[leader, medium]          B=[ duty,,, ..] Bx=market
+TransitionType.MERGES=[[leader, medium]duty]    B=[ ,,sales, ..] Bx=market
+TransitionType.MERGES=[[[leader, medium]duty]sales] B=[ .,] Bx=,
+well do
+well do
+gold award
+TransitionType.MERGE
+TransitionType.MERGE
+well do
+customer service
+TransitionType.MERGES=[customer, service]       B=[ .,] Bx=poor
+TransitionType.MARK_AS_OTHS=[[customer, service]]     B=[ .,] Bx=poor
+nyc style pizza
+TransitionType.MERGES=[NYC, style]              B=[ pizza,.,] Bx=good
+TransitionType.MERGES=[[NYC, style]pizza]       B=[ .,] Bx=good
+have to
+TransitionType.MERGES=[have, to]                B=[ get,a, ..] Bx=i
+TransitionType.MARK_AS_OTHS=[[have, to]]              B=[ get,a, ..] Bx=i
+have to
+TransitionType.MERGES=[have, to]                B=[ wait,until, ..] Bx=would
+TransitionType.MARK_AS_OTHS=[[have, to]]              B=[ wait,until, ..] Bx=would
+the holy grail
+TransitionType.MERGES=[a, slice]                B=[ .,] Bx=order
+the real deal
+that be say
+want to
+new yorkedness
+scrummy yummy
+TransitionType.MERGES=[scrummy, yummy]          B=[ sounds,gimmicky, ..] Bx=,
+TransitionType.MERGES=[[scrummy, yummy]sounds]  B=[ gimmicky,to, ..] Bx=,
+out of business
+TransitionType.MERGES=[out, of]                 B=[ business,.,] Bx=be
+TransitionType.MERGES=[[out, of]business]       B=[ .,] Bx=be
+TransitionType.MARK_AS_OTHS=[[[out, of]business]]     B=[ .,] Bx=be
+malcolm smith motorsports
+down the road
+TransitionType.MERGES=[Malcolm, Smith]          B=[ Motorsports,down, ..] Bx=to
+TransitionType.MERGES=[[Malcolm, Smith]Motorsports] B=[ down,the, ..] Bx=to
+TransitionType.MERGES=[[[Malcolm, Smith]Motorsports]down] B=[ the,road, ..] Bx=to
+TransitionType.MERGES=[[[[Malcolm, Smith]Motorsports]down]the] B=[ road,.,] Bx=to
+check out
+TransitionType.MERGES=[checked, out]            B=[ you,'ll, ..] Bx=be
+TransitionType.MARK_AS_OTHS=[[checked, out]]          B=[ you,'ll, ..] Bx=be
+customer service
+check - in
+TransitionType.MERGES=[customer, service]       B=[ about,it, ..] Bx=call
+TransitionType.MARK_AS_OTHS=[[customer, service]]     B=[ about,it, ..] Bx=call
+TransitionType.MERGES=[check, -]                B=[ in,.,] Bx=the
+TransitionType.MERGES=[[check, -]in]            B=[ .,] Bx=the
+TransitionType.MERGES=[have, problem]           B=[ with,', ..] Bx=we
+TransitionType.MERGES=[[have, problem]with]     B=[ ',people, ..] Bx=we
+TransitionType.MARK_AS_OTHS=[[[have, problem]with]]   B=[ ',people, ..] Bx=we
+TransitionType.MERGES=[having, problems]        B=[ with,people, ..] Bx=hotel
+TransitionType.MERGES=[[having, problems]with]  B=[ people,.,] Bx=hotel
+TransitionType.MARK_AS_OTHS=[[[having, problems]with]] B=[ people,.,] Bx=hotel
+medical care
+urgent care
+blow away
+TransitionType.MERGES=[care, center]            B=[ and,was, ..] Bx=urgent
+TransitionType.MERGES=[[care, center]and]       B=[ was,blown, ..] Bx=urgent
+TransitionType.MERGES=[blown, away]             B=[ with,their, ..] Bx=be
+TransitionType.MARK_AS_OTHS=[[blown, away]]           B=[ with,their, ..] Bx=be
+TransitionType.MERGES=[close, to]               B=[ home,.,] Bx=place
+TransitionType.MARK_AS_OTHS=[[close, to]]             B=[ home,.,] Bx=place
+go back
+medical care
+month old
+TransitionType.MERGES=[month, olds]             B=[ here,.,] Bx=number
+TransitionType.MARK_AS_OTHS=[[month, olds]]           B=[ here,.,] Bx=number
+go down
+super number
+TransitionType.MERGE
+TransitionType.MARK_AS_OTH
+TransitionType.MERGES=[Super, number]           B=[ .,] Bx=to
+james bateman
+TransitionType.MERGE
+TransitionType.MERGE
+TransitionType.MERGES=[was, to]                 B=[ my,satisfaction, ..] Bx=everything
+TransitionType.MARK_AS_OTHS=[[was, to]]               B=[ my,satisfaction, ..] Bx=everything
+team texas construction
+TransitionType.MERGES=[blows, through]          B=[ ,,I, ..] Bx=hailstorm
+TransitionType.MERGES=[[blows, through]not]     B=[ hesitate,to, ..] Bx=will
+TransitionType.MERGES=[[[blows, through]not]Team, Texas] B=[ Construction,.,] Bx=at
+TransitionType.MERGES=[[[blows, through]not][Team, Texas]Construction] B=[ .,] Bx=at
+midtown reston
+TransitionType.MERGE
+TransitionType.MERGE
+check out
+wine tasting
+TransitionType.MERGE
+TransitionType.MARK_AS_OTH
+TransitionType.MERGES=[Friday, night]           B=[ !,] Bx=every
+TransitionType.MARK_AS_OTHS=[[Friday, night]]         B=[ !,] Bx=every
+TransitionType.MERGES=[Made, appointment]       B=[ to,have, ..] Bx=an
+TransitionType.MERGES=[[Made, appointment]to]   B=[ have,them, ..] Bx=an
+TransitionType.MERGES=[[[Made, appointment]to]give, estimate] B=[ .,] Bx=an
+TransitionType.MERGES=[[[Made, appointment]to][give, estimate]] B=[ ] Bx=.
+call in sick
+TransitionType.MERGES=[called, in]              B=[ sick,hours, ..] Bx=lady
+TransitionType.MARK_AS_OTHS=[[called, in]]            B=[ sick,hours, ..] Bx=lady
+the point
+come over
+hang out
+TransitionType.MERGES=[come, over]              B=[ and,hang, ..] Bx=just
+TransitionType.MARK_AS_OTHS=[[come, over]]            B=[ and,hang, ..] Bx=just
+TransitionType.MERGES=[hang, out]               B=[ ?!?,] Bx=and
+TransitionType.MARK_AS_OTHS=[[hang, out]]             B=[ ?!?,] Bx=and
+do business
+TransitionType.MERGES=[do, business]            B=[ with,this, ..] Bx=never
+TransitionType.MERGES=[[do, business]with]      B=[ this,company, ..] Bx=never
+TransitionType.MARK_AS_OTHS=[[[do, business]with]]    B=[ this,company, ..] Bx=never
+thank you
+TransitionType.MERGES=[THANK, YOU]              B=[ ] Bx=deal
+TransitionType.MARK_AS_OTHS=[[THANK, YOU]]            B=[ ] Bx=deal
+no joke
+identity theft
+TransitionType.MERGE
+use to
+TransitionType.MERGES=[use, to]                 B=[ work,in, ..] Bx=that
+TransitionType.MARK_AS_OTHS=[[use, to]]               B=[ work,in, ..] Bx=that
+put in charge
+TransitionType.MERGES=[put, in]                 B=[ charge,of, ..] Bx=be
+TransitionType.MARK_AS_OTHS=[[put, in]]               B=[ charge,of, ..] Bx=be
+TransitionType.MERGES=[charge, of]              B=[ the,apartments, ..] Bx=in
+TransitionType.MERGES=[[charge, of]the]         B=[ apartments,.,] Bx=in
+TransitionType.MERGES=[[[charge, of]the]apartments] B=[ .,] Bx=in
+show up
+show up
+TransitionType.MERGES=[show, up]                B=[ ,,then, ..] Bx=would
+TransitionType.MARK_AS_OTHS=[[show, up]]              B=[ ,,then, ..] Bx=would
+TransitionType.MERGES=[show, up]                B=[ .,] Bx=would
+TransitionType.MARK_AS_OTHS=[[show, up]]              B=[ .,] Bx=would
+parking lot
+TransitionType.MERGES=[parking, lot]            B=[ .,] Bx=the
+TransitionType.MARK_AS_OTHS=[[parking, lot]]          B=[ .,] Bx=the
+at best
+TransitionType.MERGES=[at, best]                B=[ .,] Bx=time
+TransitionType.MARK_AS_OTHS=[[at, best]]              B=[ .,] Bx=time
+TransitionType.MERGES=[purchased, through]      B=[ them,.,] Bx='ve
+TransitionType.MERGES=[[purchased, through]them] B=[ .,] Bx='ve
+scott larson
+take care of
+TransitionType.MERGES=[Scott, Larson]           B=[ and,know, ..] Bx=appreciate
+TransitionType.MERGES=[[Scott, Larson]and]      B=[ know,that, ..] Bx=appreciate
+TransitionType.MERGES=[[[Scott, Larson]and]know] B=[ that,he, ..] Bx=appreciate
+TransitionType.MERGES=[[[[Scott, Larson]and]know]take, care] B=[ of,us, ..] Bx=good
+TransitionType.MERGES=[[[[Scott, Larson]and]know][take, care]of] B=[ us,and, ..] Bx=good
+TransitionType.MARK_AS_OTHS=[[[[Scott, Larson]and]know][[take, care]of]] B=[ us,and, ..] Bx=good
+rear window
+TransitionType.MERGES=[rear, window]            B=[ has,some, ..] Bx=the
+TransitionType.MARK_AS_OTHS=[[rear, window]]          B=[ has,some, ..] Bx=the
+TransitionType.MERGES=[on, highway]             B=[ .,] Bx=drive
+pay attention
+test drive
+TransitionType.MERGES=[paid, attention]         B=[ to,this, ..] Bx=have
+TransitionType.MARK_AS_OTHS=[[paid, attention]]       B=[ to,this, ..] Bx=have
+TransitionType.MERGES=[test, drive]             B=[ .,] Bx=while
+TransitionType.MARK_AS_OTHS=[[test, drive]]           B=[ .,] Bx=while
+TransitionType.MERGES=[brought, back]           B=[ the,second, ..] Bx=car
+TransitionType.MARK_AS_OTHS=[[brought, back]]         B=[ the,second, ..] Bx=car
+who know
+TransitionType.MERGES=[walked, away]            B=[ .,] Bx=i
+TransitionType.MARK_AS_OTHS=[[walked, away]]          B=[ .,] Bx=i
+TransitionType.MERGE
+TransitionType.MARK_AS_OTH
+TransitionType.MERGES=[on, business]            B=[ and,had, ..] Bx=canada
+TransitionType.MARK_AS_OTHS=[[on, business]]          B=[ and,had, ..] Bx=canada
+TransitionType.MERGES=[not, to]                 B=[ mention,very, ..] Bx=,
+TransitionType.MERGES=[[not, to]mention]        B=[ very,well, ..] Bx=,
+TransitionType.MARK_AS_OTHS=[[[not, to]mention]]      B=[ very,well, ..] Bx=,
+TransitionType.MERGES=[tmobile, service]        B=[ ] Bx=great
+turn out
+TransitionType.MERGES=[turned, out]             B=[ being,very, ..] Bx=it
+TransitionType.MARK_AS_OTHS=[[turned, out]]           B=[ being,very, ..] Bx=it
+hit or miss
+TransitionType.MERGE
+TransitionType.MERGE
+hair loss
+TransitionType.MERGES=[induced, hair]           B=[ loss,.,] Bx=surgically
+TransitionType.MERGES=[[induced, hair]loss]     B=[ .,] Bx=surgically
+customer service
+TransitionType.MERGES=[customer, service]       B=[ and,quality, ..] Bx=excellent
+TransitionType.MARK_AS_OTHS=[[customer, service]]     B=[ and,quality, ..] Bx=excellent
+go the extra mile
+cowboy boot
+have to
+wood grain
+TransitionType.MERGES=[went, the]               B=[ extra,mile, ..] Bx=they
+TransitionType.MERGES=[[went, the]extra]        B=[ mile,to, ..] Bx=they
+TransitionType.MERGES=[[[went, the]extra]mile]  B=[ to,repair, ..] Bx=they
+TransitionType.MARK_AS_OTHS=[[[[went, the]extra]mile]] B=[ to,repair, ..] Bx=they
+TransitionType.MERGES=[cowboy, boots]           B=[ --,they, ..] Bx=my
+TransitionType.MERGES=[[cowboy, boots]--]       B=[ they,had, ..] Bx=my
+TransitionType.MERGES=[had, to]                 B=[ have,a, ..] Bx=they
+TransitionType.MARK_AS_OTHS=[[had, to]]               B=[ have,a, ..] Bx=they
+work week
+TransitionType.MERGES=[closed, during]          B=[ the,work, ..] Bx=they
+TransitionType.MERGES=[[closed, during]the]     B=[ work,week, ..] Bx=they
+TransitionType.MERGES=[[[closed, during]the]work, week] B=[ ,,I, ..] Bx=they
+TransitionType.MARK_AS_OTHS=[[[closed, during]the][work, week]] B=[ ,,I, ..] Bx=they
+TransitionType.MERGES=[get, fixed]              B=[ properly,again, ..] Bx=boot
+TransitionType.MERGES=[[get, fixed]properly]    B=[ again,.,] Bx=boot
+for get that
+put on hold
+TransitionType.MERGES=[put, on]                 B=[ hold,twice, ..] Bx=get
+TransitionType.MARK_AS_OTHS=[[put, on]]               B=[ hold,twice, ..] Bx=get
+new jersey
+new jersey
+TransitionType.MERGES=[say, no]                 B=[ ,,Warwick, ..] Bx=they
+TransitionType.MARK_AS_OTHS=[[say, no]]               B=[ ,,Warwick, ..] Bx=they
+TransitionType.MERGES=[New, Jersey]             B=[ ,,Call, ..] Bx=in
+TransitionType.MERGES=[[New, Jersey],]          B=[ Call,New, ..] Bx=in
+TransitionType.MERGES=[[[New, Jersey],]Call]    B=[ New,Jersey, ..] Bx=in
+TransitionType.MERGES=[[[[New, Jersey],]Call]New, Jersey] B=[ .,] Bx=in
+new york
+radison - warwick
+TransitionType.MERGES=[New, York]               B=[ ,,but, ..] Bx=in
+TransitionType.MARK_AS_OTHS=[[New, York]]             B=[ ,,but, ..] Bx=in
+center city philly
+TransitionType.MERGES=[CENTER, CITY]            B=[ PHILLY,,, ..] Bx=,
+TransitionType.MERGES=[[CENTER, CITY]PHILLY]    B=[ ,,and, ..] Bx=,
+TransitionType.MERGES=[[[CENTER, CITY]PHILLY]and] B=[ he,says, ..] Bx=,
+radison warwick
+rittenhouse square
+TransitionType.MERGES=[RADISON, WARWICK]        B=[ HOTEL,in, ..] Bx=the
+TransitionType.MARK_AS_OTHS=[[RADISON, WARWICK]]      B=[ HOTEL,in, ..] Bx=the
+TransitionType.MERGES=[Rittenhouse, Square]     B=[ .,] Bx=in
+TransitionType.MARK_AS_OTHS=[[Rittenhouse, Square]]   B=[ .,] Bx=in
+have to
+get to work
+TransitionType.MERGES=[have, to]                B=[ get,to, ..] Bx=i
+TransitionType.MARK_AS_OTHS=[[have, to]]              B=[ get,to, ..] Bx=i
+TransitionType.MERGES=[get, to]                 B=[ work,,, ..] Bx=to
+TransitionType.MARK_AS_OTHS=[[get, to]]               B=[ work,,, ..] Bx=to
+have to
+TransitionType.MERGES=[have, to]                B=[ have,an, ..] Bx=i
+TransitionType.MARK_AS_OTHS=[[have, to]]              B=[ have,an, ..] Bx=i
+locust street
+TransitionType.MERGES=[LOCUST, STREET]          B=[ i,say, ..] Bx=number
+TransitionType.MERGES=[[LOCUST, STREET]i]       B=[ say,.,] Bx=number
+TransitionType.MERGES=[[[LOCUST, STREET]i]say]  B=[ .,] Bx=number
+warwick township
+TransitionType.MERGES=[WARWICK, TOWNSHIP]       B=[ ?,] Bx=in
+in pain
+step take
+service office
+TransitionType.MERGES=[service, office]         B=[ ] Bx=a
+take walk ins
+out front
+TransitionType.MERGES=[take, walk]              B=[ ins,but, ..] Bx=not
+TransitionType.MERGES=[[take, walk]but]         B=[ they,do, ..] Bx=ins
+TransitionType.MERGES=[[[take, walk]but]blue, box] B=[ out,front, ..] Bx=a
+TransitionType.MERGES=[[[take, walk]but][blue, box]out] B=[ front,.,] Bx=a
+TransitionType.MERGES=[pet, care]               B=[ ] Bx=great
+just like family
+TransitionType.MERGES=[Just, Like]              B=[ Family,several, ..] Bx=use
+TransitionType.MERGES=[[Just, Like]Family]      B=[ several,times, ..] Bx=use
+TransitionType.MERGES=[[[Just, Like]Family]several] B=[ times,now, ..] Bx=use
+be in
+	PARSING TIME: 0.15 minutes
+==================================================================================================
+	Identification : 0.49
+	P, R  : 0.725, 0.37
+
+==================================================================================================
