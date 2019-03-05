@@ -1,0 +1,1296 @@
+/Users/halsaied/anaconda2/bin/python /Users/halsaied/PycharmProjects/MWE.Identification/src/analysis.py
+Using Theano backend.
+/Users/halsaied/anaconda2/lib/python2.7/site-packages/cryptography/hazmat/primitives/constant_time.py:26: CryptographyDeprecationWarning: Support for your Python version is deprecated. The next version of cryptography will remove support. Please upgrade to a 2.7.x release that supports hmac.compare_digest as soon as possible.
+  utils.DeprecatedIn23,
+	Mode: NON.COMPO
+==================================================================================================
+	Division: TRAINVSDEV
+==================================================================================================
+	Dataset: SHAREDTASK2
+==================================================================================================
+
+==================================================================================================
+	BG Train (17813)
+==================================================================================================
+	Important sentence: 4674
+	Token occurrences: 399173
+	MWE number: 1780
+	MWE occurrences: 5364
+	Continuous occurrences: 81.0 %
+	Frequent MWE occurences: 56.0 %
+	MWE length: 2.12
+	Recognizable MWEs: 100.0 %
+	MWT occurrences: 10
+
+==================================================================================================
+	 Test (1954)
+==================================================================================================
+	Important sentence: 574
+	Token occurrences: 42020
+	MWE number: 451
+	MWE occurrences: 670
+	Continuous occurrences: 75.0 %
+	MWE length: 2.14
+	Seen occurrences : 60%
+	Recognizable MWEs: 100.0 %
+	MWT occurrences: 1
+
+==================================================================================================
+	Identification : 0.623
+	P, R  : 0.7, 0.561
+	Token-based : 0.636
+	P, R  : 0.73, 0.564
+
+==================================================================================================
+	VID : 25.8
+	VID: 15.7
+	VID: 34.1
+	LVC.FULL : 31.9
+	LVC.FULL: 27.4
+	LVC.FULL: 48.1
+	LVC.CAUSE : 5.2
+	LVC.CAUSE: 4.0
+	LVC.CAUSE: 42.9
+	IRV : 35.8
+	IRV: 52.4
+	IRV: 82.1
+	VPC.FULL : 0.0
+	VPC.FULL: 0.0
+	VPC.FULL: -
+	VPC.SEMI : 0.0
+	VPC.SEMI: 0.0
+	VPC.SEMI: -
+	IAV : 1.2
+	IAV: 0.5
+	IAV: 25.0
+	MVC : 0.0
+	MVC: 0.0
+	MVC: -
+	LC : 0.0
+	LC: 0.0
+	LC: -
+	Mode: NON.COMPO
+==================================================================================================
+	Division: TRAINVSDEV
+==================================================================================================
+	Dataset: SHAREDTASK2
+==================================================================================================
+
+==================================================================================================
+	DE Train (6734)
+==================================================================================================
+	Important sentence: 2364
+	Token occurrences: 130213
+	MWE number: 1699
+	MWE occurrences: 2746
+	Continuous occurrences: 26.0 %
+	Frequent MWE occurences: 18.0 %
+	MWE length: 1.94
+	Recognizable MWEs: 100.0 %
+	MWT occurrences: 885
+	Embedded occurrences: 39
+
+==================================================================================================
+	 Test (1184)
+==================================================================================================
+	Important sentence: 425
+	Token occurrences: 22092
+	MWE number: 415
+	MWE occurrences: 503
+	Continuous occurrences: 28.0 %
+	MWE length: 1.99
+	Seen occurrences : 55%
+	Recognizable MWEs: 97.0 %
+	MWT occurrences: 146
+	Embedded occurrences: 19
+
+==================================================================================================
+	Identification : 0.548
+	P, R  : 0.777, 0.423
+	Token-based : 0.545
+	P, R  : 0.843, 0.403
+
+==================================================================================================
+	VID : 36.0
+	VID: 24.8
+	VID: 29.3
+	LVC.FULL : 6.8
+	LVC.FULL: 2.8
+	LVC.FULL: 17.6
+	LVC.CAUSE : 0.4
+	LVC.CAUSE: 0.0
+	LVC.CAUSE: 0.0
+	IRV : 9.5
+	IRV: 8.9
+	IRV: 39.6
+	VPC.FULL : 43.9
+	VPC.FULL: 58.4
+	VPC.FULL: 56.6
+	VPC.SEMI : 3.4
+	VPC.SEMI: 5.1
+	VPC.SEMI: 64.7
+	IAV : 0.0
+	IAV: 0.0
+	IAV: -
+	MVC : 0.0
+	MVC: 0.0
+	MVC: -
+	LC : 0.0
+	LC: 0.0
+	LC: -
+	Mode: NON.COMPO
+==================================================================================================
+	Division: TRAINVSDEV
+==================================================================================================
+	Dataset: SHAREDTASK2
+==================================================================================================
+
+==================================================================================================
+	EL Train (4427)
+==================================================================================================
+	Important sentence: 1217
+	Token occurrences: 122458
+	MWE number: 901
+	MWE occurrences: 1362
+	Continuous occurrences: 53.0 %
+	Frequent MWE occurences: 17.0 %
+	MWE length: 2.38
+	Recognizable MWEs: 100.0 %
+	Embedded occurrences: 4
+
+==================================================================================================
+	 Test (2562)
+==================================================================================================
+	Important sentence: 440
+	Token occurrences: 64776
+	MWE number: 337
+	MWE occurrences: 500
+	Continuous occurrences: 43.0 %
+	MWE length: 2.33
+	Seen occurrences : 45%
+	Recognizable MWEs: 99.0 %
+	Embedded occurrences: 4
+	Interleaving occurrences: 4
+
+==================================================================================================
+	Identification : 0.522
+	P, R  : 0.885, 0.37
+	Token-based : 0.507
+	P, R  : 0.889, 0.355
+
+==================================================================================================
+	VID : 16.2
+	VID: 23.8
+	VID: 54.3
+	LVC.FULL : 75.2
+	LVC.FULL: 70.8
+	LVC.FULL: 34.8
+	LVC.CAUSE : 6.8
+	LVC.CAUSE: 2.2
+	LVC.CAUSE: 11.8
+	IRV : 0.0
+	IRV: 0.0
+	IRV: -
+	VPC.FULL : 1.6
+	VPC.FULL: 2.7
+	VPC.FULL: 62.5
+	VPC.SEMI : 0.0
+	VPC.SEMI: 0.0
+	VPC.SEMI: -
+	IAV : 0.0
+	IAV: 0.0
+	IAV: -
+	MVC : 0.2
+	MVC: 0.5
+	MVC: 100.0
+	LC : 0.0
+	LC: 0.0
+	LC: -
+	Mode: NON.COMPO
+==================================================================================================
+	Division: TRAINVSDEV
+==================================================================================================
+	Dataset: SHAREDTASK2
+==================================================================================================
+
+==================================================================================================
+	EN Train (2776)
+==================================================================================================
+	Important sentence: 244
+	Token occurrences: 42643
+	MWE number: 200
+	MWE occurrences: 272
+	Continuous occurrences: 66.0 %
+	Frequent MWE occurences: 5.0 %
+	MWE length: 2.15
+	Recognizable MWEs: 100.0 %
+	MWT occurrences: 1
+
+==================================================================================================
+	 Test (695)
+==================================================================================================
+	Important sentence: 56
+	Token occurrences: 10557
+	MWE number: 53
+	MWE occurrences: 59
+	Continuous occurrences: 78.0 %
+	MWE length: 2.08
+	Seen occurrences : 40%
+	Recognizable MWEs: 100.0 %
+
+==================================================================================================
+	Identification : 0.289
+	P, R  : 0.429, 0.218
+	Token-based : 0.278
+	P, R  : 0.446, 0.202
+
+==================================================================================================
+	VID : 30.9
+	VID: 16.7
+	VID: 11.8
+	LVC.FULL : 23.6
+	LVC.FULL: 16.7
+	LVC.FULL: 15.4
+	LVC.CAUSE : 1.8
+	LVC.CAUSE: 0.0
+	LVC.CAUSE: 0.0
+	IRV : 0.0
+	IRV: 0.0
+	IRV: -
+	VPC.FULL : 32.7
+	VPC.FULL: 58.3
+	VPC.FULL: 38.9
+	VPC.SEMI : 5.5
+	VPC.SEMI: 8.3
+	VPC.SEMI: 33.3
+	IAV : 5.5
+	IAV: 0.0
+	IAV: 0.0
+	MVC : 0.0
+	MVC: 0.0
+	MVC: -
+	LC : 0.0
+	LC: 0.0
+	LC: -
+	Mode: NON.COMPO
+==================================================================================================
+	Division: TRAINVSDEV
+==================================================================================================
+	Dataset: SHAREDTASK2
+==================================================================================================
+
+==================================================================================================
+	ES Train (2771)
+==================================================================================================
+	Important sentence: 1118
+	Token occurrences: 96521
+	MWE number: 917
+	MWE occurrences: 1633
+	Continuous occurrences: 75.0 %
+	Frequent MWE occurences: 25.0 %
+	MWE length: 2.27
+	Recognizable MWEs: 100.0 %
+	MWT occurrences: 2
+	Embedded occurrences: 131
+
+==================================================================================================
+	 Test (698)
+==================================================================================================
+	Important sentence: 332
+	Token occurrences: 26220
+	MWE number: 378
+	MWE occurrences: 500
+	Continuous occurrences: 72.0 %
+	MWE length: 2.26
+	Seen occurrences : 51%
+	Recognizable MWEs: 95.0 %
+	Embedded occurrences: 22
+	Interleaving occurrences: 21
+
+==================================================================================================
+	Identification : 0.543
+	P, R  : 0.847, 0.4
+	Token-based : 0.547
+	P, R  : 0.872, 0.399
+
+==================================================================================================
+	VID : 13.0
+	VID: 8.5
+	VID: 26.2
+	LVC.FULL : 16.8
+	LVC.FULL: 12.5
+	LVC.FULL: 29.8
+	LVC.CAUSE : 3.4
+	LVC.CAUSE: 0.5
+	LVC.CAUSE: 5.9
+	IRV : 22.8
+	IRV: 30.5
+	IRV: 53.5
+	VPC.FULL : 0.0
+	VPC.FULL: 0.0
+	VPC.FULL: -
+	VPC.SEMI : 0.0
+	VPC.SEMI: 0.0
+	VPC.SEMI: -
+	IAV : 17.4
+	IAV: 29.5
+	IAV: 67.8
+	MVC : 26.6
+	MVC: 18.5
+	MVC: 27.8
+	LC : 0.0
+	LC: 0.0
+	LC: -
+	Mode: NON.COMPO
+==================================================================================================
+	Division: TRAINVSDEV
+==================================================================================================
+	Dataset: SHAREDTASK2
+==================================================================================================
+
+==================================================================================================
+	EU Train (8254)
+==================================================================================================
+	Important sentence: 2306
+	Token occurrences: 117165
+	MWE number: 834
+	MWE occurrences: 2798
+	Continuous occurrences: 81.0 %
+	Frequent MWE occurences: 56.0 %
+	MWE length: 2.02
+	Recognizable MWEs: 100.0 %
+	Embedded occurrences: 4
+
+==================================================================================================
+	 Test (1500)
+==================================================================================================
+	Important sentence: 397
+	Token occurrences: 21604
+	MWE number: 264
+	MWE occurrences: 500
+	Continuous occurrences: 81.0 %
+	MWE length: 2.02
+	Seen occurrences : 78%
+	Recognizable MWEs: 99.0 %
+	Embedded occurrences: 3
+	Interleaving occurrences: 3
+
+==================================================================================================
+	Identification : 0.761
+	P, R  : 0.848, 0.69
+	Token-based : 0.767
+	P, R  : 0.853, 0.697
+
+==================================================================================================
+	VID : 20.8
+	VID: 15.9
+	VID: 52.9
+	LVC.FULL : 76.4
+	LVC.FULL: 81.2
+	LVC.FULL: 73.3
+	LVC.CAUSE : 2.8
+	LVC.CAUSE: 2.9
+	LVC.CAUSE: 71.4
+	IRV : 0.0
+	IRV: 0.0
+	IRV: -
+	VPC.FULL : 0.0
+	VPC.FULL: 0.0
+	VPC.FULL: -
+	VPC.SEMI : 0.0
+	VPC.SEMI: 0.0
+	VPC.SEMI: -
+	IAV : 0.0
+	IAV: 0.0
+	IAV: -
+	MVC : 0.0
+	MVC: 0.0
+	MVC: -
+	LC : 0.0
+	LC: 0.0
+	LC: -
+	Mode: NON.COMPO
+==================================================================================================
+	Division: TRAINVSDEV
+==================================================================================================
+	Dataset: SHAREDTASK2
+==================================================================================================
+
+==================================================================================================
+	FA Train (2784)
+==================================================================================================
+	Important sentence: 1645
+	Token occurrences: 45153
+	MWE number: 1116
+	MWE occurrences: 2447
+	Continuous occurrences: 85.0 %
+	Frequent MWE occurences: 36.0 %
+	MWE length: 2.12
+	Recognizable MWEs: 100.0 %
+	MWT occurrences: 1
+	Embedded occurrences: 6
+
+==================================================================================================
+	 Test (474)
+==================================================================================================
+	Important sentence: 320
+	Token occurrences: 8923
+	MWE number: 353
+	MWE occurrences: 501
+	Continuous occurrences: 86.0 %
+	MWE length: 2.18
+	Seen occurrences : 61%
+	Recognizable MWEs: 100.0 %
+
+==================================================================================================
+	Identification : 0.709
+	P, R  : 0.935, 0.571
+	Token-based : 0.716
+	P, R  : 0.956, 0.572
+
+==================================================================================================
+	VID : 0.0
+	VID: 0.0
+	VID: -
+	LVC.FULL : 100.0
+	LVC.FULL: 100.0
+	LVC.FULL: 57.1
+	LVC.CAUSE : 0.0
+	LVC.CAUSE: 0.0
+	LVC.CAUSE: -
+	IRV : 0.0
+	IRV: 0.0
+	IRV: -
+	VPC.FULL : 0.0
+	VPC.FULL: 0.0
+	VPC.FULL: -
+	VPC.SEMI : 0.0
+	VPC.SEMI: 0.0
+	VPC.SEMI: -
+	IAV : 0.0
+	IAV: 0.0
+	IAV: -
+	MVC : 0.0
+	MVC: 0.0
+	MVC: -
+	LC : 0.0
+	LC: 0.0
+	LC: -
+	Mode: NON.COMPO
+==================================================================================================
+	Division: TRAINVSDEV
+==================================================================================================
+	Dataset: SHAREDTASK2
+==================================================================================================
+
+==================================================================================================
+	FR Train (17225)
+==================================================================================================
+	Important sentence: 3889
+	Token occurrences: 420762
+	MWE number: 1606
+	MWE occurrences: 4521
+	Continuous occurrences: 59.0 %
+	Frequent MWE occurences: 51.0 %
+	MWE length: 2.29
+	Recognizable MWEs: 100.0 %
+	MWT occurrences: 3
+	Embedded occurrences: 33
+
+==================================================================================================
+	 Test (2236)
+==================================================================================================
+	Important sentence: 537
+	Token occurrences: 54685
+	MWE number: 393
+	MWE occurrences: 629
+	Continuous occurrences: 57.0 %
+	MWE length: 2.26
+	Seen occurrences : 75%
+	Recognizable MWEs: 99.0 %
+	MWT occurrences: 2
+	Embedded occurrences: 7
+	Interleaving occurrences: 5
+
+==================================================================================================
+	Identification : 0.781
+	P, R  : 0.911, 0.684
+	Token-based : 0.786
+	P, R  : 0.921, 0.685
+
+==================================================================================================
+	VID : 32.9
+	VID: 35.1
+	VID: 72.9
+	LVC.FULL : 40.1
+	LVC.FULL: 32.6
+	LVC.FULL: 55.6
+	LVC.CAUSE : 2.4
+	LVC.CAUSE: 0.2
+	LVC.CAUSE: 6.7
+	IRV : 24.5
+	IRV: 32.1
+	IRV: 89.6
+	VPC.FULL : 0.0
+	VPC.FULL: 0.0
+	VPC.FULL: -
+	VPC.SEMI : 0.0
+	VPC.SEMI: 0.0
+	VPC.SEMI: -
+	IAV : 0.0
+	IAV: 0.0
+	IAV: -
+	MVC : 0.2
+	MVC: 0.0
+	MVC: 0.0
+	LC : 0.0
+	LC: 0.0
+	LC: -
+	Mode: NON.COMPO
+==================================================================================================
+	Division: TRAINVSDEV
+==================================================================================================
+	Dataset: SHAREDTASK2
+==================================================================================================
+
+==================================================================================================
+	HE Train (12106)
+==================================================================================================
+	Important sentence: 1139
+	Token occurrences: 237472
+	MWE number: 907
+	MWE occurrences: 1223
+	Continuous occurrences: 76.0 %
+	Frequent MWE occurences: 10.0 %
+	MWE length: 2.39
+	Recognizable MWEs: 100.0 %
+	Embedded occurrences: 3
+
+==================================================================================================
+	 Test (3385)
+==================================================================================================
+	Important sentence: 454
+	Token occurrences: 65843
+	MWE number: 406
+	MWE occurrences: 501
+	Continuous occurrences: 76.0 %
+	MWE length: 2.49
+	Seen occurrences : 26%
+	Recognizable MWEs: 99.0 %
+	Embedded occurrences: 4
+	Interleaving occurrences: 3
+
+==================================================================================================
+	Identification : 0.343
+	P, R  : 0.755, 0.222
+	Token-based : 0.312
+	P, R  : 0.761, 0.196
+
+==================================================================================================
+	VID : 51.5
+	VID: 40.5
+	VID: 17.4
+	LVC.FULL : 29.5
+	LVC.FULL: 46.8
+	LVC.FULL: 35.1
+	LVC.CAUSE : 12.2
+	LVC.CAUSE: 11.7
+	LVC.CAUSE: 21.3
+	IRV : 0.0
+	IRV: 0.0
+	IRV: -
+	VPC.FULL : 6.8
+	VPC.FULL: 0.9
+	VPC.FULL: 2.9
+	VPC.SEMI : 0.0
+	VPC.SEMI: 0.0
+	VPC.SEMI: -
+	IAV : 0.0
+	IAV: 0.0
+	IAV: -
+	MVC : 0.0
+	MVC: 0.0
+	MVC: -
+	LC : 0.0
+	LC: 0.0
+	LC: -
+	Mode: NON.COMPO
+==================================================================================================
+	Division: TRAINVSDEV
+==================================================================================================
+	Dataset: SHAREDTASK2
+==================================================================================================
+
+==================================================================================================
+	HI Train (684)
+==================================================================================================
+	Important sentence: 338
+	Token occurrences: 14300
+	MWE number: 213
+	MWE occurrences: 402
+	Continuous occurrences: 92.0 %
+	Frequent MWE occurences: 24.0 %
+	MWE length: 2.09
+	Recognizable MWEs: 100.0 %
+
+==================================================================================================
+	 Test (172)
+==================================================================================================
+	Important sentence: 80
+	Token occurrences: 3550
+	MWE number: 74
+	MWE occurrences: 101
+	Continuous occurrences: 94.0 %
+	MWE length: 2.1
+	Seen occurrences : 58%
+	Recognizable MWEs: 96.0 %
+	Interleaving occurrences: 4
+
+==================================================================================================
+	Identification : 0
+	P, R  : 0.0, 0.0
+	Token-based : 0
+	P, R  : 0.0, 0.0
+
+==================================================================================================
+	VID : 5.9
+	VID: -
+	VID: 0.0
+	LVC.FULL : 62.7
+	LVC.FULL: -
+	LVC.FULL: 0.0
+	LVC.CAUSE : 2.0
+	LVC.CAUSE: -
+	LVC.CAUSE: 0.0
+	IRV : 0.0
+	IRV: -
+	IRV: -
+	VPC.FULL : 0.0
+	VPC.FULL: -
+	VPC.FULL: -
+	VPC.SEMI : 0.0
+	VPC.SEMI: -
+	VPC.SEMI: -
+	IAV : 0.0
+	IAV: -
+	IAV: -
+	MVC : 29.4
+	MVC: -
+	MVC: 0.0
+	LC : 0.0
+	LC: -
+	LC: -
+	Mode: NON.COMPO
+==================================================================================================
+	Division: TRAINVSDEV
+==================================================================================================
+	Dataset: SHAREDTASK2
+==================================================================================================
+
+==================================================================================================
+	HR Train (2295)
+==================================================================================================
+	Important sentence: 994
+	Token occurrences: 53486
+	MWE number: 902
+	MWE occurrences: 1377
+	Continuous occurrences: 59.0 %
+	Frequent MWE occurences: 15.0 %
+	MWE length: 2.21
+	Recognizable MWEs: 100.0 %
+	Embedded occurrences: 161
+
+==================================================================================================
+	 Test (834)
+==================================================================================================
+	Important sentence: 368
+	Token occurrences: 19621
+	MWE number: 338
+	MWE occurrences: 500
+	Continuous occurrences: 56.0 %
+	MWE length: 2.19
+	Seen occurrences : 53%
+	Recognizable MWEs: 97.0 %
+	Embedded occurrences: 56
+	Interleaving occurrences: 9
+
+==================================================================================================
+	Identification : 0.565
+	P, R  : 0.9, 0.412
+	Token-based : 0.591
+	P, R  : 0.925, 0.434
+
+==================================================================================================
+	VID : 6.8
+	VID: 1.5
+	VID: 8.8
+	LVC.FULL : 28.6
+	LVC.FULL: 15.5
+	LVC.FULL: 22.4
+	LVC.CAUSE : 5.2
+	LVC.CAUSE: 3.9
+	LVC.CAUSE: 30.8
+	IRV : 27.8
+	IRV: 45.1
+	IRV: 66.9
+	VPC.FULL : 0.2
+	VPC.FULL: 0.0
+	VPC.FULL: 0.0
+	VPC.SEMI : 0.0
+	VPC.SEMI: 0.0
+	VPC.SEMI: -
+	IAV : 31.4
+	IAV: 34.0
+	IAV: 44.6
+	MVC : 0.0
+	MVC: 0.0
+	MVC: -
+	LC : 0.0
+	LC: 0.0
+	LC: -
+	Mode: NON.COMPO
+==================================================================================================
+	Division: TRAINVSDEV
+==================================================================================================
+	Dataset: SHAREDTASK2
+==================================================================================================
+
+==================================================================================================
+	HU Train (4803)
+==================================================================================================
+	Important sentence: 3165
+	Token occurrences: 120013
+	MWE number: 696
+	MWE occurrences: 6138
+	Continuous occurrences: 19.0 %
+	Frequent MWE occurences: 85.0 %
+	MWE length: 1.26
+	Recognizable MWEs: 100.0 %
+	MWT occurrences: 4564
+	Embedded occurrences: 161
+
+==================================================================================================
+	 Test (601)
+==================================================================================================
+	Important sentence: 430
+	Token occurrences: 15564
+	MWE number: 192
+	MWE occurrences: 779
+	Continuous occurrences: 14.0 %
+	MWE length: 1.22
+	Seen occurrences : 92%
+	Recognizable MWEs: 99.0 %
+	MWT occurrences: 608
+	Embedded occurrences: 14
+	Interleaving occurrences: 2
+
+==================================================================================================
+	Identification : 0.934
+	P, R  : 0.997, 0.879
+	Token-based : 0.918
+	P, R  : 0.997, 0.85
+
+==================================================================================================
+	VID : 1.3
+	VID: 0.9
+	VID: 60.0
+	LVC.FULL : 10.9
+	LVC.FULL: 6.7
+	LVC.FULL: 54.1
+	LVC.CAUSE : 1.3
+	LVC.CAUSE: 1.3
+	LVC.CAUSE: 90.0
+	IRV : 0.0
+	IRV: 0.0
+	IRV: -
+	VPC.FULL : 69.2
+	VPC.FULL: 73.9
+	VPC.FULL: 93.9
+	VPC.SEMI : 17.3
+	VPC.SEMI: 17.2
+	VPC.SEMI: 87.4
+	IAV : 0.0
+	IAV: 0.0
+	IAV: -
+	MVC : 0.0
+	MVC: 0.0
+	MVC: -
+	LC : 0.0
+	LC: 0.0
+	LC: -
+	Mode: NON.COMPO
+==================================================================================================
+	Division: TRAINVSDEV
+==================================================================================================
+	Dataset: SHAREDTASK2
+==================================================================================================
+
+==================================================================================================
+	IT Train (13555)
+==================================================================================================
+	Important sentence: 2498
+	Token occurrences: 342279
+	MWE number: 1384
+	MWE occurrences: 3085
+	Continuous occurrences: 72.0 %
+	Frequent MWE occurences: 35.0 %
+	MWE length: 2.47
+	Recognizable MWEs: 100.0 %
+	MWT occurrences: 6
+	Embedded occurrences: 102
+
+==================================================================================================
+	 Test (917)
+==================================================================================================
+	Important sentence: 303
+	Token occurrences: 31220
+	MWE number: 387
+	MWE occurrences: 500
+	Continuous occurrences: 67.0 %
+	MWE length: 2.49
+	Seen occurrences : 52%
+	Recognizable MWEs: 96.0 %
+	MWT occurrences: 3
+	Embedded occurrences: 18
+	Interleaving occurrences: 13
+
+==================================================================================================
+	Identification : 0.532
+	P, R  : 0.858, 0.386
+	Token-based : 0.522
+	P, R  : 0.899, 0.368
+
+==================================================================================================
+	VID : 39.4
+	VID: 23.8
+	VID: 23.4
+	LVC.FULL : 20.0
+	LVC.FULL: 24.4
+	LVC.FULL: 47.0
+	LVC.CAUSE : 3.8
+	LVC.CAUSE: 3.1
+	LVC.CAUSE: 31.6
+	IRV : 21.2
+	IRV: 29.5
+	IRV: 53.8
+	VPC.FULL : 3.4
+	VPC.FULL: 2.6
+	VPC.FULL: 29.4
+	VPC.SEMI : 0.4
+	VPC.SEMI: 0.0
+	VPC.SEMI: 0.0
+	IAV : 8.8
+	IAV: 15.0
+	IAV: 65.9
+	MVC : 1.2
+	MVC: 0.5
+	MVC: 16.7
+	LC : 0.0
+	LC: 0.0
+	LC: -
+	Mode: NON.COMPO
+==================================================================================================
+	Division: TRAINVSDEV
+==================================================================================================
+	Dataset: SHAREDTASK2
+==================================================================================================
+
+==================================================================================================
+	LT Train (3916)
+==================================================================================================
+	Important sentence: 228
+	Token occurrences: 71627
+	MWE number: 158
+	MWE occurrences: 241
+	Continuous occurrences: 59.0 %
+	Frequent MWE occurences: 8.0 %
+	MWE length: 2.12
+	Recognizable MWEs: 100.0 %
+
+==================================================================================================
+	 Test (979)
+==================================================================================================
+	Important sentence: 69
+	Token occurrences: 18483
+	MWE number: 63
+	MWE occurrences: 71
+	Continuous occurrences: 56.0 %
+	MWE length: 2.3
+	Seen occurrences : 50%
+	Recognizable MWEs: 100.0 %
+
+==================================================================================================
+	Identification : 0.523
+	P, R  : 0.848, 0.378
+	Token-based : 0.495
+	P, R  : 0.848, 0.35
+
+==================================================================================================
+	VID : 33.8
+	VID: 14.3
+	VID: 16.0
+	LVC.FULL : 63.5
+	LVC.FULL: 78.6
+	LVC.FULL: 46.8
+	LVC.CAUSE : 2.7
+	LVC.CAUSE: 7.1
+	LVC.CAUSE: 100.0
+	IRV : 0.0
+	IRV: 0.0
+	IRV: -
+	VPC.FULL : 0.0
+	VPC.FULL: 0.0
+	VPC.FULL: -
+	VPC.SEMI : 0.0
+	VPC.SEMI: 0.0
+	VPC.SEMI: -
+	IAV : 0.0
+	IAV: 0.0
+	IAV: -
+	MVC : 0.0
+	MVC: 0.0
+	MVC: -
+	LC : 0.0
+	LC: 0.0
+	LC: -
+	Mode: NON.COMPO
+==================================================================================================
+	Division: TRAINVSDEV
+==================================================================================================
+	Dataset: SHAREDTASK2
+==================================================================================================
+
+==================================================================================================
+	PL Train (13058)
+==================================================================================================
+	Important sentence: 3456
+	Token occurrences: 220352
+	MWE number: 1645
+	MWE occurrences: 4059
+	Continuous occurrences: 71.0 %
+	Frequent MWE occurences: 46.0 %
+	MWE length: 2.13
+	Recognizable MWEs: 100.0 %
+	Embedded occurrences: 94
+
+==================================================================================================
+	 Test (1763)
+==================================================================================================
+	Important sentence: 462
+	Token occurrences: 26014
+	MWE number: 360
+	MWE occurrences: 515
+	Continuous occurrences: 72.0 %
+	MWE length: 2.15
+	Seen occurrences : 70%
+	Recognizable MWEs: 99.0 %
+	Embedded occurrences: 7
+	Interleaving occurrences: 6
+
+==================================================================================================
+	Identification : 0.771
+	P, R  : 0.962, 0.643
+	Token-based : 0.758
+	P, R  : 0.965, 0.624
+
+==================================================================================================
+	VID : 11.1
+	VID: 6.0
+	VID: 35.1
+	LVC.FULL : 29.7
+	LVC.FULL: 24.8
+	LVC.FULL: 53.6
+	LVC.CAUSE : 6.4
+	LVC.CAUSE: 2.4
+	LVC.CAUSE: 24.2
+	IRV : 47.6
+	IRV: 61.0
+	IRV: 82.4
+	VPC.FULL : 0.0
+	VPC.FULL: 0.0
+	VPC.FULL: -
+	VPC.SEMI : 0.0
+	VPC.SEMI: 0.0
+	VPC.SEMI: -
+	IAV : 5.2
+	IAV: 5.7
+	IAV: 70.4
+	MVC : 0.0
+	MVC: 0.0
+	MVC: -
+	LC : 0.0
+	LC: 0.0
+	LC: -
+	Mode: NON.COMPO
+==================================================================================================
+	Division: TRAINVSDEV
+==================================================================================================
+	Dataset: SHAREDTASK2
+==================================================================================================
+
+==================================================================================================
+	PT Train (22017)
+==================================================================================================
+	Important sentence: 3980
+	Token occurrences: 473446
+	MWE number: 2050
+	MWE occurrences: 4382
+	Continuous occurrences: 57.0 %
+	Frequent MWE occurences: 32.0 %
+	MWE length: 2.21
+	Recognizable MWEs: 100.0 %
+	MWT occurrences: 1
+	Embedded occurrences: 8
+
+==================================================================================================
+	 Test (3117)
+==================================================================================================
+	Important sentence: 494
+	Token occurrences: 64078
+	MWE number: 429
+	MWE occurrences: 553
+	Continuous occurrences: 59.0 %
+	MWE length: 2.25
+	Seen occurrences : 70%
+	Recognizable MWEs: 98.0 %
+	Embedded occurrences: 4
+	Interleaving occurrences: 8
+
+==================================================================================================
+	Identification : 0.723
+	P, R  : 0.874, 0.617
+	Token-based : 0.724
+	P, R  : 0.893, 0.609
+
+==================================================================================================
+	VID : 23.5
+	VID: 19.9
+	VID: 52.3
+	LVC.FULL : 60.9
+	LVC.FULL: 60.7
+	LVC.FULL: 61.4
+	LVC.CAUSE : 0.5
+	LVC.CAUSE: 0.3
+	LVC.CAUSE: 33.3
+	IRV : 15.0
+	IRV: 19.1
+	IRV: 78.3
+	VPC.FULL : 0.0
+	VPC.FULL: 0.0
+	VPC.FULL: -
+	VPC.SEMI : 0.0
+	VPC.SEMI: 0.0
+	VPC.SEMI: -
+	IAV : 0.0
+	IAV: 0.0
+	IAV: -
+	MVC : 0.0
+	MVC: 0.0
+	MVC: -
+	LC : 0.0
+	LC: 0.0
+	LC: -
+	Mode: NON.COMPO
+==================================================================================================
+	Division: TRAINVSDEV
+==================================================================================================
+	Dataset: SHAREDTASK2
+==================================================================================================
+
+==================================================================================================
+	RO Train (42704)
+==================================================================================================
+	Important sentence: 4268
+	Token occurrences: 781968
+	MWE number: 558
+	MWE occurrences: 4712
+	Continuous occurrences: 69.0 %
+	Frequent MWE occurences: 82.0 %
+	MWE length: 2.13
+	Recognizable MWEs: 100.0 %
+	MWT occurrences: 1
+	Embedded occurrences: 11
+
+==================================================================================================
+	 Test (7065)
+==================================================================================================
+	Important sentence: 529
+	Token occurrences: 118658
+	MWE number: 197
+	MWE occurrences: 589
+	Continuous occurrences: 70.0 %
+	MWE length: 2.15
+	Seen occurrences : 93%
+	Recognizable MWEs: 100.0 %
+
+==================================================================================================
+	Identification : 0.844
+	P, R  : 0.787, 0.91
+	Token-based : 0.854
+	P, R  : 0.802, 0.913
+
+==================================================================================================
+	VID : 28.7
+	VID: 27.4
+	VID: 87.0
+	LVC.FULL : 4.9
+	LVC.FULL: 4.1
+	LVC.FULL: 75.9
+	LVC.CAUSE : 3.1
+	LVC.CAUSE: 3.4
+	LVC.CAUSE: 100.0
+	IRV : 63.3
+	IRV: 65.1
+	IRV: 93.6
+	VPC.FULL : 0.0
+	VPC.FULL: 0.0
+	VPC.FULL: -
+	VPC.SEMI : 0.0
+	VPC.SEMI: 0.0
+	VPC.SEMI: -
+	IAV : 0.0
+	IAV: 0.0
+	IAV: -
+	MVC : 0.0
+	MVC: 0.0
+	MVC: -
+	LC : 0.0
+	LC: 0.0
+	LC: -
+	Mode: NON.COMPO
+==================================================================================================
+	Division: TRAINVSDEV
+==================================================================================================
+	Dataset: SHAREDTASK2
+==================================================================================================
+
+==================================================================================================
+	SL Train (9567)
+==================================================================================================
+	Important sentence: 2080
+	Token occurrences: 201853
+	MWE number: 949
+	MWE occurrences: 2364
+	Continuous occurrences: 44.0 %
+	Frequent MWE occurences: 46.0 %
+	MWE length: 2.23
+	Recognizable MWEs: 100.0 %
+	MWT occurrences: 2
+	Embedded occurrences: 5
+
+==================================================================================================
+	 Test (1950)
+==================================================================================================
+	Important sentence: 436
+	Token occurrences: 38146
+	MWE number: 309
+	MWE occurrences: 500
+	Continuous occurrences: 48.0 %
+	MWE length: 2.22
+	Seen occurrences : 64%
+	Recognizable MWEs: 100.0 %
+	MWT occurrences: 1
+	Embedded occurrences: 1
+
+==================================================================================================
+	Identification : 0.593
+	P, R  : 0.667, 0.534
+	Token-based : 0.602
+	P, R  : 0.709, 0.523
+
+==================================================================================================
+	VID : 24.2
+	VID: 9.0
+	VID: 19.8
+	LVC.FULL : 6.0
+	LVC.FULL: 5.6
+	LVC.FULL: 50.0
+	LVC.CAUSE : 2.4
+	LVC.CAUSE: 0.7
+	LVC.CAUSE: 16.7
+	IRV : 44.8
+	IRV: 62.5
+	IRV: 74.6
+	VPC.FULL : 0.0
+	VPC.FULL: 0.0
+	VPC.FULL: -
+	VPC.SEMI : 0.0
+	VPC.SEMI: 0.0
+	VPC.SEMI: -
+	IAV : 22.6
+	IAV: 22.1
+	IAV: 52.2
+	MVC : 0.0
+	MVC: 0.0
+	MVC: -
+	LC : 0.0
+	LC: 0.0
+	LC: -
+	Mode: NON.COMPO
+==================================================================================================
+	Division: TRAINVSDEV
+==================================================================================================
+	Dataset: SHAREDTASK2
+==================================================================================================
+
+==================================================================================================
+	TR Train (16715)
+==================================================================================================
+	Important sentence: 4458
+	Token occurrences: 334880
+	MWE number: 3552
+	MWE occurrences: 6108
+	Continuous occurrences: 49.0 %
+	Frequent MWE occurences: 26.0 %
+	MWE length: 2.06
+	Recognizable MWEs: 100.0 %
+	MWT occurrences: 3
+
+==================================================================================================
+	 Test (1320)
+==================================================================================================
+	Important sentence: 385
+	Token occurrences: 27196
+	MWE number: 418
+	MWE occurrences: 510
+	Continuous occurrences: 50.0 %
+	MWE length: 2.07
+	Seen occurrences : 46%
+	Recognizable MWEs: 100.0 %
+
+==================================================================================================
+	Identification : 0.46
+	P, R  : 0.584, 0.38
+	Token-based : 0.488
+	P, R  : 0.629, 0.398
+
+==================================================================================================
+	VID : 55.9
+	VID: 58.2
+	VID: 39.6
+	LVC.FULL : 44.1
+	LVC.FULL: 41.8
+	LVC.FULL: 36.0
+	LVC.CAUSE : 0.0
+	LVC.CAUSE: 0.0
+	LVC.CAUSE: -
+	IRV : 0.0
+	IRV: 0.0
+	IRV: -
+	VPC.FULL : 0.0
+	VPC.FULL: 0.0
+	VPC.FULL: -
+	VPC.SEMI : 0.0
+	VPC.SEMI: 0.0
+	VPC.SEMI: -
+	IAV : 0.0
+	IAV: 0.0
+	IAV: -
+	MVC : 0.0
+	MVC: 0.0
+	MVC: -
+	LC : 0.0
+	LC: 0.0
+	LC: -
+
+Process finished with exit code 0
