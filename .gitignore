@@ -99,10 +99,9 @@ venv.bak/
 
 # mkdocs documentation
 /site
-
+Reports
 # mypy
 .idea/
-Reports/
 ressources/sharedtask/bin
 ressources/wordEmb
 ressources/FacebookEmbsLight
