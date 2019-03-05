@@ -106,6 +106,7 @@ configuration = {
         'dimsumAsCupt': False,
         'debugOnDev': False,
         'autoData': True,
+        'tokenBased': False,
         'analyzePerformance': True
     }, 'kiperwasser': {
         'wordDim': 25,

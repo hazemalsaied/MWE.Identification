@@ -1,6 +1,6 @@
 from statsmodels.stats.contingency_tables import mcnemar
 
-from evaluation import evaluate, analyzePerformance
+from evaluation import evaluate
 from xpTools import *
 
 testSetKey, misIdentifiedKey, nonIdentifiedKey, corIdentifiedKey = 'Test set', 'Misidentified', 'Non identified', \
@@ -11,20 +11,16 @@ interleavingKey, embeddedKey, newKey, freqSeenKey = '0.1 Interleaving', '0.2 Emb
                                                     '1.1 New', '2.3 Seen : frequently'
 
 
-def analyzeCorpus(xpMode, dataset, division, seeds):
+def analyzeCorpus(xpMode, dataset, division, testFileName):
     for l in allSharedtask2Lang:
-        if l != 'FR':
-           continue
-        # seeds[allSharedtask2Lang.index(l)]
-        testFileName =  '/Users/halsaied/PycharmProjects/MWE.Identification/Results/ResultData/SVM/' + \
-                        'trainvsdev.{0}.{1}.Feb.{2}.{3}.cupt'.format('', 0, '18', l)
+        finalTestFileName = testFileName + l + '.cupt'
         setXPMode(xpMode)
-        corpus = readIdentifiedCorpus(l, dataset, division, testFileName)
+        corpus = readIdentifiedCorpus(l, dataset, division, finalTestFileName)
         evaluate(corpus.testingSents)
         # analyzePerformance(corpus)
-        catAnalysis = getCatAnalysis(corpus)
-        analysis = getErrorAnalysis(corpus)
-        report(analysis, catAnalysis, l)
+        # catAnalysis = getCatAnalysis(corpus)
+        # analysis = getErrorAnalysis(corpus)
+        # report(analysis, catAnalysis, l)
 
 
 def getErrorAnalysisTable(xpMode, dataset, division):
@@ -390,8 +386,8 @@ def getMWEBasedcNemarScore(args, goldenFile, sys1File, sys2File):
 
 def renameFolders():
     import os
-    folders = [os.path.join(configuration['path']['projectPath'] ,'/Results/ST2/Linear'),
-               os.path.join(configuration['path']['projectPath'] ,'/Results/ST2/MLP')]
+    folders = [os.path.join(configuration['path']['projectPath'], '/Results/ST2/Linear'),
+               os.path.join(configuration['path']['projectPath'], '/Results/ST2/MLP')]
     for folder in folders:
         for filename in os.listdir(folder):
             if filename.endswith('.txt'):
@@ -401,20 +397,21 @@ def renameFolders():
 def getMecNamers(division, tokenBased=False, ):
     divMaj = 'FixedSize' if division == Evaluation.fixedSize else 'Corpus'
     divMin = 'fixedsize' if division == Evaluation.fixedSize else 'corpus'
-    outPutFolder = '/Users/halsaied/PycharmProjects/MWE.Identification/Results/Output/'
-    goldTestFilePattern = outPutFolder + 'ST2/Linear/{0}/12.11.{1}.{2}.gold.cupt'
-    sys1FilePattern = outPutFolder + '{0}/{1}/{2}/12.11.{3}.{4}.cupt'
-    sys2FilePattern = outPutFolder + '{0}/{1}/{2}/12.11.{3}.{4}.cupt'
+    outPutFolder = '/Users/halsaied/PycharmProjects/MWE.Identification/Results/Evaluation/Data/'
+    goldTestFilePattern = '/Users/halsaied/PycharmProjects/MWE.Identification/Results/Evaluation/Data/SVM/Corpus/corpus..0.Mar.04.{0}.cupt'
+    mlpFilePattern = outPutFolder + 'MLP/Corpus/corpus.tendy.randInit.0.Feb.22.{0}.cupt'
+    svmFilePattern = outPutFolder + '/SVM/Corpus/corpus..0.Mar.04.{0}.cupt'  # '{0}/{1}/{2}/12.11.{3}.{4}.cupt'
     from xpTools import allSharedtask2Lang
     res = ''
     for l in allSharedtask2Lang:
-        goldTestFile = goldTestFilePattern.format(divMaj, divMin, l)
-        sys1File = sys1FilePattern.format('ST2', 'Linear', divMaj, divMin, l)
-        linScore = evaluateFile(l, XpMode.linear, Dataset.sharedtask2, division, sys1File)
-        sys2File = sys2FilePattern.format('ST2', 'MLP', divMaj, divMin, l)
-        mlpScore = evaluateFile(l, None, Dataset.sharedtask2, division, sys2File)
-        res += getTokenBasedMcNemarScore([l, linScore, mlpScore], goldTestFile, sys1File, sys2File) if tokenBased else \
-            getMWEBasedcNemarScore([l, linScore, mlpScore], goldTestFile, sys1File, sys2File)
+        goldTestFile = goldTestFilePattern.format(l)
+        svmFile = svmFilePattern.format(l)
+        linScore = evaluateFile(l, XpMode.linear, Dataset.sharedtask2, division, svmFile)
+        mlpFile = mlpFilePattern.format(l)
+        mlpScore = evaluateFile(l, None, Dataset.sharedtask2, division, mlpFile)
+        res += getTokenBasedMcNemarScore([l, linScore, mlpScore], goldTestFile, svmFile, mlpFile) if tokenBased else \
+            getMWEBasedcNemarScore([l, linScore, mlpScore], goldTestFile, svmFile, mlpFile)
+    print res
     return res
 
 
@@ -432,11 +429,15 @@ def getOutputFile(fileName):
 
 
 if __name__ == '__main__':
-    seeds = [0,0,0,0,1,0,0,1,0,1,0,1,1,1,0,0,1,0,1]
-    print "tendy.randInit"
-    analyzeCorpus(XpMode.linear, Dataset.sharedtask2, Evaluation.trainVsDev, seeds)
+    # testFileName = '/Users/halsaied/PycharmProjects/MWE.Identification/Results/Evaluation/Data/MLP/TrainVsDev/Tendy/0/' + \
+    #               'trainvsdev.{0}.{1}.Feb.{2}.'.format('tendy', 0, '21')
 
-    # getMecNamers(Evaluation.corpus)
+    # svmTestFileName = '/Users/halsaied/PycharmProjects/MWE.Identification/Results/Evaluation/Data/SVM/' + \
+    #               'trainvsdev.{0}.{1}.Feb.{2}.'.format('', 0, '18')
+
+    # analyzeCorpus(XpMode.linear, Dataset.sharedtask2, Evaluation.trainVsDev, svmTestFileName)
+
+    getMecNamers(Evaluation.corpus)
     # errorAnalysis('FR', XpMode.linear, '../Results/ST2/MLP/FR.txt')
     # analyzeCorpus('FR', XpMode.linear, '../Results/ST2/MLP/FR.txt')
     # csvFile = ''

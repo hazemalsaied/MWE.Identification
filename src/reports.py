@@ -851,11 +851,24 @@ def getSeenandNonSeenStats():
                 res += '{0},{1},{2},{3},{4},{5}\n'.format(ig, i, g, p, r, f)
         sys.stdout.write(res)
 
+def analyzeCatReport():
+    path = '/Users/halsaied/PycharmProjects/MWE.Identification/Results/Evaluation/Reports/TrainVsDev/catAnalysis.svm'
+    with open(path, 'r') as ff:
+        res = ''
+        for l in ff:
+            if l.startswith('	HE Train '):
+                pass
+            if l[1:4] in ['VID', 'LVC', 'IRV', 'VPC', 'IAV', 'MVC', 'LC:' ]:
+                res += l[-5:-1] if not l.endswith('-\n') else '-'
+                res += ','
 
+            if l.startswith('	Mode'):
+                res+= '\n'
+    print res
 if __name__ == '__main__':
     # getSeenandNonSeenStats()
     # mineSTScriptRes('scriptRes.tendy.txt')
-
+    # analyzeCatReport()
     # getSeedScores(
     # for f in os.listdir('../Reports/MLP'):
     #     #if f.split('.')[1] != '02':
@@ -863,8 +876,8 @@ if __name__ == '__main__':
     #         os.remove('../Reports/MLP/' + f)
 
     getNewScores(
-        [f for f in os.listdir('../Reports/Reports/') if f.startswith('mlp.dimsum1.4')], None
-        , pilot=False, withTitles=True, onFixed=False, onCorpus=False, ftb=True)
+        [f for f in os.listdir('../Reports/Reports/') if f.startswith('svm.bes')], None
+        , pilot=False, withTitles=False, onFixed=False, onCorpus=True, ftb=True)
 
     # for subdir, dirs, files in os.walk('../Reports/Reports/MLP.New'):
     #    for dir in dirs:
