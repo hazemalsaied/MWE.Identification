@@ -139,12 +139,15 @@ if __name__ == '__main__':
     sys.setdefaultencoding('utf8')
     # generateOarsub(xpNum=5,duration=25,tourNum=1,name='mlp.dimsum')
 
-    setMlpTendanceConf()
-    configuration['sampling']['overSampling'] = False
-    configuration['sampling']['importantSentences'] = False
-    configuration['embedding']['pretrained'] = False
-    xp(allSharedtask2Lang, Dataset.sharedtask2, None, Evaluation.trainVsDev, seeds=[0], xpNum=1,
-       outputCupt=True, title='tendy.closed.sampling')
+    setSVMConf()
+    xp(['TR'], Dataset.sharedtask2, XpMode.linear, Evaluation.corpus, seeds=[0], xpNum=1,
+        outputCupt=True, title='')
+    # setMlpTendanceConf()
+    # configuration['sampling']['overSampling'] = False
+    # configuration['sampling']['importantSentences'] = False
+    # configuration['embedding']['pretrained'] = False
+    # xp(allSharedtask2Lang, Dataset.sharedtask2, None, Evaluation.trainVsDev, seeds=[0], xpNum=1,
+    #    outputCupt=True, title='tendy.closed.sampling')
 
     # configuration['tmp']['transOut'] = True
     # configuration['tmp']['markObligatory'] = False

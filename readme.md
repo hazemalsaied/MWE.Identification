@@ -2,7 +2,7 @@ ATILF-LFF is a generic transition system for the identification of Verbal Multiw
 
 The system was developed and evaluated using the datasets of the PARSEME shared task on VMWE identification and accommodates the variety of linguistic resources provided for each language, in terms of accompanying morphological and syntactic information. 
 
-##Description en français:
+## Description en français:
 
 ATILF-LFF est un système d'identification des EPs (verbales) à base de transitions . Ce système est indépendant de la langues et guidée par les données. Il présente une performance robuste et efficace et ses scores incarnent l'état de l'art du domaine de l'identification des EPs. 
 Ce système a été mis en oeuvre et évalué grâce aux données de la campagne internationale de l'identification des expressions polylexicales verbales et nous avons essayé d'exploiter le maximum des ressources linguistiques fournies pour chaque langue. Des modèle linéaires et neuronaux ont été construits et y intégrés et un ensemble spécial de transitions a été proposé pour améliorer sa puissance expressive. 
