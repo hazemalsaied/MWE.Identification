@@ -1,0 +1,296 @@
+\bibitem[Goldberg, Y., (2016)]{goldberg2016primer}
+Goldberg, Y. A primer on neural network models for natural language processing.  {\em Journal Of Artificial Intelligence Research}. \textbf{57} pp. 345--420 (2016)
+
+\bibitem[Salton, G. et al., (2016)]{salton2016idiom}
+Salton, G., Ross, R. & Kelleher, J. Idiom token classification using sentential distributed semantics.  (Dublin Institute of Technology,2016)
+
+
+\bibitem[Tu, Y., (2012)]{tu2012english}
+Tu, Y. English complex verb constructions: identification and inference. 
+
+\bibitem[Dietterich, T., Bakiri, G., (1994)]{dietterich1994solving}
+Dietterich, T. & Bakiri, G. Solving multiclass learning problems via error-correcting output codes.  {\em Journal Of Artificial Intelligence Research}. \textbf{2} pp. 263--286 (1994)
+
+\bibitem[Liu, Y., Zheng, Y., (2005)]{liu2005one}
+Liu, Y. & Zheng, Y. One-against-all multi-class SVM classification using reliability measures. 
+
+\bibitem[Simko, K. et al., (2017)]{simko2017uszeged}
+Simko, K., Kov\acs, V. & Vincze, V. USzeged: Identifying Verbal Multiword Expressions with POS Tagging and Parsing Techniques. 
+
+\bibitem[Taslimipoor, S., Rohanian, O., (2018)]{taslimipoor2018shoma}
+Taslimipoor, S. & Rohanian, O. SHOMA at Parseme Shared Task on Automatic Identification of VMWEs: Neural Multiword Expression Tagging with High Generalisation.  {\em Arxiv Preprint Arxiv:1809.03056}. (2018)
+
+\bibitem[Sag, I. et al., (2002)]{sag2002multiword}
+Sag, I., Baldwin, T., Bond, F., Copestake, A. & Flickinger, D. Multiword expressions: A pain in the neck for NLP. 
+
+\bibitem[Ito, M., Constant, M., (2014)]{candito2014strategies}
+Ito, M. & Constant, M. Strategies for contiguous multiword expression analysis and dependency parsing. 
+
+\bibitem[Simko, K. et al., (2018)]{simko2018identifying}
+Simko, K., Kovacs, V. & Vincze, V. Identifying verbal multiword expressions with POS tagging and parsing techniques. 
+
+\bibitem[Vincze, V. et al., (2011)]{Vincze11}
+Vincze, V., Nagy, I. & Berend, G. Multiword Expressions and Named Entities in the Wiki50 Corpus. 
+
+\bibitem[Ramisch, C., (2014)]{ramisch2014multiword}
+Ramisch, C. Multiword expressions acquisition: A generic and open framework.  (Springer,2014)
+
+
+\bibitem[Ros\'{e}n, V. et al., (2015)]{rosen2015survey}
+Ros\'{e}n, V., Losnegaard, G., Desmedt, K., Bejcek, E., Savary, A., Przepiorkowski, A., Osenova, P. & Mititelu, V. A survey of multiword expressions in treebanks. 
+
+\bibitem[Constant, M., Sigogne, A., (2011)]{constant2011mwu}
+Constant, M. & Sigogne, A. MWU-aware part-of-speech tagging with a CRF model and lexical resources. 
+
+\bibitem[Constant, M. et al., (2017)]{constant2017multiword}
+Constant, M., Eryi\u{g}it, G., Monti, J., Vanderplas, L., Ramisch, C., Rosner, M. & Todirascu, A. Multiword expression processing: A survey.  {\em Computational Linguistics}. \textbf{43}, 837--892 (2017)
+
+\bibitem[Waszczuk, J., (2018)]{waszczuk2018traversal}
+Waszczuk, J. TRAVERSAL at PARSEME Shared Task 2018: Identification of Verbal Multiword Expressions Using a Discriminative Tree-Structured Model. 
+
+\bibitem[Berk, G. et al., (2018)]{berk2018deep}
+Berk, G., Erden, B. & Gungor, T. Deep-BGT at PARSEME Shared Task 2018: Bidirectional LSTM-CRF Model for Verbal Multiword Expression Identification. 
+
+\bibitem[Hashimoto, C., Kawahara, D., (2008)]{hashimoto2008construction}
+Hashimoto, C. & Kawahara, D. Construction of an idiom corpus and its application to idiom identification based on WSD incorporating idiom-specific features. 
+
+\bibitem[Cook, P. et al., (2007)]{cook2007pulling}
+Cook, P., Fazly, A. & Stevenson, S. Pulling their weight: Exploiting syntactic forms for the automatic identification of idiomatic expressions in context. 
+
+\bibitem[Uchiyama, K. et al., (2005)]{uchiyama2005disambiguating}
+Uchiyama, K., Baldwin, T. & Ishizaki, S. Disambiguating Japanese compound verbs.  {\em Computer Speech \& Language}. \textbf{19}, 497--512 (2005)
+
+\bibitem[Hashimoto, C. et al., (2006)]{hashimoto2006japanese}
+Hashimoto, C., Sato, S. & Utsuro, T. Japanese idiom recognition: Drawing a line between literal and idiomatic meanings. 
+
+\bibitem[Oflazer, K., Say, B., (2004)]{oflazer2004integrating}
+Oflazer, K. & Say, B. Integrating morphology with multi-word expression processing in Turkish. 
+
+\bibitem[Forcada, M. et al., (2011)]{forcada2011apertium}
+Forcada, M., Ginesi-rosell, M., Nordfalk, J., O’regan, J., Ortiz-rojas, S., Perez-ortiz, J., Sanchez-martinez, F., Ramirez-sanchez, G. & Tyers, F. Apertium: a free/open-source platform for rule-based machine translation.  {\em Machine Translation}. \textbf{25}, 127--144 (2011)
+
+\bibitem[Dietterich, T., (1998)]{dietterich1998approximate}
+Dietterich, T. Approximate statistical tests for comparing supervised classification learning algorithms.  {\em Neural Computation}. \textbf{10}, 1895--1923 (1998)
+
+\bibitem[He, H. et al., (2008)]{he2008adasyn}
+He, H., Bai, Y., Garcia, E. & Li, S. ADASYN: Adaptive synthetic sampling approach for imbalanced learning. 
+
+\bibitem[Chawla, N. et al., (2002)]{chawla2002smote}
+Chawla, N., Bowyer, K., Hall, L. & Kegelmeyer, W. SMOTE: synthetic minority over-sampling technique.  {\em Journal Of Artificial Intelligence Research}. \textbf{16} pp. 321--357 (2002)
+
+\bibitem[Schneider, N. et al., (2016)]{schneider2016semeval}
+Schneider, N., Hovy, D., Johannsen, A. & Carpuat, M. Semeval-2016 task 10: Detecting minimal semantic units and their meanings (dimsum). 
+
+\bibitem[Gharbieh, W. et al., (2017)]{gharbieh2017deep}
+Gharbieh, W., Bhavsar, V. & Cook, P. Deep Learning Models For Multiword Expression Identification. 
+
+\bibitem[Cordeiro, S. et al., (2016)]{cordeiro2016nominal}
+Cordeiro, S., Ramisch, C. & Villavicencio, A. Nominal Compound Compositionality: A Multilingual Lexicon and Predictive Model. 
+
+\bibitem[Markantonatou, S. et al., (2018)]{markantonatou2018multiword}
+Markantonatou, S., Ramisch, C., Savary, A. & Vincze, V. Multiword expressions at length and in depth. 
+
+\bibitem[Salton, G. et al., (2014)]{salton2014empirical}
+Salton, G., Ross, R. & Kelleher, J. An empirical study of the impact of idioms on phrase based statistical machine translation of english to brazilian-portuguese.  (Dublin Institute of Technology,2014)
+
+
+\bibitem[Baldwin, T., Kim, S., (2010)]{baldwin2010multiword}
+Baldwin, T. & Kim, S. Multiword expressions..  {\em Handbook Of Natural Language Processing}. \textbf{2} pp. 267--292 (2010)
+
+\bibitem[Nivre, J., (2008)]{nivre2008algorithms}
+Nivre, J. Algorithms for deterministic incremental dependency parsing.  {\em Computational Linguistics}. \textbf{34}, 513--553 (2008)
+
+\bibitem[Chawla, N., (2009)]{chawla2009data}
+Chawla, N. Data mining for imbalanced datasets: An overview.  (Springer,2009)
+
+
+\bibitem[Savary, A. et al., (2017)]{savary2017parseme}
+Savary, A., Ramisch, C., Cordeiro, S., Sangati, F., Vincze, V., Qasemizadeh, B., Ito, M., Cap, F., Giouli, V. & Stoyanova, I. The PARSEME shared task on automatic identification of verbal multiword expressions. 
+
+\bibitem[Bergstra, J., Bengio, Y., (2012)]{bergstra2012random}
+Bergstra, J. & Bengio, Y. Random search for hyper-parameter optimization.  {\em Journal Of Machine Learning Research}. \textbf{13}, 281--305 (2012)
+
+\bibitem[Zhang, Y., Nivre, J., (2011)]{zhang2011transition}
+Zhang, Y. & Nivre, J. Transition-based Dependency Parsing with Rich Non-local Features.  (Association for Computational Linguistics,2011)
+
+
+\bibitem[Bengio, Y. et al., (2003)]{bengio2003neural}
+Bengio, Y., Ducharme, R., Vincent, P. & Jauvin, C. A neural probabilistic language model.  {\em Journal Of Machine Learning Research}. \textbf{3}, 1137--1155 (2003)
+
+\bibitem[Nivre, J., (year=2004)]{nivre04acl}
+Nivre, J. Incrementality in Deterministic Dependency Parsing.  (Association for Computational Linguistics,year=2004)
+
+
+\bibitem[Henderson, M. et al., (2013)]{henderson2013deep}
+Henderson, M., Thomson, B. & Young, S. Deep neural network approach for the dialog state tracking challenge. 
+
+\bibitem[Nivre, J., Nilsson, J., (2004)]{Nivre04mwe}
+Nivre, J. & Nilsson, J. Multiword units in syntactic parsing. 
+
+\bibitem[Ramisch, C., (2015)]{Ramisch14}
+Ramisch, C. Multiword Expressions Acquisition: A Generic and Open Framework}. 
+
+\bibitem[Mohamadally, H., Fomani, B., (2006)]{mohamadally2006svm}
+Mohamadally, H. & Fomani, B. SVM: Machinesa vecteurs de support ou separateursa vastes marges.  {\em Survey, Versailles St Quentin}. \textbf{16} (2006)
+
+\bibitem[Seretan, V., (2011)]{seretan2011syntax}
+Seretan, V. Syntax-based collocation extraction. 
+
+\bibitem[Nagyt., I., Vincze, V., (2014)]{nagyt-vincze}
+Nagyt., I. & Vincze, V. VPCTagger: Detecting Verb-Particle Constructions With Syntax-Based Methods.  (Association for Computational Linguistics,2014)
+
+
+\bibitem[Schneider, N. et al., (2014)]{schneider14}
+Schneider, N., Danchik, E., Dyer, C. & Smith, N. Discriminative lexical semantic segmentation with gaps: running the MWE gamut. 
+
+\bibitem[Blunsom, P., Baldwin, T., (2006)]{blunsom-baldwin:2006:EMNLP}
+Blunsom, P. & Baldwin, T. Multilingual Deep Lexical Acquisition for HPSGs via Supertagging.  (Association for Computational Linguistics,2006)
+
+
+\bibitem[Shigeto, Y. et al., (2013)]{shigeto-EtAl:2013:MWE}
+Shigeto, Y., Azuma, A., Hisamoto, S., Kondo, S., Kouse, T., Sakaguchi, K., Yoshimoto, A., Yung, F. & Matsumoto, Y. Construction of English MWE dictionary and its application to POS tagging. 
+
+\bibitem[Goldberg, Y., Nivre, J., (2012)]{goldberg2012dynamic}
+Goldberg, Y. & Nivre, J. A Dynamic Oracle for Arc-Eager Dependency Parsing.. 
+
+\bibitem[Goldberg, Y., Nivre, J., (2013)]{goldberg2013training}
+Goldberg, Y. & Nivre, J. Training deterministic parsers with non-deterministic oracles.  {\em Transactions Of The Association For Computational Linguistics}. \textbf{1} pp. 403--414 (2013)
+
+\bibitem[Alsaied, H. et al., (2018)]{alsaied2018transitionbased}
+Alsaied, H., Ito, M. & Constant, M. A transition-based verbal multiword expression analyzer. 
+
+\bibitem[Alsaied, H. et al., (2017)]{alsaied-MWE2017}
+Alsaied, H., Ito, M. & Constant, M. The ATILF-LLF System for Parseme Shared Task: a Transition-based Verbal Multiword Expression Tagger.  (Association for Computational Linguistics,2017)
+
+
+\bibitem[Fazly, A. et al., (2009)]{fazly-cook-stevenson}
+Fazly, A., Cook, P. & Stevenson, S. Unsupervised Type and Token Identification of Idiomatic Expressions. 
+
+\bibitem[Diab, M., Bhutada, P., (2009)]{diab-bhutada:2009:MWE09}
+Diab, M. & Bhutada, P. Verb Noun Construction MWE Token Classification.  (Association for Computational Linguistics,2009)
+
+
+\bibitem[Borocs, T. et al., (2017)]{borocs2017}
+Borocs, T., Pipa, S., Barbumititelu, V. & Tufics, D. A data-driven approach to verbal multiword expression detection. PARSEME Shared Task system description paper.  (Association for Computational Linguistics,2017)
+
+
+\bibitem[Maldonado, A. et al., (2017)]{maldonado2017}
+Maldonado, A., Han, L., Moreau, E., Alsulaimani, A., Chowdhury, K., Vogel, C. & Liu, Q. Detection of Verbal Multi-Word Expressions via Conditional Random Fields with Syntactic Dependency Features and Semantic Re-Ranking.  (Association for Computational Linguistics,2017)
+
+
+\bibitem[Klyueva, N. et al., (2017)]{klyueva2017}
+Klyueva, N., Doucet, A. & Straka, M. Neural Networks for Multi-Word Expression Detection.  (Association for Computational Linguistics,2017)
+
+
+\bibitem[, J., Collobert, R., (2016)]{legrand2016}
+, J. & Collobert, R. Phrase Representations for Multiword Expressions.  (Association for Computational Linguistics,2016)
+
+
+\bibitem[Sogaard, A., Goldberg, Y., (2016)]{sogaard2016deep}
+Sogaard, A. & Goldberg, Y. Deep multi-task learning with low level tasks supervised at lower layers. 
+
+\bibitem[Hashimoto, K. et al., (2016)]{hashimoto2016joint}
+Hashimoto, K., Xiong, C., Tsuruoka, Y. & Socher, R. A joint many-task model: Growing a neural network for multiple NLP tasks.  {\em Arxiv Preprint Arxiv:1611.01587}. (2016)
+
+\bibitem[Constant, M., Nivre, J., (2016)]{constant2016transition}
+Constant, M. & Nivre, J. A transition-based system for joint lexical and syntactic analysis. 
+
+\bibitem[Ruder, S., (2017)]{ruder2017overview}
+Ruder, S. An overview of multi-task learning in deep neural networks.  {\em Arxiv Preprint Arxiv:1706.05098}. (2017)
+
+\bibitem[Bojanowski, P. et al., (2016)]{bojanowski2016enriching}
+Bojanowski, P., Grave, E., Joulin, A. & Mikolov, T. Enriching word vectors with subword information.  {\em Arxiv Preprint Arxiv:1607.04606}. (2016)
+
+\bibitem[Ramisch, C. et al., (2018)]{ramisch2018edition}
+Ramisch, C., Cordeiro, S., Savary, A., Vincze, V., Mititelu, V., Bhatia, A., Buljan, M., Ito, M., Gantar, P. & Giouli, V. Edition 1.1 of the PARSEME Shared Task on Automatic Identification of Verbal Multiword Expressions. 
+
+\bibitem[Zhang, Y., Weiss, D., (2016)]{zhang2016stack}
+Zhang, Y. & Weiss, D. Stack-propagation: Improved representation learning for syntax.  {\em Arxiv Preprint Arxiv:1603.06598}. (2016)
+
+\bibitem[Kalchbrenner, N. et al., (2014)]{kalchbrenner2014convolutional}
+Kalchbrenner, N., Grefenstette, E. & Blunsom, P. A convolutional neural network for modelling sentences.  {\em Arxiv Preprint Arxiv:1404.2188}. (2014)
+
+\bibitem[Dyer, C. et al., (2015)]{dyer2015transition}
+Dyer, C., Ballesteros, M., Ling, W., Matthews, A. & Smith, N. Transition-based dependency parsing with stack long short-term memory.  {\em Arxiv Preprint Arxiv:1505.08075}. (2015)
+
+\bibitem[Kiperwasser, E., Goldberg, Y., (2016)]{kiperwasser2016simple}
+Kiperwasser, E. & Goldberg, Y. Simple and accurate dependency parsing using bidirectional LSTM feature representations.  {\em Arxiv Preprint Arxiv:1603.04351}. (2016)
+
+\bibitem[Andor, D. et al., (2016)]{andor2016globally}
+Andor, D., Alberti, C., Weiss, D., Severyn, A., Presta, A., Ganchev, K., Petrov, S. & Collins, M. Globally normalized transition-based neural networks.  {\em Arxiv Preprint Arxiv:1603.06042}. (2016)
+
+\bibitem[Chen, D., Manning, C., (2014)]{chen2014fast}
+Chen, D. & Manning, C. A fast and accurate dependency parser using neural networks. 
+
+\bibitem[Wiseman, S., Rush, A., (2016)]{wiseman2016sequence}
+Wiseman, S. & Rush, A. Sequence-to-sequence learning as beam-search optimization.  {\em Arxiv Preprint Arxiv:1606.02960}. (2016)
+
+\bibitem[Weiss, D. et al., (2015)]{weiss2015structured}
+Weiss, D., Alberti, C., Collins, M. & Petrov, S. Structured training for neural network transition-based parsing.  {\em Arxiv Preprint Arxiv:1506.06158}. (2015)
+
+\bibitem[Li, Z. et al., (2018)]{li2018seq2seq}
+Li, Z., Cai, J., He, S. & Zhao, H. Seq2seq dependency parsing. 
+
+\bibitem[Dozat, T., Manning, C., (2016)]{dozat2016deep}
+Dozat, T. & Manning, C. Deep biaffine attention for neural dependency parsing.  {\em Arxiv Preprint Arxiv:1611.01734}. (2016)
+
+\bibitem[Ballesteros, M. et al., (2017)]{ballesteros2017greedy}
+Ballesteros, M., Dyer, C., Goldberg, Y. & Smith, N. Greedy transition-based dependency parsing with stack lstms.  {\em Computational Linguistics}. \textbf{43}, 311--347 (2017)
+
+\bibitem[Dyer, C. et al., (2016)]{dyer2016recurrent}
+Dyer, C., Kuncoro, A., Ballesteros, M. & Smith, N. Recurrent neural network grammars.  {\em Arxiv Preprint Arxiv:1602.07776}. (2016)
+
+\bibitem[Ma, X. et al., (2018)]{ma2018stack}
+Ma, X., Hu, Z., Liu, J., Peng, N., Neubig, G. & Hovy, E. Stack-Pointer Networks for Dependency Parsing.  {\em Arxiv Preprint Arxiv:1805.01087}. (2018)
+
+\bibitem[Dozat, T. et al., (2017)]{dozat2017stanford}
+Dozat, T., Qi, P. & Manning, C. Stanford's Graph-based Neural Dependency Parser at the CoNLL 2017 Shared Task.  {\em Proceedings Of The Conll 2017 Shared Task: Multilingual Parsing From Raw Text To Universal Dependencies}. pp. 20--30 (2017)
+
+\bibitem[Kuncoro, A. et al., (2016)]{kuncoro2016recurrent}
+Kuncoro, A., Ballesteros, M., Kong, L., Dyer, C., Neubig, G. & Smith, N. What do recurrent neural network grammars learn about syntax?.  {\em Arxiv Preprint Arxiv:1611.05774}. (2016)
+
+\bibitem[Vincze, V. et al., (2013)]{Vincze13}
+Vincze, V., Zsibrita, J. & Nagyt., I. Dependency Parsing for Identifying Hungarian Light Verb Constructions.  (Asian Federation of Natural Language Processing,2013)
+
+
+\bibitem[Eryiugit, G. et al., (2011)]{Eryigit:2011:MES:2206359.2206365}
+Eryiugit, G., Ilbay, T. & Can, O. Multiword expressions in statistical dependency parsing. 
+
+\bibitem[Schwenk, H., (2007)]{schwenk2007continuous}
+Schwenk, H. Continuous space language models.  {\em Computer Speech \& Language}. \textbf{21}, 492--518 (2007)
+
+\bibitem[Wehrli, E., (2014)]{wehrli:2014}
+Wehrli, E. The relevance of collocations for parsing. 
+
+\bibitem[Stodden, R. et al., (2018)]{stodden2018trapacc}
+Stodden, R., Qasemizadeh, B. & Kallmeyer, L. TRAPACC and TRAPACCS at PARSEME Shared Task 2018: Neural Transition Tagging of Verbal Multiword Expressions. 
+
+\bibitem[Bohnet, B., Nivre, J., (2012)]{bohnet2012transition}
+Bohnet, B. & Nivre, J. A transition-based system for joint part-of-speech tagging and labeled non-projective dependency parsing. 
+
+\bibitem[Mikolov, T. et al., (2013)]{mikolov2013efficient}
+Mikolov, T., Chen, K., Corrado, G. & Dean, J. Efficient estimation of word representations in vector space.  {\em Arxiv Preprint Arxiv:1301.3781}. (2013)
+
+\bibitem[Pennington, J. et al., (2014)]{pennington2014glove}
+Pennington, J., Socher, R. & Manning, C. Glove: Global vectors for word representation. 
+
+\bibitem[Bengio, Y., (1999)]{bengio1999markovian}
+Bengio, Y. Markovian models for sequential data.  {\em Neural Computing Surveys}. \textbf{2}, 129--162 (1999)
+
+\bibitem[Wolpert, D., (1992)]{wolpert1992stacked}
+Wolpert, D. Stacked generalization.  {\em Neural Networks}. \textbf{5}, 241--259 (1992)
+
+\bibitem[Ting, K., Witten, I., (1999)]{ting1999issues}
+Ting, K. & Witten, I. Issues in stacked generalization.  {\em Journal Of Artificial Intelligence Research}. \textbf{10} pp. 271--289 (1999)
+
+\bibitem[Abeille, A. et al., (2003)]{Abeille2003}
+Abeille, A., Clement, L. & Toussenel, F. Building a treebank for French. 
+
+\bibitem[Schneider, N. et al., (2014)]{schneider2014comprehensive}
+Schneider, N., Onuffer, S., Kazour, N., Danchik, E., Mordowanec, M., Conrad, H. & Smith, N. Comprehensive annotation of multiword expressions in a social web corpus. 
+
+\bibitem[Seddah, D. et al., (2013)]{seddah2013}
+Seddah, D., Tsarfaty, R., Kubler, S., Ito, M., Choi, J., Farkas, R., Foster, J., Goenaga, I., Gojenolagalletebeitia, K., Goldberg, Y., Green, S., Habash, N., Kuhlmann, M., Maier, W., Nivre, J., Przepiorkowski, A., Roth, R., Seeker, W., Versley, Y., Vincze, V., Wolinski, M., Wroblewska, A. & Delaclergerie, E. Overview of the SPMRL 2013 Shared Task: A Cross-Framework Evaluation of Parsing Morphologically Rich Languages.  (Association for Computational Linguistics,2013)
+
+
+\bibitem[, (2015)]{baptista2015}

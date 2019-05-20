@@ -10,9 +10,19 @@ configuration = {
         'capitalDim': 3,
         'symbolDim': 8,
         'taggingDenseUnits': 128,
+        'IdenDenseUnitNumber': 64,
+        'depParsingDenseUnitNumber': 64,
         'useCapitalization': True,
         'useSymbols': True,
-        'testOnToken': True
+        'testOnToken': True,
+        'useB1': True,
+        'useBx': True,
+        'taggingBatchSize':32,
+        'identBatchSize': 32,
+        'depParserBatchSize': 32,
+        'initialEpochs': 1,
+        'jointLearningEpochs': 10,
+        'lr': 0.02
     }, 'xp': {
         'linear': False,
         'compo': False,
@@ -67,7 +77,11 @@ configuration = {
         'gru': True,
         'shuffle': True
     }, 'tmp': {
+        'createDepGraphs': False,
         'dontParse': False,
+        'trainIden': False,
+        'trainDepParser': False,
+        'trainJointly': False,
         'cleanSents': False,
         'transOut': False,
         'tunePretrained': False,
@@ -128,7 +142,8 @@ configuration = {
         'verbose': True,
         'eager': True,
         'gru': True,
-        'trainValidationSet': True
+        'trainValidationSet': True,
+        'sampling': True
     }, 'rnn': {
         'focusedElements': 7,
         'wordDim': 50,
@@ -966,3 +981,158 @@ def generateValue(plage, continousPlage=False, uniform=False, favorisationTaux=0
             return plage[random.randint(1, len(plage) - 1)]
         else:
             return plage[random.randint(0, len(plage) - 1)]
+
+
+def generateMultTaskingConf():
+    configuration['multitasking'].update({
+        'windowSize': 3,
+        'tokenDim':int(generateValue([25, 200], True)),
+        'affixeDim': int(generateValue([5,25], True)),
+        'capitalDim': int(generateValue([1,10], True)),
+        'symbolDim': int(generateValue([5,15], True)),
+        'taggingDenseUnits': int(generateValue([25,200], True)),
+        'IdenDenseUnitNumber': int(generateValue([25,200], True)),
+        'useCapitalization': generateValue([True, False], False),
+        'useSymbols':generateValue([True, False], False),
+        'testOnToken': True,
+        'useB1': generateValue([True, False], False),
+        'useBx': generateValue([True, False], False),
+        'taggingBatchSize': int(generateValue([8,128], True)),
+        'identBatchSize': int(generateValue([8,128], True)),
+        'initialEpochs': int(generateValue([1,5], True)),
+        'jointLearningEpochs': int(generateValue([8,20], True)),
+        'lr': round(generateValue([0.01,0.2], True),3)
+    })
+    configuration['embedding']['lemma'] = generateValue([True, False], False)
+    configuration['sampling']['importantSentences'] = True
+    configuration['sampling']['overSampling'] = True
+
+
+def setBestMTConfForPOS():
+    configuration['multitasking'].update({
+        'tokenDim':190,
+        'affixeDim': 20,
+        'capitalDim': 4,
+        'symbolDim': 11,
+        'taggingDenseUnits': 36,
+        'IdenDenseUnitNumber': 197,
+        'useCapitalization': False,
+        'useSymbols': True,
+        'testOnToken': True,
+        'useB1': True,
+        'useBx': True,
+        'taggingBatchSize': 120,
+        'lr': 0.01
+    })
+    configuration['embedding']['lemma'] = True
+    configuration['sampling']['importantSentences'] = True
+    configuration['sampling']['overSampling'] = True
+
+def setTrendMTConfForPOS():
+    configuration['multitasking'].update({
+        'tokenDim':69,
+        'affixeDim': 13,
+        'capitalDim': 3,
+        'symbolDim': 9,
+        'taggingDenseUnits': 89,
+        'IdenDenseUnitNumber': 88,
+        'useCapitalization': True,
+        'useSymbols': True,
+        'testOnToken': True,
+        'useB1': True,
+        'useBx': True,
+        'taggingBatchSize': 51,
+        'lr': 0.04
+    })
+    configuration['embedding']['lemma'] = True
+    configuration['sampling']['importantSentences'] = True
+    configuration['sampling']['overSampling'] = True
+
+
+def setTrendMTConfForIden():
+    configuration['multitasking'].update({
+        'tokenDim':89,
+        'affixeDim': 13,
+        'capitalDim': 3,
+        'symbolDim': 9,
+        'taggingDenseUnits': 87,
+        'IdenDenseUnitNumber': 81,
+        'useCapitalization': True,
+        'useSymbols': True,
+        'testOnToken': True,
+        'useB1': True,
+        'useBx': True,
+        'identBatchSize': 51,
+        'lr': 0.04
+    })
+    configuration['embedding']['lemma'] = True
+    configuration['sampling']['importantSentences'] = True
+    configuration['sampling']['overSampling'] = True
+
+def setBestMTConfForIden():
+    configuration['multitasking'].update({
+        'tokenDim':77,
+        'affixeDim': 18,
+        'capitalDim': 5,
+        'symbolDim': 8,
+        'taggingDenseUnits': 166,
+        'IdenDenseUnitNumber': 74,
+        'useCapitalization': False,
+        'useSymbols': True,
+        'testOnToken': True,
+        'useB1': False,
+        'useBx': True,
+        'identBatchSize': 51,
+        'lr': 0.05
+    })
+    configuration['embedding']['lemma'] = True
+    configuration['sampling']['importantSentences'] = True
+    configuration['sampling']['overSampling'] = True
+
+def setTrendMTConfForJoint():
+    configuration['multitasking'].update({
+        'tokenDim':83,
+        'affixeDim': 13,
+        'capitalDim': 3,
+        'symbolDim': 8,
+        'taggingDenseUnits': 90,
+        'IdenDenseUnitNumber': 64,
+        'useCapitalization': True,
+        'useSymbols': True,
+        'testOnToken': True,
+        'useB1': True,
+        'useBx': True,
+        'identBatchSize': 41,
+        'taggingBatchSize': 39,
+        'initialEpochs': 2,
+        'jointLearningEpochs': 12,
+        'lr': 0.04
+    })
+    configuration['embedding']['lemma'] = True
+    configuration['sampling']['importantSentences'] = True
+    configuration['sampling']['overSampling'] = True
+
+def setBestMTConfForJoint():
+    configuration['multitasking'].update({
+        'tokenDim':140,
+        'affixeDim': 14,
+        'capitalDim': 1,
+        'symbolDim': 5,
+        'taggingDenseUnits': 78,
+        'IdenDenseUnitNumber': 30,
+        'useCapitalization': False,
+        'useSymbols': True,
+        'testOnToken': True,
+        'useB1': True,
+        'useBx': True,
+        'identBatchSize': 37,
+        'taggingBatchSize': 21,
+        'initialEpochs': 3,
+        'jointLearningEpochs': 8,
+        'lr': 0.05
+    })
+    configuration['embedding']['lemma'] = True
+    configuration['sampling']['importantSentences'] = True
+    configuration['sampling']['overSampling'] = True
+
+

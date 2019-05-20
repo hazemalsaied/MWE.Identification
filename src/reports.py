@@ -531,33 +531,68 @@ def getSeedScores(files, folder=None, pilot=False, withTitles=True, withTitle2=F
                                                                                                                :-1])
 
 
-def getNewScores(files, folder=None, pilot=False, withTitles=True, onCorpus=False, onFixed=False, ftb=False):
+def getNewScores(files, folder=None, pilot=False, pos=False, withTitles=True, onCorpus=False, onFixed=False, ftb=False):
     for f in files:
         print str(f)
-        titles, scores, params, langs, titles2, seeds, stats, precisions, recalls, misidentified, nonidentified = \
+        titles, scores, params, langs, titles2, seeds, stats, precisions, recalls, misidentified, nonidentified, poss, poss2 = \
             mineNewFile(str(f), folder, ftb=ftb)
         # scores, params = mineCoopFile(str(f))
         if pilot:
-            x = 6
+            x = 3
             for i in range(len(titles)):
                 # if withTitle2:
                 # withTitle2 = False
                 #    sys.stdout.write('BG, BG,BG, PT, PT,PT, TR,TR, TR, BG_AVG, PT_AVG, TR_AVG ' + titles2[i][:-1])
-                avg1 = round((scores[i * x] + scores[i * x + 1]) / 2., 3) if i * x + 1 < len(scores) else -1
-                avg2 = round((scores[i * x + 2] + scores[i * x + 3]) / 2., 3) if i * x + 3 < len(scores) else -1
-                avg3 = round((scores[i * x + 4] + scores[i * x + 5]) / 2., 3) if i * x + 5 < len(scores) else -1
-                avgg = round((avg1 + avg2 + avg3) / 3., 1)
-                sys.stdout.write('{0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11}\n'.format(
-                    avgg, avg1, avg2, avg3,
-                    titles[i][:-1] if withTitles else '',
-                    scores[i * x] if i * x < len(scores) else 0,
-                    scores[i * x + 1] if i * x + 1 < len(scores) else -1,
-                    scores[i * x + 2] if i * x + 2 < len(scores) else -1,
-                    scores[i * x + 3] if i * x + 3 < len(scores) else -1,
-                    scores[i * x + 4] if i * x + 4 < len(scores) else -1,
-                    scores[i * x + 5] if i * x + 5 < len(scores) else -1,
-                    str(f)
+                sys.stdout.write('{0},{1},{2},{3},{4}\n'.format(
+                    scores[i * x] if pos and i * x < len(scores) else 0,
+                    scores[i * x + 1] if pos and i * x + 1 < len(scores) else 0,
+                    scores[i * x + 2] if pos and i * x + 2 < len(scores) else 0,
+                    titles[i][:-1], str(f)
                 ))
+        # POS tagging
+        # if pilot:
+        #     x = 3
+        #     for i in range(len(titles)):
+        #         # if withTitle2:
+        #         # withTitle2 = False
+        #         #    sys.stdout.write('BG, BG,BG, PT, PT,PT, TR,TR, TR, BG_AVG, PT_AVG, TR_AVG ' + titles2[i][:-1])
+        #         sys.stdout.write('{0},{1},{2},{3},{4},{5},{6},{7}\n'.format(
+        #             poss[i*x ] if pos and i*x < len(poss) else 0,
+        #             poss[i * x + 1] if pos and i * x + 1 < len(poss) else 0,
+        #             poss[i * x + 2] if pos and i * x + 2 < len(poss) else 0,
+        #             poss2[i*x] if pos and i * x  < len(poss2) else 0,
+        #             poss2[i * x + 1] if pos and i * x + 1 < len(poss2) else 0,
+        #             poss2[i * x + 2] if pos and i * x + 2 < len(poss2) else 0,
+        #             # scores[i * x] if i * x < len(scores) else -1,
+        #             # scores[i * x + 1] if i * x + 1 < len(scores) else -1,
+        #             # scores[i * x + 2] if i * x + 2 < len(scores) else -1,
+        #             titles[i][:-1], str(f)
+        # POS + Identification
+        # if pilot:
+        #     x = 3
+        #     for i in range(len(titles)):
+        #         # if withTitle2:
+        #         # withTitle2 = False
+        #         #    sys.stdout.write('BG, BG,BG, PT, PT,PT, TR,TR, TR, BG_AVG, PT_AVG, TR_AVG ' + titles2[i][:-1])
+        #         avg1 = round(scores[i * x],1) if i * x < len(scores) else -1
+        #         avg2 = round(scores[i * x + 1],1) if i * x + 1 < len(scores) else -1
+        #         avg3 = round(scores[i * x + 2], 3) if i * x + 2 < len(scores) else -1
+        #         avgPos = poss[i] if pos and i < len(poss) else 0
+        #         avgPos2 = poss2[i] if pos and i < len(poss2) else 0
+        #         avgg = round((avg1 + avg2 + avg3) / 3., 1)
+        #         sys.stdout.write('{0},{1},{2},{3},{4},{5},{6},{7},{8}{9},{10}\n'.format(
+        #             poss[i*x ] if pos and i*x < len(poss) else 0,
+        #             poss[i * x + 1] if pos and i * x + 1 < len(poss) else 0,
+        #             poss[i * x + 2] if pos and i * x + 2 < len(poss) else 0,
+        #             poss2[i*x] if pos and i * x  < len(poss2) else 0,
+        #             poss2[i * x+1] if pos and i * x + 1 < len(poss2) else 0,
+        #             poss2[i * x+2] if pos and i * x + 2 < len(poss2) else 0,
+        #             scores[i * x] if i * x < len(scores) else -1,
+        #             scores[i * x + 1] if i * x + 1 < len(scores) else -1,
+        #             scores[i * x + 2] if i * x + 2 < len(scores) else -1,
+        #             ',' + titles[i][:-1] ,
+        #             str(f)
+        #         ))
         elif onCorpus:
             for i, v in enumerate(scores):
                 line = ','.join(str(x) for x in [langs[i], v, precisions[i], recalls[i]])
@@ -605,8 +640,8 @@ fLine = '	F :'
 def mineNewFile(newFile, folder=None, ftb=False):
     x = ('MLP.New/' + folder) if folder else ''
     path = os.path.join('../Reports/Reports/', x, newFile)
-    titles, params, scores, precisions, recalls, langs, titles2, seeds, stats, misidentified, nonIdentified = \
-        [], [], [], [], [], [], [], [], [], [], []
+    titles, params, scores, precisions, recalls, langs, titles2, seeds, stats, misidentified, nonIdentified, poss, poss2 = \
+        [], [], [], [], [], [], [], [], [], [], [], [], []
     previousLine = ''
     seedLine = '# Seed:'
     with open(path, 'r') as log:
@@ -618,6 +653,10 @@ def mineNewFile(newFile, folder=None, ftb=False):
             #             line.startswith('XP Starts: 16/1') or line.startswith('XP Starts: 17/1'):
             #         shouldContinue = False
             #     continue
+            if line.startswith('POS tagging accuracy = ') and previousLine.startswith('Loss ='):
+                poss.append(line[:-1].split('=')[1])
+            if line.startswith('POS tagging accuracy = ') and previousLine.startswith('Epoch'):
+                poss2.append(line[:-1].split('=')[1])
             if line.startswith('Misidentified:'):
                 isMisidentified = True  # False
                 continue
@@ -673,7 +712,7 @@ def mineNewFile(newFile, folder=None, ftb=False):
             if line.startswith(titleLine) and not line.startswith('WARNING:root:Title: Language : FR'):
                 titles.append(line[len(titleLine):].strip())
             previousLine = line
-    return titles, scores, params, langs, titles2, seeds, stats, precisions, recalls, misidentified, nonIdentified
+    return titles, scores, params, langs, titles2, seeds, stats, precisions, recalls, misidentified, nonIdentified, poss, poss2
 
 
 def mineCoopFile(newFile):
@@ -876,8 +915,8 @@ if __name__ == '__main__':
     #         os.remove('../Reports/MLP/' + f)
 
     getNewScores(
-        [f for f in os.listdir('../Reports/Reports/') if f.startswith('svm.bes')], None
-        , pilot=False, withTitles=False, onFixed=False, onCorpus=True, ftb=True)
+        [f for f in os.listdir('../Reports/Reports/') if f.startswith('Iden')], None
+        , pilot=True, withTitles=False, pos=True, onFixed=False, onCorpus=False, ftb=False)
 
     # for subdir, dirs, files in os.walk('../Reports/Reports/MLP.New'):
     #    for dir in dirs:

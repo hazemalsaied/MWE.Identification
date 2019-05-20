@@ -1,11 +1,10 @@
-from collections import Counter
 from random import uniform
 
-import keras, sys
+import keras
 import numpy as np
 from keras import optimizers
 from keras.callbacks import ModelCheckpoint, EarlyStopping
-from keras.layers import Input, Dense, Flatten, Embedding, Dropout, Conv2D, MaxPooling2D
+from keras.layers import Input, Dense, Flatten, Embedding, Conv2D, MaxPooling2D
 from keras.models import Model
 from keras.preprocessing.sequence import pad_sequences
 from keras.utils import to_categorical

@@ -7,13 +7,13 @@ import random
 import re
 
 from reports import *
+from nltk.parse import DependencyGraph
 
 
 class Corpus:
     """
         a class used to encapsulate all the information of the corpus
     """
-
     def __init__(self, langName, foldId=-1):
         """
             an initializer of the corpus, responsible of creating a structure of objects encapsulating all the
@@ -72,6 +72,7 @@ class Corpus:
                 self.devDataSet = readCuptFile(devFile)
             else:
                 self.devDataSet = []
+                self.devDepGraphs = []
             self.testDataSet = readCuptFile(os.path.join(path, 'test.cupt'))
         elif datasetConf['ftb']:
             configuration['others']['replaceNumbers'] = True
@@ -507,8 +508,16 @@ class Corpus:
                     self.testingSents.append(s)
                 elif s.group == '':
                     pass
+        self.allTrainingSents = self.trainingSents
         if configuration['sampling']['importantSentences'] or configuration['sampling']['importantTransitions']:
             self.trainingSents = self.filterImportatntSents()
+
+        self.trainDepGraphs, self.testDepGraphs = [], []
+        if configuration['dataset']['sharedtask2'] and configuration['tmp']['createDepGraphs']:
+            for s in self.allTrainingSents:
+                self.trainDepGraphs.append(createDepGraph(s))
+            for s in self.testingSents:
+                self.testDepGraphs.append(createDepGraph(s))
 
     def distributeSent(self, lang):
         if configuration['others']['shuffleTrain']:
@@ -1632,6 +1641,19 @@ def getVMWEByTokens(tokens):
     return None
 
 
+def createDepGraph(sent):
+    cuptData = '\n'.join(t.line for t in sent.tokens)
+    conllData = cuptSentToConllU(cuptData)
+    return DependencyGraph(conllData)
+
+
+def readDepGraphs(cuptFile):
+    conlldata = cuptToConllU(cuptFile)
+    graphs = [DependencyGraph(entry)
+              for entry in conlldata.split('\n\n') if entry]
+    return graphs
+
+
 def readCuptFile(cuptFile, verbose=0):
     sentences = []
     deformedLemma, importantDeformedLemma, numericTokens = 0, 0, 0
@@ -1928,6 +1950,57 @@ def readDiMSUM(dimsumFile, verbose=True):
                                             sent.vMWEs[-1].tokens[0].position))
     return sentences
 
+
+def cuptSentToConllU(cuptTxt, withoutComments=True):
+    conll = ''
+    for line in cuptTxt.split('\n'):
+        if line.startswith('#'):
+            if withoutComments:
+                continue
+            else:
+                conll += line
+        elif line == '\n':
+            conll += line
+        elif not line.startswith('#') or line != '\n':
+            if len(line.split('\t')[0].split('-')) ==1:
+                parts = line.split('\t')[:-1]
+                if ' ' in parts[1]:
+                    parts[1] = parts[1].replace(' ', '-')
+                if ' ' in parts[2]:
+                    parts[2] = parts[2].replace(' ', '-')
+                if parts[6] == '0':
+                    parts[7] = 'ROOT'
+                # for t in parts:
+                #    conll += t + '\t'
+                conll += '\t'.join(p for p in  parts) + '\n'# conll[:-1] + '\n'
+                # conll += '\t'.join(t for t in line.split('\t')[:-1]) + '\n'
+    return conll
+
+def cuptToConllU(filePath, withoutComments=True):
+    with open(filePath, 'r') as corpusFile:
+        conll = ''
+        for line in corpusFile:
+            if line.startswith('#'):
+                if withoutComments:
+                    continue
+                else:
+                    conll += line
+            elif line == '\n':
+                conll += line
+            elif not line.startswith('#') or line != '\n':
+                if len(line.split('\t')[0].split('-')) ==1:
+                    parts = line.split('\t')[:-1]
+                    if ' ' in parts[1]:
+                        parts[1] = parts[1].replace(' ', '-')
+                    if ' ' in parts[2]:
+                        parts[2] = parts[2].replace(' ', '-')
+                    if parts[6] == '0':
+                        parts[7] = 'ROOT'
+                    # for t in parts:
+                    #    conll += t + '\t'
+                    conll += '\t'.join(p for p in  parts) + '\n'# conll[:-1] + '\n'
+                    # conll += '\t'.join(t for t in line.split('\t')[:-1]) + '\n'
+    return conll
 
 def getAllLangStats(langs):
     res = ''

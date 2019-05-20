@@ -1,6 +1,8 @@
 # from rsg import *
 import config
-from config import setMLPConf, setMlpOpenConf, setMlpTendanceConf, setSVMConf
+from config import setMLPConf, setMlpOpenConf, setMlpTendanceConf, \
+    setBestMTConfForIden, setBestMTConfForJoint, setBestMTConfForPOS, \
+    setTrendMTConfForIden, setTrendMTConfForJoint, setTrendMTConfForPOS
 from xpTools import *
 
 
@@ -134,46 +136,61 @@ def tuneCompoRnn():
                             seeds=range(1), xpNum=1, xpNumByThread=50)
 
 
+def evaluateMultitasking():
+    configuration['tmp']['trainJointly'] = False
+    configuration['tmp']['trainIden'] = False
+
+    setBestMTConfForPOS()
+    xp(allSharedtask2Lang, Dataset.sharedtask2,
+       XpMode.multitasking, Evaluation.trainVsDev, seeds=[0])
+
+    setTrendMTConfForPOS()
+    xp(allSharedtask2Lang, Dataset.sharedtask2,
+       XpMode.multitasking, Evaluation.trainVsDev, seeds=[0])
+
+    configuration['tmp']['trainIden'] = True
+
+    setBestMTConfForIden()
+    xp(allSharedtask2Lang, Dataset.sharedtask2,
+       XpMode.multitasking, Evaluation.trainVsDev, seeds=[0])
+
+    setTrendMTConfForIden()
+    xp(allSharedtask2Lang, Dataset.sharedtask2,
+       XpMode.multitasking, Evaluation.trainVsDev, seeds=[0])
+
+    setBestMTConfForJoint()
+    xp(allSharedtask2Lang, Dataset.sharedtask2,
+       XpMode.multitasking, Evaluation.trainVsDev, seeds=[0])
+
+    setTrendMTConfForJoint()
+    xp(allSharedtask2Lang, Dataset.sharedtask2,
+       XpMode.multitasking, Evaluation.trainVsDev, seeds=[0])
+
+
+def depParse():
+    from depBaselineParser import parse
+    initXp(XpMode.linear, Dataset.sharedtask2, Evaluation.trainVsDev, None, None)  # Evaluation.trainVsDev
+    for l in allSharedtask2Lang:
+        if l != 'LT':
+            parse(l)
+
 if __name__ == '__main__':
     reload(sys)
     sys.setdefaultencoding('utf8')
-    # generateOarsub(xpNum=5,duration=25,tourNum=1,name='mlp.dimsum')
+    configuration['others']['analyzePerformance'] = False
 
-    setSVMConf()
-    xp(['TR'], Dataset.sharedtask2, XpMode.linear, Evaluation.corpus, seeds=[0], xpNum=1,
-        outputCupt=True, title='')
-    # setMlpTendanceConf()
-    # configuration['sampling']['overSampling'] = False
-    # configuration['sampling']['importantSentences'] = False
-    # configuration['embedding']['pretrained'] = False
-    # xp(allSharedtask2Lang, Dataset.sharedtask2, None, Evaluation.trainVsDev, seeds=[0], xpNum=1,
-    #    outputCupt=True, title='tendy.closed.sampling')
 
-    # configuration['tmp']['transOut'] = True
-    # configuration['tmp']['markObligatory'] = False
-    # configuration['tmp']['addTokens'] = False
-    # setSVMConf()
-    # configuration['tmp']['cleanSents'] = True
-    # configuration['tmp']['onGroup'] = False
-    # configuration['tmp']['group'] = 'tweebank'
-    # # configuration['sampling']['overSampling'] = True
-    # xp(['EN'], Dataset.dimsum, XpMode.linear, Evaluation.trainVsDev, seeds=[0], xpNum=1,
-    #     outputCupt=False, title='tendy.sampling')
+    configuration['tmp']['createDepGraphs'] = True
+    evaluateMultitasking()
 
-    # setMlpTendanceConf()
-    # configuration['sampling']['importantSentences'] = False
-    # configuration['sampling']['overSampling'] = False
-    # xp(allSharedtask2Lang, Dataset.sharedtask2, None, Evaluation.trainVsDev, seeds=[0], xpNum=1,
-    #    outputCupt=False, title='tendy.sampling')
+    # configuration['tmp']['trainIden'] = False
+    # configuration['tmp']['trainJointly'] = False
+    # configuration['tmp']['trainDepParser'] = True
+    # xp(['FR'], Dataset.sharedtask2,XpMode.multitasking, Evaluation.fixedSize, seeds=[0])
 
-    # import rsg
-    # rsg.runRSGSpontaneously(['EN'], Dataset.dimsum, None, Evaluation.dev, seeds=range(1), xpNumByThread=500)
 
-    # configuration['tmp']['dontParse'] = True
-    # configuration['others']['debugTrainNum'] = 2000
-    # xp(['FR'], Dataset.sharedtask2, XpMode.multitasking, None, seeds=range(1))
-    # resamplingEffect()
-    # setOptimalRSGForMLP()
-    # xp(allSharedtask2Lang, Dataset.sharedtask2, None, Evaluation.fixedSize, seeds=range(1))
-    # setOptimalRSGForMLPTendance()
-    # xp(allSharedtask2Lang, Dataset.sharedtask2, None, Evaluation.fixedSize, seeds=range(1))
+    #import rsg
+    #rsg.runRSGSpontaneously(['BG', 'PT', 'TR'], Dataset.sharedtask2,
+    #                        XpMode.multitasking, Evaluation.fixedSize, [0],
+    #                        xpNumByThread=300)
+    # xp(['FR'], Dataset.sharedtask2, XpMode.multitasking, None)# Evaluation.trainVsDev)

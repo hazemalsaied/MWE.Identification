@@ -15,6 +15,14 @@ def runRSGSpontaneously(langs, dataset, xpMode, division,
 
     for i in range(xpNumByThread):
         configuration.update(configs[i])
+
+        # configuration['multitasking'].update({
+        #     'useCapitalization': False,
+        #     'useSymbols': True,
+        #     'useB1': True,
+        #     'useBx': True,
+        # })
+
         xp(langs, dataset, xpMode, division, xpNum=xpNum, seeds=seeds,
            mlpInLinear=mlpInLinear, linearInMlp=linearInMlp,
            complentary=complentary, outputCupt=False)
@@ -69,6 +77,8 @@ def generateConf(xpMode):
         config.generateKiperwasserConf()
     elif xpMode == XpMode.compoRnn:
         config.generateCompoRnnConf()
+    elif xpMode == XpMode.multitasking:
+        config.generateMultTaskingConf()
     else:
         if configuration['tmp']['tunePretrained']:
             config.generateMLPConfForPretrained()

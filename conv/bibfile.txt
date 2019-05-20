@@ -1,0 +1,845 @@
+@article{goldberg2016primer,
+title={A primer on neural network models for natural language processing},
+author={Goldberg, Yoav},
+journal={Journal of Artificial Intelligence Research},
+volume={57},
+pages={345--420},
+year={2016}
+}
+
+@article{salton2016idiom,
+title={Idiom token classification using sentential distributed semantics},
+author={Salton, Giancarlo and Ross, Robert J and Kelleher, John},
+year={2016},
+publisher={Dublin Institute of Technology}
+}
+
+@phdthesis{tu2012english,
+title={English complex verb constructions: identification and inference},
+author={Tu, Yuancheng},
+year={2012},
+school={University of Illinois at Urbana-Champaign},
+institution={Urbana-Champaign}
+}
+
+@article{dietterich1994solving,
+title={Solving multiclass learning problems via error-correcting output codes},
+author={Dietterich, Thomas G and Bakiri, Ghulum},
+journal={Journal of artificial intelligence research},
+volume={2},
+pages={263--286},
+year={1994}
+}
+
+@inproceedings{liu2005one,
+title={One-against-all multi-class SVM classification using reliability measures},
+author={Liu, Yi and Zheng, Yuan F},
+booktitle={Proceedings. 2005 IEEE International Joint Conference on Neural Networks, 2005.},
+volume={2},
+pages={849--854},
+year={2005},
+organization={IEEE}
+}
+
+@inproceedings{simko2017uszeged,
+title={USzeged: Identifying Verbal Multiword Expressions with POS Tagging and Parsing Techniques},
+author={Simko, Katalin Ilona and Kov\acs, Viktoria and Vincze, Veronika},
+booktitle={Proceedings of the 13th Workshop on Multiword Expressions (MWE 2017)},
+pages={48--53},
+year={2017}
+}
+
+@article{taslimipoor2018shoma,
+title={SHOMA at Parseme Shared Task on Automatic Identification of VMWEs: Neural Multiword Expression Tagging with High Generalisation},
+author={Taslimipoor, Shiva and Rohanian, Omid},
+journal={arXiv preprint arXiv:1809.03056},
+year={2018}
+}
+
+@inproceedings{sag2002multiword,
+title={Multiword expressions: A pain in the neck for NLP},
+author={Sag, Ivan A and Baldwin, Timothy and Bond, Francis and Copestake, Ann and Flickinger, Dan},
+booktitle={International Conference on Intelligent Text Processing and Computational Linguistics},
+pages={1--15},
+year={2002},
+organization={Springer}
+}
+
+@inproceedings{candito2014strategies,
+title={Strategies for contiguous multiword expression analysis and dependency parsing},
+author={Candito, Marie and Constant, Matthieu},
+booktitle={Proceedings of the 52nd Annual Meeting of the Association for Computational Linguistics (Volume 1: Long Papers)},
+volume={1},
+pages={743--753},
+year={2014}
+}
+
+
+@inproceedings{simko2018identifying,
+title={Identifying verbal multiword expressions with POS tagging and parsing techniques},
+author={Simko, Katalin Ilona and Kovacs, Viktoria and Vincze, Veronika},
+booktitle={Multiword expressions at length and in depth: Extended papers from the MWE 2017 workshop},
+volume={2},
+pages={227},
+year={2018},
+organization={Language Science Press}
+}
+
+@inproceedings{Vincze11,
+author={Vincze, Veronica and Nagy, Istvan and Berend, Gabor},
+booktitle={Proc. of RANLP 2011},
+pages={289--295},
+title={Multiword Expressions and Named Entities in the Wiki50 Corpus},
+address={Hissar},
+year={2011}
+}
+
+@book{ramisch2014multiword,
+title={Multiword expressions acquisition: A generic and open framework},
+author={Ramisch, Carlos},
+year={2014},
+publisher={Springer}
+}
+
+@inproceedings{rosen2015survey,
+title={A survey of multiword expressions in treebanks},
+author={Ros\'{E}n, Victoria and Losnegaard, Gyri Smordal and De Smedt, Koenraad and Bejcek, Eduard and Savary, Agata and Przepiorkowski, Adam and Osenova, Petya and Mititelu, Verginica Barbu},
+booktitle={International Workshop on Treebanks and Linguistic Theories (TLT14)},
+pages={179},
+year={2015}
+}
+
+@inproceedings{constant2011mwu,
+title={MWU-aware part-of-speech tagging with a CRF model and lexical resources},
+author={Constant, Matthieu and Sigogne, Anthony},
+booktitle={Proceedings of the Workshop on Multiword Expressions: from Parsing and Generation to the Real World},
+pages={49--56},
+year={2011},
+organization={Association for Computational Linguistics}
+}
+
+@article{constant2017multiword,
+title={Multiword expression processing: A survey},
+author={Constant, Mathieu and Eryi\u{g}it, Gulcsen and Monti, Johanna and Van Der Plas, Lonneke and Ramisch, Carlos and Rosner, Michael and Todirascu, Amalia},
+journal={Computational Linguistics},
+volume={43},
+number={4},
+pages={837--892},
+year={2017},
+publisher={MIT Press}
+}
+
+@inproceedings{waszczuk2018traversal,
+title={TRAVERSAL at PARSEME Shared Task 2018: Identification of Verbal Multiword Expressions Using a Discriminative Tree-Structured Model},
+author={Waszczuk, Jakub},
+booktitle={Proceedings of the Joint Workshop on Linguistic Annotation, Multiword Expressions and Constructions (LAW-MWE-CxG-2018)},
+pages={275--282},
+year={2018}
+}
+
+@inproceedings{berk2018deep,
+title={Deep-BGT at PARSEME Shared Task 2018: Bidirectional LSTM-CRF Model for Verbal Multiword Expression Identification},
+author={Berk, Gozde and Erden, Berna and Gungor, Tunga},
+booktitle={Proceedings of the Joint Workshop on Linguistic Annotation, Multiword Expressions and Constructions (LAW-MWE-CxG-2018)},
+pages={248--253},
+year={2018}
+}
+
+@inproceedings{hashimoto2008construction,
+title={Construction of an idiom corpus and its application to idiom identification based on WSD incorporating idiom-specific features},
+author={Hashimoto, Chikara and Kawahara, Daisuke},
+booktitle={Proceedings of the conference on empirical methods in natural language processing},
+pages={992--1001},
+year={2008},
+organization={Association for Computational Linguistics}
+}
+
+@inproceedings{cook2007pulling,
+title={Pulling their weight: Exploiting syntactic forms for the automatic identification of idiomatic expressions in context},
+author={Cook, Paul and Fazly, Afsaneh and Stevenson, Suzanne},
+booktitle={Proceedings of the workshop on a broader perspective on multiword expressions},
+pages={41--48},
+year={2007},
+organization={Association for Computational Linguistics}
+}
+
+@article{uchiyama2005disambiguating,
+title={Disambiguating Japanese compound verbs},
+author={Uchiyama, Kiyoko and Baldwin, Timothy and Ishizaki, Shun},
+journal={Computer Speech \& Language},
+volume={19},
+number={4},
+pages={497--512},
+year={2005},
+publisher={Elsevier}
+}
+
+@inproceedings{hashimoto2006japanese,
+title={Japanese idiom recognition: Drawing a line between literal and idiomatic meanings},
+author={Hashimoto, Chikara and Sato, Satoshi and Utsuro, Takehito},
+booktitle={Proceedings of the COLING/ACL on Main conference poster sessions},
+pages={353--360},
+year={2006},
+organization={Association for Computational Linguistics}
+}
+
+@inproceedings{oflazer2004integrating,
+title={Integrating morphology with multi-word expression processing in Turkish},
+author={Oflazer, Kemal and Say, Bilge and others},
+booktitle={Proceedings of the Workshop on Multiword Expressions: Integrating Processing},
+pages={64--71},
+year={2004},
+organization={Association for Computational Linguistics}
+}
+
+@article{forcada2011apertium,
+title={Apertium: a free/open-source platform for rule-based machine translation},
+author={Forcada, Mikel L and Ginesi-Rosell, Mireia and Nordfalk, Jacob and O’Regan, Jim and Ortiz-Rojas, Sergio and Perez-Ortiz, Juan Antonio and Sanchez-Martinez, Felipe and Ramirez-Sanchez, Gema and Tyers, Francis M},
+journal={Machine translation},
+volume={25},
+number={2},
+pages={127--144},
+year={2011},
+publisher={Springer}
+}
+
+@article{dietterich1998approximate,
+title={Approximate statistical tests for comparing supervised classification learning algorithms},
+author={Dietterich, Thomas G},
+journal={Neural computation},
+volume={10},
+number={7},
+pages={1895--1923},
+year={1998},
+publisher={MIT Press}
+}
+
+@inproceedings{he2008adasyn,
+title={ADASYN: Adaptive synthetic sampling approach for imbalanced learning},
+author={He, Haibo and Bai, Yang and Garcia, Edwardo A and Li, Shutao},
+booktitle={2008 IEEE International Joint Conference on Neural Networks (IEEE World Congress on Computational Intelligence)},
+pages={1322--1328},
+year={2008},
+organization={IEEE}
+}
+
+@article{chawla2002smote,
+title={SMOTE: synthetic minority over-sampling technique},
+author={Chawla, Nitesh V. and Bowyer, Kevin W. and Hall, Lawrence O. and Kegelmeyer, W. Philip},
+journal={Journal of artificial intelligence research},
+volume={16},
+pages={321--357},
+year={2002}
+}
+
+@inproceedings{schneider2016semeval,
+title={Semeval-2016 task 10: Detecting minimal semantic units and their meanings (dimsum)},
+author={Schneider, Nathan and Hovy, Dirk and Johannsen, Anders and Carpuat, Marine},
+booktitle={Proceedings of the 10th International Workshop on Semantic Evaluation (SemEval-2016)},
+pages={546--559},
+year={2016}
+}
+
+@inproceedings{gharbieh2017deep,
+title={Deep Learning Models For Multiword Expression Identification},
+author={Gharbieh, Waseem and Bhavsar, Virendrakumar and Cook, Paul},
+booktitle={Proceedings of the 6th Joint Conference on Lexical and Computational Semantics (* SEM 2017)},
+pages={54--64},
+year={2017}
+}
+
+@inproceedings{cordeiro2016nominal,
+title={Nominal Compound Compositionality: A Multilingual Lexicon and Predictive Model},
+author={Cordeiro, Silvio and Ramisch, Carlos and Villavicencio, Aline},
+booktitle={Proceedings of the 7th PARSEME General Meeting},
+year={2016}
+}
+
+@book{markantonatou2018multiword,
+title={Multiword expressions at length and in depth},
+author={Markantonatou, Stella and Ramisch, Carlos and Savary, Agata and Vincze, Veronika},
+year={2018}
+}
+
+@inproceedings{salton2014empirical,
+title={An empirical study of the impact of idioms on phrase based statistical machine translation of english to brazilian-portuguese},
+author={Salton, Giancarlo and Ross, Robert and Kelleher, John},
+year={2014},
+booktitle={14th Conference of the European
+Chapter of the Association for Computational Linguistics},
+publisher={Dublin Institute of Technology}
+}
+
+@article{baldwin2010multiword,
+title={Multiword expressions.},
+author={Baldwin, Timothy and Kim, Su Nam},
+journal={Handbook of natural language processing},
+volume={2},
+pages={267--292},
+year={2010}
+}
+
+@article{nivre2008algorithms,
+title={Algorithms for deterministic incremental dependency parsing},
+author={Nivre, Joakim},
+journal={Computational Linguistics},
+volume={34},
+number={4},
+pages={513--553},
+year={2008},
+publisher={MIT Press}
+}
+
+@incollection{chawla2009data,
+title={Data mining for imbalanced datasets: An overview},
+author={Chawla, Nitesh V},
+booktitle={Data mining and knowledge discovery handbook},
+pages={875--886},
+year={2009},
+publisher={Springer}
+}
+
+@article{savary2017parseme,
+title={The PARSEME shared task on automatic identification of verbal multiword expressions},
+author={Savary, Agata and Ramisch, Carlos and Cordeiro, Silvio and Sangati, Federico and Vincze, Veronika and QasemiZadeh, Behrang and Candito, Marie and Cap, Fabienne and Giouli, Voula and Stoyanova, Ivelina},
+year={2017}
+}
+
+@article{bergstra2012random,
+title={Random search for hyper-parameter optimization},
+author={Bergstra, James and Bengio, Yoshua},
+journal={Journal of Machine Learning Research},
+volume={13},
+number={Feb},
+pages={281--305},
+year={2012}
+}
+
+@InProceedings{zhang2011transition,
+author={Zhang, YueandNivre, Joakim},
+title={Transition-based Dependency Parsing with Rich Non-local Features},
+booktitle={Proceedings of the 49th Annual Meeting of the Association for Computational Linguistics: Human Language Technologies},
+month={June},
+year={2011},
+address={Portland, Oregon, USA},
+publisher={Association for Computational Linguistics},
+pages={188--193},
+url={http://www.aclweb.org/anthology/P11-2033}
+}
+
+
+@article{bengio2003neural,
+title={A neural probabilistic language model},
+author={Bengio, Yoshua and Ducharme, R\'E jean and Vincent, Pascal and Jauvin, Christian},
+journal={Journal of machine learning research},
+volume={3},
+number={Feb},
+pages={1137--1155},
+year={2003}
+}
+
+@inproceedings{nivre04acl,
+author={Nivre, Joakim},
+title={Incrementality in Deterministic Dependency Parsing},
+booktitle={Proceedings of the ACL Workshop Incremental Parsing: Bringing Engineering and Cognition Together},
+editor={Frank Keller and Stephen Clark and Matthew Crocker and Mark Steedman},
+year=2004,
+month={July},
+address={Barcelona, Spain},
+publisher={Association for Computational Linguistics},
+pages={50--57}
+}
+
+@inproceedings{henderson2013deep,
+title={Deep neural network approach for the dialog state tracking challenge},
+author={Henderson, Matthew and Thomson, Blaise and Young, Steve},
+booktitle={Proceedings of the SIGDIAL 2013 Conference},
+pages={467--471},
+year={2013}
+}
+
+@inproceedings{Nivre04mwe,
+author={Nivre, Joakim and Nilsson, Jens},
+booktitle={Proceedings of Methodologies and Evaluation of Multiword Units in Real-World Applications (MEMURA)},
+title={Multiword units in syntactic parsing},
+year={2004}
+}
+
+
+@book{Ramisch14,
+author={Ramisch, Carlos},
+Publisher={Springer},
+Series={{Theory and Applications of Natural Language Processing}},
+title={{Multiword Expressions Acquisition: A Generic and Open Framework}},
+Volume={XIV},
+year={2015}
+}
+
+@article{mohamadally2006svm,
+title={SVM: Machinesa vecteurs de support ou separateursa vastes marges},
+author={Mohamadally, H and Fomani, B},
+journal={Survey, Versailles St Quentin},
+volume={16},
+year={2006}
+}
+
+@book{seretan2011syntax,
+author={Seretan, Violeta},
+Publisher={Springer},
+Series={Text, Speech and Language Technology},
+title={Syntax-based collocation extraction},
+year={2011}
+}
+
+@InProceedings{nagyt-vincze,
+author={Nagy T., IstvanandVincze, Veronika},
+title={VPCTagger: Detecting Verb-Particle Constructions With Syntax-Based Methods},
+booktitle={Proceedings of the 10th Workshop on Multiword Expressions (MWE)},
+month={April},
+year={2014},
+address={Gothenburg, Sweden},
+publisher={Association for Computational Linguistics},
+pages={17--25},
+url={http://www.aclweb.org/anthology/W14-0803}
+}
+
+@article{schneider14,
+author={Schneider, Nathan and Danchik, Emily and Dyer, Chris and Smith, Noah A.},
+Journal={TACL},
+pages={193--206},
+title={Discriminative lexical semantic segmentation with gaps: running the MWE gamut},
+Volume={2},
+year={2014}
+}
+
+@InProceedings{blunsom-baldwin:2006:EMNLP,
+author={Blunsom, PhilandBaldwin, Timothy},
+title={Multilingual Deep Lexical Acquisition for HPSGs via Supertagging},
+booktitle={Proceedings of the 2006 Conference on Empirical Methods in Natural Language Processing},
+month={July},
+year={2006},
+address={Sydney, Australia},
+publisher={Association for Computational Linguistics},
+pages={164--171},
+url={http://www.aclweb.org/anthology/W/W06/W06-1620}
+}
+
+
+@inproceedings{shigeto-EtAl:2013:MWE,
+title={Construction of English MWE dictionary and its application to POS tagging},
+author={Shigeto, Yutaro and Azuma, Ai and Hisamoto, Sorami and Kondo, Shuhei and Kouse, Tomoya and Sakaguchi, Keisuke and Yoshimoto, Akifumi and Yung, Frances and Matsumoto, Yuji},
+booktitle={Proceedings of the 9th Workshop on Multiword Expressions},
+pages={139--144},
+year={2013}
+}
+
+@inproceedings{goldberg2012dynamic,
+title={A Dynamic Oracle for Arc-Eager Dependency Parsing.},
+author={Goldberg, Yoav and Nivre, Joakim},
+booktitle={COLING},
+pages={959--976},
+year={2012}
+}
+
+@article{goldberg2013training,
+title={Training deterministic parsers with non-deterministic oracles},
+author={Goldberg, Yoav and Nivre, Joakim},
+journal={Transactions of the association for Computational Linguistics},
+volume={1},
+pages={403--414},
+year={2013}
+}
+
+@inproceedings{alsaied2018transitionbased,
+title={A transition-based verbal multiword expression analyzer},
+author={Al Saied, Hazem and Candito, Marie and Constant, Matthieu},
+booktitle={Multiword expressions at length and in depth: Extended papers from the MWE 2017 workshop},
+volume={2},
+pages={209},
+year={2018},
+organization={Language Science Press}
+}
+
+@InProceedings{alsaied-MWE2017,
+author={Al Saied, HazemandCandito, Marie andConstant, Matthieu },
+title={The ATILF-LLF System for Parseme Shared Task: a Transition-based Verbal Multiword Expression Tagger},
+booktitle={Proceedings of the 13th Workshop on Multiword Expressions (MWE)- 2017},
+month={April},
+year={2017},
+address={Valencia, Spain},
+publisher={Association for Computational Linguistics},
+pages={127--132},
+}
+
+ @article{fazly-cook-stevenson,
+author={Fazly, Afsaneh and Cook, Paul and Stevenson, Suzanne},
+Issn={0891-2017},
+Journal={Computational Linguistics},
+Number={1},
+pages={61--103},
+Publisher={MIT Press},
+title={Unsupervised Type and Token Identification of Idiomatic Expressions},
+Volume={35},
+year={2009},
+}
+
+@InProceedings{diab-bhutada:2009:MWE09,
+author={Diab, MonaandBhutada, Pravin},
+title={Verb Noun Construction MWE Token Classification},
+booktitle={Proceedings of the Workshop on Multiword Expressions: Identification, Interpretation, Disambiguation and Applications},
+month={August},
+year={2009},
+address={Singapore},
+publisher={Association for Computational Linguistics},
+pages={17--22},
+url={http://www.aclweb.org/anthology/W/W09/W09-2903}
+}
+
+@InProceedings{borocs2017,
+author={Borocs, TiberiuandPipa, SoniaandBarbu Mititelu, VerginicaandTufics, Dan},
+title={A data-driven approach to verbal multiword expression detection. PARSEME Shared Task system description paper},
+booktitle={Proceedings of the 13th Workshop on Multiword Expressions (MWE 2017)},
+month={April},
+year={2017},
+address={Valencia, Spain},
+publisher={Association for Computational Linguistics},
+pages={121--126},
+url={http://www.aclweb.org/anthology/W17-1716}
+}
+
+@InProceedings{maldonado2017,
+author={Maldonado, AlfredoandHan, LifengandMoreau, ErwanandAlsulaimani, AshjanandChowdhury, Koel DuttaandVogel, CarlandLiu, Qun},
+title={Detection of Verbal Multi-Word Expressions via Conditional Random Fields with Syntactic Dependency Features and Semantic Re-Ranking},
+booktitle={Proceedings of the 13th Workshop on Multiword Expressions(MWE 2017)},
+month={April},
+year={2017},
+address={Valencia, Spain},
+publisher={Association for Computational Linguistics},
+pages={114--120},
+url={http://www.aclweb.org/anthology/W17-1715}
+}
+
+@InProceedings{klyueva2017,
+author={Klyueva, NataliaandDoucet, AntoineandStraka, Milan},
+title={Neural Networks for Multi-Word Expression Detection},
+booktitle={Proceedings of the 13th Workshop on Multiword Expressions (MWE 2017)},
+month={April},
+year={2017},
+address={Valencia, Spain},
+publisher={Association for Computational Linguistics},
+pages={60--65},
+url={http://www.aclweb.org/anthology/W17-1707}
+}
+
+@InProceedings{legrand2016,
+author={Legrand, Joeland and Collobert, Ronan},
+title={Phrase Representations for Multiword Expressions},
+booktitle={Proceedings of the 12th Workshop on Multiword Expressions},
+month={August},
+year={2016},
+address={Berlin, Germany},
+publisher={Association for Computational Linguistics},
+pages={67--71},
+url={http://anthology.aclweb.org/W16-1810}
+}
+
+@inproceedings{sogaard2016deep,
+title={Deep multi-task learning with low level tasks supervised at lower layers},
+author={Sogaard, Anders and Goldberg, Yoav},
+booktitle={Proceedings of the 54th Annual Meeting of the Association for Computational Linguistics (Volume 2: Short Papers)},
+volume={2},
+pages={231--235},
+year={2016}
+}
+
+@article{hashimoto2016joint,
+title={A joint many-task model: Growing a neural network for multiple NLP tasks},
+author={Hashimoto, Kazuma and Xiong, Caiming and Tsuruoka, Yoshimasa and Socher, Richard},
+journal={arXiv preprint arXiv:1611.01587},
+year={2016}
+}
+
+@inproceedings{constant2016transition,
+title={A transition-based system for joint lexical and syntactic analysis},
+author={Constant, Matthieu and Nivre, Joakim},
+booktitle={Proceedings of the 54th Annual Meeting of the Association for Computational Linguistics (Volume 1: Long Papers)},
+volume={1},
+pages={161--171},
+year={2016}
+}
+
+@article{ruder2017overview,
+title={An overview of multi-task learning in deep neural networks},
+author={Ruder, Sebastian},
+journal={arXiv preprint arXiv:1706.05098},
+year={2017}
+}
+
+@article{bojanowski2016enriching,
+title={Enriching word vectors with subword information},
+author={Bojanowski, Piotr and Grave, Edouard and Joulin, Armand and Mikolov, Tomas},
+journal={arXiv preprint arXiv:1607.04606},
+year={2016}
+}
+
+@inproceedings{ramisch2018edition,
+title={Edition 1.1 of the PARSEME Shared Task on Automatic Identification of Verbal Multiword Expressions},
+author={Ramisch, Carlos and Cordeiro, Silvio and Savary, Agata and Vincze, Veronika and Mititelu, Verginica and Bhatia, Archna and Buljan, Maja and Candito, Marie and Gantar, Polona and Giouli, Voula and others},
+booktitle={the Joint Workshop on Linguistic Annotation, Multiword Expressions and Constructions (LAW-MWE-CxG-2018)},
+pages={222--240},
+year={2018}
+}
+
+@article{zhang2016stack,
+title={Stack-propagation: Improved representation learning for syntax},
+author={Zhang, Yuan and Weiss, David},
+journal={arXiv preprint arXiv:1603.06598},
+year={2016}
+}
+
+@article{kalchbrenner2014convolutional,
+title={A convolutional neural network for modelling sentences},
+author={Kalchbrenner, Nal and Grefenstette, Edward and Blunsom, Phil},
+journal={arXiv preprint arXiv:1404.2188},
+year={2014}
+}
+
+@article{dyer2015transition,
+title={Transition-based dependency parsing with stack long short-term memory},
+author={Dyer, Chris and Ballesteros, Miguel and Ling, Wang and Matthews, Austin and Smith, Noah A},
+journal={arXiv preprint arXiv:1505.08075},
+year={2015}
+}
+
+@article{kiperwasser2016simple,
+title={Simple and accurate dependency parsing using bidirectional LSTM feature representations},
+author={Kiperwasser, Eliyahu and Goldberg, Yoav},
+journal={arXiv preprint arXiv:1603.04351},
+year={2016}
+}
+
+@article{andor2016globally,
+title={Globally normalized transition-based neural networks},
+author={Andor, Daniel and Alberti, Chris and Weiss, David and Severyn, Aliaksei and Presta, Alessandro and Ganchev, Kuzman and Petrov, Slav and Collins, Michael},
+journal={arXiv preprint arXiv:1603.06042},
+year={2016}
+}
+
+@inproceedings{chen2014fast,
+title={A fast and accurate dependency parser using neural networks},
+author={Chen, Danqi and Manning, Christopher},
+booktitle={Proceedings of the 2014 conference on empirical methods in natural language processing (EMNLP)},
+pages={740--750},
+year={2014}
+}
+
+@article{wiseman2016sequence,
+title={Sequence-to-sequence learning as beam-search optimization},
+author={Wiseman, Sam and Rush, Alexander M},
+journal={arXiv preprint arXiv:1606.02960},
+year={2016}
+}
+
+@article{weiss2015structured,
+title={Structured training for neural network transition-based parsing},
+author={Weiss, David and Alberti, Chris and Collins, Michael and Petrov, Slav},
+journal={arXiv preprint arXiv:1506.06158},
+year={2015}
+}
+
+@inproceedings{li2018seq2seq,
+title={Seq2seq dependency parsing},
+author={Li, Zuchao and Cai, Jiaxun and He, Shexia and Zhao, Hai},
+booktitle={Proceedings of the 27th International Conference on Computational Linguistics},
+pages={3203--3214},
+year={2018}
+}
+
+@article{dozat2016deep,
+title={Deep biaffine attention for neural dependency parsing},
+author={Dozat, Timothy and Manning, Christopher D},
+journal={arXiv preprint arXiv:1611.01734},
+year={2016}
+}
+
+@article{ballesteros2017greedy,
+title={Greedy transition-based dependency parsing with stack lstms},
+author={Ballesteros, Miguel and Dyer, Chris and Goldberg, Yoav and Smith, Noah A},
+journal={Computational Linguistics},
+volume={43},
+number={2},
+pages={311--347},
+year={2017},
+publisher={MIT Press}
+}
+
+@article{dyer2016recurrent,
+title={Recurrent neural network grammars},
+author={Dyer, Chris and Kuncoro, Adhiguna and Ballesteros, Miguel and Smith, Noah A},
+journal={arXiv preprint arXiv:1602.07776},
+year={2016}
+}
+@article{ma2018stack,
+title={Stack-Pointer Networks for Dependency Parsing},
+author={Ma, Xuezhe and Hu, Zecong and Liu, Jingzhou and Peng, Nanyun and Neubig, Graham and Hovy, Eduard},
+journal={arXiv preprint arXiv:1805.01087},
+year={2018}
+}
+
+@article{dozat2017stanford,
+title={Stanford's Graph-based Neural Dependency Parser at the CoNLL 2017 Shared Task},
+author={Dozat, Timothy and Qi, Peng and Manning, Christopher D},
+journal={Proceedings of the CoNLL 2017 Shared Task: Multilingual Parsing from Raw Text to Universal Dependencies},
+pages={20--30},
+year={2017}
+}
+
+@article{kuncoro2016recurrent,
+title={What do recurrent neural network grammars learn about syntax?},
+author={Kuncoro, Adhiguna and Ballesteros, Miguel and Kong, Lingpeng and Dyer, Chris and Neubig, Graham and Smith, Noah A},
+journal={arXiv preprint arXiv:1611.05774},
+year={2016}
+}
+
+@InProceedings{Vincze13,
+author={Vincze, VeronikaandZsibrita, JanosandNagy T., Istvan},
+title={Dependency Parsing for Identifying Hungarian Light Verb Constructions},
+booktitle={Proceedings of the Sixth International Joint Conference on Natural Language Processing},
+month={October},
+year={2013},
+address={Nagoya, Japan},
+publisher={Asian Federation of Natural Language Processing},
+pages={207--215},
+url={http://www.aclweb.org/anthology/I13-1024}
+}
+
+@inproceedings{Eryigit:2011:MES:2206359.2206365,
+address={Dublin},
+author={Eryiugit, Gulcsen and Ilbay, Tugay and Can, Ozan Arkan},
+booktitle={Proc. of IWPT Workshop on Statistical Parsing of Morphologically-Rich Languages (SPMRL 2011)},
+date-Modified={2016-10-11 14:15:12 +0000},
+numpages={11},
+pages={45--55},
+title={Multiword expressions in statistical dependency parsing},
+year={2011}
+}
+
+@article{schwenk2007continuous,
+title={Continuous space language models},
+author={Schwenk, Holger},
+journal={Computer Speech \& Language},
+volume={21},
+number={3},
+pages={492--518},
+year={2007},
+publisher={Elsevier}
+}
+
+@inproceedings{wehrli:2014,
+address={Gothenburg},
+author={Wehrli, Eric},
+booktitle={Proc. of the EACL 2014 Workshop on MWEs},
+pages={26--32},
+title={The relevance of collocations for parsing},
+year={2014}
+ }
+
+@inproceedings{stodden2018trapacc,
+title={TRAPACC and TRAPACCS at PARSEME Shared Task 2018: Neural Transition Tagging of Verbal Multiword Expressions},
+author={Stodden, Regina and QasemiZadeh, Behrang and Kallmeyer, Laura},
+booktitle={Proceedings of the Joint Workshop on Linguistic Annotation, Multiword Expressions and Constructions (LAW-MWE-CxG-2018)},
+pages={268--274},
+year={2018}
+}
+
+@inproceedings{bohnet2012transition,
+title={A transition-based system for joint part-of-speech tagging and labeled non-projective dependency parsing},
+author={Bohnet, Bernd and Nivre, Joakim},
+booktitle={Proceedings of the 2012 Joint Conference on Empirical Methods in Natural Language Processing and Computational Natural Language Learning},
+pages={1455--1465},
+year={2012},
+organization={Association for Computational Linguistics}
+}
+
+@article{mikolov2013efficient,
+title={Efficient estimation of word representations in vector space},
+author={Mikolov, Tomas and Chen, Kai and Corrado, Greg and Dean, Jeffrey},
+journal={arXiv preprint arXiv:1301.3781},
+year={2013}
+}
+
+@inproceedings{pennington2014glove,
+title={Glove: Global vectors for word representation},
+author={Pennington, Jeffrey and Socher, Richard and Manning, Christopher},
+booktitle={Proceedings of the 2014 conference on empirical methods in natural language processing (EMNLP)},
+pages={1532--1543},
+year={2014}
+ }
+
+@article{bengio1999markovian,
+title={Markovian models for sequential data},
+author={Bengio, Yoshua},
+journal={Neural computing surveys},
+volume={2},
+number={199},
+pages={129--162},
+year={1999}
+}
+
+@article{wolpert1992stacked,
+title={Stacked generalization},
+author={Wolpert, David H},
+journal={Neural networks},
+volume={5},
+number={2},
+pages={241--259},
+year={1992},
+publisher={Elsevier}
+}
+
+@article{ting1999issues,
+title={Issues in stacked generalization},
+author={Ting, Kai Ming and Witten, Ian H},
+journal={Journal of artificial intelligence research},
+volume={10},
+pages={271--289},
+year={1999}
+}
+
+@incollection{Abeille2003,
+author={Abeille, Anne and Clement, Lionel and Toussenel, Francois},
+booktitle={Treebanks},
+Editor={Abeille, Anne},
+Publisher={Kluwer},
+title={Building a treebank for French},
+year={2003}
+}
+
+@inproceedings{schneider2014comprehensive,
+author={Schneider, Nathan and Onuffer, Spencer and Kazour, Nora and Danchik, Emily and Mordowanec, Michael T and Conrad, Henrietta and Smith, Noah A},
+booktitle={Proc. of LREC 2014},
+pages={455--461},
+title={Comprehensive annotation of multiword expressions in a social web corpus},
+year={2014}
+}
+
+@InProceedings{seddah2013,
+author={Seddah, DjameandTsarfaty, ReutandKubler, SandraandCandito, MarieandChoi, Jinho D.andFarkas, RichardandFoster, JenniferandGoenaga, IakesandGojenola Galletebeitia, KoldoandGoldberg, YoavandGreen, SpenceandHabash, NizarandKuhlmann, MarcoandMaier, WolfgangandNivre, JoakimandPrzepiorkowski, AdamandRoth, RyanandSeeker, WolfgangandVersley, YannickandVincze, VeronikaandWolinski, MarcinandWroblewska, Alinaandde la Clergerie, Eric Villemonte},
+title={Overview of the SPMRL 2013 Shared Task: A Cross-Framework Evaluation of Parsing Morphologically Rich Languages},
+booktitle={Proceedings of the Fourth Workshop on Statistical Parsing of Morphologically-Rich Languages},
+month={October},
+year={2013},
+address={Seattle, Washington, USA},
+publisher={Association for Computational Linguistics},
+pages={146--182}
+}
+
+@inproceedings{baptista2015,
+title={Implementing European Portuguese verbal idioms in a natural language processing System},
+author={Jorge Baptista and Gracca Fernandes and Rui Talhadas and Francisco Dias and Nuno Mamede},
+booktitle={Proc. of Europhras 2015},
+address={Malaga, Spain},
+month={June 28-July 2, 2015},
+year={2015}
+}
+

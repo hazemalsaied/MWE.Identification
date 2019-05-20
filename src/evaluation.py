@@ -220,7 +220,7 @@ def reportCategory(sents, catName):
                     round(float(catIG) * 100 / catG, 1) if catG else '-')
     sys.stdout.write(reports.tabs + gProportionStr)
     sys.stdout.write(reports.tabs + iProportionStr)
-    sys.stdout.write(reports.tabs +  presicionStr)
+    sys.stdout.write(reports.tabs + presicionStr)
 
 
 def reportNonIdentified(sents, mweDic, mweTokenDic, corpusLemmaText, threshold=100):

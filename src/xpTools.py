@@ -1,6 +1,6 @@
 import datetime
 
-import torch
+#import torch
 from enum import Enum
 from theano import function, config, shared, tensor
 
@@ -32,21 +32,22 @@ def runXp(lang, mlpInLinear, linearInMlp, complentary, seed, cuptTitle=''):
     sys.stdout.write('XP Starts: %d/%d (%dh:%d)' % (now.day, now.month, now.hour, now.minute) + doubleSep)
     if mlpInLinear:
         corpus = identifyWithMlpInLinear(lang, tuning=configuration['others']['tuneCoop'])
-        corpus.createMWEFiles(seed, 'mlpInSvm', title=cuptTitle)
+        corpus.createMWEFiles(seed, title='mlpInSvm'+cuptTitle)
     elif linearInMlp:
         corpus = identifyWithLinearInMlp(lang, tuning=configuration['others']['tuneCoop'])
-        corpus.createMWEFiles(seed, 'svmInMlp', title=cuptTitle)
+        corpus.createMWEFiles(seed, title='svmInMlp'+cuptTitle)
     elif complentary:
         corpus = identifyWithBoth(lang)
-        corpus.createMWEFiles(seed, 'complementary', title=cuptTitle)
+        corpus.createMWEFiles(seed, title='complementary'+cuptTitle)
     elif configuration['evaluation']['cv']:
         for j in range(configuration['others']['cvFolds']):
             sys.stdout.write(reports.tabs + 'Iteration {0}'.format(j))
             corpus = identify(lang, foldId=j)
-            corpus.createMWEFiles(seed, 'fold.{0}'.format(j), title=cuptTitle)
+            corpus.createMWEFiles(seed, title='fold.{0}'.format(j)+cuptTitle)
     else:
         corpus = identify(lang)
-        corpus.createMWEFiles(seed, title=cuptTitle)
+        if corpus:
+            corpus.createMWEFiles(seed, title=cuptTitle)
     now = datetime.datetime.now()
     sys.stdout.write(reports.tabs + 'XP Ends: %d/%d (%d h:%d)' %
                      (now.day, now.month, now.hour, now.minute) + doubleSep)
@@ -65,13 +66,13 @@ def initXp(xpMode, dataset, division, title, outputCupt):
     if xpMode != XpMode.linear:
         verifyGPU()
     getParameters(xpMode)
-    reports.createHeader(title)
+    # reports.createHeader(title)
 
 
 def setSeed(s):
     numpy.random.seed(s)
     random.seed(s)
-    torch.manual_seed(s)
+    #torch.manual_seed(s)
     sys.stdout.write('# Seed: %d' % s + doubleSep)
 
 
@@ -106,6 +107,10 @@ def getParameters(xpMode, printTilte=True):
         for k in sorted(configuration['kiperwasser'].keys()):
             titles.append(k)
             values.append(configuration['kiperwasser'][k])
+    elif xpMode == XpMode.multitasking:
+        for k in sorted(configuration['multitasking'].keys()):
+            titles.append(k)
+            values.append(configuration['multitasking'][k])
     elif xpMode == XpMode.rnn:
         for k in sorted(configuration['rnn'].keys()):
             titles.append(k)
@@ -125,6 +130,16 @@ def getParameters(xpMode, printTilte=True):
     if printTilte:
         sys.stdout.write('# CTitles: ' + ', '.join(str(t) for t in titles))
         sys.stdout.write(doubleSep)
+    for i in range(int(len(titles) / 5)+1):
+        for j in range(5):
+            if i*5 + j < len(titles):
+                sys.stdout.write(str(titles[i*5 + j][:15]) + ' '*(15 - len(titles[i*5 + j]) if 50 - len(titles[i*5 + j]) >0 else 0)+ ',')
+        sys.stdout.write(seperator)
+        for j in range(5):
+            if i * 5 + j < len(values):
+                sys.stdout.write(str(values[i*5 + j])+ ' '*(15 - len(str(values[i*5 + j])) if 50 - len(str(values[i*5 + j])) >0 else 0)+ ',')
+        sys.stdout.write(seperator)
+
     sys.stdout.write('# Configs: ' + ', '.join(str(v) for v in values))
     sys.stdout.write(doubleSep)
 

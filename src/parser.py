@@ -128,6 +128,9 @@ def nextTrans(t, sent, model, vectorizer, sentEmbs=None, tokens=None, linearMode
     elif configuration['xp']['compoRnn']:
         probVector = model.predict(t)
         predictedTrans = sorted(range(len(probVector)), key=lambda k: probVector[k], reverse=True)
+    elif configuration['xp']['multitasking']:
+        probVector = model.predictIdent(t, sent)
+        predictedTrans = sorted(range(len(probVector)), key=lambda k: probVector[k], reverse=True)
     else:
         probVector = model.predict(t, linearModels=linearModels, linearVecs=linearVecs)
         predictedTrans = sorted(range(len(probVector)), key=lambda k: probVector[k], reverse=True)

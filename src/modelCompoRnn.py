@@ -1,10 +1,9 @@
-from collections import Counter
+import sys
 from collections import Counter
 from random import uniform
 
 import keras
 import numpy as np
-import sys
 from imblearn.over_sampling import RandomOverSampler
 from keras.callbacks import EarlyStopping
 from keras.layers import Input, Dense, Embedding, Flatten, GRU, Dropout, LSTM

@@ -18,36 +18,38 @@ from reports import *
 from transitions import TransitionType
 from wordEmbLoader import empty
 from wordEmbLoader import unk, number
+from nltk.parse.transitionparser import TransitionParser, Transition, Configuration
+# unk = configuration['constants']['unk']
+# empty = configuration['constants']['empty']
+
+
+
 
 enableCategorization = False
 
 importantFrequentWordDic = dict()
 
 
+# global idenInputArrNum
+
+
 class Network:
     def __init__(self, corpus):
+        global idenInputArrNum, taggingInputArray, depParserInuptArrNum
+        taggingInputArray = 2 + int(configuration['multitasking']['useCapitalization']) \
+                            + int(configuration['multitasking']['useSymbols'])
+        idenInputArrNum = taggingInputArray * 3 + (taggingInputArray * configuration['multitasking']['useB1']) + (
+            taggingInputArray * configuration['multitasking']['useBx'])
+        depParserInuptArrNum = taggingInputArray * 3
         self.vocabulary = Vocabulary(corpus)
-        self.taggingModel, self.idenModel = createTheModel(self.vocabulary)
 
-    def predict(self, trans, linearModels=None, linearVecs=None):
-        pass
-        # inputs = []
-        # tokenIdxs, posIdxs = self.getAttachedIndices(trans, dynamicVocab=configuration['embedding']['dynamicVocab'],
-        #                                              parse=True)
-        # inputs.append(np.asarray([tokenIdxs]))
-        # inputs.append(np.asarray([posIdxs]))
-        # if linearModels and linearVecs:
-        #     linearModel, linearVec = getRelevantModelAndNormalizer(trans.sent, None, linearModels, linearVecs, True)
-        #     featDic = getFeatures(trans, trans.sent)
-        #     predTrans = linearModel.predict(linearVec.transform(featDic))[0]
-        #     predVec = [1 if t.value == predTrans else 0 for t in TransitionType]
-        #     inputs.append(np.asarray([predVec]))
-        # if configuration['mlp2']['features']:
-        #     features = np.asarray(self.nnExtractor.vectorize(trans))
-        #     inputs.append(np.asarray([features]))
-        # oneHotRep = self.model.predict(inputs, batch_size=1,
-        #                                verbose=configuration['nn']['predictVerbose'])
-        # return oneHotRep[0]
+        if configuration['tmp']['trainDepParser']:
+            self.parser = TransParser('arc-standard')
+            self.depParserData, self.depParserLabels, self.depLabelDic = self.parser.getTrainData(corpus.trainDepGraphs,
+                                                                                    corpus.allTrainingSents,
+                                                                                    self.vocabulary.tokenIndices, self)
+
+        self.taggingModel, self.idenModel, self.depParsingModel = createTheModel(self.vocabulary, len(self.depLabelDic))
 
     def train(self, corpus):
         epochNumber = 100
@@ -67,32 +69,95 @@ class Network:
                 history = self.idenModel.fit(idenData, idenLbls, validation_split=.2, epochs=1,
                                              batch_size=taggingBatchSize, verbose=2)
                 idenLoss.append(history.history['loss'])
-            # TODO check the early stopping
+                # TODO check the early stopping
+
+    def trainDepParser(self):
+        es =EarlyStopping(monitor='val_loss',
+                            min_delta=configuration['nn']['minDelta'],
+                            patience=configuration['nn']['patience'],
+                            verbose=configuration['others']['verbose'])
+
+        # if configuration['sampling']['overSampling']:
+        #     depParserData, depParserLabels = overSample(depParserData, depParserLabels)
+        depParserLabels = to_categorical(self.depParserLabels, num_classes=len(self.depLabelDic))
+        self.depParsingModel.fit(self.depParserData, depParserLabels,
+                                 validation_split=.2,
+                                 epochs=100,
+                                 batch_size=configuration['multitasking']['depParserBatchSize'],
+                                 verbose=2,
+                                 callbacks=[es])
+
+    def testDepParser(self, corpus):
+        depParserData, depParserLabels, depLabelDic = self.parser.getTrainData(corpus.testDepGraphs,
+                                                                               corpus.testingSents,
+                                                                               self.vocabulary.tokenIndices, self)
+        depParserLabels = to_categorical(depParserLabels, num_classes=len(self.depLabelDic))
+        results = self.depParsingModel.evaluate(depParserData, depParserLabels, batch_size=32, verbose=0)
+        sys.stdout.write('Dep Parsing accuracy = {0}\nLoss = {1}, \n'.format(
+            round(results[1] * 100, 1), round(results[0], 3)))
 
     def trainIden(self, corpus):
-        idenBatchSize = 32
         idenData, idenLbls = self.getIdenData(corpus)
-        # idenData, idenLbls = overSample(idenData, idenLbls)
+        if configuration['sampling']['overSampling']:
+            idenData, idenLbls = overSample(idenData, idenLbls)
         idenLbls = to_categorical(idenLbls, num_classes=4)
         self.idenModel.fit(idenData, idenLbls, validation_split=.2,
                            epochs=100,
-                           batch_size=idenBatchSize, verbose=2, callbacks=[
-                EarlyStopping(monitor='val_loss',
-                              min_delta=configuration['nn']['minDelta'],
-                              patience=configuration['nn']['patience'],
-                              verbose=configuration['others']['verbose'])])
+                           batch_size=configuration['multitasking']['identBatchSize'],
+                           verbose=2,
+                           callbacks=[
+                               EarlyStopping(monitor='val_loss',
+                                             min_delta=configuration['nn']['minDelta'],
+                                             patience=configuration['nn']['patience'],
+                                             verbose=configuration['others']['verbose'])
+                           ])
 
     def trainTagging(self, corpus):
-        taggingBatchSize = 32
         taggingData, taggingLbls = self.getTaggingData(corpus)
         taggingLbls = to_categorical(taggingLbls, num_classes=len(self.vocabulary.posIndices))
-        self.taggingModel.fit(taggingData, taggingLbls, validation_split=.2,
+        es = EarlyStopping(monitor='val_loss',
+                           min_delta=configuration['nn']['minDelta'],
+                           patience=configuration['nn']['patience'],
+                           verbose=configuration['others']['verbose'])
+        self.taggingModel.fit(taggingData, taggingLbls,
+                              validation_split=.2,
                               epochs=100,
-                              batch_size=taggingBatchSize, verbose=2, callbacks=[
-                EarlyStopping(monitor='val_loss',
-                              min_delta=configuration['nn']['minDelta'],
-                              patience=configuration['nn']['patience'],
-                              verbose=configuration['others']['verbose'])])
+                              batch_size=configuration['multitasking']['taggingBatchSize'],
+                              verbose=2,
+                              callbacks=[es])
+
+    def trainTaggerAndIdentifier(self, corpus):
+        taggingData, taggingLbls = self.getTaggingData(corpus)
+        taggingLbls = to_categorical(taggingLbls, num_classes=len(self.vocabulary.posIndices))
+        idenData, idenLbls = self.getIdenData(corpus)
+        if configuration['sampling']['overSampling']:
+            idenData, idenLbls = overSample(idenData, idenLbls)
+        sys.stdout.write('Identication data = {0}\n'.format(len(idenLbls)))
+        sys.stdout.write('POS Tagging data = {0}\n'.format(len(taggingLbls)))
+        idenLbls = to_categorical(idenLbls, num_classes=4)
+
+        for x in range(configuration['multitasking']['initialEpochs']):
+            sys.stdout.write('POS tagging:\n')
+            self.taggingModel.fit(taggingData, taggingLbls,
+                                  batch_size=configuration['multitasking']['taggingBatchSize'],
+                                  verbose=2)
+        for x in range(configuration['multitasking']['jointLearningEpochs']):
+            if x % 2 == 0:
+                sys.stdout.write('POS tagging:\n')
+                self.taggingModel.fit(taggingData, taggingLbls,
+                                      verbose=2,
+                                      batch_size=configuration['multitasking']['taggingBatchSize'])
+            else:
+                sys.stdout.write('MWE identification:\n')
+                self.idenModel.fit(idenData, idenLbls,
+                                   verbose=2,
+                                   batch_size=configuration['multitasking']['identBatchSize'])
+
+    def predictIdent(self, trans, sent):
+        inputs = self.getPredData(trans, sent)
+        oneHotRep = self.idenModel.predict(inputs, batch_size=1,
+                                           verbose=configuration['nn']['predictVerbose'])
+        return oneHotRep[0]
 
     def testIden(self, corpus):
         IdenData, IdenLbls = self.getIdenData(corpus, train=False)
@@ -104,53 +169,47 @@ class Network:
         taggingData, taggingLbls = self.getTaggingData(corpus, train=False)
         taggingLbls = to_categorical(taggingLbls, num_classes=len(self.vocabulary.posIndices))
         results = self.taggingModel.evaluate(taggingData, taggingLbls, batch_size=32, verbose=0)
-        sys.stdout.write('Loss = {0}, Accuracy = {1}'.format(round(results[0], 3), round(results[1] * 100, 1)))
+        sys.stdout.write('POS tagging accuracy = {0}\nLoss = {1}, \n'.format(
+            round(results[1] * 100, 1), round(results[0], 3)))
 
     def getTaggingData(self, corpus, train=True):
-        data1, data2, data3, data4, lbls = [], [], [], [], []
-        for s in corpus.trainingSents if train else corpus.testingSents:
+        data, lbls = [[] for _ in range(taggingInputArray)], []
+        for s in corpus.allTrainingSents if train else corpus.testingSents:
             for item in s.tokens + s.vMWEs:
                 if not train and not configuration['multitasking']['testOnToken'] and \
                         str(item.__class__).endswith('corpus.Token'):
                     continue
                 tokens = [item] if str(item.__class__).endswith('corpus.Token') else item.tokens
-                d1, d2, d3, d4, lbl = self.getTaggingEntry(tokens, s)
-                data1.append(np.asarray(d1))
-                data2.append(np.asarray(d2))
-                data3.append(np.asarray(d3))
-                data4.append(np.asarray(d4))
-                lbls.append(lbl)
-        if configuration['multitasking']['useCapitalization'] and configuration['multitasking']['useSymbols']:
-            return [np.asarray(data1), np.asarray(data2), np.asarray(data3), np.asarray(data4)], lbls
-        if configuration['multitasking']['useCapitalization']:
-            return [np.asarray(data1), np.asarray(data2), np.asarray(data3)], lbls
-        if configuration['multitasking']['useSymbols']:
-            return [np.asarray(data1), np.asarray(data2), np.asarray(data4)], lbls
-        return [np.asarray(data1), np.asarray(data2)], lbls
+                outputs = self.getTaggingEntry(tokens, s)
+                for i in range(len(outputs) - 1):
+                    data[i].append(outputs[i])
+                lbls.append(outputs[-1])
+        return [np.asarray(d) for d in data], lbls
+
+    def getPredData(self, trans, sent):
+        data = []
+        for i in range(idenInputArrNum):
+            data.append([])
+        focusedElems = getIdenTransData(trans)
+        for i in range(len(focusedElems)):
+            taggingEntry = self.getTaggingEntry(focusedElems[i], sent)
+            for j in range(len(taggingEntry) - 1):  # i*4, i*4 + 4):
+                data[i * taggingInputArray + j].append(np.asarray(taggingEntry[j]))
+        return [np.asarray(data[i]) for i in range(idenInputArrNum)]
 
     def getIdenData(self, corpus, train=True):
-        labels, data = [], []  # , data = [], [[]] * 20
-        for i in range(20):
-            data.append([])
+        data, labels = [[] for _ in range(idenInputArrNum)], []
         for sent in corpus.trainingSents if train else corpus.testingSents:
             trans = sent.initialTransition
             while trans and trans.next:
-                focusedElems = [[trans.configuration.reduced]]
-                focusedElems.append([trans.configuration.buffer[1]] if len(trans.configuration.buffer) > 1 else [None])
-                focusedElems.append([trans.configuration.buffer[0]] if len(trans.configuration.buffer) > 0 else [None])
-                focusedElems.append(
-                    getTokens(trans.configuration.stack[-1]) if len(trans.configuration.stack) > 0 else [None])
-                focusedElems.append(
-                    getTokens(trans.configuration.stack[-2]) if len(trans.configuration.stack) > 1 else [None])
+                focusedElems = getIdenTransData(trans)
                 for i in range(len(focusedElems)):
                     taggingEntry = self.getTaggingEntry(focusedElems[i], sent)
-                    for j in range(4):  # i*4, i*4 + 4):
-                        data[i * 4 + j].append(np.asarray(taggingEntry[j]))
+                    for j in range(len(taggingEntry) - 1):
+                        data[i * taggingInputArray + j].append(np.asarray(taggingEntry[j]))
                 labels.append(trans.next.type.value if trans.next.type.value <= 2 else 3)
                 trans = trans.next
-        for i in range(20):
-            data[i] = np.asarray(data[i])
-        return data, labels
+        return [np.asarray(data[i]) for i in range(idenInputArrNum)], labels
 
     def getAffixeIndices(self, tokens, s):
         affixes = []
@@ -181,17 +240,48 @@ class Network:
         return affixes
 
     def getTaggingEntry(self, tokens, s):
+        outputs = []
         if tokens == [None]:
-            return [self.vocabulary.tokenIndices[unk]] * (configuration['multitasking']['windowSize'] * 2 + 1), \
-                   [self.vocabulary.affixeIndices[unk]] * 12, \
-                   [2] * 3, [0], self.vocabulary.posIndices[unk]
+            outputs = [[self.vocabulary.tokenIndices[unk]] * (configuration['multitasking']['windowSize'] * 2 + 1), \
+                       [self.vocabulary.affixeIndices[unk]] * 12]
+            if configuration['multitasking']['useCapitalization']:
+                outputs.append([2] * 3)
+            if configuration['multitasking']['useSymbols']:
+                outputs.append([0])
+            outputs.append(self.vocabulary.posIndices[unk])
+            return outputs
+        if tokens == ['empty']:
+            outputs = [[self.vocabulary.tokenIndices[empty]] * (configuration['multitasking']['windowSize'] * 2 + 1), \
+                       [self.vocabulary.affixeIndices[empty]] * 12]
+            if configuration['multitasking']['useCapitalization']:
+                outputs.append([2] * 3)
+            if configuration['multitasking']['useSymbols']:
+                outputs.append([0])
+            outputs.append(self.vocabulary.posIndices[empty])
+            return outputs
+        if tokens == ['root']:
+            outputs = [[self.vocabulary.tokenIndices['root']] * (configuration['multitasking']['windowSize'] * 2 + 1), \
+                       [self.vocabulary.affixeIndices[unk]] * 12]
+            if configuration['multitasking']['useCapitalization']:
+                outputs.append([2] * 3)
+            if configuration['multitasking']['useSymbols']:
+                outputs.append([0])
+            outputs.append(self.vocabulary.posIndices['root'])
+            return outputs
         tokenIdxs = self.getTokenIdxs(tokens, s)
+        outputs.append(tokenIdxs)
         affixes = self.getAffixeIndices(tokens, s)
-        capitalIdx = getCapitalizationInfo(tokens, s)
-        symbols = getSymbolInfo(tokens)
+        outputs.append(affixes)
+        if configuration['multitasking']['useCapitalization']:
+            capitalIdx = getCapitalizationInfo(tokens, s)
+            outputs.append(capitalIdx)
+        if configuration['multitasking']['useSymbols']:
+            symbols = getSymbolInfo(tokens)
+            outputs.append(symbols)
         attachedPos = '_'.join(t.posTag.lower() for t in tokens)
         posIdx = self.vocabulary.posIndices[attachedPos.lower() if attachedPos in self.vocabulary.posIndices else unk]
-        return tokenIdxs, affixes, capitalIdx, symbols, posIdx
+        outputs.append(posIdx)
+        return outputs
 
     def getTokenIdxs(self, tokens, s):
         windowSize = configuration['multitasking']['windowSize']
@@ -293,7 +383,7 @@ class Network:
                                                           parse=parse)
             tokenIdxs.append(tokenIdx)
             posIdxs.append(posIdx)
-            if configuration['embedding']['useB1']:
+            if configuration['multitasking']['useB1']:
                 if len(trans.configuration.buffer) > 1:
                     tokenIdx, posIdx = self.vocabulary.getIndices([trans.configuration.buffer[1]],
                                                                   dynamicVocab=dynamicVocab, parse=parse)
@@ -305,10 +395,10 @@ class Network:
         else:
             tokenIdxs.append(emptyTokenIdx)
             posIdxs.append(emptyPosIdx)
-            if configuration['embedding']['useB1']:
+            if configuration['multitasking']['useB1']:
                 tokenIdxs.append(emptyTokenIdx)
                 posIdxs.append(emptyPosIdx)
-        if configuration['embedding']['useB-1']:
+        if configuration['multitasking']['useBx']:
             if trans.configuration.reduced:
                 tokenIdx, posIdx = self.vocabulary.getIndices([trans.configuration.reduced], dynamicVocab=dynamicVocab,
                                                               parse=parse)
@@ -320,89 +410,31 @@ class Network:
 
         return np.asarray(tokenIdxs), np.asarray(posIdxs)
 
-    # def train(self, corpus, linearModels=None, linearNormalizers=None):
-    #     labels, data = self.getLearningData(corpus, linearModels=linearModels,
-    #                                         linearNormalizers=linearNormalizers)
-    #     if configuration['others']['verbose']:
-    #         sys.stdout.write(reports.seperator + reports.tabs + 'Sampling' + reports.doubleSep)
-    #     if configuration['sampling']['focused']:
-    #         data, labels = sampling.overSampleImporTrans(data, labels, corpus, self.vocabulary)
-    #     labels, data = sampling.overSample(labels, data, linearInMlp=True)
-    #     if configuration['nn']['earlyStop']:
-    #         # To make sure that we will get a random validation dataset
-    #         labelsAndData = sampling.shuffleArrayInParallel(
-    #             [labels, data[0], data[1], data[2]] if linearModels else [labels, data[0], data[1]])
-    #         labels = labelsAndData[0]
-    #         data = labelsAndData[1:]
-    #     if configuration['others']['verbose']:
-    #         lblDistribution = Counter(labels)
-    #         sys.stdout.write(tabs + '{0} Labels in train : {1}\n'.format(len(lblDistribution), lblDistribution))
-    #     if configuration['others']['verbose']:
-    #         valDistribution = Counter(labels[int(len(labels) * (1 - configuration['nn']['validationSplit'])):])
-    #         sys.stdout.write(tabs + '{0} Labels in valid : {1}\n'.format(len(valDistribution), valDistribution))
-    #     self.classWeightDic = sampling.getClassWeights(labels)
-    #     sampleWeights = sampling.getSampleWeightArray(labels, self.classWeightDic)
-    #     labels = to_categorical(labels, num_classes=8 if enableCategorization else 4)
-    #     self.model.compile(loss=configuration['nn']['loss'], optimizer=getOptimizer(), metrics=['accuracy'])
-    #     history = self.model.fit(data, labels,
-    #                              validation_split=configuration['nn']['validationSplit'],
-    #                              epochs=configuration['nn']['epochs'],
-    #                              batch_size=configuration['mlp']['batchSize'],
-    #                              verbose=2 if configuration['others']['verbose'] else 0,
-    #                              callbacks=getCallBacks(),
-    #                              sample_weight=sampleWeights)
-    #     if configuration['nn']['checkPoint']:
-    #         self.model = load_model(
-    #             os.path.join(configuration['path']['projectPath'],
-    #               'Reports', configuration['path']['checkPointPath']))
-    #     # if configuration['others']['verbose']:
-    #     #    sys.stdout.write('Epoch Losses = ' + str(history.history['loss']))
-    #     self.trainValidationData(data, labels, history)
 
-    # def trainValidationData(self, data, labels, history):
-    #     data, labels = getValidationData(data, labels)
-    #     validationLabelsAsInt = [np.where(r == 1)[0][0] for r in labels]
-    #     sampleWeights = sampling.getSampleWeightArray(validationLabelsAsInt, self.classWeightDic)
-    #     history = self.model.fit(data, labels,
-    #                              epochs=len(history.epoch),
-    #                              batch_size=configuration['mlp']['batchSize'],
-    #                              verbose=0,
-    #                              sample_weight=sampleWeights)
-    #     return history
+def createTheModel(vocab, depParserClassNum):
+    taggingModel, sharedLayers = createTaggingModel(vocab)
+    idenModel = createIdenModel(sharedLayers)
+    if configuration['tmp']['trainDepParser']:
+        depParsingModel = createDepParsingModel(sharedLayers, depParserClassNum)
+    else:
+        depParsingModel = None
+    return taggingModel, idenModel, depParsingModel
 
 
-def createTheModel(vocab):
-    inputSize, parsingInfoDim, tokenEmb = configuration['multitasking']['windowSize'] * 2 + 1, 1000, \
-                                          configuration['multitasking']['tokenDim']
-    affixeEmb = configuration['multitasking']['affixeDim']
-    inputToks = Input((inputSize,), dtype='int32', name='tokens')
+def createTaggingModel(vocab):
+    inputToks = Input((configuration['multitasking']['windowSize'] * 2 + 1,), dtype='int32', name='tokens')
     inputAffixe = Input((12,), dtype='int32', name='affixes')
     inputLayers = [inputToks, inputAffixe]
-    sharedTokEmb = Embedding(len(vocab.tokenIndices), tokenEmb, name='tokenEmb')
-    sharedAffixeEmb = Embedding(len(vocab.affixeIndices), affixeEmb, name='affixeseEmb')
+    sharedTokEmb = Embedding(len(vocab.tokenIndices), configuration['multitasking']['tokenDim'], name='tokenEmb')
+    sharedAffixeEmb = Embedding(len(vocab.affixeIndices), configuration['multitasking']['affixeDim'],
+                                name='affixeseEmb')
 
-    taggingTokEmb = sharedTokEmb(inputToks)
-    taggingFlatten = Flatten()(taggingTokEmb)
-    taggingAffixeEmb = sharedAffixeEmb(inputAffixe)
-    taggingAffixeFlatten = Flatten()(taggingAffixeEmb)
+    taggingFlatten = Flatten()(sharedTokEmb(inputToks))
+    taggingAffixeFlatten = Flatten()(sharedAffixeEmb(inputAffixe))
     concFlatten = [taggingFlatten, taggingAffixeFlatten]
-    sharedCapitalEmb = Embedding(4, configuration['multitasking']['capitalDim'], name='capitalizationEmb')
-    sharedSymbolEmb = Embedding(20, configuration['multitasking']['symbolDim'], name='symbolsEmb')
     sharedLayers = [sharedTokEmb, sharedAffixeEmb]
-    if configuration['multitasking']['useCapitalization']:
-        inputCapital = Input((3,), dtype='int32', name='capitalization')
-        inputLayers.append(inputCapital)
-        capitalEmb = sharedCapitalEmb(inputCapital)
-        capitalFlatten = Flatten()(capitalEmb)
-        concFlatten.append(capitalFlatten)
-        sharedLayers.append(sharedCapitalEmb)
-    if configuration['multitasking']['useSymbols']:
-        inputSymbol = Input((1,), dtype='int32', name='symbol')
-        inputLayers.append(inputSymbol)
-        symbolEmb = sharedSymbolEmb(inputSymbol)
-        symbolFlatten = Flatten()(symbolEmb)
-        concFlatten.append(symbolFlatten)
-        sharedLayers.append(sharedSymbolEmb)
+    addCapitalizationLayer(inputLayers, concFlatten, sharedLayers)
+    addSymbolLayer(inputLayers, concFlatten, sharedLayers)
     concFlatten = keras.layers.concatenate(concFlatten)
     sharedDense = Dense(configuration['multitasking']['taggingDenseUnits'], activation='relu', name='posDense')
     sharedLayers = [sharedDense] + sharedLayers
@@ -415,14 +447,68 @@ def createTheModel(vocab):
                          metrics=['accuracy'])
     if configuration['others']['verbose']:
         sys.stdout.write(str(taggingModel.summary()) + doubleSep)
+    return taggingModel, sharedLayers
+
+
+def addCapitalizationLayer(inputLayers, concFlatten, sharedLayers):
+    sharedCapitalEmb = Embedding(4, configuration['multitasking']['capitalDim'], name='capitalizationEmb')
+    if configuration['multitasking']['useCapitalization']:
+        inputCapital = Input((3,), dtype='int32', name='capitalization')
+        inputLayers.append(inputCapital)
+        capitalEmb = sharedCapitalEmb(inputCapital)
+        capitalFlatten = Flatten()(capitalEmb)
+        concFlatten.append(capitalFlatten)
+        sharedLayers.append(sharedCapitalEmb)
+
+
+def addSymbolLayer(inputLayers, concFlatten, sharedLayers):
+    sharedSymbolEmb = Embedding(20, configuration['multitasking']['symbolDim'], name='symbolsEmb')
+    if configuration['multitasking']['useSymbols']:
+        inputSymbol = Input((1,), dtype='int32', name='symbol')
+        inputLayers.append(inputSymbol)
+        symbolEmb = sharedSymbolEmb(inputSymbol)
+        symbolFlatten = Flatten()(symbolEmb)
+        concFlatten.append(symbolFlatten)
+        sharedLayers.append(sharedSymbolEmb)
+
+
+def createDepParsingModel(sharedLayers, classNum):
+    depParsingLayers, depParsingDenseLayers = [], []
+    for i in ['b0', 's0', 's1']:
+        inputLayers, denseLayer = createPosModule(sharedLayers, i)
+        depParsingLayers += inputLayers
+        depParsingDenseLayers.append(denseLayer)
+
+    concDense = keras.layers.concatenate(depParsingDenseLayers)
+    depParsingDense = Dense(configuration['multitasking']['depParsingDenseUnitNumber'], activation='relu',
+                            name='depParsingDense')(
+        concDense)
+    depParsingSoftmax = Dense(classNum, activation='softmax', name='depParsingSoftMax')(depParsingDense)
+    depParsingModel = Model(inputs=depParsingLayers, outputs=depParsingSoftmax)
+    depParsingModel.compile(loss=configuration['nn']['loss'],
+                            optimizer=getOptimizer(),
+                            metrics=['accuracy'])
+
+    if configuration['others']['verbose']:
+        sys.stdout.write(str(depParsingModel.summary()) + doubleSep)
+    return depParsingModel
+
+
+def createIdenModel(sharedLayers):
     idenInputLayers, idenDenseLayers = [], []
-    for i in ['bx', 'b1', 'b0', 's0', 's1']:
+    focusedElements = ['b0', 's0', 's1']
+    if configuration['multitasking']['useB1']:
+        focusedElements = ['b1'] + focusedElements
+    if configuration['multitasking']['useBx']:
+        focusedElements = ['bx'] + focusedElements
+    for i in focusedElements:
         inputLayers, denseLayer = createPosModule(sharedLayers, i)
         idenInputLayers += inputLayers
         idenDenseLayers.append(denseLayer)
 
     concDense = keras.layers.concatenate(idenDenseLayers)
-    idenDense = Dense(500, activation='relu', name='idenDense')(concDense)
+    idenDense = Dense(configuration['multitasking']['IdenDenseUnitNumber'], activation='relu', name='idenDense')(
+        concDense)
     idenSoftmax = Dense(4, activation='softmax', name='idenSoftMax')(idenDense)
     idenModel = Model(inputs=idenInputLayers, outputs=idenSoftmax)
     idenModel.compile(loss=configuration['nn']['loss'],
@@ -431,12 +517,24 @@ def createTheModel(vocab):
 
     if configuration['others']['verbose']:
         sys.stdout.write(str(idenModel.summary()) + doubleSep)
-    return taggingModel, idenModel
+    return idenModel
+
+
+def getIdenTransData(trans):
+    focusedElems = [[trans.configuration.reduced]] if configuration['multitasking']['useBx'] else []
+    if configuration['multitasking']['useB1']:
+        focusedElems.append([trans.configuration.buffer[1]] if len(trans.configuration.buffer) > 1 else [None])
+    focusedElems.append([trans.configuration.buffer[0]] if len(trans.configuration.buffer) > 0 else [None])
+    focusedElems.append(
+        getTokens(trans.configuration.stack[-1]) if len(trans.configuration.stack) > 0 else [None])
+    focusedElems.append(
+        getTokens(trans.configuration.stack[-2]) if len(trans.configuration.stack) > 1 else [None])
+    return focusedElems
 
 
 def createPosModule(sharedLayers, title):
-    inputSize, parsingInfoDim, tokenEmb = configuration['multitasking']['windowSize'] * 2 + 1, 1000, \
-                                          configuration['multitasking']['tokenDim']
+    inputSize, tokenEmb = configuration['multitasking']['windowSize'] * 2 + 1, \
+                          configuration['multitasking']['tokenDim']
     inputToks = Input((inputSize,), dtype='int32', name=title + 'Tokens')
     inputAffixe = Input((12,), dtype='int32', name=title + 'Affixes')
     inputLayers = [inputToks, inputAffixe]
@@ -473,9 +571,9 @@ def getValidationData(data, labels):
 def getOptimizer():
     if configuration['others']['verbose']:
         sys.stdout.write(reports.seperator + reports.tabs +
-                         'Optimizer : Adagrad,  learning rate = {0}'.format(configuration['mlp']['lr'])
+                         'Optimizer : Adagrad,  learning rate = {0}'.format(configuration['multitasking']['lr'])
                          + reports.seperator)
-    return optimizers.Adagrad(lr=configuration['mlp']['lr'], epsilon=None, decay=0.0)
+    return optimizers.Adagrad(lr=configuration['multitasking']['lr'], epsilon=None, decay=0.0)
 
 
 def getCallBacks():
@@ -483,11 +581,12 @@ def getCallBacks():
     callbacks = [
         ModelCheckpoint(bestWeightPath, monitor='val_loss', verbose=1, save_best_only=True, mode='max')
     ] if bestWeightPath else []
+    es = EarlyStopping(monitor='val_loss',
+                       min_delta=configuration['nn']['minDelta'],
+                       patience=configuration['nn']['patience'],
+                       verbose=configuration['others']['verbose'])
     if configuration['nn']['earlyStop']:
-        callbacks.append(
-            EarlyStopping(monitor='val_loss', min_delta=configuration['nn']['minDelta'],
-                          patience=configuration['nn']['patience'],
-                          verbose=configuration['others']['verbose']))
+        callbacks.append(es)
     if configuration['nn']['checkPoint']:
         mc = ModelCheckpoint(
             os.path.join(configuration['path']['projectPath'], 'Reports', configuration['path']['checkPointPath']),
@@ -514,7 +613,6 @@ class Vocabulary:
         res += seperator
         return res
 
-
     def getAffixeDic(self, corpus):
         affixeDic = dict()
         for s in corpus.trainingSents:
@@ -526,8 +624,8 @@ class Vocabulary:
                         affixeDic[t.text[-3:].lower()] = 0
                         affixeDic[t.text[:3].lower()] = 0
         affixeDic[unk] = 0
+        affixeDic[empty] = 0
         return affixeDic
-
 
     def getIndices(self, tokens, dynamicVocab=False, parse=False):
         if parse:
@@ -591,21 +689,28 @@ def overSample(idenData, idenLbls):
     newIdenData = []
     for i in range(len(idenData[0])):
         newIdenDataEntry = []
-        for j in range(20):
+        for j in range(idenInputArrNum):
             newIdenDataEntry += list(idenData[j][i])
         newIdenData.append(newIdenDataEntry)
     ros = RandomOverSampler(random_state=0)
     newIdenData, newIdenLbls = ros.fit_sample(newIdenData, idenLbls)
     idenData = []
-    dataDivision = [2 * configuration['multitasking']['windowSize'] + 1, 12, 3, 1] * 5
-    for i in range(20):
+    dataDivision = [2 * configuration['multitasking']['windowSize'] + 1, 12]
+    if configuration['multitasking']['useCapitalization']:
+        dataDivision.append(3)
+    if configuration['multitasking']['useSymbols']:
+        dataDivision.append(1)
+
+    dataDivision = dataDivision * (3 + (1 if configuration['multitasking']['useB1'] else 0) +
+                                   (1 if configuration['multitasking']['useBx'] else 0))
+    for i in range(idenInputArrNum):
         idenData.append([])
     for i in range(len(newIdenData)):
-        for j in range(20):
+        for j in range(idenInputArrNum):
             end = sum(dataDivision[:j + 1])
             start = end - dataDivision[j]
             idenData[j].append(np.asarray(newIdenData[i][start:end]))
-    for i in range(20):
+    for i in range(idenInputArrNum):
         idenData[i] = np.asarray(idenData[i])
     return idenData, newIdenLbls
 
@@ -620,8 +725,9 @@ def addDynamicVersion(tokens, corpus):
     return None
 
 
-def getFrequencyDics(corpus, freqTaux=1):
-    tokenVocab, posVocab = {unk: freqTaux + 1, empty: freqTaux + 1}, {unk: freqTaux + 1, empty: freqTaux + 1}
+def getFrequencyDics(corpus, freqTaux=0):
+    tokenVocab = {unk: 5, 'root': 5, empty: 5}
+    posVocab = {unk: 5, empty: 5,'root': 5}
     for sent in corpus.trainingSents:
         trans = sent.initialTransition
         while trans:
@@ -644,7 +750,9 @@ def getFrequencyDics(corpus, freqTaux=1):
         sys.stdout.write(tabs + 'Before : {0}\n'.format(len(tokenVocab)))
     for k in tokenVocab.keys():
         if tokenVocab[k] <= freqTaux and '_' not in k and k.lower() not in corpus.mweTokenDictionary:
-            if uniform(0, 1) < configuration['constants']['alpha']:
+            if configuration['embedding']['compactVocab']:
+                del tokenVocab[k]
+            elif uniform(0, 1) < configuration['constants']['alpha']:
                 del tokenVocab[k]
     if configuration['others']['verbose']:
         sys.stdout.write(tabs + 'After : {0}\n'.format(len(tokenVocab)))
@@ -749,3 +857,133 @@ def indexateDic(dic):
 def padSequence(seq, label, emptyIdx):
     padConf = configuration['mlpNonLexicl']
     return np.asarray(pad_sequences([seq], maxlen=padConf[label], value=emptyIdx))[0]
+
+
+class TransParser(TransitionParser):
+    """
+    Class for transition based parser. Implement 2 algorithms which are "arc-standard" and "arc-eager"
+    """
+
+    def getTrainData(self, depgraphs, sents, vocab, network):
+        """
+        Create the training example in the libsvm format and write it to the input_file.
+        Reference : Page 32, Chapter 3. Dependency Parsing by Sandra Kubler, Ryan McDonal and Joakim Nivre (2009)
+        """
+        operation = Transition(self.ARC_STANDARD)
+        count_proj = 0
+        data, labels, labelDic = [[] for _ in range(depParserInuptArrNum)], [], dict()
+        for i in range(len(sents)):
+            depgraph = depgraphs[i]
+            sent = sents[i]
+            if not self._is_projective(depgraph):
+                continue
+            count_proj += 1
+            conf = Configuration(depgraph)
+            while len(conf.buffer) > 0:
+                b0 = conf.buffer[0]
+                dataEntry = getDataEntry(conf, vocab, sent, network)
+                for i in range(depParserInuptArrNum):
+                    data[i].append(dataEntry[i])
+                if len(conf.stack) > 0:
+                    s0 = conf.stack[len(conf.stack) - 1]
+                    # Left-arc operation
+                    rel = self._get_dep_relation(b0, s0, depgraph)
+                    if rel is not None:
+                        key = Transition.LEFT_ARC + ':' + rel
+                        if key not in labelDic:
+                            labelDic[key] = len(labelDic)
+                        operation.left_arc(conf, rel)
+                        labels.append(labelDic[key])
+                        continue
+                    # Right-arc operation
+                    rel = self._get_dep_relation(s0, b0, depgraph)
+                    if rel is not None:
+                        precondition = True
+                        # Get the max-index of buffer
+                        maxID = conf._max_address
+                        for w in range(maxID + 1):
+                            if w != b0:
+                                relw = self._get_dep_relation(b0, w, depgraph)
+                                if relw is not None:
+                                    if (b0, relw, w) not in conf.arcs:
+                                        precondition = False
+                        if precondition:
+                            key = Transition.RIGHT_ARC + ':' + rel
+                            operation.right_arc(conf, rel)
+                            if key not in labelDic:
+                                labelDic[key] = len(labelDic)
+                            labels.append(labelDic[key])
+                            continue
+                # Shift operation as the default
+                key = Transition.SHIFT
+                if key not in labelDic:
+                    labelDic[key] = len(labelDic)
+                operation.shift(conf)
+                labels.append(labelDic[key])
+        print(" Number of training examples : " + str(len(depgraphs)))
+        print(" Number of valid (projective) examples : " + str(count_proj))
+        return [np.asarray(data[i]) for i in range(depParserInuptArrNum)] , labels, labelDic
+
+
+def getDataEntry(conf, vocab, sent, network):
+    dataEntry = []
+    b0 = conf.buffer[0] - 1
+    if sent.tokens[b0].getTokenOrLemma() in vocab:
+        taggingEntry = network.getTaggingEntry([sent.tokens[b0]], sent)
+        for j in range(len(taggingEntry) - 1):
+            dataEntry.append(taggingEntry[j])
+        #dataEntry.append(vocab[sent.tokens[b0].getTokenOrLemma()])
+    else:
+        taggingEntry = network.getTaggingEntry([None], sent)
+        for j in range(len(taggingEntry) - 1):
+            dataEntry.append(taggingEntry[j])
+        #dataEntry.append(vocab[unk])
+
+    if len(conf.stack) > 0:
+        s0 = conf.stack[len(conf.stack) - 1] - 1
+        if s0 != -1:
+            if sent.tokens[s0].getTokenOrLemma() in vocab:
+                taggingEntry = network.getTaggingEntry([sent.tokens[s0]], sent)
+                for j in range(len(taggingEntry) - 1):
+                    dataEntry.append(taggingEntry[j])
+                #dataEntry.append(vocab[sent.tokens[s0].getTokenOrLemma()])
+            else:
+                taggingEntry = network.getTaggingEntry([None], sent)
+                for j in range(len(taggingEntry) - 1):
+                    dataEntry.append(taggingEntry[j])
+                #dataEntry.append(vocab[unk])
+        else:
+            taggingEntry = network.getTaggingEntry(['root'], sent)
+            for j in range(len(taggingEntry) - 1):
+                dataEntry.append(taggingEntry[j])
+            # dataEntry.append(vocab['root'])
+    else:
+        # dataEntry.append(vocab[empty])
+        taggingEntry = network.getTaggingEntry([None], sent)
+        for j in range(len(taggingEntry) - 1):
+            dataEntry.append(taggingEntry[j])
+    if len(conf.stack) > 1:
+        s1 = conf.stack[len(conf.stack) - 1] - 1
+        if s1 != -1:
+            if sent.tokens[s1].getTokenOrLemma() in vocab:
+                # dataEntry.append(vocab[sent.tokens[s1].getTokenOrLemma()])
+                taggingEntry = network.getTaggingEntry([sent.tokens[s1]], sent)
+                for j in range(len(taggingEntry) - 1):
+                    dataEntry.append(taggingEntry[j])
+            else:
+                # dataEntry.append(vocab[unk])
+                taggingEntry = network.getTaggingEntry([None], sent)
+                for j in range(len(taggingEntry) - 1):
+                    dataEntry.append(taggingEntry[j])
+        else:
+            # dataEntry.append(vocab['root'])
+            taggingEntry = network.getTaggingEntry(['root'], sent)
+            for j in range(len(taggingEntry) - 1):
+                dataEntry.append(taggingEntry[j])
+    else:
+        # dataEntry.append(vocab[empty])
+        taggingEntry = network.getTaggingEntry(['empty'], sent)
+        for j in range(len(taggingEntry) - 1):
+            dataEntry.append(taggingEntry[j])
+    return dataEntry
+

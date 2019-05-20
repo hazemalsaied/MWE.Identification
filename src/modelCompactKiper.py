@@ -2,7 +2,6 @@
 # -*- coding: utf-8 -*-
 from __future__ import print_function
 
-import datetime
 import random
 import sys
 from collections import Counter
@@ -14,10 +13,11 @@ import torch.nn as nn
 import torch.nn.functional as f
 import torch.optim as optim
 
+import config
 # from config import configuration
 from corpus import getTokens
 from reports import seperator, doubleSep, tabs
-import config
+
 device = 'cpu'
 dtype = torch.float
 

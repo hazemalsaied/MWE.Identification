@@ -1,10 +1,12 @@
+import datetime
 import logging
 
 import config
-import modelCompactKiper
+#import modelCompactKiper
 import modelCompoRnn
-import modelKiperwasser
+#import modelKiperwasser
 import modelLinear
+import modelMultiTasking
 import modelNonCompo
 import modelRnn
 import modelRnnNonCompo
@@ -13,8 +15,7 @@ import reports
 from corpus import *
 from evaluation import evaluate, analyzePerformance
 from parser import parse
-import datetime
-import modelMultiTasking
+from transitions import TransitionType
 
 
 def identify(lang, foldId=-1):
@@ -24,7 +25,8 @@ def identify(lang, foldId=-1):
     startTime = datetime.datetime.now()
     network, vectorizer = parseAndTrain(corpus)
     if configuration['tmp']['dontParse']:
-        return corpus
+        configuration['tmp']['dontParse'] = False
+        return None
     getExcutionTime('Training time', startTime)
     startTime = datetime.datetime.now()
     parse(corpus.testingSents, network, vectorizer)
@@ -41,7 +43,26 @@ def identify(lang, foldId=-1):
             sys.stdout.write(str(s))
     return corpus
 
-
+def getTransDistribution(corpus):
+    shNum, rdNum, mgNum, mkNum = 0, 0, 0, 0
+    importantSents = 0
+    for s in corpus.trainingSents:
+        if s.vMWEs:
+            importantSents += 1
+        t = s.initialTransition
+        while t.next:
+            if t.type == TransitionType.SHIFT:
+                shNum += 1
+            elif t.type == TransitionType.REDUCE:
+                rdNum += 1
+            elif t.type == TransitionType.MERGE:
+                mgNum += 1
+            else:
+                mkNum += 1
+            t = t.next
+    print len(corpus.trainingSents), importantSents
+    print shNum, rdNum, mgNum, mkNum, (shNum+ rdNum+ mgNum+ mkNum)
+    return
 def getDimsumStats(corpus):
     if not configuration['tmp']['dimsulStats']:
         return
@@ -156,7 +177,9 @@ def modifyConf(linear=False, tuning=False):
             elif configuration['dataset']['dimsum']:
                 config.setMlpDiMSUMConf()
             else:
-                config.setMLPConf()
+                config.setMlpTendanceConf()
+                configuration['embedding']['pretrained'] = False
+
 
 
 def identifyWithMlpInLinear(lang, tuning=False):
@@ -248,11 +271,28 @@ def parseAndTrain(corpus):
 
     if configuration['xp']['multitasking']:
         network = modelMultiTasking.Network(corpus)
-        network.trainIden(corpus)
-        network.testIden(corpus)
-        # network.trainTagging(corpus)
-        # network.testTagging(corpus)
-
+        if configuration['tmp']['trainJointly']:
+            network.trainTaggerAndIdentifier(corpus)
+            # parse(corpus.testingSents, network, None)
+            network.testTagging(corpus)
+            configuration['multitasking']['testOnToken'] = True
+            network.testTagging(corpus)
+            configuration['multitasking']['testOnToken'] = False
+        elif configuration['tmp']['trainIden']:
+            network.trainIden(corpus)
+            # parse(corpus.testingSents, network, None)
+            # network.testIden(corpus)
+        elif configuration['tmp']['trainDepParser']:
+            network.trainDepParser()
+            network.testDepParser(corpus)
+            configuration['tmp']['dontParse'] = True
+        else:
+            network.trainTagging(corpus)
+            configuration['multitasking']['testOnToken'] = True
+            network.testTagging(corpus)
+            configuration['multitasking']['testOnToken'] = False
+            network.testTagging(corpus)
+            configuration['tmp']['dontParse'] = True
         return network, None
     network = modelNonCompo.Network(corpus)
     network.train(corpus)
