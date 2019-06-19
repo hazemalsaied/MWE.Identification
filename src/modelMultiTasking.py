@@ -36,6 +36,7 @@ importantFrequentWordDic = dict()
 class Network:
     def __init__(self, corpus):
         global idenInputArrNum, taggingInputArray, depParserInuptArrNum
+        self.depLabelDic = dict()
         taggingInputArray = 2 + int(configuration['multitasking']['useCapitalization']) \
                             + int(configuration['multitasking']['useSymbols'])
         idenInputArrNum = taggingInputArray * 3 + (taggingInputArray * configuration['multitasking']['useB1']) + (
@@ -135,23 +136,37 @@ class Network:
         sys.stdout.write('Identication data = {0}\n'.format(len(idenLbls)))
         sys.stdout.write('POS Tagging data = {0}\n'.format(len(taggingLbls)))
         idenLbls = to_categorical(idenLbls, num_classes=4)
-
+        historyList = []
         for x in range(configuration['multitasking']['initialEpochs']):
-            sys.stdout.write('POS tagging:\n')
+            sys.stdout.write('POS tagging: {0}\n'.format(x+1))
             self.taggingModel.fit(taggingData, taggingLbls,
                                   batch_size=configuration['multitasking']['taggingBatchSize'],
                                   verbose=2)
         for x in range(configuration['multitasking']['jointLearningEpochs']):
             if x % 2 == 0:
-                sys.stdout.write('POS tagging:\n')
+                sys.stdout.write('POS tagging: {0}\n'.format(int(x/2)+1 + configuration['multitasking']['initialEpochs']))
                 self.taggingModel.fit(taggingData, taggingLbls,
                                       verbose=2,
                                       batch_size=configuration['multitasking']['taggingBatchSize'])
             else:
-                sys.stdout.write('MWE identification:\n')
-                self.idenModel.fit(idenData, idenLbls,
+                sys.stdout.write('MWE identification: {0}\n'.format(int(x/2)+1))
+                his = self.idenModel.fit(idenData, idenLbls,
                                    verbose=2,
                                    batch_size=configuration['multitasking']['identBatchSize'])
+                historyList.append(his)
+                if self.shouldStopLearning(historyList):
+                    break
+
+
+    def shouldStopLearning(self, historyList, patience=4, minDelta=.1 ):
+        if len(historyList) <= patience:
+            return False
+        for i in range(patience):
+            if historyList[len(historyList) - i - 1].history['loss'][0] - historyList[len(historyList) - i - 2].history['loss'][0] <= minDelta:
+                continue
+            else:
+                return False
+        return True
 
     def predictIdent(self, trans, sent):
         inputs = self.getPredData(trans, sent)
@@ -165,11 +180,11 @@ class Network:
         results = self.idenModel.evaluate(IdenData, IdenLbls, batch_size=32, verbose=0)
         sys.stdout.write('Loss = {0}, Accuracy = {1}'.format(round(results[0], 3), round(results[1] * 100, 1)))
 
-    def testTagging(self, corpus):
+    def testTagging(self, corpus, title='POS tagging accuracy'):
         taggingData, taggingLbls = self.getTaggingData(corpus, train=False)
         taggingLbls = to_categorical(taggingLbls, num_classes=len(self.vocabulary.posIndices))
         results = self.taggingModel.evaluate(taggingData, taggingLbls, batch_size=32, verbose=0)
-        sys.stdout.write('POS tagging accuracy = {0}\nLoss = {1}, \n'.format(
+        sys.stdout.write('{0} = {1}\nLoss = {2}, \n'.format( title,
             round(results[1] * 100, 1), round(results[0], 3)))
 
     def getTaggingData(self, corpus, train=True):
@@ -413,7 +428,10 @@ class Network:
 
 def createTheModel(vocab, depParserClassNum):
     taggingModel, sharedLayers = createTaggingModel(vocab)
-    idenModel = createIdenModel(sharedLayers)
+    if configuration['tmp']['trainIden'] or configuration['tmp']['trainJointly']:
+        idenModel = createIdenModel(sharedLayers)
+    else:
+        idenModel = None
     if configuration['tmp']['trainDepParser']:
         depParsingModel = createDepParsingModel(sharedLayers, depParserClassNum)
     else:

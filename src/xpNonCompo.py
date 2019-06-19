@@ -46,7 +46,7 @@ def debug():
 
 def generateOarsub(xpNum=21, duration=100, tourNum=1, name='mlp'):
     for i in range(1, xpNum + 1):
-        sys.stdout.write('oarsub -p "GPU<>\'NO\'" -q production -l nodes=1,walltime={0} '
+        sys.stdout.write('oarsub -p "GPU_MODEL <> \'NO\'" -q production -l nodes=1,walltime={0} '
                          '"NNIdenSys/Scripts/nonCompo.sh" -n {3}{1}.{2} '
                          '-O Reports/{3}{1}.{2} -E Reports/{3}{1}.{2}\n'.
                          format(duration, tourNum, i, name))
@@ -136,35 +136,51 @@ def tuneCompoRnn():
                             seeds=range(1), xpNum=1, xpNumByThread=50)
 
 
-def evaluateMultitasking():
+def evaluateMultitasking(langs=allSharedtask2Lang, division=Evaluation.trainVsDev):
+    evaluatePosInMultitasking(langs, division)
+    evaluateIdenInMultitasking(langs, division)
+    evaluateJointIdent(langs, division)
+
+
+def evaluatePosInMultitasking(langs=allSharedtask2Lang, division=Evaluation.trainVsDev):
     configuration['tmp']['trainJointly'] = False
     configuration['tmp']['trainIden'] = False
 
     setBestMTConfForPOS()
-    xp(allSharedtask2Lang, Dataset.sharedtask2,
-       XpMode.multitasking, Evaluation.trainVsDev, seeds=[0])
+    xp(langs, Dataset.sharedtask2,
+       XpMode.multitasking, division, seeds=[0])
 
     setTrendMTConfForPOS()
-    xp(allSharedtask2Lang, Dataset.sharedtask2,
-       XpMode.multitasking, Evaluation.trainVsDev, seeds=[0])
+    xp(langs, Dataset.sharedtask2,
+       XpMode.multitasking, division, seeds=[0])
 
+
+def evaluateIdenInMultitasking(langs=allSharedtask2Lang, division=Evaluation.trainVsDev):
+    configuration['others']['analyzePerformance'] = True
+    configuration['tmp']['trainJointly'] = False
     configuration['tmp']['trainIden'] = True
 
     setBestMTConfForIden()
-    xp(allSharedtask2Lang, Dataset.sharedtask2,
-       XpMode.multitasking, Evaluation.trainVsDev, seeds=[0])
+    xp(langs, Dataset.sharedtask2,
+       XpMode.multitasking, division, seeds=[0])
 
     setTrendMTConfForIden()
-    xp(allSharedtask2Lang, Dataset.sharedtask2,
-       XpMode.multitasking, Evaluation.trainVsDev, seeds=[0])
+    xp(langs, Dataset.sharedtask2,
+       XpMode.multitasking, division, seeds=[0])
+
+
+def evaluateJointIdent(langs=allSharedtask2Lang, division=Evaluation.trainVsDev):
+    configuration['others']['analyzePerformance'] = True
+    configuration['tmp']['trainIden'] = False
+    configuration['tmp']['trainJointly'] = True
 
     setBestMTConfForJoint()
-    xp(allSharedtask2Lang, Dataset.sharedtask2,
-       XpMode.multitasking, Evaluation.trainVsDev, seeds=[0])
+    xp(langs, Dataset.sharedtask2,
+       XpMode.multitasking, division, seeds=[0])
 
     setTrendMTConfForJoint()
-    xp(allSharedtask2Lang, Dataset.sharedtask2,
-       XpMode.multitasking, Evaluation.trainVsDev, seeds=[0])
+    xp(langs, Dataset.sharedtask2,
+       XpMode.multitasking, division, seeds=[0])
 
 
 def depParse():
@@ -174,23 +190,43 @@ def depParse():
         if l != 'LT':
             parse(l)
 
+
+def createConllFiles(langs=allSharedtask2Lang):
+    for l in langs:
+        datasetConf, pathConf = configuration['dataset'], configuration['path']
+        sharedtaskVersion = '.2'
+        path = os.path.join(pathConf['projectPath'], pathConf['corpusFolder'] + sharedtaskVersion, l)
+        for p in ['train.cupt', 'dev.cupt', 'test.cupt']:
+            allPath = os.path.join(path, p)
+            if os.path.exists(allPath):
+                conll = cuptToConllU(allPath)
+                pp = p.replace('cupt', 'conll')
+                with open(os.path.join(path, pp), 'w') as ff:
+                    ff.write(conll)
+
+
 if __name__ == '__main__':
     reload(sys)
     sys.setdefaultencoding('utf8')
-    configuration['others']['analyzePerformance'] = False
-
-
-    configuration['tmp']['createDepGraphs'] = True
-    evaluateMultitasking()
+    # evaluateIdenInMultitasking()
+    # evaluateJointIdent() # ['FR'], None)
+    # configuration['others']['analyzePerformance'] = True
+    #
+    # configuration['tmp']['createDepGraphs'] = False
+    # evaluateMultitasking(['FR'], None)
 
     # configuration['tmp']['trainIden'] = False
     # configuration['tmp']['trainJointly'] = False
     # configuration['tmp']['trainDepParser'] = True
-    # xp(['FR'], Dataset.sharedtask2,XpMode.multitasking, Evaluation.fixedSize, seeds=[0])
+    generateOarsub(xpNum=10, duration=50, tourNum=1, name='mlpPhrase')
+    import rsg
 
+    configuration['others']['analyzePerformance'] = False
+    rsg.runRSGSpontaneously(pilotLangs, Dataset.sharedtask2, XpMode.mlpPhrase, Evaluation.fixedSize,
+                           seeds=[0], xpNumByThread=120)
 
-    #import rsg
-    #rsg.runRSGSpontaneously(['BG', 'PT', 'TR'], Dataset.sharedtask2,
+    # rsg.def runRSGSpontaneously(['BG', 'PT', 'TR'], Dataset.sharedtask2,
     #                        XpMode.multitasking, Evaluation.fixedSize, [0],
     #                        xpNumByThread=300)
     # xp(['FR'], Dataset.sharedtask2, XpMode.multitasking, None)# Evaluation.trainVsDev)
+    # xp(['FR'], Dataset.sharedtask2, XpMode.mlpPhrase, None)  # Evaluation.trainVsDev)

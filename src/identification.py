@@ -5,9 +5,11 @@ import config
 #import modelCompactKiper
 import modelCompoRnn
 #import modelKiperwasser
+import modelMlpPhrase
 import modelLinear
 import modelMultiTasking
 import modelNonCompo
+import modelMlpWide
 import modelRnn
 import modelRnnNonCompo
 import oracle
@@ -254,6 +256,13 @@ def parseAndTrain(corpus):
         network = modelRnn.Network(corpus)
         modelRnn.train(network, corpus)
         return network, None
+    if configuration['xp']['mlpWide']:
+        network = modelMlpWide.Network(corpus)
+        network.train(corpus)
+        return network, None
+    if configuration['xp']['mlpPhrase']:
+        network = modelMlpPhrase.train(corpus)
+        return network, None
     if configuration['xp']['compoRnn']:
         network = modelCompoRnn.Network(corpus)
         modelCompoRnn.train(network, corpus)
@@ -274,10 +283,11 @@ def parseAndTrain(corpus):
         if configuration['tmp']['trainJointly']:
             network.trainTaggerAndIdentifier(corpus)
             # parse(corpus.testingSents, network, None)
-            network.testTagging(corpus)
             configuration['multitasking']['testOnToken'] = True
             network.testTagging(corpus)
             configuration['multitasking']['testOnToken'] = False
+            network.testTagging(corpus, title='POS tagging accuracy (MWEs)')
+            configuration['multitasking']['testOnToken'] = True
         elif configuration['tmp']['trainIden']:
             network.trainIden(corpus)
             # parse(corpus.testingSents, network, None)
@@ -291,7 +301,8 @@ def parseAndTrain(corpus):
             configuration['multitasking']['testOnToken'] = True
             network.testTagging(corpus)
             configuration['multitasking']['testOnToken'] = False
-            network.testTagging(corpus)
+            network.testTagging(corpus, title='POS tagging accuracy (MWEs)')
+            configuration['multitasking']['testOnToken'] = True
             configuration['tmp']['dontParse'] = True
         return network, None
     network = modelNonCompo.Network(corpus)

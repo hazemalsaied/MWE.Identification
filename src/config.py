@@ -17,21 +17,23 @@ configuration = {
         'testOnToken': True,
         'useB1': True,
         'useBx': True,
-        'taggingBatchSize':32,
+        'taggingBatchSize': 32,
         'identBatchSize': 32,
         'depParserBatchSize': 32,
         'initialEpochs': 1,
-        'jointLearningEpochs': 10,
+        'jointLearningEpochs': 100,
         'lr': 0.02
     }, 'xp': {
         'linear': False,
         'compo': False,
         'kiperwasser': False,
         'kiperComp': False,
+        'mlpPhrase': False,
         'rnn': False,
         'rnnNonCompo': False,
         'compoRnn': False,
-        'multitasking': False
+        'multitasking': False,
+        'mlpWide': False
     }, 'dataset': {
         'sharedtask2': False,
         'ftb': False,
@@ -53,7 +55,20 @@ configuration = {
         'dynamicVocab': False,
         'useB1': 1,
         'useB-1': 1
-    }, 'mlp': {
+    }, 'mlpPhrase': {
+        'phraseMaxLength': 50,
+        'phraseTokenEmb': 75,
+        'phrasePosEmb': 15,
+        'gru': True,
+        'wordRnnUnitNum': 100,
+        'useB1': True,
+        'useB-1': True,
+        'transPosEmb': 15,
+        'transTokenEmb': 75,
+        'denseUnitNumber': 100,
+        'lr': .02
+    },
+    'mlp': {
         'posEmb': 42,
         'tokenEmb': 480,
         'trainable': True,
@@ -92,7 +107,7 @@ configuration = {
         'outputCupt': False,
         'markObligatory': False,
         'addTokens': False,
-        'onGroup':False,
+        'onGroup': False,
         'group': 'tweebank'
     }, 'others': {
         'tuneCoop': False,
@@ -414,7 +429,6 @@ def setSVMConf():
     })
 
 
-
 def setSvmDiMSUMConf():
     conf = {
         'lemma': True,
@@ -611,7 +625,6 @@ def setMlpOpenConf():
     #     'batchSize': 64,
     #
     # })
-
 
 
 def setOptimalRSGForMLPFTB():
@@ -986,22 +999,41 @@ def generateValue(plage, continousPlage=False, uniform=False, favorisationTaux=0
 def generateMultTaskingConf():
     configuration['multitasking'].update({
         'windowSize': 3,
-        'tokenDim':int(generateValue([25, 200], True)),
-        'affixeDim': int(generateValue([5,25], True)),
-        'capitalDim': int(generateValue([1,10], True)),
-        'symbolDim': int(generateValue([5,15], True)),
-        'taggingDenseUnits': int(generateValue([25,200], True)),
-        'IdenDenseUnitNumber': int(generateValue([25,200], True)),
+        'tokenDim': int(generateValue([25, 200], True)),
+        'affixeDim': int(generateValue([5, 25], True)),
+        'capitalDim': int(generateValue([1, 10], True)),
+        'symbolDim': int(generateValue([5, 15], True)),
+        'taggingDenseUnits': int(generateValue([25, 200], True)),
+        'IdenDenseUnitNumber': int(generateValue([25, 200], True)),
         'useCapitalization': generateValue([True, False], False),
-        'useSymbols':generateValue([True, False], False),
+        'useSymbols': generateValue([True, False], False),
         'testOnToken': True,
         'useB1': generateValue([True, False], False),
         'useBx': generateValue([True, False], False),
-        'taggingBatchSize': int(generateValue([8,128], True)),
-        'identBatchSize': int(generateValue([8,128], True)),
-        'initialEpochs': int(generateValue([1,5], True)),
-        'jointLearningEpochs': int(generateValue([8,20], True)),
-        'lr': round(generateValue([0.01,0.2], True),3)
+        'taggingBatchSize': int(generateValue([8, 128], True)),
+        'identBatchSize': int(generateValue([8, 128], True)),
+        'initialEpochs': int(generateValue([1, 5], True)),
+        'jointLearningEpochs': int(generateValue([8, 20], True)),
+        'lr': round(generateValue([0.01, 0.2], True), 3)
+    })
+    configuration['embedding']['lemma'] = generateValue([True, False], False)
+    configuration['sampling']['importantSentences'] = True
+    configuration['sampling']['overSampling'] = True
+
+
+def generateMlpPhrase():
+    configuration['mlpPhrase'].update({
+        'phraseMaxLength': 50,
+        'phraseTokenEmb': int(generateValue([25, 200], True)),
+        'phrasePosEmb': int(generateValue([5, 50], True)),
+        'gru': True,
+        'wordRnnUnitNum': int(generateValue([25, 500], True)),
+        'useB1': generateValue([True, False], False),
+        'useB-1': generateValue([True, False], False),
+        'transPosEmb': int(generateValue([5, 50], True)),
+        'transTokenEmb': int(generateValue([25, 200], True)),
+        'denseUnitNumber': int(generateValue([25, 500], True)),
+        'lr': round(generateValue([0.01, 0.2], True), 3)
     })
     configuration['embedding']['lemma'] = generateValue([True, False], False)
     configuration['sampling']['importantSentences'] = True
@@ -1010,7 +1042,7 @@ def generateMultTaskingConf():
 
 def setBestMTConfForPOS():
     configuration['multitasking'].update({
-        'tokenDim':190,
+        'tokenDim': 190,
         'affixeDim': 20,
         'capitalDim': 4,
         'symbolDim': 11,
@@ -1028,9 +1060,10 @@ def setBestMTConfForPOS():
     configuration['sampling']['importantSentences'] = True
     configuration['sampling']['overSampling'] = True
 
+
 def setTrendMTConfForPOS():
     configuration['multitasking'].update({
-        'tokenDim':69,
+        'tokenDim': 69,
         'affixeDim': 13,
         'capitalDim': 3,
         'symbolDim': 9,
@@ -1051,7 +1084,7 @@ def setTrendMTConfForPOS():
 
 def setTrendMTConfForIden():
     configuration['multitasking'].update({
-        'tokenDim':89,
+        'tokenDim': 89,
         'affixeDim': 13,
         'capitalDim': 3,
         'symbolDim': 9,
@@ -1062,16 +1095,17 @@ def setTrendMTConfForIden():
         'testOnToken': True,
         'useB1': True,
         'useBx': True,
-        'identBatchSize': 51,
-        'lr': 0.04
+        'identBatchSize': 32,  # 51,
+        'lr': .02  # 0.04
     })
     configuration['embedding']['lemma'] = True
     configuration['sampling']['importantSentences'] = True
     configuration['sampling']['overSampling'] = True
 
+
 def setBestMTConfForIden():
     configuration['multitasking'].update({
-        'tokenDim':77,
+        'tokenDim': 77,
         'affixeDim': 18,
         'capitalDim': 5,
         'symbolDim': 8,
@@ -1082,16 +1116,17 @@ def setBestMTConfForIden():
         'testOnToken': True,
         'useB1': False,
         'useBx': True,
-        'identBatchSize': 51,
-        'lr': 0.05
+        'identBatchSize': 32,  # 51,
+        'lr': .02  # 0.05
     })
     configuration['embedding']['lemma'] = True
     configuration['sampling']['importantSentences'] = True
     configuration['sampling']['overSampling'] = True
 
+
 def setTrendMTConfForJoint():
     configuration['multitasking'].update({
-        'tokenDim':83,
+        'tokenDim': 83,
         'affixeDim': 13,
         'capitalDim': 3,
         'symbolDim': 8,
@@ -1105,16 +1140,17 @@ def setTrendMTConfForJoint():
         'identBatchSize': 41,
         'taggingBatchSize': 39,
         'initialEpochs': 2,
-        'jointLearningEpochs': 12,
+        'jointLearningEpochs': 100,
         'lr': 0.04
     })
     configuration['embedding']['lemma'] = True
     configuration['sampling']['importantSentences'] = True
     configuration['sampling']['overSampling'] = True
 
+
 def setBestMTConfForJoint():
     configuration['multitasking'].update({
-        'tokenDim':140,
+        'tokenDim': 140,
         'affixeDim': 14,
         'capitalDim': 1,
         'symbolDim': 5,
@@ -1128,11 +1164,9 @@ def setBestMTConfForJoint():
         'identBatchSize': 37,
         'taggingBatchSize': 21,
         'initialEpochs': 3,
-        'jointLearningEpochs': 8,
+        'jointLearningEpochs': 100,
         'lr': 0.05
     })
     configuration['embedding']['lemma'] = True
     configuration['sampling']['importantSentences'] = True
     configuration['sampling']['overSampling'] = True
-
-

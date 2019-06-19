@@ -534,7 +534,7 @@ def getSeedScores(files, folder=None, pilot=False, withTitles=True, withTitle2=F
 def getNewScores(files, folder=None, pilot=False, pos=False, withTitles=True, onCorpus=False, onFixed=False, ftb=False):
     for f in files:
         print str(f)
-        titles, scores, params, langs, titles2, seeds, stats, precisions, recalls, misidentified, nonidentified, poss, poss2 = \
+        titles, scores, params, langs, titles2, seeds, stats, precisions, recalls, misidentified, nonidentified, mwePosTags, posTags = \
             mineNewFile(str(f), folder, ftb=ftb)
         # scores, params = mineCoopFile(str(f))
         if pilot:
@@ -597,8 +597,9 @@ def getNewScores(files, folder=None, pilot=False, pos=False, withTitles=True, on
             for i, v in enumerate(scores):
                 line = ','.join(str(x) for x in [langs[i], v, precisions[i], recalls[i]])
                 print line
-
         elif onFixed:
+            for i in range(len(posTags)):
+                print posTags[i], ',', mwePosTags[i] if i < len(mwePosTags) else 0
             newStats = []
             for i in range(int(len(stats) / 5.)):
                 newStats.append(stats[i*5]) # g
@@ -619,6 +620,28 @@ def getNewScores(files, folder=None, pilot=False, pos=False, withTitles=True, on
                                 ) + \
                        (',' + titles[i][:-1] + '\n' if withTitles else '') + '\n'
                 sys.stdout.write(line)
+
+        # elif onFixed:
+        #     newStats = []
+        #     for i in range(int(len(stats) / 5.)):
+        #         newStats.append(stats[i*5]) # g
+        #         newStats.append(stats[i*5 + 1]) # pred
+        #         newStats.append(stats[i*5 + 2]) # F
+        #         newStats.append(round(stats[i*5 + 3] * 100,1)) # P
+        #         newStats.append(round(stats[i*5 + 4] * 100,1)) # R
+        #         if newStats[-1] + newStats[-2] != 0:
+        #             newStats.append(round(2 * newStats[-1] * newStats[-2] / (newStats[-1] + newStats[-2]), 1))
+        #         else:
+        #             newStats.append(0)
+        #     stats = newStats
+        #     for i, v in enumerate(scores):
+        #         line = ','.join(str(x) for x in [langs[i], v, precisions[i], recalls[i]] +
+        #                         stats[i * 96:(i + 1) * 96] +
+        #                         misidentified[i * 9: (i + 1) * 9] +
+        #                         nonidentified[i * 13: (i + 1) * 13]
+        #                         ) + \
+        #                (',' + titles[i][:-1] + '\n' if withTitles else '') + '\n'
+        #         sys.stdout.write(line)
         #         # if i % 2 == 1 and v > scores[i - 1]:
         #         #     sys.stdout.write(line)
         #         # if i % 2 == 0 and v >= scores[i + 1] :
@@ -640,7 +663,7 @@ fLine = '	F :'
 def mineNewFile(newFile, folder=None, ftb=False):
     x = ('MLP.New/' + folder) if folder else ''
     path = os.path.join('../Reports/Reports/', x, newFile)
-    titles, params, scores, precisions, recalls, langs, titles2, seeds, stats, misidentified, nonIdentified, poss, poss2 = \
+    titles, params, scores, precisions, recalls, langs, titles2, seeds, stats, misidentified, nonIdentified, mwePosTags, posTags = \
         [], [], [], [], [], [], [], [], [], [], [], [], []
     previousLine = ''
     seedLine = '# Seed:'
@@ -653,10 +676,10 @@ def mineNewFile(newFile, folder=None, ftb=False):
             #             line.startswith('XP Starts: 16/1') or line.startswith('XP Starts: 17/1'):
             #         shouldContinue = False
             #     continue
-            if line.startswith('POS tagging accuracy = ') and previousLine.startswith('Loss ='):
-                poss.append(line[:-1].split('=')[1])
-            if line.startswith('POS tagging accuracy = ') and previousLine.startswith('Epoch'):
-                poss2.append(line[:-1].split('=')[1])
+            if line.startswith('POS tagging accuracy (MWEs)'):
+                mwePosTags.append(line[:-1].split('=')[1])
+            if line.startswith('POS tagging accuracy = '):
+                posTags.append(line[:-1].split('=')[1])
             if line.startswith('Misidentified:'):
                 isMisidentified = True  # False
                 continue
@@ -712,7 +735,7 @@ def mineNewFile(newFile, folder=None, ftb=False):
             if line.startswith(titleLine) and not line.startswith('WARNING:root:Title: Language : FR'):
                 titles.append(line[len(titleLine):].strip())
             previousLine = line
-    return titles, scores, params, langs, titles2, seeds, stats, precisions, recalls, misidentified, nonIdentified, poss, poss2
+    return titles, scores, params, langs, titles2, seeds, stats, precisions, recalls, misidentified, nonIdentified, mwePosTags, posTags
 
 
 def mineCoopFile(newFile):
@@ -915,8 +938,8 @@ if __name__ == '__main__':
     #         os.remove('../Reports/MLP/' + f)
 
     getNewScores(
-        [f for f in os.listdir('../Reports/Reports/') if f.startswith('Iden')], None
-        , pilot=True, withTitles=False, pos=True, onFixed=False, onCorpus=False, ftb=False)
+        [f for f in os.listdir('../Reports/Reports/') if f.startswith('multi.j')], None
+        , pilot=False, withTitles=False, pos=True, onFixed=True, onCorpus=False, ftb=False)
 
     # for subdir, dirs, files in os.walk('../Reports/Reports/MLP.New'):
     #    for dir in dirs:

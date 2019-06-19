@@ -84,7 +84,9 @@ def getParameters(xpMode, printTilte=True):
             values.append(k)
     if not titles:
         titles.append('xp')
-        values.append('NonCompo')
+        if xpMode == XpMode.mlpWide:
+            values.append('MLP Wide')
+        values.append('MLP')
     for k in sorted(configuration['dataset'].keys()):
         if configuration['dataset'][k] and type(True) == type(configuration['dataset'][k]):
             titles.append('Dataset')
@@ -123,6 +125,14 @@ def getParameters(xpMode, printTilte=True):
         for k in sorted(configuration['compoRnn'].keys()):
             titles.append(k)
             values.append(configuration['compoRnn'][k])
+    elif xpMode == XpMode.mlpWide:
+        for k in sorted(configuration['mlp'].keys()):
+            titles.append(k)
+            values.append(configuration['mlp'][k])
+    elif xpMode == XpMode.mlpPhrase:
+        for k in sorted(configuration['mlpPhrase'].keys()):
+            titles.append(k)
+            values.append(configuration['mlpPhrase'][k])
     else:
         for k in sorted(configuration['mlp'].keys()):
             titles.append(k)
@@ -169,6 +179,8 @@ class XpMode(Enum):
     kiperComp = 6
     compoRnn = 7
     multitasking = 8
+    mlpWide = 9
+    mlpPhrase = 10
 
 
 def setTrainAndTest(v):
@@ -199,6 +211,8 @@ def setXPMode(v):
         'kiperComp': True if v == XpMode.kiperComp else False,
         'rnn': True if v == XpMode.rnn else False,
         'rnnNonCompo': True if v == XpMode.rnnNonCompo else False,
+        'mlpWide': True if v == XpMode.mlpWide else False,
+        'mlpPhrase': True if v == XpMode.mlpPhrase else False,
     })
     trues, mode = 0, 'NON.COMPO'
     for k in configuration['xp'].keys():

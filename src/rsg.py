@@ -79,6 +79,8 @@ def generateConf(xpMode):
         config.generateCompoRnnConf()
     elif xpMode == XpMode.multitasking:
         config.generateMultTaskingConf()
+    elif xpMode == XpMode.mlpPhrase:
+        config.generateMlpPhrase()
     else:
         if configuration['tmp']['tunePretrained']:
             config.generateMLPConfForPretrained()

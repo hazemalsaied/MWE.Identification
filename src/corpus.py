@@ -1995,10 +1995,10 @@ def cuptToConllU(filePath, withoutComments=True):
                     if ' ' in parts[2]:
                         parts[2] = parts[2].replace(' ', '-')
                     if parts[6] == '0':
-                        parts[7] = 'ROOT'
+                        parts[7] = 'root'
                     # for t in parts:
                     #    conll += t + '\t'
-                    conll += '\t'.join(p for p in  parts) + '\n'# conll[:-1] + '\n'
+                    conll += '\t'.join(p for p in parts) + '\n'# conll[:-1] + '\n'
                     # conll += '\t'.join(t for t in line.split('\t')[:-1]) + '\n'
     return conll
 
