@@ -75,7 +75,8 @@ configuration = {
         'batchSize': 64,
         'lr': 0.059,
         'dense1UnitNumber': 60,
-        'dense1Dropout': 0.4
+        'dense1Dropout': 0.4,
+        'posWindow': 3
     }, 'compoRnn': {
         'posEmb': 42,
         'tokenEmb': 480,
@@ -887,6 +888,7 @@ def generateMLPConf():
         'dense1Dropout': float(generateValue([.1, .2, .3, .4, .5, .6], continousPlage=False, uniform=True)),
         'batchSize': generateValue([16, 32, 48, 64, 128], continousPlage=False, uniform=True),
         'lr': round(generateValue([.01, .1], continousPlage=True, uniform=False), 3),
+        'posWindow': generateValue([1, 2, 3, 4], continousPlage=False, uniform=True)
     })
 
 

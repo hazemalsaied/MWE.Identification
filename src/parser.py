@@ -131,7 +131,7 @@ def nextTrans(t, sent, model, vectorizer, sentEmbs=None, tokens=None, linearMode
     elif configuration['xp']['multitasking']:
         probVector = model.predictIdent(t, sent)
         predictedTrans = sorted(range(len(probVector)), key=lambda k: probVector[k], reverse=True)
-    elif configuration['xp']['mlpPhrase']:
+    elif configuration['xp']['mlpPhrase'] or configuration['xp']['mlpWide']:
         probVector = model.predict(t)
         predictedTrans = sorted(range(len(probVector)), key=lambda k: probVector[k], reverse=True)
     else:

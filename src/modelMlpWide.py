@@ -1,25 +1,18 @@
 from random import uniform
-from imblearn.over_sampling import RandomOverSampler
+
 import keras
 import numpy as np
+from imblearn.over_sampling import RandomOverSampler
 from keras import optimizers
-from keras.callbacks import ModelCheckpoint, EarlyStopping
+from keras.callbacks import EarlyStopping
 from keras.layers import Input, Dense, Flatten, Embedding, Dropout
 from keras.models import Model
-from keras.models import load_model
-from keras.preprocessing.sequence import pad_sequences
 from keras.utils import to_categorical
-from numpy import zeros
 
-import facebookEmb
 import reports
 import sampling
-from corpus import getRelevantModelAndNormalizer
 from corpus import getTokens
-from extraction import Extractor
-from modelLinear import getFeatures
 from reports import *
-from transitions import TransitionType
 from wordEmbLoader import empty
 from wordEmbLoader import unk, number
 
@@ -29,227 +22,22 @@ importantFrequentWordDic = dict()
 
 
 class Network:
-    def __init__(self, corpus, linearInMLP=False):
+    def __init__(self, corpus):
         self.vocabulary = Vocabulary(corpus)
-        self.nnExtractor = Extractor(corpus) if configuration['mlp2']['features'] else None
-        input, output = self.createTheModel(corpus.langName, linearInMLP=linearInMLP)
-        self.model = Model(inputs=input, outputs=output)
+        inputs, output = createTheModel(self.vocabulary)
+        self.model = Model(inputs=inputs, outputs=output)
         if configuration['others']['verbose']:
             sys.stdout.write('# Parameters = {0}\n'.format(self.model.count_params()))
             sys.stdout.write(str(self.model.summary()))
 
-    def createTheModel(self, lang, linearInMLP=False, window=3):
-        inputLayers, concLayers = [], []
-        inputToken = Input((3 + configuration['embedding']['useB1'] + configuration['embedding']['useB-1'],))
-        inputLayers.append(inputToken)
-        tokenEmb = Embedding(len(self.vocabulary.tokenIndices), configuration['mlp']['tokenEmb'],
-                             trainable=configuration['mlp']['trainable'],
-                             weights=self.getWeightMatrix(self.vocabulary.tokenIndices, lang))(inputToken)
-        tokenFlatten = Flatten()(tokenEmb)
-        concLayers.append(tokenFlatten)
-        posNum = (2*window + 1) * (3 + configuration['embedding']['useB1'] + configuration['embedding']['useB-1'])
-        inputPos = Input((posNum,))
-        inputLayers.append(inputPos)
-        posEmb = Embedding(len(self.vocabulary.posIndices), configuration['mlp']['posEmb'],
-                           trainable=configuration['mlp']['trainable'])(inputPos)
-        posFlatten = Flatten()(posEmb)
-        concLayers.append(posFlatten)
-        if linearInMLP:
-            linearPredInput = Input(shape=(8,))
-            inputLayers.append(linearPredInput)
-            concLayers.append(linearPredInput)
-
-        conc = keras.layers.concatenate(concLayers) if len(concLayers) > 1 else concLayers[0]
-        dense1Layer = Dense(configuration['mlp']['dense1UnitNumber'],
-                            activation=configuration['nn']['dense1Activation'])(conc)
-        lastLayer = Dropout(configuration['mlp']['dense1Dropout'])(dense1Layer)
-        if configuration['mlp2']['dense2']:
-            dense2Layer = Dense(configuration['mlp2']['dense2UnitNumber'],
-                                activation=configuration['mlp2']['dense2Activation'])(lastLayer)
-            lastLayer = Dropout(configuration['mlp2']['dense2Dropout'])(dense2Layer)
-        softmaxLayer = Dense(8 if enableCategorization else 4, activation='softmax')(lastLayer)
-        return inputLayers, softmaxLayer
-
-    def getWeightMatrix(self, tokenVocab, lang):
-        if configuration['embedding']['pretrained']:
-            self.vocabulary.tokenIndices, embeddingMatrix = facebookEmb.getEmbMatrix(lang, tokenVocab.keys())
-            return [embeddingMatrix]
-        elif configuration['embedding']['manual']:
-            return [initEmbMatrix(tokenVocab)]
-        else:
-            return None
-
-    def predict(self, trans, linearModels=None, linearVecs=None):
-        inputs = []
-        tokenIdxs, posIdxs = self.getAttachedIndices(trans, dynamicVocab=configuration['embedding']['dynamicVocab'],
-                                                     parse=True)
-        inputs.append(np.asarray([tokenIdxs]))
-        inputs.append(np.asarray([posIdxs]))
-        if linearModels and linearVecs:
-            linearModel, linearVec = getRelevantModelAndNormalizer(trans.sent, None, linearModels, linearVecs, True)
-            featDic = getFeatures(trans, trans.sent)
-            predTrans = linearModel.predict(linearVec.transform(featDic))[0]
-            predVec = [1 if t.value == predTrans else 0 for t in TransitionType]
-            inputs.append(np.asarray([predVec]))
-        if configuration['mlp2']['features']:
-            features = np.asarray(self.nnExtractor.vectorize(trans))
-            inputs.append(np.asarray([features]))
-        oneHotRep = self.model.predict(inputs, batch_size=1,
-                                       verbose=configuration['nn']['predictVerbose'])
+    def predict(self, trans):
+        inputs = getTransData(trans, self.vocabulary)
+        inputs = [np.asarray([i]) for i in inputs]
+        oneHotRep = self.model.predict(inputs, batch_size=1, verbose=configuration['nn']['predictVerbose'])
         return oneHotRep[0]
 
-    def trainWithDynamization(self, s, corpus):
-        if configuration['embedding']['dynamicVocab']:
-            for w in s.vMWEs:
-                for t in w.tokens:
-                    if t.getLemma() in corpus.importantFrequentWords and uniform(0, 1) > .5:
-                        return True
-        return False
-
-    def addTransData(self, trans, sent, corpus, labels, data, linearModels=None, linearNormalizers=None,
-                     dynamicVocab=False):
-        if not configuration['sampling']['importantTransitions'] or trans.isImportant():
-            tokenIdxs, posIdxs = self.getAttachedIndices(trans, dynamicVocab=dynamicVocab)
-            if linearModels:
-                linearModel, linearNormalizer = getRelevantModelAndNormalizer(sent, corpus.trainingSents,
-                                                                              linearModels, linearNormalizers)
-                featDic = getFeatures(trans, sent)
-                predTransValue = linearModel.predict(linearNormalizer.transform(featDic))[0]
-                linearPredictionVector = [1 if t.value == predTransValue else 0 for t in TransitionType]
-                data.append(np.asarray(np.concatenate((tokenIdxs, posIdxs, linearPredictionVector))))
-            else:
-                data.append(np.asarray(np.concatenate((tokenIdxs, posIdxs))))
-            labels.append(trans.next.type.value if trans.next.type.value <= 2 else (
-                trans.next.type.value if enableCategorization else 3))
-
-    def getLearningData(self, corpus, linearModels=None, linearNormalizers=None):
-        labels, data = [], []
-        global importantFrequentWordDic
-        for sent in corpus.trainingSents:
-            trans = sent.initialTransition
-            while trans and trans.next:
-                self.addTransData(trans, sent, corpus, labels, data, linearModels=linearModels,
-                                  linearNormalizers=linearNormalizers)
-                trans = trans.next
-        return labels, data
-
-    def getIndices(self, trans, getPos=False, getToken=False):
-        s0elems, s1elems, belems = [], [], []
-        emptyIdx = self.vocabulary.getEmptyIdx(getPos=getPos, getToken=getToken)
-        if trans.configuration.stack:
-            s0Tokens = getTokens(trans.configuration.stack[-1])
-            s0elems = self.vocabulary.getIndices(s0Tokens)
-            if len(trans.configuration.stack) > 1:
-                s1Tokens = getTokens(trans.configuration.stack[-2])
-                s1elems = self.vocabulary.getIndices(s1Tokens)
-        s0elems = padSequence(s0elems, 's0Padding', emptyIdx)
-        s1elems = padSequence(s1elems, 's1Padding', emptyIdx)
-        if trans.configuration.buffer:
-            bTokens = trans.configuration.buffer[:2]
-            belems = self.vocabulary.getIndices(bTokens)
-        belems = padSequence(belems, 'bPadding', emptyIdx)
-        words = np.concatenate((s0elems, s1elems, belems), axis=0)
-        return words
-
-    def getPosTags(self, sent, tokens, vocab, posTags, window=3):
-        if not tokens:
-            for _ in range(window * 2 + 1):
-                posTags.append(vocab[empty])
-            return
-        positions = [t.position for t in tokens]
-        minPos, maxPos = min(positions) - 1, max(positions) - 1
-        for i in reversed(range(1, window +  1)):
-            if minPos - i >= 0:
-                token = sent.tokens[minPos - i]
-                if token.posTag.lower() in vocab:
-                    posTags.append(vocab[token.posTag.lower()])
-                else:
-                    posTags.append(vocab[unk])
-            else:
-                posTags.append(vocab[empty])
-        if len(tokens) == 1:
-            if tokens[0].posTag.lower() in vocab:
-                posTags.append(vocab[tokens[0].posTag.lower()])
-            else:
-                posTags.append(vocab[unk])
-        else:
-            posTag = '_'.join(t.posTag.lower() for t in tokens)
-            if posTag in vocab:
-                posTags.append(vocab[posTag])
-            else:
-                posTags.append(vocab[unk])
-
-        for i in range(1, window + 1):
-            if maxPos + i < len(sent.tokens):
-                token = sent.tokens[maxPos + i]
-                if token.posTag.lower() in vocab:
-                    posTags.append(vocab[token.posTag.lower()])
-                else:
-                    posTags.append(vocab[unk])
-            else:
-                posTags.append(vocab[empty])
-        return posTags
-
-    def getAttachedIndices(self, trans, dynamicVocab=False, parse=False, window=3):
-        emptyTokenIdx = self.vocabulary.tokenIndices[empty]
-        tokenIdxs, posIdxs = [], []
-        if trans.configuration.stack:
-            s0Tokens = getTokens(trans.configuration.stack[-1])
-            tokenIdx, posIdx = self.vocabulary.getIndices(s0Tokens, dynamicVocab=dynamicVocab, parse=parse)
-            tokenIdxs.append(tokenIdx)
-            self.getPosTags(trans.sent, s0Tokens, self.vocabulary.posIndices, posIdxs, window=window)
-            if len(trans.configuration.stack) > 1:
-                s1Tokens = getTokens(trans.configuration.stack[-2])
-                tokenIdx, posIdx = self.vocabulary.getIndices(s1Tokens, dynamicVocab=dynamicVocab, parse=parse)
-                tokenIdxs.append(tokenIdx)
-                self.getPosTags(trans.sent, s0Tokens, self.vocabulary.posIndices, posIdxs, window=window)
-            else:
-                tokenIdxs.append(emptyTokenIdx)
-                self.getPosTags(trans.sent, [], self.vocabulary.posIndices, posIdxs, window=window)
-        else:
-            tokenIdxs.append(emptyTokenIdx)
-            tokenIdxs.append(emptyTokenIdx)
-            self.getPosTags(trans.sent, [], self.vocabulary.posIndices, posIdxs, window=window)
-            self.getPosTags(trans.sent, [], self.vocabulary.posIndices, posIdxs, window=window)
-
-        if trans.configuration.buffer:
-            tokenIdx, posIdx = self.vocabulary.getIndices([trans.configuration.buffer[0]], dynamicVocab=dynamicVocab,
-                                                          parse=parse)
-            tokenIdxs.append(tokenIdx)
-            self.getPosTags(trans.sent, [trans.configuration.buffer[0]], self.vocabulary.posIndices, posIdxs,
-                            window=window)
-            if configuration['embedding']['useB1']:
-                if len(trans.configuration.buffer) > 1:
-                    tokenIdx, posIdx = self.vocabulary.getIndices([trans.configuration.buffer[1]],
-                                                                  dynamicVocab=dynamicVocab, parse=parse)
-                    tokenIdxs.append(tokenIdx)
-                    self.getPosTags(trans.sent, [trans.configuration.buffer[1]], self.vocabulary.posIndices, posIdxs, window=window)
-                else:
-                    tokenIdxs.append(emptyTokenIdx)
-                    for _ in range(window * 2 + 1):
-                        posIdxs.append(self.vocabulary.posIndices[empty])
-        else:
-            tokenIdxs.append(emptyTokenIdx)
-            self.getPosTags(trans.sent, [], self.vocabulary.posIndices, posIdxs, window=window)
-            if configuration['embedding']['useB1']:
-                tokenIdxs.append(emptyTokenIdx)
-                self.getPosTags(trans.sent, [], self.vocabulary.posIndices, posIdxs, window=window)
-        if configuration['embedding']['useB-1']:
-            if trans.configuration.reduced:
-                tokenIdx, posIdx = self.vocabulary.getIndices([trans.configuration.reduced], dynamicVocab=dynamicVocab,
-                                                              parse=parse)
-                tokenIdxs.append(tokenIdx)
-                self.getPosTags(trans.sent, [trans.configuration.reduced], self.vocabulary.posIndices, posIdxs,
-                                window=window)
-            else:
-                tokenIdxs.append(emptyTokenIdx)
-                self.getPosTags(trans.sent, [], self.vocabulary.posIndices, posIdxs, window=window)
-
-        return np.asarray(tokenIdxs), np.asarray(posIdxs)
-
-    def train(self, corpus, linearModels=None, linearNormalizers=None):
-        labels, data = self.getLearningData(corpus, linearModels=linearModels,
-                                            linearNormalizers=linearNormalizers)
+    def train(self, corpus):
+        labels, data = getLearningData(corpus, self.vocabulary)
         if configuration['others']['verbose']:
             sys.stdout.write(reports.seperator + reports.tabs + 'Sampling' + reports.doubleSep)
         labels, data = overSample(labels, data)
@@ -264,65 +52,27 @@ class Network:
         if configuration['others']['verbose']:
             valDistribution = Counter(labels[int(len(labels) * (1 - configuration['nn']['validationSplit'])):])
             sys.stdout.write(tabs + '{0} Labels in valid : {1}\n'.format(len(valDistribution), valDistribution))
-        self.classWeightDic = sampling.getClassWeights(labels)
-        sampleWeights = sampling.getSampleWeightArray(labels, self.classWeightDic)
         labels = to_categorical(labels, num_classes=8 if enableCategorization else 4)
         self.model.compile(loss=configuration['nn']['loss'], optimizer=getOptimizer(), metrics=['accuracy'])
+        es = EarlyStopping(monitor='val_loss',
+                           min_delta=configuration['nn']['minDelta'],
+                           patience=configuration['nn']['patience'],
+                           verbose=configuration['others']['verbose'])
         history = self.model.fit(data, labels,
                                  validation_split=configuration['nn']['validationSplit'],
                                  epochs=configuration['nn']['epochs'],
                                  batch_size=configuration['mlp']['batchSize'],
                                  verbose=2 if configuration['others']['verbose'] else 0,
-                                 callbacks=getCallBacks(),
-                                 sample_weight=sampleWeights)
-        if configuration['nn']['checkPoint']:
-            self.model = load_model(
-                os.path.join(configuration['path']['projectPath'], 'Reports', configuration['path']['checkPointPath']))
-        # if configuration['others']['verbose']:
-        #    sys.stdout.write('Epoch Losses = ' + str(history.history['loss']))
+                                 callbacks=[es])
         self.trainValidationData(data, labels, history)
 
     def trainValidationData(self, data, labels, history):
         data, labels = getValidationData(data, labels)
-        validationLabelsAsInt = [np.where(r == 1)[0][0] for r in labels]
-        sampleWeights = sampling.getSampleWeightArray(validationLabelsAsInt, self.classWeightDic)
         history = self.model.fit(data, labels,
                                  epochs=len(history.epoch),
                                  batch_size=configuration['mlp']['batchSize'],
-                                 verbose=0,
-                                 sample_weight=sampleWeights)
+                                 verbose=0)
         return history
-
-
-def initEmbMatrix(vocab):
-    if not configuration['embedding']['manual']:
-        return None
-    vocabWithoutConc, vocabWithConc = dict(), dict()
-    for v in vocab:
-        if '_' not in v:
-            vocabWithoutConc[v] = vocab[v]
-        else:
-            vocabWithConc[v] = vocab[v]
-    embeddingMatrix = zeros((len(vocab), configuration['mlp']['tokenEmb']))
-    for i in vocabWithoutConc.values():
-        embeddingMatrix[i] = np.random.uniform(low=-.5, high=.5, size=(1, configuration['mlp']['tokenEmb']))
-    for k in vocabWithConc:
-        tokens = k.split('_')
-        allInVocab = True
-        for t in tokens:
-            if t not in vocabWithoutConc:
-                allInVocab = False
-        if not allInVocab:
-            embeddingMatrix[vocabWithConc[k]] = np.random.uniform(low=-.5, high=.5,
-                                                                  size=(1, configuration['mlp']['tokenEmb']))
-        else:
-            summ = zeros((configuration['mlp']['tokenEmb'],))
-            for t in tokens:
-                summ += embeddingMatrix[vocabWithoutConc[t]]
-            if configuration['embedding']['average']:
-                summ /= len(tokens)
-            embeddingMatrix[vocabWithConc[k]] = summ
-    return embeddingMatrix
 
 
 def getValidationData(data, labels):
@@ -341,107 +91,23 @@ def getOptimizer():
     return optimizers.Adagrad(lr=configuration['mlp']['lr'], epsilon=None, decay=0.0)
 
 
-def getCallBacks():
-    bestWeightPath = reports.getBestWeightFilePath()
-    callbacks = [
-        ModelCheckpoint(bestWeightPath, monitor='val_loss', verbose=1, save_best_only=True, mode='max')
-    ] if bestWeightPath else []
-    if configuration['nn']['earlyStop']:
-        es = EarlyStopping(monitor='val_loss',
-                           min_delta=configuration['nn']['minDelta'],
-                           patience=configuration['nn']['patience'],
-                           verbose=configuration['others']['verbose'])
-        callbacks.append(es)
-    if configuration['nn']['checkPoint']:
-        mc = ModelCheckpoint(
-            os.path.join(configuration['path']['projectPath'], 'Reports', configuration['path']['checkPointPath']),
-            monitor='val_acc', mode='max', verbose=1, save_best_only=True)
-        callbacks.append(mc)
-    return callbacks
-
-
 class Vocabulary:
     def __init__(self, corpus):
         self.tokenFreqs, self.posFreqs = getFrequencyDics(corpus)
         self.tokenIndices = indexateDic(self.tokenFreqs)
         self.posIndices = indexateDic(self.posFreqs)
-        if configuration['others']['verbose'] == 1:
-            sys.stdout.write(str(self))
-            self.verify(corpus)
 
-    def __str__(self):
-        res = seperator + tabs + 'Vocabulary' + doubleSep
-        res += tabs + 'Tokens := {0} * POS : {1}'.format(len(self.tokenIndices), len(self.posIndices)) \
-            if not configuration['xp']['compo'] else ''
-        res += seperator
-        return res
-
-    def getIndices(self, tokens, dynamicVocab=False, parse=False):
-        if parse:
-            tokenTxt, posTxt = attachTokens(tokens, dynamicVocab=False)
-        else:
-            tokenTxt, posTxt = attachTokens(tokens, dynamicVocab=dynamicVocab)
+    def getIndices(self, tokens):
+        tokenTxt, posTxt = attachTokens(tokens)
         if tokenTxt in self.tokenIndices:
             tokenIdx = self.tokenIndices[tokenTxt]
         else:
-            if dynamicVocab and parse:
-                tokenTxt, posTxt = attachTokens(tokens, dynamicVocab=dynamicVocab, parse=parse)
-                if tokenTxt in self.tokenIndices:
-                    tokenIdx = self.tokenIndices[tokenTxt]
-                else:
-                    tokenIdx = self.tokenIndices[unk]
-            else:
-                tokenIdx = self.tokenIndices[unk]
+            tokenIdx = self.tokenIndices[unk]
         if posTxt in self.posIndices:
             posIdx = self.posIndices[posTxt]
         else:
             posIdx = self.posIndices[unk]
         return tokenIdx, posIdx
-
-    def getEmptyIdx(self, getPos=False, getToken=False):
-        pass
-
-    def verify(self, corpus):
-        importTokens = 0
-        for t in corpus.mweTokenDictionary:
-            if t not in self.tokenIndices:
-                importTokens += 1
-        if importTokens:
-            sys.stdout.write(tabs + 'Important words not in vocabulary {0}\n'.format(importTokens))
-        importMWEs = 0
-        for mwe in corpus.mweDictionary:
-            mwe = mwe.replace(' ', '_')
-            if mwe not in self.tokenIndices:
-                importMWEs += 1
-        if importMWEs:
-            sys.stdout.write(tabs + 'MWE not in vocabulary {0}\n'.format(importMWEs))
-        if unk not in self.tokenIndices or empty not in self.tokenIndices:
-            sys.stdout.write(tabs + 'unk or empty is not in vocabulary\n')
-        dashedKeys = 0
-        for k in self.tokenIndices:
-            if '_' in k:
-                dashedKeys += 1
-        # supposedDashedKeys = 0
-        # for mwe in corpus.mweDictionary:
-        #     supposedDashedKeys += len(mwe.split(' ')) - 1
-        # sys.stdout.write(tabs + 'Suupposed dashed keys in vocabulary {0}\n'.format(supposedDashedKeys))
-        sys.stdout.write(tabs + 'Dashed keys in vocabulary {0}\n'.format(dashedKeys))
-        oneFreq = 0
-        for k in self.tokenFreqs:
-            if self.tokenFreqs[k] == 1:
-                oneFreq += 1
-        sys.stdout.write(tabs + 'One occurrence keys in vocabulary {0} / {1}\n'.
-                         format(dashedKeys, len(self.tokenFreqs)))
-
-
-def addDynamicVersion(tokens, corpus):
-    if not configuration['embedding']['dynamicVocab'] or not tokens or len(tokens) <= 1:
-        return None
-    shouldDynamize = [True if t.getLemma() in corpus.importantFrequentWords else False for t in tokens]
-    if False in shouldDynamize and True in shouldDynamize:
-        return '_'.join(
-            t.getTokenOrLemma() if t.getLemma() in corpus.importantFrequentWords else unk for t in tokens)
-    return None
 
 
 def getFrequencyDics(corpus, freqTaux=1):
@@ -458,7 +124,6 @@ def getFrequencyDics(corpus, freqTaux=1):
                             tokenTxt = number
                     tokenVocab[tokenTxt] = 1 if tokenTxt not in tokenVocab else tokenVocab[tokenTxt] + 1
                     posVocab[posTxt] = 1 if posTxt not in posVocab else posVocab[posTxt] + 1
-                    tokenTxt = addDynamicVersion(tokens, corpus)
                     if tokenTxt:
                         tokenVocab[tokenTxt] = 1 if tokenTxt not in tokenVocab else tokenVocab[tokenTxt] + 1
 
@@ -486,27 +151,11 @@ def getFrequencyDics(corpus, freqTaux=1):
     return tokenVocab, posVocab
 
 
-def attachTokens(tokens, dynamicVocab=False, parse=False):
+def attachTokens(tokens):
     tokenTxt, posTxt = '', ''
     global importantFrequentWordDic
     for t in tokens:
-        if dynamicVocab:
-            if parse:
-                if len(tokens) > 1:
-                    # for tt in tokens:
-                    if t.getLemma() in importantFrequentWordDic:
-                        tokenTxt += t.getTokenOrLemma() + '_'
-                    else:
-                        tokenTxt += unk + '_'
-                else:
-                    tokenTxt += t.getTokenOrLemma() + '_'
-            else:
-                if t.getLemma() in importantFrequentWordDic:
-                    tokenTxt += t.getTokenOrLemma() + '_'
-                else:
-                    tokenTxt += unk + '_'
-        else:
-            tokenTxt += t.getTokenOrLemma() + '_'
+        tokenTxt += t.getTokenOrLemma() + '_'
         posTxt += t.posTag + '_'
     return tokenTxt[:-1], posTxt[:-1].lower()
 
@@ -519,19 +168,106 @@ def indexateDic(dic):
     return res
 
 
-def padSequence(seq, label, emptyIdx):
-    padConf = configuration['mlpNonLexicl']
-    return np.asarray(pad_sequences([seq], maxlen=padConf[label], value=emptyIdx))[0]
+def getLearningData(corpus, vocab):
+    labels, data = [], []
+    global importantFrequentWordDic
+    for sent in corpus.trainingSents:
+        trans = sent.initialTransition
+        while trans and trans.next:
+            tokenIdxs, posIdxs = getTransData(trans, vocab)
+            data.append(np.asarray(np.concatenate((tokenIdxs, posIdxs))))
+            labels.append(trans.next.type.value if trans.next.type.value <= 2 else (
+                trans.next.type.value if enableCategorization else 3))
+            trans = trans.next
+    return labels, data
+
+
+def getTransData(trans, vocabulary, window=configuration['mlp']['posWindow']):
+    tokenIdxs, posIdxs, emptyTokenIdx = [], [], vocabulary.tokenIndices[empty]
+    if trans.configuration.stack:
+        s0Tokens = getTokens(trans.configuration.stack[-1])
+        tokenIdx, posIdx = vocabulary.getIndices(s0Tokens)
+        tokenIdxs.append(tokenIdx)
+        getPosTags(trans.sent, s0Tokens, vocabulary.posIndices, posIdxs, window=window)
+        if len(trans.configuration.stack) > 1:
+            s1Tokens = getTokens(trans.configuration.stack[-2])
+            tokenIdx, posIdx = vocabulary.getIndices(s1Tokens)
+            tokenIdxs.append(tokenIdx)
+            getPosTags(trans.sent, s0Tokens, vocabulary.posIndices, posIdxs, window=window)
+        else:
+            tokenIdxs.append(emptyTokenIdx)
+            getPosTags(trans.sent, [], vocabulary.posIndices, posIdxs, window=window)
+    else:
+        tokenIdxs.append(emptyTokenIdx)
+        tokenIdxs.append(emptyTokenIdx)
+        getPosTags(trans.sent, [], vocabulary.posIndices, posIdxs, window=window)
+        getPosTags(trans.sent, [], vocabulary.posIndices, posIdxs, window=window)
+
+    if trans.configuration.buffer:
+        tokenIdx, posIdx = vocabulary.getIndices([trans.configuration.buffer[0]],
+                                                 )
+        tokenIdxs.append(tokenIdx)
+        getPosTags(trans.sent, [trans.configuration.buffer[0]], vocabulary.posIndices, posIdxs,
+                   window=window)
+        if configuration['embedding']['useB1']:
+            if len(trans.configuration.buffer) > 1:
+                tokenIdx, posIdx = vocabulary.getIndices([trans.configuration.buffer[1]],
+                                                         )
+                tokenIdxs.append(tokenIdx)
+                getPosTags(trans.sent, [trans.configuration.buffer[1]], vocabulary.posIndices, posIdxs,
+                           window=window)
+            else:
+                tokenIdxs.append(emptyTokenIdx)
+                for _ in range(window * 2 + 1):
+                    posIdxs.append(vocabulary.posIndices[empty])
+    else:
+        tokenIdxs.append(emptyTokenIdx)
+        getPosTags(trans.sent, [], vocabulary.posIndices, posIdxs, window=window)
+        if configuration['embedding']['useB1']:
+            tokenIdxs.append(emptyTokenIdx)
+            getPosTags(trans.sent, [], vocabulary.posIndices, posIdxs, window=window)
+    if configuration['embedding']['useB-1']:
+        if trans.configuration.reduced:
+            tokenIdx, posIdx = vocabulary.getIndices([trans.configuration.reduced],
+                                                     )
+            tokenIdxs.append(tokenIdx)
+            getPosTags(trans.sent, [trans.configuration.reduced], vocabulary.posIndices, posIdxs,
+                       window=window)
+        else:
+            tokenIdxs.append(emptyTokenIdx)
+            getPosTags(trans.sent, [], vocabulary.posIndices, posIdxs, window=window)
+
+    return np.asarray(tokenIdxs), np.asarray(posIdxs)
+
+
+def createTheModel(vocabulary, window=configuration['mlp']['posWindow']):
+    inputLayers, interLayers = [], []
+    inputToken = Input((3 + configuration['embedding']['useB1'] + configuration['embedding']['useB-1'],))
+    inputLayers.append(inputToken)
+    tokenEmb = Embedding(len(vocabulary.tokenIndices), configuration['mlp']['tokenEmb'],
+                         trainable=configuration['mlp']['trainable'])(inputToken)
+    tokenFlatten = Flatten()(tokenEmb)
+    interLayers.append(tokenFlatten)
+    posNum = (2 * window + 1) * (3 + configuration['embedding']['useB1'] + configuration['embedding']['useB-1'])
+    inputPos = Input((posNum,))
+    inputLayers.append(inputPos)
+    posEmb = Embedding(len(vocabulary.posIndices), configuration['mlp']['posEmb'],
+                       trainable=configuration['mlp']['trainable'])(inputPos)
+    posFlatten = Flatten()(posEmb)
+    interLayers.append(posFlatten)
+
+    interLayers = keras.layers.concatenate(interLayers)
+    lastLayer = Dense(configuration['mlp']['dense1UnitNumber'],
+                      activation=configuration['nn']['dense1Activation'])(interLayers)
+    # dropout=configuration['mlp']['dense1Dropout'])(interLayers)
+    lastLayer = Dropout(configuration['mlp']['dense1Dropout'])(lastLayer)
+    softmaxLayer = Dense(8 if enableCategorization else 4, activation='softmax')(lastLayer)
+    return inputLayers, softmaxLayer
 
 
 def overSample(labels, data):
-    tokenData, posData, linearPred = [], [], []
+    tokenData, posData = [], []
     tokenNum = 3 + configuration['embedding']['useB1'] + configuration['embedding']['useB-1']
-    if not configuration['sampling']['overSampling']:
-        for item in data:
-            tokenData.append(np.asarray(item[:tokenNum]))
-            posData.append(np.asarray(item[tokenNum:]))
-        return np.asarray(labels), [np.asarray(tokenData), np.asarray(posData), np.asarray(linearPred)]
     if configuration['others']['verbose']:
         sys.stdout.write(reports.doubleSep + reports.tabs + 'Resampling:' + reports.doubleSep)
         sys.stdout.write(reports.tabs + 'data size before sampling = {0}\n'.format(len(labels)))
@@ -543,3 +279,43 @@ def overSample(labels, data):
     if configuration['others']['verbose']:
         sys.stdout.write(reports.tabs + 'data size after sampling = {0}\n'.format(len(labels)))
     return np.asarray(labels), [np.asarray(tokenData), np.asarray(posData)]
+
+
+def getPosTags(sent, tokens, vocab, posTags, window=configuration['mlp']['posWindow']):
+    if not tokens:
+        for _ in range(window * 2 + 1):
+            posTags.append(vocab[empty])
+        return
+    positions = [t.position for t in tokens]
+    minPos, maxPos = min(positions) - 1, max(positions) - 1
+    for i in reversed(range(1, window + 1)):
+        if minPos - i >= 0:
+            token = sent.tokens[minPos - i]
+            if token.posTag.lower() in vocab:
+                posTags.append(vocab[token.posTag.lower()])
+            else:
+                posTags.append(vocab[unk])
+        else:
+            posTags.append(vocab[empty])
+    if len(tokens) == 1:
+        if tokens[0].posTag.lower() in vocab:
+            posTags.append(vocab[tokens[0].posTag.lower()])
+        else:
+            posTags.append(vocab[unk])
+    else:
+        posTag = '_'.join(t.posTag.lower() for t in tokens)
+        if posTag in vocab:
+            posTags.append(vocab[posTag])
+        else:
+            posTags.append(vocab[unk])
+
+    for i in range(1, window + 1):
+        if maxPos + i < len(sent.tokens):
+            token = sent.tokens[maxPos + i]
+            if token.posTag.lower() in vocab:
+                posTags.append(vocab[token.posTag.lower()])
+            else:
+                posTags.append(vocab[unk])
+        else:
+            posTags.append(vocab[empty])
+    return posTags

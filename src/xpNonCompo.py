@@ -208,25 +208,14 @@ def createConllFiles(langs=allSharedtask2Lang):
 if __name__ == '__main__':
     reload(sys)
     sys.setdefaultencoding('utf8')
-    # evaluateIdenInMultitasking()
-    # evaluateJointIdent() # ['FR'], None)
-    # configuration['others']['analyzePerformance'] = True
-    #
-    # configuration['tmp']['createDepGraphs'] = False
-    # evaluateMultitasking(['FR'], None)
-
-    # configuration['tmp']['trainIden'] = False
-    # configuration['tmp']['trainJointly'] = False
-    # configuration['tmp']['trainDepParser'] = True
-    generateOarsub(xpNum=10, duration=50, tourNum=1, name='mlpPhrase')
+    # generateOarsub(xpNum=10, duration=50, tourNum=1, name='mlpPhrase')
     import rsg
 
     configuration['others']['analyzePerformance'] = False
-    rsg.runRSGSpontaneously(pilotLangs, Dataset.sharedtask2, XpMode.mlpPhrase, Evaluation.fixedSize,
-                           seeds=[0], xpNumByThread=120)
-
-    # rsg.def runRSGSpontaneously(['BG', 'PT', 'TR'], Dataset.sharedtask2,
-    #                        XpMode.multitasking, Evaluation.fixedSize, [0],
-    #                        xpNumByThread=300)
-    # xp(['FR'], Dataset.sharedtask2, XpMode.multitasking, None)# Evaluation.trainVsDev)
-    # xp(['FR'], Dataset.sharedtask2, XpMode.mlpPhrase, None)  # Evaluation.trainVsDev)
+    configuration['tmp']['trainDepParser']= True
+    configuration['tmp']['createDepGraphs'] = True
+    xp(['FR'], Dataset.sharedtask2, XpMode.multitasking, None)
+    # rsg.runRSGSpontaneously(pilotLangs, Dataset.sharedtask2, XpMode.mlpPhrase, Evaluation.fixedSize,
+    #                       seeds=[0], xpNumByThread=120)
+    # rsg.runRSGSpontaneously(['FR'], Dataset.sharedtask2, XpMode.mlpWide, None,
+    #                        seeds=[0], xpNumByThread=100)

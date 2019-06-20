@@ -1,5 +1,5 @@
 from random import uniform
-
+from corpus import Token
 import keras
 import numpy as np
 from imblearn.over_sampling import RandomOverSampler
@@ -9,6 +9,7 @@ from keras.layers import Input, Dense, Flatten, Embedding
 from keras.models import Model
 from keras.preprocessing.sequence import pad_sequences
 from keras.utils import to_categorical
+from nltk.parse.transitionparser import TransitionParser, Transition, Configuration
 
 import reports
 from corpus import getRelevantModelAndNormalizer
@@ -18,7 +19,7 @@ from reports import *
 from transitions import TransitionType
 from wordEmbLoader import empty
 from wordEmbLoader import unk, number
-from nltk.parse.transitionparser import TransitionParser, Transition, Configuration
+
 # unk = configuration['constants']['unk']
 # empty = configuration['constants']['empty']
 
@@ -29,8 +30,9 @@ enableCategorization = False
 
 importantFrequentWordDic = dict()
 
-
 # global idenInputArrNum
+
+global idenInputArrNum, taggingInputArray, depParserInuptArrNum
 
 
 class Network:
@@ -46,9 +48,11 @@ class Network:
 
         if configuration['tmp']['trainDepParser']:
             self.parser = TransParser('arc-standard')
-            self.depParserData, self.depParserLabels, self.depLabelDic = self.parser.getTrainData(corpus.trainDepGraphs,
-                                                                                    corpus.allTrainingSents,
-                                                                                    self.vocabulary.tokenIndices, self)
+            self.depParserData, self.depParserLabels, self.depLabelDic = \
+                self.parser.getTrainData(corpus.trainDepGraphs,
+                                         corpus.allTrainingSents,
+                                         self.vocabulary.tokenIndices,
+                                         self)
 
         self.taggingModel, self.idenModel, self.depParsingModel = createTheModel(self.vocabulary, len(self.depLabelDic))
 
@@ -73,10 +77,10 @@ class Network:
                 # TODO check the early stopping
 
     def trainDepParser(self):
-        es =EarlyStopping(monitor='val_loss',
-                            min_delta=configuration['nn']['minDelta'],
-                            patience=configuration['nn']['patience'],
-                            verbose=configuration['others']['verbose'])
+        es = EarlyStopping(monitor='val_loss',
+                           min_delta=configuration['nn']['minDelta'],
+                           patience=configuration['nn']['patience'],
+                           verbose=configuration['others']['verbose'])
 
         # if configuration['sampling']['overSampling']:
         #     depParserData, depParserLabels = overSample(depParserData, depParserLabels)
@@ -138,31 +142,32 @@ class Network:
         idenLbls = to_categorical(idenLbls, num_classes=4)
         historyList = []
         for x in range(configuration['multitasking']['initialEpochs']):
-            sys.stdout.write('POS tagging: {0}\n'.format(x+1))
+            sys.stdout.write('POS tagging: {0}\n'.format(x + 1))
             self.taggingModel.fit(taggingData, taggingLbls,
                                   batch_size=configuration['multitasking']['taggingBatchSize'],
                                   verbose=2)
         for x in range(configuration['multitasking']['jointLearningEpochs']):
             if x % 2 == 0:
-                sys.stdout.write('POS tagging: {0}\n'.format(int(x/2)+1 + configuration['multitasking']['initialEpochs']))
+                sys.stdout.write(
+                    'POS tagging: {0}\n'.format(int(x / 2) + 1 + configuration['multitasking']['initialEpochs']))
                 self.taggingModel.fit(taggingData, taggingLbls,
                                       verbose=2,
                                       batch_size=configuration['multitasking']['taggingBatchSize'])
             else:
-                sys.stdout.write('MWE identification: {0}\n'.format(int(x/2)+1))
+                sys.stdout.write('MWE identification: {0}\n'.format(int(x / 2) + 1))
                 his = self.idenModel.fit(idenData, idenLbls,
-                                   verbose=2,
-                                   batch_size=configuration['multitasking']['identBatchSize'])
+                                         verbose=2,
+                                         batch_size=configuration['multitasking']['identBatchSize'])
                 historyList.append(his)
                 if self.shouldStopLearning(historyList):
                     break
 
-
-    def shouldStopLearning(self, historyList, patience=4, minDelta=.1 ):
+    def shouldStopLearning(self, historyList, patience=4, minDelta=.1):
         if len(historyList) <= patience:
             return False
         for i in range(patience):
-            if historyList[len(historyList) - i - 1].history['loss'][0] - historyList[len(historyList) - i - 2].history['loss'][0] <= minDelta:
+            if historyList[len(historyList) - i - 1].history['loss'][0] - \
+                    historyList[len(historyList) - i - 2].history['loss'][0] <= minDelta:
                 continue
             else:
                 return False
@@ -184,8 +189,8 @@ class Network:
         taggingData, taggingLbls = self.getTaggingData(corpus, train=False)
         taggingLbls = to_categorical(taggingLbls, num_classes=len(self.vocabulary.posIndices))
         results = self.taggingModel.evaluate(taggingData, taggingLbls, batch_size=32, verbose=0)
-        sys.stdout.write('{0} = {1}\nLoss = {2}, \n'.format( title,
-            round(results[1] * 100, 1), round(results[0], 3)))
+        sys.stdout.write('{0} = {1}\nLoss = {2}, \n'.format(title,
+                                                            round(results[1] * 100, 1), round(results[0], 3)))
 
     def getTaggingData(self, corpus, train=True):
         data, lbls = [[] for _ in range(taggingInputArray)], []
@@ -426,6 +431,231 @@ class Network:
         return np.asarray(tokenIdxs), np.asarray(posIdxs)
 
 
+class Vocabulary:
+    def __init__(self, corpus):
+        self.affixeDic = self.getAffixeDic(corpus)
+        self.affixeIndices = indexateDic(self.affixeDic)
+        self.tokenFreqs, self.posFreqs = getFrequencyDics(corpus)
+        self.tokenIndices = indexateDic(self.tokenFreqs)
+        self.posIndices = indexateDic(self.posFreqs)
+        if configuration['others']['verbose'] == 1:
+            sys.stdout.write(str(self))
+            self.verify(corpus)
+
+    def __str__(self):
+        res = seperator + tabs + 'Vocabulary' + doubleSep
+        res += tabs + 'Tokens := {0} * POS : {1}'.format(len(self.tokenIndices), len(self.posIndices)) \
+            if not configuration['xp']['compo'] else ''
+        res += seperator
+        return res
+
+    def getAffixeDic(self, corpus):
+        affixeDic = dict()
+        for s in corpus.trainingSents:
+            for t in s.tokens:
+                if len(t.text) >= 2:
+                    affixeDic[t.text[-2:].lower()] = 0
+                    affixeDic[t.text[:2].lower()] = 0
+                    if len(t.text) > 2:
+                        affixeDic[t.text[-3:].lower()] = 0
+                        affixeDic[t.text[:3].lower()] = 0
+        affixeDic[unk] = 0
+        affixeDic[empty] = 0
+        return affixeDic
+
+    def getIndices(self, tokens, dynamicVocab=False, parse=False):
+        if parse:
+            tokenTxt, posTxt = attachTokens(tokens, dynamicVocab=False)
+        else:
+            tokenTxt, posTxt = attachTokens(tokens, dynamicVocab=dynamicVocab)
+        if tokenTxt in self.tokenIndices:
+            tokenIdx = self.tokenIndices[tokenTxt]
+        else:
+            if dynamicVocab and parse:
+                tokenTxt, posTxt = attachTokens(tokens, dynamicVocab=dynamicVocab, parse=parse)
+                if tokenTxt in self.tokenIndices:
+                    tokenIdx = self.tokenIndices[tokenTxt]
+                else:
+                    tokenIdx = self.tokenIndices[unk]
+            else:
+                tokenIdx = self.tokenIndices[unk]
+        if posTxt in self.posIndices:
+            posIdx = self.posIndices[posTxt]
+        else:
+            posIdx = self.posIndices[unk]
+        return tokenIdx, posIdx
+
+    def getEmptyIdx(self, getPos=False, getToken=False):
+        pass
+
+    def verify(self, corpus):
+        importTokens = 0
+        for t in corpus.mweTokenDictionary:
+            if t not in self.tokenIndices:
+                importTokens += 1
+        if importTokens:
+            sys.stdout.write(tabs + 'Important words not in vocabulary {0}\n'.format(importTokens))
+        importMWEs = 0
+        for mwe in corpus.mweDictionary:
+            mwe = mwe.replace(' ', '_')
+            if mwe not in self.tokenIndices:
+                importMWEs += 1
+        if importMWEs:
+            sys.stdout.write(tabs + 'MWE not in vocabulary {0}\n'.format(importMWEs))
+        if unk not in self.tokenIndices or empty not in self.tokenIndices:
+            sys.stdout.write(tabs + 'unk or empty is not in vocabulary\n')
+        dashedKeys = 0
+        for k in self.tokenIndices:
+            if '_' in k:
+                dashedKeys += 1
+        # supposedDashedKeys = 0
+        # for mwe in corpus.mweDictionary:
+        #     supposedDashedKeys += len(mwe.split(' ')) - 1
+        # sys.stdout.write(tabs + 'Suupposed dashed keys in vocabulary {0}\n'.format(supposedDashedKeys))
+        sys.stdout.write(tabs + 'Dashed keys in vocabulary {0}\n'.format(dashedKeys))
+        oneFreq = 0
+        for k in self.tokenFreqs:
+            if self.tokenFreqs[k] == 1:
+                oneFreq += 1
+        sys.stdout.write(tabs + 'One occurrence keys in vocabulary {0} / {1}\n'.
+                         format(dashedKeys, len(self.tokenFreqs)))
+
+
+class TransParser(TransitionParser):
+    """
+    Class for transition based parser. Implement 2 algorithms which are "arc-standard" and "arc-eager"
+    """
+
+    def getTrainDataOld(self, depgraphs, sents, vocab, network):
+        """
+        Create the training example in the libsvm format and write it to the input_file.
+        Reference : Page 32, Chapter 3. Dependency Parsing by Sandra Kubler, Ryan McDonal and Joakim Nivre (2009)
+        """
+        operation = Transition(self.ARC_STANDARD)
+        count_proj = 0
+        data, labels, labelDic = [[] for _ in range(depParserInuptArrNum)], [], dict()
+        for i in range(len(sents)):
+            depgraph = depgraphs[i]
+            sent = sents[i]
+            if not self._is_projective(depgraph):
+                continue
+            count_proj += 1
+            conf = Configuration(depgraph)
+            while len(conf.buffer) > 0:
+                b0 = conf.buffer[0]
+                dataEntry = getDataEntry(conf, vocab, sent, network)
+                for i in range(depParserInuptArrNum):
+                    data[i].append(dataEntry[i])
+                if len(conf.stack) > 0:
+                    s0 = conf.stack[len(conf.stack) - 1]
+                    # Left-arc operation
+                    rel = self._get_dep_relation(b0, s0, depgraph)
+                    if rel is not None:
+                        key = Transition.LEFT_ARC + ':' + rel
+                        if key not in labelDic:
+                            labelDic[key] = len(labelDic)
+                        operation.left_arc(conf, rel)
+                        labels.append(labelDic[key])
+                        continue
+                    # Right-arc operation
+                    rel = self._get_dep_relation(s0, b0, depgraph)
+                    if rel is not None:
+                        precondition = True
+                        # Get the max-index of buffer
+                        maxID = conf._max_address
+                        for w in range(maxID + 1):
+                            if w != b0:
+                                relw = self._get_dep_relation(b0, w, depgraph)
+                                if relw is not None:
+                                    if (b0, relw, w) not in conf.arcs:
+                                        precondition = False
+                        if precondition:
+                            key = Transition.RIGHT_ARC + ':' + rel
+                            operation.right_arc(conf, rel)
+                            if key not in labelDic:
+                                labelDic[key] = len(labelDic)
+                            labels.append(labelDic[key])
+                            continue
+                # Shift operation as the default
+                key = Transition.SHIFT
+                if key not in labelDic:
+                    labelDic[key] = len(labelDic)
+                operation.shift(conf)
+                labels.append(labelDic[key])
+        print(" Number of training examples : " + str(len(depgraphs)))
+        print(" Number of valid (projective) examples : " + str(count_proj))
+        return [np.asarray(data[i]) for i in range(depParserInuptArrNum)], labels, labelDic
+
+    def getTrainData(self, depgraphs, sents, vocab, network):
+        """
+        Create the training example in the libsvm format and write it to the input_file.
+        Reference : Page 32, Chapter 3. Dependency Parsing by Sandra Kubler, Ryan McDonal and Joakim Nivre (2009)
+        """
+        operation = Transition(self.ARC_STANDARD)
+        count_proj = 0
+        data, labels, labelDic = [[] for _ in range(depParserInuptArrNum)], [], dict()
+        for i in range(len(sents)):
+            depgraph = depgraphs[i]
+            sent = sents[i]
+            if not self._is_projective(depgraph):
+                continue
+            count_proj += 1
+            conf = Configuration(depgraph)
+            while len(conf.buffer) > 0:
+                b0 = conf.buffer[0]
+                dataEntry = getDataEntry(conf, vocab, sent, network)
+                for i in range(depParserInuptArrNum):
+                    data[i].append(dataEntry[i])
+                if len(conf.stack) > 0:
+                    s0 = conf.stack[len(conf.stack) - 1]
+                    # Left-arc operation
+                    rel = self._get_dep_relation(b0, s0, depgraph)
+                    if rel is not None:
+                        if conf.stack[-1] - 1 >= 0 and conf.buffer[0] - 1 >= 0:
+                            sent.tokens[conf.stack[-1] - 1].dependencyParent = sent.tokens[conf.buffer[0] - 1]
+                        sent.tokens[conf.stack[-1] - 1].dependencyLabel = rel
+                        key = Transition.LEFT_ARC + ':' + rel
+                        if key not in labelDic:
+                            labelDic[key] = len(labelDic)
+                        operation.left_arc(conf, rel)
+                        labels.append(labelDic[key])
+
+                        continue
+                    # Right-arc operation
+                    rel = self._get_dep_relation(s0, b0, depgraph)
+                    if rel is not None:
+                        precondition = True
+                        # Get the max-index of buffer
+                        maxID = conf._max_address
+                        for w in range(maxID + 1):
+                            if w != b0:
+                                relw = self._get_dep_relation(b0, w, depgraph)
+                                if relw is not None:
+                                    if (b0, relw, w) not in conf.arcs:
+                                        precondition = False
+                        if precondition:
+                            key = Transition.RIGHT_ARC + ':' + rel
+                            if conf.stack[-1] - 1 >= 0 and conf.buffer[0] - 1 >= 0:
+                                sent.tokens[conf.buffer[0] - 1].dependencyParent = sent.tokens[conf.stack[-1] - 1]
+                            else:
+                                sent.tokens[conf.buffer[0] - 1].dependencyParent = None
+                            sent.tokens[conf.buffer[0] - 1].dependencyLabel = rel
+                            operation.right_arc(conf, rel)
+                            if key not in labelDic:
+                                labelDic[key] = len(labelDic)
+                            labels.append(labelDic[key])
+                            continue
+                # Shift operation as the default
+                key = Transition.SHIFT
+                if key not in labelDic:
+                    labelDic[key] = len(labelDic)
+                operation.shift(conf)
+                labels.append(labelDic[key])
+        print(" Number of training examples : " + str(len(depgraphs)))
+        print(" Number of valid (projective) examples : " + str(count_proj))
+        return [np.asarray(data[i]) for i in range(depParserInuptArrNum)], labels, labelDic
+
+
 def createTheModel(vocab, depParserClassNum):
     taggingModel, sharedLayers = createTaggingModel(vocab)
     if configuration['tmp']['trainIden'] or configuration['tmp']['trainJointly']:
@@ -493,14 +723,18 @@ def addSymbolLayer(inputLayers, concFlatten, sharedLayers):
 def createDepParsingModel(sharedLayers, classNum):
     depParsingLayers, depParsingDenseLayers = [], []
     for i in ['b0', 's0', 's1']:
+        # for i in ['s2', 's1', 's0', 'b0', 'b1', 'b2',
+        #           's1_L_C_1', 's1_L_C_2', 's0_L_C_1', 's0_L_C_2',
+        #           's1_R_C_1', 's1_R_C_2', 's0_R_C_1', 's0_R_C_2',
+        #           's1_R_C_2_L_Ch', 's1_RC_2_R_Ch', 's1_L_C_2_L_Ch', 's1_L_C_2_R_Ch']:
         inputLayers, denseLayer = createPosModule(sharedLayers, i)
         depParsingLayers += inputLayers
         depParsingDenseLayers.append(denseLayer)
 
     concDense = keras.layers.concatenate(depParsingDenseLayers)
-    depParsingDense = Dense(configuration['multitasking']['depParsingDenseUnitNumber'], activation='relu',
-                            name='depParsingDense')(
-        concDense)
+    depParsingDense = Dense(configuration['multitasking']['depParsingDenseUnitNumber'],
+                            activation='relu',
+                            name='depParsingDense')(concDense)
     depParsingSoftmax = Dense(classNum, activation='softmax', name='depParsingSoftMax')(depParsingDense)
     depParsingModel = Model(inputs=depParsingLayers, outputs=depParsingSoftmax)
     depParsingModel.compile(loss=configuration['nn']['loss'],
@@ -613,96 +847,6 @@ def getCallBacks():
     return callbacks
 
 
-class Vocabulary:
-    def __init__(self, corpus):
-        self.affixeDic = self.getAffixeDic(corpus)
-        self.affixeIndices = indexateDic(self.affixeDic)
-        self.tokenFreqs, self.posFreqs = getFrequencyDics(corpus)
-        self.tokenIndices = indexateDic(self.tokenFreqs)
-        self.posIndices = indexateDic(self.posFreqs)
-        if configuration['others']['verbose'] == 1:
-            sys.stdout.write(str(self))
-            self.verify(corpus)
-
-    def __str__(self):
-        res = seperator + tabs + 'Vocabulary' + doubleSep
-        res += tabs + 'Tokens := {0} * POS : {1}'.format(len(self.tokenIndices), len(self.posIndices)) \
-            if not configuration['xp']['compo'] else ''
-        res += seperator
-        return res
-
-    def getAffixeDic(self, corpus):
-        affixeDic = dict()
-        for s in corpus.trainingSents:
-            for t in s.tokens:
-                if len(t.text) >= 2:
-                    affixeDic[t.text[-2:].lower()] = 0
-                    affixeDic[t.text[:2].lower()] = 0
-                    if len(t.text) > 2:
-                        affixeDic[t.text[-3:].lower()] = 0
-                        affixeDic[t.text[:3].lower()] = 0
-        affixeDic[unk] = 0
-        affixeDic[empty] = 0
-        return affixeDic
-
-    def getIndices(self, tokens, dynamicVocab=False, parse=False):
-        if parse:
-            tokenTxt, posTxt = attachTokens(tokens, dynamicVocab=False)
-        else:
-            tokenTxt, posTxt = attachTokens(tokens, dynamicVocab=dynamicVocab)
-        if tokenTxt in self.tokenIndices:
-            tokenIdx = self.tokenIndices[tokenTxt]
-        else:
-            if dynamicVocab and parse:
-                tokenTxt, posTxt = attachTokens(tokens, dynamicVocab=dynamicVocab, parse=parse)
-                if tokenTxt in self.tokenIndices:
-                    tokenIdx = self.tokenIndices[tokenTxt]
-                else:
-                    tokenIdx = self.tokenIndices[unk]
-            else:
-                tokenIdx = self.tokenIndices[unk]
-        if posTxt in self.posIndices:
-            posIdx = self.posIndices[posTxt]
-        else:
-            posIdx = self.posIndices[unk]
-        return tokenIdx, posIdx
-
-    def getEmptyIdx(self, getPos=False, getToken=False):
-        pass
-
-    def verify(self, corpus):
-        importTokens = 0
-        for t in corpus.mweTokenDictionary:
-            if t not in self.tokenIndices:
-                importTokens += 1
-        if importTokens:
-            sys.stdout.write(tabs + 'Important words not in vocabulary {0}\n'.format(importTokens))
-        importMWEs = 0
-        for mwe in corpus.mweDictionary:
-            mwe = mwe.replace(' ', '_')
-            if mwe not in self.tokenIndices:
-                importMWEs += 1
-        if importMWEs:
-            sys.stdout.write(tabs + 'MWE not in vocabulary {0}\n'.format(importMWEs))
-        if unk not in self.tokenIndices or empty not in self.tokenIndices:
-            sys.stdout.write(tabs + 'unk or empty is not in vocabulary\n')
-        dashedKeys = 0
-        for k in self.tokenIndices:
-            if '_' in k:
-                dashedKeys += 1
-        # supposedDashedKeys = 0
-        # for mwe in corpus.mweDictionary:
-        #     supposedDashedKeys += len(mwe.split(' ')) - 1
-        # sys.stdout.write(tabs + 'Suupposed dashed keys in vocabulary {0}\n'.format(supposedDashedKeys))
-        sys.stdout.write(tabs + 'Dashed keys in vocabulary {0}\n'.format(dashedKeys))
-        oneFreq = 0
-        for k in self.tokenFreqs:
-            if self.tokenFreqs[k] == 1:
-                oneFreq += 1
-        sys.stdout.write(tabs + 'One occurrence keys in vocabulary {0} / {1}\n'.
-                         format(dashedKeys, len(self.tokenFreqs)))
-
-
 def overSample(idenData, idenLbls):
     newIdenData = []
     for i in range(len(idenData[0])):
@@ -745,7 +889,7 @@ def addDynamicVersion(tokens, corpus):
 
 def getFrequencyDics(corpus, freqTaux=0):
     tokenVocab = {unk: 5, 'root': 5, empty: 5}
-    posVocab = {unk: 5, empty: 5,'root': 5}
+    posVocab = {unk: 5, empty: 5, 'root': 5}
     for sent in corpus.trainingSents:
         trans = sent.initialTransition
         while trans:
@@ -877,131 +1021,102 @@ def padSequence(seq, label, emptyIdx):
     return np.asarray(pad_sequences([seq], maxlen=padConf[label], value=emptyIdx))[0]
 
 
-class TransParser(TransitionParser):
-    """
-    Class for transition based parser. Implement 2 algorithms which are "arc-standard" and "arc-eager"
-    """
+def getBufferTokens(conf, sent, vocab, network, dataEntry):
+    for i in range(3):
+        if i < len(conf.buffer):
+            bi = conf.buffer[i] - 1
+            addTokenTaggingEntries(sent.tokens[bi], sent, dataEntry, vocab, network)
+        else:
+            addTokenTaggingEntries(None, sent, dataEntry, vocab, network)
 
-    def getTrainData(self, depgraphs, sents, vocab, network):
-        """
-        Create the training example in the libsvm format and write it to the input_file.
-        Reference : Page 32, Chapter 3. Dependency Parsing by Sandra Kubler, Ryan McDonal and Joakim Nivre (2009)
-        """
-        operation = Transition(self.ARC_STANDARD)
-        count_proj = 0
-        data, labels, labelDic = [[] for _ in range(depParserInuptArrNum)], [], dict()
-        for i in range(len(sents)):
-            depgraph = depgraphs[i]
-            sent = sents[i]
-            if not self._is_projective(depgraph):
-                continue
-            count_proj += 1
-            conf = Configuration(depgraph)
-            while len(conf.buffer) > 0:
-                b0 = conf.buffer[0]
-                dataEntry = getDataEntry(conf, vocab, sent, network)
-                for i in range(depParserInuptArrNum):
-                    data[i].append(dataEntry[i])
-                if len(conf.stack) > 0:
-                    s0 = conf.stack[len(conf.stack) - 1]
-                    # Left-arc operation
-                    rel = self._get_dep_relation(b0, s0, depgraph)
-                    if rel is not None:
-                        key = Transition.LEFT_ARC + ':' + rel
-                        if key not in labelDic:
-                            labelDic[key] = len(labelDic)
-                        operation.left_arc(conf, rel)
-                        labels.append(labelDic[key])
-                        continue
-                    # Right-arc operation
-                    rel = self._get_dep_relation(s0, b0, depgraph)
-                    if rel is not None:
-                        precondition = True
-                        # Get the max-index of buffer
-                        maxID = conf._max_address
-                        for w in range(maxID + 1):
-                            if w != b0:
-                                relw = self._get_dep_relation(b0, w, depgraph)
-                                if relw is not None:
-                                    if (b0, relw, w) not in conf.arcs:
-                                        precondition = False
-                        if precondition:
-                            key = Transition.RIGHT_ARC + ':' + rel
-                            operation.right_arc(conf, rel)
-                            if key not in labelDic:
-                                labelDic[key] = len(labelDic)
-                            labels.append(labelDic[key])
-                            continue
-                # Shift operation as the default
-                key = Transition.SHIFT
-                if key not in labelDic:
-                    labelDic[key] = len(labelDic)
-                operation.shift(conf)
-                labels.append(labelDic[key])
-        print(" Number of training examples : " + str(len(depgraphs)))
-        print(" Number of valid (projective) examples : " + str(count_proj))
-        return [np.asarray(data[i]) for i in range(depParserInuptArrNum)] , labels, labelDic
+
+def getStackTokens(conf, sent, vocab, network, dataEntry):
+    for i in range(1, 4):
+        if i < len(conf.stack):
+            si = conf.stack[-i] - 1
+            if si == -1:
+                addTokenTaggingEntries('root', sent, dataEntry, vocab, network)
+            else:
+                addTokenTaggingEntries(sent.tokens[si], sent, dataEntry, vocab, network)
+        else:
+            addTokenTaggingEntries(None, sent, dataEntry, vocab, network)
+
+def getStackChildTokens(conf, sent, vocab, network, dataEntry):
+
+
+
+
+def addTokenTaggingEntries(token, sent, dataEntry, vocab, network):
+    if token and isinstance(token, Token) and token.getTokenOrLemma() in vocab:
+        taggingEntry = network.getTaggingEntry([token], sent)
+        for j in range(len(taggingEntry) - 1):
+            dataEntry.append(taggingEntry[j])
+            # dataEntry.append(vocab[sent.tokens[b0].getTokenOrLemma()])
+    else:
+        if not token:
+            taggingEntry = network.getTaggingEntry(['empty'], sent)
+            for j in range(len(taggingEntry) - 1):
+                dataEntry.append(taggingEntry[j])
+        else:
+            taggingEntry = network.getTaggingEntry([token], sent)
+            for j in range(len(taggingEntry) - 1):
+                dataEntry.append(taggingEntry[j])
 
 
 def getDataEntry(conf, vocab, sent, network):
+    # for i in ['s2', 's1', 's0', 'b0', 'b1', 'b2',
+    #           's1_L_C_1', 's1_L_C_2', 's0_L_C_1', 's0_L_C_2',
+    #           's1_R_C_1', 's1_R_C_2', 's0_R_C_1', 's0_R_C_2',
+    #           's1_R_C_2_L_Ch', 's1_RC_2_R_Ch', 's1_L_C_2_L_Ch', 's1_L_C_2_R_Ch']:
+
     dataEntry = []
-    b0 = conf.buffer[0] - 1
-    if sent.tokens[b0].getTokenOrLemma() in vocab:
-        taggingEntry = network.getTaggingEntry([sent.tokens[b0]], sent)
-        for j in range(len(taggingEntry) - 1):
-            dataEntry.append(taggingEntry[j])
-        #dataEntry.append(vocab[sent.tokens[b0].getTokenOrLemma()])
-    else:
-        taggingEntry = network.getTaggingEntry([None], sent)
-        for j in range(len(taggingEntry) - 1):
-            dataEntry.append(taggingEntry[j])
-        #dataEntry.append(vocab[unk])
-
-    if len(conf.stack) > 0:
-        s0 = conf.stack[len(conf.stack) - 1] - 1
-        if s0 != -1:
-            if sent.tokens[s0].getTokenOrLemma() in vocab:
-                taggingEntry = network.getTaggingEntry([sent.tokens[s0]], sent)
-                for j in range(len(taggingEntry) - 1):
-                    dataEntry.append(taggingEntry[j])
-                #dataEntry.append(vocab[sent.tokens[s0].getTokenOrLemma()])
-            else:
-                taggingEntry = network.getTaggingEntry([None], sent)
-                for j in range(len(taggingEntry) - 1):
-                    dataEntry.append(taggingEntry[j])
-                #dataEntry.append(vocab[unk])
-        else:
-            taggingEntry = network.getTaggingEntry(['root'], sent)
-            for j in range(len(taggingEntry) - 1):
-                dataEntry.append(taggingEntry[j])
-            # dataEntry.append(vocab['root'])
-    else:
-        # dataEntry.append(vocab[empty])
-        taggingEntry = network.getTaggingEntry([None], sent)
-        for j in range(len(taggingEntry) - 1):
-            dataEntry.append(taggingEntry[j])
-    if len(conf.stack) > 1:
-        s1 = conf.stack[len(conf.stack) - 1] - 1
-        if s1 != -1:
-            if sent.tokens[s1].getTokenOrLemma() in vocab:
-                # dataEntry.append(vocab[sent.tokens[s1].getTokenOrLemma()])
-                taggingEntry = network.getTaggingEntry([sent.tokens[s1]], sent)
-                for j in range(len(taggingEntry) - 1):
-                    dataEntry.append(taggingEntry[j])
-            else:
-                # dataEntry.append(vocab[unk])
-                taggingEntry = network.getTaggingEntry([None], sent)
-                for j in range(len(taggingEntry) - 1):
-                    dataEntry.append(taggingEntry[j])
-        else:
-            # dataEntry.append(vocab['root'])
-            taggingEntry = network.getTaggingEntry(['root'], sent)
-            for j in range(len(taggingEntry) - 1):
-                dataEntry.append(taggingEntry[j])
-    else:
-        # dataEntry.append(vocab[empty])
-        taggingEntry = network.getTaggingEntry(['empty'], sent)
-        for j in range(len(taggingEntry) - 1):
-            dataEntry.append(taggingEntry[j])
+    getBufferTokens(conf, sent, vocab, network, dataEntry)
+    getStackTokens(conf, sent, vocab, network, dataEntry)
+    getStackChildTokens(conf, sent, vocab, network, dataEntry)
+    # if len(conf.stack) > 0:
+    #     s0 = conf.stack[len(conf.stack) - 1] - 1
+    #     if s0 != -1:
+    #         if sent.tokens[s0].getTokenOrLemma() in vocab:
+    #             taggingEntry = network.getTaggingEntry([sent.tokens[s0]], sent)
+    #             for j in range(len(taggingEntry) - 1):
+    #                 dataEntry.append(taggingEntry[j])
+    #                 # dataEntry.append(vocab[sent.tokens[s0].getTokenOrLemma()])
+    #         else:
+    #             taggingEntry = network.getTaggingEntry([None], sent)
+    #             for j in range(len(taggingEntry) - 1):
+    #                 dataEntry.append(taggingEntry[j])
+    #                 # dataEntry.append(vocab[unk])
+    #     else:
+    #         taggingEntry = network.getTaggingEntry(['root'], sent)
+    #         for j in range(len(taggingEntry) - 1):
+    #             dataEntry.append(taggingEntry[j])
+    #             # dataEntry.append(vocab['root'])
+    # else:
+    #     # dataEntry.append(vocab[empty])
+    #     taggingEntry = network.getTaggingEntry([None], sent)
+    #     for j in range(len(taggingEntry) - 1):
+    #         dataEntry.append(taggingEntry[j])
+    # if len(conf.stack) > 1:
+    #     s1 = conf.stack[len(conf.stack) - 1] - 1
+    #     if s1 != -1:
+    #         if sent.tokens[s1].getTokenOrLemma() in vocab:
+    #             # dataEntry.append(vocab[sent.tokens[s1].getTokenOrLemma()])
+    #             taggingEntry = network.getTaggingEntry([sent.tokens[s1]], sent)
+    #             for j in range(len(taggingEntry) - 1):
+    #                 dataEntry.append(taggingEntry[j])
+    #         else:
+    #             # dataEntry.append(vocab[unk])
+    #             taggingEntry = network.getTaggingEntry([None], sent)
+    #             for j in range(len(taggingEntry) - 1):
+    #                 dataEntry.append(taggingEntry[j])
+    #     else:
+    #         # dataEntry.append(vocab['root'])
+    #         taggingEntry = network.getTaggingEntry(['root'], sent)
+    #         for j in range(len(taggingEntry) - 1):
+    #             dataEntry.append(taggingEntry[j])
+    # else:
+    #     # dataEntry.append(vocab[empty])
+    #     taggingEntry = network.getTaggingEntry(['empty'], sent)
+    #     for j in range(len(taggingEntry) - 1):
+    #         dataEntry.append(taggingEntry[j])
     return dataEntry
-
