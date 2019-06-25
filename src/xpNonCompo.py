@@ -218,7 +218,7 @@ if __name__ == '__main__':
     # configuration['tmp']['trainIden'] = False
     # configuration['tmp']['trainJointly'] = False
     # configuration['tmp']['trainDepParser'] = True
-    generateOarsub(xpNum=10, duration=50, tourNum=1, name='mlpPhrase')
+    # generateOarsub(xpNum=10, duration=50, tourNum=1, name='mlpPhrase')
     import rsg
 
     configuration['others']['analyzePerformance'] = False
