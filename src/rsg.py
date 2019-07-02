@@ -81,6 +81,8 @@ def generateConf(xpMode):
         config.generateMultTaskingConf()
     elif xpMode == XpMode.mlpPhrase:
         config.generateMlpPhrase()
+    elif xpMode == XpMode.chenManning:
+        config.generateChenManning()
     else:
         if configuration['tmp']['tunePretrained']:
             config.generateMLPConfForPretrained()

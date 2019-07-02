@@ -133,6 +133,10 @@ def getParameters(xpMode, printTilte=True):
         for k in sorted(configuration['mlpPhrase'].keys()):
             titles.append(k)
             values.append(configuration['mlpPhrase'][k])
+    elif xpMode == XpMode.chenManning:
+        for k in sorted(configuration['chenParams'].keys()):
+            titles.append(k)
+            values.append(configuration['chenParams'][k])
     else:
         for k in sorted(configuration['mlp'].keys()):
             titles.append(k)
@@ -181,6 +185,7 @@ class XpMode(Enum):
     multitasking = 8
     mlpWide = 9
     mlpPhrase = 10
+    chenManning = 11
 
 
 def setTrainAndTest(v):
@@ -213,6 +218,7 @@ def setXPMode(v):
         'rnnNonCompo': True if v == XpMode.rnnNonCompo else False,
         'mlpWide': True if v == XpMode.mlpWide else False,
         'mlpPhrase': True if v == XpMode.mlpPhrase else False,
+        'chenManning': True if v == XpMode.chenManning else False,
     })
     trues, mode = 0, 'NON.COMPO'
     for k in configuration['xp'].keys():

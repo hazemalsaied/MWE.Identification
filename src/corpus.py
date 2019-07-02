@@ -29,8 +29,6 @@ class Corpus:
         self.cleanSents()
         self.extractDictionaries()
         self.deleteNonRecognizableMWE()
-        # for key, value in sorted(self.mweDictionary.iteritems(), key=lambda (k,v): (v,k)):
-        #    print "%s: %s" % (key, value)
         printStats(self.trainingSents, 'Train', mweDic=self.mweDictionary, langName=langName, test=False)
         printStats(self.testingSents, 'Test', mweDic=self.mweDictionary, test=True)
 
@@ -1286,9 +1284,9 @@ def printStats(sents, title, mweDic=None, langName='', test=False):
     sys.stdout.write(tabs + 'Token occurrences: {0}\n'.format(tokenNum))
     sys.stdout.write(tabs + 'MWE number: {0}\n'.format(len(mwes)))
     sys.stdout.write(tabs + 'MWE occurrences: {0}\n'.format(mweNum))
-    sys.stdout.write(tabs + 'Continuous occurrences: {0} %\n'.format(round(float(continousMweNum) / mweNum * 100, 0)))
+    sys.stdout.write(tabs + 'Continuous occurrences: {0} %\n'.format(round(float(continousMweNum) / mweNum * 100, 0) if mweNum > 0 else 0))
     sys.stdout.write(tabs + 'Frequent MWE occurences: {0} %\n'.format(
-        round(float(frequentMwes) / mweNum * 100, 0)) if not test else '')
+        round(float(frequentMwes) / mweNum * 100, 0)) if not test and mweNum > 0 else '')
     sys.stdout.write(tabs + 'MWE length: {0}\n'.format(getMWEMeanLength(sents)))
     sys.stdout.write(tabs + 'Seen occurrences : {0}% \n'.format(getNewMWEPercentage(sents, mweDic)) if test else '')
     sys.stdout.write(tabs + 'Recognizable MWEs: {0} %\n'.format(round(float(recognizableNum) / mweNum * 100, 0)))

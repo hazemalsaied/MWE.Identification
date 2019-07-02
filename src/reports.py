@@ -544,9 +544,9 @@ def getNewScores(files, folder=None, pilot=False, pos=False, withTitles=True, on
                 # withTitle2 = False
                 #    sys.stdout.write('BG, BG,BG, PT, PT,PT, TR,TR, TR, BG_AVG, PT_AVG, TR_AVG ' + titles2[i][:-1])
                 sys.stdout.write('{0},{1},{2},{3},{4}\n'.format(
-                    scores[i * x] if pos and i * x < len(scores) else 0,
-                    scores[i * x + 1] if pos and i * x + 1 < len(scores) else 0,
-                    scores[i * x + 2] if pos and i * x + 2 < len(scores) else 0,
+                    scores[i * x] if i * x < len(scores) else 0,
+                    scores[i * x + 1] if i * x + 1 < len(scores) else 0,
+                    scores[i * x + 2] if i * x + 2 < len(scores) else 0,
                     titles[i][:-1], str(f)
                 ))
         # POS tagging
@@ -602,11 +602,11 @@ def getNewScores(files, folder=None, pilot=False, pos=False, withTitles=True, on
                 print posTags[i], ',', mwePosTags[i] if i < len(mwePosTags) else 0
             newStats = []
             for i in range(int(len(stats) / 5.)):
-                newStats.append(stats[i*5]) # g
-                newStats.append(stats[i*5 + 1]) # pred
-                newStats.append(stats[i*5 + 2]) # F
-                newStats.append(round(stats[i*5 + 3] * 100,1)) # P
-                newStats.append(round(stats[i*5 + 4] * 100,1)) # R
+                newStats.append(stats[i * 5])  # g
+                newStats.append(stats[i * 5 + 1])  # pred
+                newStats.append(stats[i * 5 + 2])  # F
+                newStats.append(round(stats[i * 5 + 3] * 100, 1))  # P
+                newStats.append(round(stats[i * 5 + 4] * 100, 1))  # R
                 if newStats[-1] + newStats[-2] != 0:
                     newStats.append(round(2 * newStats[-1] * newStats[-2] / (newStats[-1] + newStats[-2]), 1))
                 else:
@@ -653,6 +653,16 @@ def getNewScores(files, folder=None, pilot=False, pos=False, withTitles=True, on
             # for i in range(len(titles)):
             #     if i*2 + 1 < len(scores):
             #         print str(scores[i*2]) +','+ str(scores[i*2 + 1]) + ',' + titles[i][:-1]
+
+
+def parseChenManningReports(files):
+    for ff in files:
+        print str(ff)
+        path = os.path.join('../Reports/Reports/', ff)
+        configs = mineReport(path, '# Configs:')
+        accs = mineReport(path, 'Dep Parsing accuracy = ')
+        for i in range(len(accs)):
+            print ','.join(str(x) for x in [accs[i], configs[i]])
 
 
 goldLine = '	Gold:'
@@ -738,6 +748,17 @@ def mineNewFile(newFile, folder=None, ftb=False):
     return titles, scores, params, langs, titles2, seeds, stats, precisions, recalls, misidentified, nonIdentified, mwePosTags, posTags
 
 
+def mineReport(path, line, usePreviousLine=False, previousLine=''):
+    results, pl = [], ''
+    with open(path, 'r') as log:
+        for l in log.readlines():
+            if l.startswith(line) and pl == previousLine:
+                results.append(l[len(line):-1])
+            if usePreviousLine:
+                pl = l
+    return results
+
+
 def mineCoopFile(newFile):
     path = '../Reports/Reports/{0}'.format(newFile)
     params, scores = [], []
@@ -790,7 +811,7 @@ def mineSTScriptRes(newFile):
                 res.append(round(float(line[-5:-1]) / 100., 1))
                 res.append(round(float(line.split('=')[2][:-2]) * 100., 1))
                 res.append(round(float(line.split('=')[4][:-2]) * 100., 1))
-            #if line.startswith('* MWE-based:'):
+            # if line.startswith('* MWE-based:'):
 
             if line.startswith('* Tok-based:'):
                 res.append(round(float(line[-5:-1]) / 100., 1))
@@ -848,7 +869,7 @@ def mineSTScriptRes(newFile):
                 results.append(res)
                 print res
                 res = []
-    #print results
+    # print results
     return results
 
 
@@ -913,6 +934,7 @@ def getSeenandNonSeenStats():
                 res += '{0},{1},{2},{3},{4},{5}\n'.format(ig, i, g, p, r, f)
         sys.stdout.write(res)
 
+
 def analyzeCatReport():
     path = '/Users/halsaied/PycharmProjects/MWE.Identification/Results/Evaluation/Reports/TrainVsDev/catAnalysis.svm'
     with open(path, 'r') as ff:
@@ -920,29 +942,19 @@ def analyzeCatReport():
         for l in ff:
             if l.startswith('	HE Train '):
                 pass
-            if l[1:4] in ['VID', 'LVC', 'IRV', 'VPC', 'IAV', 'MVC', 'LC:' ]:
+            if l[1:4] in ['VID', 'LVC', 'IRV', 'VPC', 'IAV', 'MVC', 'LC:']:
                 res += l[-5:-1] if not l.endswith('-\n') else '-'
                 res += ','
 
             if l.startswith('	Mode'):
-                res+= '\n'
+                res += '\n'
     print res
+
+
 if __name__ == '__main__':
-    # getSeenandNonSeenStats()
-    # mineSTScriptRes('scriptRes.tendy.txt')
-    # analyzeCatReport()
-    # getSeedScores(
-    # for f in os.listdir('../Reports/MLP'):
-    #     #if f.split('.')[1] != '02':
-    #     if not f.startswith('06.02'):
-    #         os.remove('../Reports/MLP/' + f)
+    # getNewScores(
+    #     [f for f in os.listdir('../Reports/Reports/') if f.startswith('mlpPhrase2')], None
+    #     , pilot=True, withTitles=True, pos=False, onFixed=True, onCorpus=False, ftb=False)
 
-    getNewScores(
-        [f for f in os.listdir('../Reports/Reports/') if f.startswith('multi.j')], None
-        , pilot=False, withTitles=False, pos=True, onFixed=True, onCorpus=False, ftb=False)
+    parseChenManningReports([f for f in os.listdir('../Reports/Reports/') if f.startswith('chenManning.1')])
 
-    # for subdir, dirs, files in os.walk('../Reports/Reports/MLP.New'):
-    #    for dir in dirs:
-    #         getNewScores(
-    #             [f for f in os.listdir('../Reports/Reports/MLP.New/' + dir) if f.startswith('mlp')], dir
-    #             , pilot=True, withTitles=True, withTitle2=False)

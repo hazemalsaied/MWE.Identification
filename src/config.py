@@ -3,6 +3,32 @@ import os
 import random
 
 configuration = {
+    'chenParams': {
+        'tokenEmb': 100,
+        'posEmb': 15,
+        'synLabelEmb': 10,
+        'dense1UnitNumber': 100,
+        'dense1Activation': 'relu',
+        'dense1Dropout': .5,
+        'lr': .02,
+        'batchSize': 32,
+        'unlabeled': True,
+        'l2': 10e-8,
+        'regularizer': False,
+        'cubeActivation': False,
+        'pretrained': False,
+        'earlyStopping': True,
+        'epochs':50,
+        'minDelta':.01,
+        'patience':4,
+        'monitor': 'val_loss',
+        'validationSplit':.2
+    },
+    'chenConstant': {
+        'confElements': 18,
+        'synLabelNum': 12,
+        'transNumber': 3
+    },
     'multitasking': {
         'windowSize': 3,
         'tokenDim': 64,
@@ -22,6 +48,7 @@ configuration = {
         'depParserBatchSize': 32,
         'initialEpochs': 1,
         'jointLearningEpochs': 100,
+        'sytacticLabelDim': 25,
         'lr': 0.02
     }, 'xp': {
         'linear': False,
@@ -33,7 +60,8 @@ configuration = {
         'rnnNonCompo': False,
         'compoRnn': False,
         'multitasking': False,
-        'mlpWide': False
+        'mlpWide': False,
+        'chenManning': False
     }, 'dataset': {
         'sharedtask2': False,
         'ftb': False,
@@ -93,7 +121,7 @@ configuration = {
         'gru': True,
         'shuffle': True
     }, 'tmp': {
-        'createDepGraphs': False,
+        'createDepGraphs': True,
         'dontParse': False,
         'trainIden': False,
         'trainDepParser': False,
@@ -1028,7 +1056,7 @@ def generateMlpPhrase():
         'phraseMaxLength': 50,
         'phraseTokenEmb': int(generateValue([25, 200], True)),
         'phrasePosEmb': int(generateValue([5, 50], True)),
-        'gru': True,
+        'gru': generateValue([True, False], False, True),
         'wordRnnUnitNum': int(generateValue([25, 500], True)),
         'useB1': generateValue([True, False], False),
         'useB-1': generateValue([True, False], False),
@@ -1041,6 +1069,23 @@ def generateMlpPhrase():
     configuration['sampling']['importantSentences'] = True
     configuration['sampling']['overSampling'] = True
 
+
+def generateChenManning():
+    setChenManningParameters()
+    configuration['chenParams'].update({
+        'monitor': generateValue(['val_loss', 'val_acc'], False, True),
+        'earlyStopping': generateValue([True, False], False, True)
+    })
+    if configuration['chenParams']['earlyStopping']:
+        configuration['chenParams']['epochs'] = 100
+        configuration['chenParams']['minDelta'] = round(generateValue([.0001, 0.1], True), 5)
+        configuration['chenParams']['patience'] = int(generateValue([2, 10], True))
+    else:
+        configuration['chenParams']['epochs'] = int(generateValue([5, 50], True))
+
+    configuration['chenParams']['lr'] = round(generateValue([0.01, 0.2], True), 3)
+    configuration['embedding']['lemma'] = generateValue([True, False], False, True)
+    configuration['sampling']['importantSentences'] = False
 
 def setBestMTConfForPOS():
     configuration['multitasking'].update({
@@ -1172,3 +1217,18 @@ def setBestMTConfForJoint():
     configuration['embedding']['lemma'] = True
     configuration['sampling']['importantSentences'] = True
     configuration['sampling']['overSampling'] = True
+
+def setChenManningParameters():
+    configuration['chenParams']['dense1Dropout'] = .5
+    configuration['chenParams']['lr'] = .01
+    configuration['chenParams']['dense1UnitNumber'] = 200
+    configuration['chenParams']['regularizer'] = True
+    configuration['chenParams']['l2'] = 10e-8
+    configuration['chenParams']['tokenEmb'] = 300
+    configuration['chenParams']['posEmb'] = 50
+    configuration['chenParams']['synLabelEmb'] = 50
+    configuration['chenParams']['batchSize'] = 32
+    configuration['chenParams']['cubeActivation'] = True
+    configuration['chenParams']['pretrained'] = True
+    configuration['chenParams']['earlyStopping'] = True
+    configuration['chenParams']['epochs'] = 50

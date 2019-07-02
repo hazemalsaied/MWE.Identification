@@ -6,12 +6,26 @@ from numpy import zeros
 from config import configuration
 
 
-def getEmbMatrix(lang, vocab):
+def getEmbMatrix(lang, vocab, dimension=configuration['mlp']['tokenEmb'],inverseVocab=False):
+    """
+    create a pretrained embedding matrix by loading the pretrained embeddings of simple words
+    of the vocabulary that exist in FastText, initializing random embeddings for new words,
+    and averaging or summing embedding of attached words that could occupy the head of the stack
+    :param lang:
+    :param vocab: index:word vocabulary
+    :return:
+    """
     # vocab = list(getCorpusTokens(lang))
-    wordEmbDic = getEmbs(lang)
+    wordEmbDic = loadFastTextEmbeddings(lang)
     vocabSize = len(vocab)
     idxs = range(0, vocabSize)
-    embeddingMatrix = zeros((vocabSize, configuration['mlp']['tokenEmb']))
+    embeddingMatrix = zeros((vocabSize, dimension))
+    if inverseVocab:
+        newVocabDic = dict()
+
+        for k,v in vocab.items():
+            newVocabDic[v] = k
+        vocab = newVocabDic
     for i in idxs:
         if vocab[i] in wordEmbDic:
             embeddingMatrix[i] = np.asarray(wordEmbDic[vocab[i]], dtype=float)
@@ -37,6 +51,7 @@ def getEmbMatrix(lang, vocab):
             embeddingMatrix[i] = np.random.uniform(low=-.5, high=.5, size=(1, configuration['mlp']['tokenEmb']))
 
 
+
     # embeddingMatrix[-1] = np.random.rand(1, configuration['mlp']['tokenEmb'])
     # embeddingMatrix[-2] = np.random.rand(1, configuration['mlp']['tokenEmb'])
     # embeddingMatrix[-3] = np.random.rand(1, configuration['mlp']['tokenEmb'])
@@ -47,6 +62,7 @@ def getEmbMatrix(lang, vocab):
     # vocabIdx[configuration['constants']['empty']] = len(vocab) + 1
     # vocabIdx[configuration['constants']['number']] = len(vocab) + 1
     return vocabIdx, embeddingMatrix
+
 
 
 def getCorpusTokens(lang):
@@ -76,7 +92,12 @@ def createLightEmbs(fbFolder, filePath, lang):
         ff.write(lightEmbstr)
 
 
-def getEmbs(lang):
+def loadFastTextEmbeddings(lang):
+    """
+    Load fasttext pretrained embeddings from embedding files
+    :param lang:
+    :return: a dictionary of pretrained embeddings
+    """
     wordEmb = dict()
     embPath = os.path.join(configuration['path']['projectPath'],
                            'ressources/FacebookEmbsLight/wiki.{0}.vec'.format(lang.lower()))

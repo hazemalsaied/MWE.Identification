@@ -2,7 +2,7 @@
 import config
 from config import setMLPConf, setMlpOpenConf, setMlpTendanceConf, \
     setBestMTConfForIden, setBestMTConfForJoint, setBestMTConfForPOS, \
-    setTrendMTConfForIden, setTrendMTConfForJoint, setTrendMTConfForPOS
+    setTrendMTConfForIden, setTrendMTConfForJoint, setTrendMTConfForPOS, setChenManningParameters
 from xpTools import *
 
 
@@ -183,14 +183,6 @@ def evaluateJointIdent(langs=allSharedtask2Lang, division=Evaluation.trainVsDev)
        XpMode.multitasking, division, seeds=[0])
 
 
-def depParse():
-    from depBaselineParser import parse
-    initXp(XpMode.linear, Dataset.sharedtask2, Evaluation.trainVsDev, None, None)  # Evaluation.trainVsDev
-    for l in allSharedtask2Lang:
-        if l != 'LT':
-            parse(l)
-
-
 def createConllFiles(langs=allSharedtask2Lang):
     for l in langs:
         datasetConf, pathConf = configuration['dataset'], configuration['path']
@@ -218,15 +210,18 @@ if __name__ == '__main__':
     # configuration['tmp']['trainIden'] = False
     # configuration['tmp']['trainJointly'] = False
     # configuration['tmp']['trainDepParser'] = True
-    # generateOarsub(xpNum=10, duration=50, tourNum=1, name='mlpPhrase')
+
+    # generateOarsub(xpNum=5, duration=50, tourNum=1, name='chenManning.')
     import rsg
-
     configuration['others']['analyzePerformance'] = False
-    rsg.runRSGSpontaneously(pilotLangs, Dataset.sharedtask2, XpMode.mlpPhrase, Evaluation.fixedSize,
-                           seeds=[0], xpNumByThread=120)
+    rsg.runRSGSpontaneously(['FR'], Dataset.sharedtask2, XpMode.chenManning, Evaluation.trainVsDev,
+                            seeds=[0], xpNumByThread=120)
 
-    # rsg.def runRSGSpontaneously(['BG', 'PT', 'TR'], Dataset.sharedtask2,
-    #                        XpMode.multitasking, Evaluation.fixedSize, [0],
-    #                        xpNumByThread=300)
-    # xp(['FR'], Dataset.sharedtask2, XpMode.multitasking, None)# Evaluation.trainVsDev)
-    # xp(['FR'], Dataset.sharedtask2, XpMode.mlpPhrase, None)  # Evaluation.trainVsDev)
+    # xp(['FR'], Dataset.sharedtask2, XpMode.chenManning, None)
+    # generateOarsub(xpNum=10, duration=50, tourNum=2, name='mlpPhrase')
+    # import rsg
+    #
+    # configuration['others']['analyzePerformance'] = False
+    # rsg.runRSGSpontaneously(pilotLangs, Dataset.sharedtask2, XpMode.mlpPhrase, Evaluation.fixedSize,
+    #                        seeds=[0], xpNumByThread=120)
+

@@ -1,5 +1,5 @@
 from random import uniform
-from corpus import Token
+
 import keras
 import numpy as np
 from imblearn.over_sampling import RandomOverSampler
@@ -12,6 +12,7 @@ from keras.utils import to_categorical
 from nltk.parse.transitionparser import TransitionParser, Transition, Configuration
 
 import reports
+from corpus import Token
 from corpus import getRelevantModelAndNormalizer
 from corpus import getTokens, getLemmaString
 from modelLinear import getFeatures
@@ -22,8 +23,6 @@ from wordEmbLoader import unk, number
 
 # unk = configuration['constants']['unk']
 # empty = configuration['constants']['empty']
-
-
 
 
 enableCategorization = False
@@ -42,17 +41,14 @@ class Network:
         taggingInputArray = 2 + int(configuration['multitasking']['useCapitalization']) \
                             + int(configuration['multitasking']['useSymbols'])
         idenInputArrNum = taggingInputArray * 3 + (taggingInputArray * configuration['multitasking']['useB1']) + (
-            taggingInputArray * configuration['multitasking']['useBx'])
-        depParserInuptArrNum = taggingInputArray * 3
+                taggingInputArray * configuration['multitasking']['useBx'])
+        depParserInuptArrNum = taggingInputArray * 18 + 1
         self.vocabulary = Vocabulary(corpus)
 
         if configuration['tmp']['trainDepParser']:
             self.parser = TransParser('arc-standard')
             self.depParserData, self.depParserLabels, self.depLabelDic = \
-                self.parser.getTrainData(corpus.trainDepGraphs,
-                                         corpus.allTrainingSents,
-                                         self.vocabulary.tokenIndices,
-                                         self)
+                self.parser.getTrainData(corpus, self)
 
         self.taggingModel, self.idenModel, self.depParsingModel = createTheModel(self.vocabulary, len(self.depLabelDic))
 
@@ -93,9 +89,7 @@ class Network:
                                  callbacks=[es])
 
     def testDepParser(self, corpus):
-        depParserData, depParserLabels, depLabelDic = self.parser.getTrainData(corpus.testDepGraphs,
-                                                                               corpus.testingSents,
-                                                                               self.vocabulary.tokenIndices, self)
+        depParserData, depParserLabels, depLabelDic = self.parser.getTrainData(corpus, self)
         depParserLabels = to_categorical(depParserLabels, num_classes=len(self.depLabelDic))
         results = self.depParsingModel.evaluate(depParserData, depParserLabels, batch_size=32, verbose=0)
         sys.stdout.write('Dep Parsing accuracy = {0}\nLoss = {1}, \n'.format(
@@ -159,19 +153,8 @@ class Network:
                                          verbose=2,
                                          batch_size=configuration['multitasking']['identBatchSize'])
                 historyList.append(his)
-                if self.shouldStopLearning(historyList):
+                if shouldStopLearning(historyList):
                     break
-
-    def shouldStopLearning(self, historyList, patience=4, minDelta=.1):
-        if len(historyList) <= patience:
-            return False
-        for i in range(patience):
-            if historyList[len(historyList) - i - 1].history['loss'][0] - \
-                    historyList[len(historyList) - i - 2].history['loss'][0] <= minDelta:
-                continue
-            else:
-                return False
-        return True
 
     def predictIdent(self, trans, sent):
         inputs = self.getPredData(trans, sent)
@@ -435,9 +418,10 @@ class Vocabulary:
     def __init__(self, corpus):
         self.affixeDic = self.getAffixeDic(corpus)
         self.affixeIndices = indexateDic(self.affixeDic)
-        self.tokenFreqs, self.posFreqs = getFrequencyDics(corpus)
+        self.tokenFreqs, self.posFreqs, self.sytacticLabels = getFrequencyDics(corpus)
         self.tokenIndices = indexateDic(self.tokenFreqs)
         self.posIndices = indexateDic(self.posFreqs)
+        self.syntacticLabelIndices = indexateDic(self.sytacticLabels)
         if configuration['others']['verbose'] == 1:
             sys.stdout.write(str(self))
             self.verify(corpus)
@@ -586,7 +570,7 @@ class TransParser(TransitionParser):
         print(" Number of valid (projective) examples : " + str(count_proj))
         return [np.asarray(data[i]) for i in range(depParserInuptArrNum)], labels, labelDic
 
-    def getTrainData(self, depgraphs, sents, vocab, network):
+    def getTrainData(self, corpus, network):
         """
         Create the training example in the libsvm format and write it to the input_file.
         Reference : Page 32, Chapter 3. Dependency Parsing by Sandra Kubler, Ryan McDonal and Joakim Nivre (2009)
@@ -594,16 +578,18 @@ class TransParser(TransitionParser):
         operation = Transition(self.ARC_STANDARD)
         count_proj = 0
         data, labels, labelDic = [[] for _ in range(depParserInuptArrNum)], [], dict()
-        for i in range(len(sents)):
-            depgraph = depgraphs[i]
-            sent = sents[i]
+        for i in range(len(corpus.trainingSents)):
+            depgraph = corpus.trainDepGraphs[i]
+            sent = corpus.trainingSents[i]
             if not self._is_projective(depgraph):
                 continue
             count_proj += 1
             conf = Configuration(depgraph)
             while len(conf.buffer) > 0:
                 b0 = conf.buffer[0]
-                dataEntry = getDataEntry(conf, vocab, sent, network)
+                dataEntry = getDataEntry(conf, sent, network)
+                if len(dataEntry) != 73:
+                    print conf
                 for i in range(depParserInuptArrNum):
                     data[i].append(dataEntry[i])
                 if len(conf.stack) > 0:
@@ -651,7 +637,7 @@ class TransParser(TransitionParser):
                     labelDic[key] = len(labelDic)
                 operation.shift(conf)
                 labels.append(labelDic[key])
-        print(" Number of training examples : " + str(len(depgraphs)))
+        print(" Number of training examples : " + str(len(corpus.trainDepGraphs)))
         print(" Number of valid (projective) examples : " + str(count_proj))
         return [np.asarray(data[i]) for i in range(depParserInuptArrNum)], labels, labelDic
 
@@ -663,7 +649,7 @@ def createTheModel(vocab, depParserClassNum):
     else:
         idenModel = None
     if configuration['tmp']['trainDepParser']:
-        depParsingModel = createDepParsingModel(sharedLayers, depParserClassNum)
+        depParsingModel = createDepParsingModel(sharedLayers, depParserClassNum, vocab)
     else:
         depParsingModel = None
     return taggingModel, idenModel, depParsingModel
@@ -720,16 +706,23 @@ def addSymbolLayer(inputLayers, concFlatten, sharedLayers):
         sharedLayers.append(sharedSymbolEmb)
 
 
-def createDepParsingModel(sharedLayers, classNum):
+def createDepParsingModel(sharedLayers, classNum, vocab):
     depParsingLayers, depParsingDenseLayers = [], []
-    for i in ['b0', 's0', 's1']:
-        # for i in ['s2', 's1', 's0', 'b0', 'b1', 'b2',
-        #           's1_L_C_1', 's1_L_C_2', 's0_L_C_1', 's0_L_C_2',
-        #           's1_R_C_1', 's1_R_C_2', 's0_R_C_1', 's0_R_C_2',
-        #           's1_R_C_2_L_Ch', 's1_RC_2_R_Ch', 's1_L_C_2_L_Ch', 's1_L_C_2_R_Ch']:
+    # for i in ['b0', 's0', 's1']:
+    for i in ['b0', 'b1', 'b2', 's0', 's1', 's2',
+              's1_LM1', 's1_LM2', 's0_LM1', 's0_LM2',
+              's1_RM1', 's1_RM2', 's0_RM1', 's0_RM2',
+              's1_LM_LM', 's1_RM_RM', 's0_LM_LM', 's0_RM_RM']:
         inputLayers, denseLayer = createPosModule(sharedLayers, i)
         depParsingLayers += inputLayers
         depParsingDenseLayers.append(denseLayer)
+
+    synLblInput = Input((12,), dtype='int32', name='SyntacticLabels')
+    depParsingLayers.append(synLblInput)
+    synLblEmb = Embedding(len(vocab.syntacticLabelIndices), configuration['multitasking']['sytacticLabelDim'],
+                          name='SyntacticLabelEmb')(synLblInput)
+    synLblFlatten = Flatten()(synLblEmb)
+    depParsingDenseLayers.append(synLblFlatten)
 
     concDense = keras.layers.concatenate(depParsingDenseLayers)
     depParsingDense = Dense(configuration['multitasking']['depParsingDenseUnitNumber'],
@@ -890,6 +883,15 @@ def addDynamicVersion(tokens, corpus):
 def getFrequencyDics(corpus, freqTaux=0):
     tokenVocab = {unk: 5, 'root': 5, empty: 5}
     posVocab = {unk: 5, empty: 5, 'root': 5}
+    syntacticLabelVocab = {unk: 5, empty: 5}
+    for depGraph in corpus.trainDepGraphs:
+        for n in depGraph.nodes:
+            k = depGraph.nodes[n]['ctag'].lower()
+            if k not in syntacticLabelVocab:
+                syntacticLabelVocab[k] = 1
+            else:
+                syntacticLabelVocab[k] += 1
+
     for sent in corpus.trainingSents:
         trans = sent.initialTransition
         while trans:
@@ -918,7 +920,7 @@ def getFrequencyDics(corpus, freqTaux=0):
                 del tokenVocab[k]
     if configuration['others']['verbose']:
         sys.stdout.write(tabs + 'After : {0}\n'.format(len(tokenVocab)))
-    return tokenVocab, posVocab
+    return tokenVocab, posVocab, syntacticLabelVocab
 
 
 def attachTokens(tokens, dynamicVocab=False, parse=False):
@@ -1041,9 +1043,123 @@ def getStackTokens(conf, sent, vocab, network, dataEntry):
         else:
             addTokenTaggingEntries(None, sent, dataEntry, vocab, network)
 
-def getStackChildTokens(conf, sent, vocab, network, dataEntry):
+
+def getSyntacticLabelIndice(t, vocab):
+    if t:
+        k = t.dependencyLabel.lower()
+        if k in vocab:
+            return vocab[k]
+        return vocab[unk]
+    return vocab[empty]
 
 
+def getStackLeftMosts(conf, sent, vocab, synVocab, network, dataEntry):
+    syntacticLabels = []
+    for i in range(2):
+        if len(conf.stack) >= 2 - i:
+            if conf.stack[i - 2] > 0:
+                si = sent.tokens[conf.stack[i - 2] - 1]
+                leftMostChildren = getLeftMostChildren(si, sent)
+                for t in leftMostChildren[:2]:
+                    addTokenTaggingEntries(t, sent, dataEntry, vocab, network)
+                    syntacticLabels.append(getSyntacticLabelIndice(t, synVocab))
+                for _ in range(2 - len(leftMostChildren)):
+                    addTokenTaggingEntries(None, sent, dataEntry, vocab, network)
+                    syntacticLabels.append(getSyntacticLabelIndice(None, synVocab))
+            else:
+                addTokenTaggingEntries(None, sent, dataEntry, vocab, network)
+                syntacticLabels.append(getSyntacticLabelIndice(None, synVocab))
+                addTokenTaggingEntries(None, sent, dataEntry, vocab, network)
+                syntacticLabels.append(getSyntacticLabelIndice(None, synVocab))
+        else:
+            addTokenTaggingEntries(None, sent, dataEntry, vocab, network)
+            syntacticLabels.append(getSyntacticLabelIndice(None, synVocab))
+            addTokenTaggingEntries(None, sent, dataEntry, vocab, network)
+            syntacticLabels.append(getSyntacticLabelIndice(None, synVocab))
+    return syntacticLabels
+
+
+def getStackRightMosts(conf, sent, vocab, synVocab, network, dataEntry):
+    syntacticLabels = []
+    for i in range(2):
+        if len(conf.stack) >= 2 - i:
+            if conf.stack[i - 2] > 0:
+                si = sent.tokens[conf.stack[i - 2] - 1]
+                rightMostChildren = getRightMostChildren(si, sent)
+                for t in rightMostChildren[:2]:
+                    addTokenTaggingEntries(t, sent, dataEntry, vocab, network)
+                    syntacticLabels.append(getSyntacticLabelIndice(t, synVocab))
+                for _ in range(2 - len(rightMostChildren)):
+                    addTokenTaggingEntries(None, sent, dataEntry, vocab, network)
+                    syntacticLabels.append(getSyntacticLabelIndice(None, synVocab))
+            else:
+                addTokenTaggingEntries(None, sent, dataEntry, vocab, network)
+                syntacticLabels.append(getSyntacticLabelIndice(None, synVocab))
+                addTokenTaggingEntries(None, sent, dataEntry, vocab, network)
+                syntacticLabels.append(getSyntacticLabelIndice(None, synVocab))
+        else:
+            addTokenTaggingEntries(None, sent, dataEntry, vocab, network)
+            syntacticLabels.append(getSyntacticLabelIndice(None, synVocab))
+            addTokenTaggingEntries(None, sent, dataEntry, vocab, network)
+            syntacticLabels.append(getSyntacticLabelIndice(None, synVocab))
+    return syntacticLabels
+
+
+def getStackLeftAndRightMostOfLeftAndRightMosts(conf, sent, vocab, synVocab, network, dataEntry):
+    syntacticLabels = []
+    for i in range(2):
+        if len(conf.stack) >= 2 - i and conf.stack[i - 2] > 0:
+            si = sent.tokens[conf.stack[i - 2] - 1]
+            leftMostOfLeftMostChild = getLeftMostOfLeftMostChildren(si, sent)
+            addTokenTaggingEntries(leftMostOfLeftMostChild, sent, dataEntry, vocab, network)
+            syntacticLabels.append(getSyntacticLabelIndice(leftMostOfLeftMostChild, synVocab))
+            rightMostOfRightMostChild = getRightMostOfRightMostChildren(si, sent)
+            addTokenTaggingEntries(rightMostOfRightMostChild, sent, dataEntry, vocab, network)
+            syntacticLabels.append(getSyntacticLabelIndice(rightMostOfRightMostChild, synVocab))
+        else:
+            addTokenTaggingEntries(None, sent, dataEntry, vocab, network)
+            syntacticLabels.append(getSyntacticLabelIndice(None, synVocab))
+            addTokenTaggingEntries(None, sent, dataEntry, vocab, network)
+            syntacticLabels.append(getSyntacticLabelIndice(None, synVocab))
+    return syntacticLabels
+
+
+def getLeftMostChildren(token, sent):
+    leftMostChildren = []
+    for t in sent.tokens[:token.position - 1]:
+        if t.dependencyParent == token.position:
+            leftMostChildren.append(t)
+    return leftMostChildren
+
+
+def getLeftMostOfLeftMostChildren(token, sent):
+    leftMostChildren = []
+    for t in sent.tokens[:token.position - 1]:
+        if t.dependencyParent == token.position:
+            leftMostChildren.append(t)
+            break
+    if leftMostChildren:
+        return getLeftMostChildren(leftMostChildren[0], sent)[0]
+    return None
+
+
+def getRightMostOfRightMostChildren(token, sent):
+    rightMostChildren = []
+    for t in sent.tokens[:token.position - 1]:
+        if t.dependencyParent == token.position:
+            rightMostChildren.append(t)
+            break
+    if rightMostChildren:
+        return getRightMostChildren(rightMostChildren[0], sent)[0]
+    return None
+
+
+def getRightMostChildren(token, sent):
+    rightMostChildren = []
+    for t in reversed(sent.tokens[token.position:]):
+        if t.dependencyParent == token.position:
+            rightMostChildren.append(t)
+    return rightMostChildren
 
 
 def addTokenTaggingEntries(token, sent, dataEntry, vocab, network):
@@ -1063,60 +1179,26 @@ def addTokenTaggingEntries(token, sent, dataEntry, vocab, network):
                 dataEntry.append(taggingEntry[j])
 
 
-def getDataEntry(conf, vocab, sent, network):
-    # for i in ['s2', 's1', 's0', 'b0', 'b1', 'b2',
-    #           's1_L_C_1', 's1_L_C_2', 's0_L_C_1', 's0_L_C_2',
-    #           's1_R_C_1', 's1_R_C_2', 's0_R_C_1', 's0_R_C_2',
-    #           's1_R_C_2_L_Ch', 's1_RC_2_R_Ch', 's1_L_C_2_L_Ch', 's1_L_C_2_R_Ch']:
-
+def getDataEntry(conf, sent, network):
+    tokenVocab = network.vocabulary.tokenIndices
+    syntacticLabelVocab = network.vocabulary.syntacticLabelIndices
     dataEntry = []
-    getBufferTokens(conf, sent, vocab, network, dataEntry)
-    getStackTokens(conf, sent, vocab, network, dataEntry)
-    getStackChildTokens(conf, sent, vocab, network, dataEntry)
-    # if len(conf.stack) > 0:
-    #     s0 = conf.stack[len(conf.stack) - 1] - 1
-    #     if s0 != -1:
-    #         if sent.tokens[s0].getTokenOrLemma() in vocab:
-    #             taggingEntry = network.getTaggingEntry([sent.tokens[s0]], sent)
-    #             for j in range(len(taggingEntry) - 1):
-    #                 dataEntry.append(taggingEntry[j])
-    #                 # dataEntry.append(vocab[sent.tokens[s0].getTokenOrLemma()])
-    #         else:
-    #             taggingEntry = network.getTaggingEntry([None], sent)
-    #             for j in range(len(taggingEntry) - 1):
-    #                 dataEntry.append(taggingEntry[j])
-    #                 # dataEntry.append(vocab[unk])
-    #     else:
-    #         taggingEntry = network.getTaggingEntry(['root'], sent)
-    #         for j in range(len(taggingEntry) - 1):
-    #             dataEntry.append(taggingEntry[j])
-    #             # dataEntry.append(vocab['root'])
-    # else:
-    #     # dataEntry.append(vocab[empty])
-    #     taggingEntry = network.getTaggingEntry([None], sent)
-    #     for j in range(len(taggingEntry) - 1):
-    #         dataEntry.append(taggingEntry[j])
-    # if len(conf.stack) > 1:
-    #     s1 = conf.stack[len(conf.stack) - 1] - 1
-    #     if s1 != -1:
-    #         if sent.tokens[s1].getTokenOrLemma() in vocab:
-    #             # dataEntry.append(vocab[sent.tokens[s1].getTokenOrLemma()])
-    #             taggingEntry = network.getTaggingEntry([sent.tokens[s1]], sent)
-    #             for j in range(len(taggingEntry) - 1):
-    #                 dataEntry.append(taggingEntry[j])
-    #         else:
-    #             # dataEntry.append(vocab[unk])
-    #             taggingEntry = network.getTaggingEntry([None], sent)
-    #             for j in range(len(taggingEntry) - 1):
-    #                 dataEntry.append(taggingEntry[j])
-    #     else:
-    #         # dataEntry.append(vocab['root'])
-    #         taggingEntry = network.getTaggingEntry(['root'], sent)
-    #         for j in range(len(taggingEntry) - 1):
-    #             dataEntry.append(taggingEntry[j])
-    # else:
-    #     # dataEntry.append(vocab[empty])
-    #     taggingEntry = network.getTaggingEntry(['empty'], sent)
-    #     for j in range(len(taggingEntry) - 1):
-    #         dataEntry.append(taggingEntry[j])
+    getBufferTokens(conf, sent, tokenVocab, network, dataEntry)
+    getStackTokens(conf, sent, tokenVocab, network, dataEntry)
+    syntacticLabels = getStackLeftMosts(conf, sent, tokenVocab, syntacticLabelVocab, network, dataEntry)
+    syntacticLabels += getStackRightMosts(conf, sent, tokenVocab, syntacticLabelVocab, network, dataEntry)
+    syntacticLabels += getStackLeftAndRightMostOfLeftAndRightMosts(conf, sent, tokenVocab,syntacticLabelVocab, network, dataEntry)
+    dataEntry.append(syntacticLabels)
     return dataEntry
+
+
+def shouldStopLearning(historyList, patience=4, minDelta=.1):
+    if len(historyList) <= patience:
+        return False
+    for i in range(patience):
+        if historyList[len(historyList) - i - 1].history['loss'][0] - \
+                historyList[len(historyList) - i - 2].history['loss'][0] <= minDelta:
+            continue
+        else:
+            return False
+    return True

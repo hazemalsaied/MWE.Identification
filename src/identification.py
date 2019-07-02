@@ -10,6 +10,7 @@ import modelLinear
 import modelMultiTasking
 import modelNonCompo
 import modelMlpWide
+import modelChenManning
 import modelRnn
 import modelRnnNonCompo
 import oracle
@@ -262,6 +263,12 @@ def parseAndTrain(corpus):
         return network, None
     if configuration['xp']['mlpPhrase']:
         network = modelMlpPhrase.train(corpus)
+        return network, None
+    if configuration['xp']['chenManning']:
+        network = modelChenManning.Network(corpus)
+        network.train()
+        network.test(corpus)
+        configuration['tmp']['dontParse'] = True
         return network, None
     if configuration['xp']['compoRnn']:
         network = modelCompoRnn.Network(corpus)
