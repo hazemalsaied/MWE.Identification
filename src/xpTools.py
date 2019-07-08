@@ -1,6 +1,6 @@
 import datetime
 
-#import torch
+import torch
 from enum import Enum
 from theano import function, config, shared, tensor
 

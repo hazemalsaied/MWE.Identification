@@ -204,6 +204,9 @@ class DataFactory(object):
         Create the training example in the libsvm format and write it to the input_file.
         Reference : Page 32, Chapter 3. Dependency Parsing by Sandra Kubler, Ryan McDonal and Joakim Nivre (2009)
         """
+        # print vocabulary.tokenIndices
+        # print vocabulary.posIndices
+        # print vocabulary.syntacticLabelIndices
         transParser = TransitionParser(TransitionParser.ARC_STANDARD)
         transition = Transition(transParser.ARC_STANDARD)
         count_proj = 0
@@ -350,31 +353,39 @@ class DataFactory(object):
     @staticmethod
     def getLeftMostChildren(token, sent):
         leftMostChildren = []
-        for t in sent.tokens[:token.position - 1]:
-            if t.dependencyParent == token.position:
-                leftMostChildren.append(t)
+        if token.position - 1 > 0 :
+            for t in sent.tokens[:token.position - 1]:
+                if t.dependencyParent == token.position:
+                    leftMostChildren.append(t)
         return leftMostChildren
+
 
     @staticmethod
     def getLeftMostOfLeftMostChildren(token, sent):
         leftMostChildren = []
-        for t in sent.tokens[:token.position - 1]:
-            if t.dependencyParent == token.position:
-                leftMostChildren.append(t)
-                break
-        if leftMostChildren:
-            return DataFactory.getLeftMostChildren(leftMostChildren[0], sent)[0]
+        if token.position - 1> 0:
+            for t in sent.tokens[:token.position - 1]:
+                if t.dependencyParent == token.position:
+                    leftMostChildren.append(t)
+                    break
+            if leftMostChildren:
+                leftMostOfLeftMost = DataFactory.getLeftMostChildren(leftMostChildren[0], sent)
+                if leftMostOfLeftMost:
+                    return leftMostOfLeftMost[0]
         return None
 
     @staticmethod
     def getRightMostOfRightMostChildren(token, sent):
         rightMostChildren = []
-        for t in sent.tokens[:token.position - 1]:
-            if t.dependencyParent == token.position:
-                rightMostChildren.append(t)
-                break
-        if rightMostChildren:
-            return DataFactory.getRightMostChildren(rightMostChildren[0], sent)[0]
+        if token.position - 1 > 0:
+            for t in sent.tokens[:token.position - 1]:
+                if t.dependencyParent == token.position:
+                    rightMostChildren.append(t)
+                    break
+            if rightMostChildren:
+                rightMostOfRightMost = DataFactory.getRightMostChildren(rightMostChildren[0], sent)
+                if rightMostOfRightMost:
+                    return rightMostOfRightMost[0]
         return None
 
     @staticmethod

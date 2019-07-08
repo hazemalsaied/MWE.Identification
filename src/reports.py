@@ -951,10 +951,16 @@ def analyzeCatReport():
     print res
 
 
+def generateOarsub(xpNum=21, duration=100, tourNum=1, name='mlp'):
+    for i in range(1, xpNum + 1):
+        sys.stdout.write('oarsub -p "GPU_MODEL <> \'NO\'" -q production -l nodes=1,walltime={0} '
+                         '"NNIdenSys/Scripts/nonCompo.sh" -n {3}{1}.{2} '
+                         '-O Reports/{3}{1}.{2} -E Reports/{3}{1}.{2}\n'.
+                         format(duration, tourNum, i, name))
+
+
 if __name__ == '__main__':
-    # getNewScores(
-    #     [f for f in os.listdir('../Reports/Reports/') if f.startswith('mlpPhrase2')], None
-    #     , pilot=True, withTitles=True, pos=False, onFixed=True, onCorpus=False, ftb=False)
-
-    parseChenManningReports([f for f in os.listdir('../Reports/Reports/') if f.startswith('chenManning.1')])
-
+    # generateOarsub(xpNum=5, duration=50, tourNum=1, name='chenManning.')
+    getNewScores(
+        [f for f in os.listdir('../Reports/Reports/') if f.startswith('mlpPhrase')], None
+        , pilot=False, withTitles=False, pos=False, onFixed=True, onCorpus=False, ftb=False)

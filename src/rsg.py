@@ -1,7 +1,6 @@
-import config
 from corpus import *
 from xpTools import xp, XpMode
-
+from config import Generator
 
 def runRSGSpontaneously(langs, dataset, xpMode, division,
                         seeds=[0], xpNumByThread=50, xpNum=1,
@@ -50,6 +49,27 @@ def runRSG(langs, dataset, xpMode, division, fileName,
            mlpInLinear=mlpInLinear, linearInMlp=linearInMlp,
            complentary=complentary)
 
+def generateConf(xpMode):
+    if xpMode == XpMode.rnn:
+        Generator.generateRNNConf()
+    elif xpMode == XpMode.linear:
+        Generator.generateLinearConf()
+    elif xpMode == XpMode.kiperwasser:
+        Generator.generateKiperwasserConf()
+    elif xpMode == XpMode.compoRnn:
+        Generator.generateCompoRnnConf()
+    elif xpMode == XpMode.multitasking:
+        Generator.generateMultTaskingConf()
+    elif xpMode == XpMode.mlpPhrase:
+        Generator.generateMlpPhrase()
+    elif xpMode == XpMode.chenManning:
+        Generator.generateChenManning()
+    else:
+        if configuration['tmp']['tunePretrained']:
+            Generator.generateMLPConfForPretrained()
+        else:
+            Generator.generateMLPConf()
+
 
 def createRSG(fileName, xpMode, xpNum=1000):
     resultDic = dict()
@@ -68,26 +88,7 @@ def getGrid(fileName):
         return xps
 
 
-def generateConf(xpMode):
-    if xpMode == XpMode.rnn:
-        config.generateRNNConf()
-    elif xpMode == XpMode.linear:
-        config.generateLinearConf()
-    elif xpMode == XpMode.kiperwasser:
-        config.generateKiperwasserConf()
-    elif xpMode == XpMode.compoRnn:
-        config.generateCompoRnnConf()
-    elif xpMode == XpMode.multitasking:
-        config.generateMultTaskingConf()
-    elif xpMode == XpMode.mlpPhrase:
-        config.generateMlpPhrase()
-    elif xpMode == XpMode.chenManning:
-        config.generateChenManning()
-    else:
-        if configuration['tmp']['tunePretrained']:
-            config.generateMLPConfForPretrained()
-        else:
-            config.generateMLPConf()
+
 
 
 def hasCloseValue(value, generatedValues, step=0.001):
@@ -125,7 +126,7 @@ def createLRGrid(xpNum=150):
     lrs = dict()
     for i in range(xpNum):
         while True:
-            lr = round(config.generateValue([.001, .2], True, True), 3)
+            lr = round(Generator.generateValue([.001, .2], True, True), 3)
             if lr not in lrs.keys() and not hasCloseValue(lr, lrs):
                 lrs[lr] = False
                 break

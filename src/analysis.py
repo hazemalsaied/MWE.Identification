@@ -11,8 +11,8 @@ interleavingKey, embeddedKey, newKey, freqSeenKey = '0.1 Interleaving', '0.2 Emb
                                                     '1.1 New', '2.3 Seen : frequently'
 
 
-def analyzeCorpus(xpMode, dataset, division, testFileName):
-    for l in allSharedtask2Lang:
+def analyzeCorpus(langs, xpMode, dataset, division, testFileName):
+    for l in langs:
         finalTestFileName = testFileName + l + '.cupt'
         setXPMode(xpMode)
         corpus = readIdentifiedCorpus(l, dataset, division, finalTestFileName)
@@ -431,13 +431,14 @@ def getOutputFile(fileName):
 if __name__ == '__main__':
     # testFileName = '/Users/halsaied/PycharmProjects/MWE.Identification/Results/Evaluation/Data/MLP/TrainVsDev/Tendy/0/' + \
     #               'trainvsdev.{0}.{1}.Feb.{2}.'.format('tendy', 0, '21')
+    reload(sys)
+    sys.setdefaultencoding('utf8')
+    svmTestFileName = '/Users/halsaied/PycharmProjects/MWE.Identification/Results/Evaluation/Data/SVM/TrainVsDev/' + \
+                      'trainvsdev.{0}.{1}.Feb.{2}.'.format('', 0, '18')
 
-    # svmTestFileName = '/Users/halsaied/PycharmProjects/MWE.Identification/Results/Evaluation/Data/SVM/' + \
-    #               'trainvsdev.{0}.{1}.Feb.{2}.'.format('', 0, '18')
+    analyzeCorpus(['FR'], XpMode.linear, Dataset.sharedtask2, Evaluation.trainVsDev, svmTestFileName)
 
-    # analyzeCorpus(XpMode.linear, Dataset.sharedtask2, Evaluation.trainVsDev, svmTestFileName)
-
-    getMecNamers(Evaluation.corpus)
+    # getMecNamers(Evaluation.corpus)
     # errorAnalysis('FR', XpMode.linear, '../Results/ST2/MLP/FR.txt')
     # analyzeCorpus('FR', XpMode.linear, '../Results/ST2/MLP/FR.txt')
     # csvFile = ''
