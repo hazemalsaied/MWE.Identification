@@ -265,10 +265,17 @@ def parseAndTrain(corpus):
         network = modelMlpPhrase.train(corpus)
         return network, None
     if configuration['xp']['chenManning']:
+        # modelChenManning.DataFactory.trainNLTKParser(corpus)
+        # configuration['tmp']['dontParse'] = True
+        modelChenManning.DataFactory.getProjectivityStats(corpus)
         network = modelChenManning.Network(corpus)
         network.train()
-        network.test(corpus)
+        # network.test(corpus)
+        result = network.parse(corpus)
         configuration['tmp']['dontParse'] = True
+        from nltk.parse import DependencyEvaluator
+        de = DependencyEvaluator(result, corpus.testDepGraphs)
+        print 'LAS = {0}, UAS = {1}'.format(round(de.eval()[0] * 100, 1), round(de.eval()[1] * 100, 1))
         return network, None
     if configuration['xp']['compoRnn']:
         network = modelCompoRnn.Network(corpus)

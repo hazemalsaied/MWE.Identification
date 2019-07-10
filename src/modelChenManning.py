@@ -1,5 +1,6 @@
 import keras
 import numpy as np
+import copy
 from keras import optimizers
 from keras import regularizers
 from keras.callbacks import EarlyStopping
@@ -10,11 +11,13 @@ from keras.utils import to_categorical
 from keras.utils.generic_utils import get_custom_objects
 from nltk.parse.transitionparser import TransitionParser, Transition, Configuration
 from numpy import zeros
+
+import facebookEmb
 import reports
 from reports import *
 from wordEmbLoader import empty
 from wordEmbLoader import unk
-import facebookEmb
+
 params = configuration['chenParams']
 consts = configuration['chenConstant']
 
@@ -36,12 +39,62 @@ class Network:
                        verbose=2,
                        callbacks=Network.getCallBacks())
 
+    def predict(self, conf, sent):
+
+        inputs = DataFactory.getDataEntry(conf, sent, self.vocabulary)
+        inputs = [np.asarray([d]) for d in inputs]
+        probVectors = self.model.predict(inputs, batch_size=1)
+        return probVectors[0]
+
+    def parse(self, corpus):
+        result = []
+        transParser = TransitionParser(TransitionParser.ARC_STANDARD)
+        operation = Transition(transParser.ARC_STANDARD)
+        for i in range(len(corpus.testingSents)):
+            sent = corpus.testingSents[i]
+            depGraph = copy.deepcopy(corpus.testDepGraphs[i])
+            for n in depGraph.nodes:
+                depGraph.nodes[n]['rel'] = None
+                depGraph.nodes[n]['head'] = None
+                depGraph.nodes[n]['deps'] = []
+            conf = Configuration(depGraph)
+            print sent.text
+            while len(conf.buffer) > 0:
+                probVector = self.predict(conf, sent)
+                trans = sorted(range(len(probVector)), key=lambda k: probVector[k], reverse=True)[0]
+                for k, v in self.depLabelDic.items():
+                    if trans == v:
+                        baseTransition = k.split(":")[0]
+                        # print baseTransition
+                        if baseTransition[:4].lower() == Transition.LEFT_ARC[:4].lower():
+                            if operation.left_arc(conf, k.split(":")[1]) != -1:
+                                break
+                        elif baseTransition[:4].lower() == Transition.RIGHT_ARC[:4].lower():
+                            if operation.right_arc(conf, k.split(":")[1]) != -1:
+                                break
+                        elif baseTransition[:4].lower() == Transition.SHIFT[:4].lower():
+                            if operation.shift(conf) != -1:
+                                break
+            new_depgraph = copy.deepcopy(depGraph)
+            for key in new_depgraph.nodes:
+                node = new_depgraph.nodes[key]
+                node['rel'] = ''
+                node['head'] = 0
+            for (head, rel, child) in conf.arcs:
+                c_node = new_depgraph.nodes[child]
+                c_node['head'] = head
+                c_node['rel'] = rel
+            result.append(new_depgraph)
+        return result
+
+
     def test(self, corpus):
         depParserData, depParserLabels, depLabelDic = DataFactory.getData(corpus, self.vocabulary, train=False)
         classNum = 3 if params['unlabeled'] else len(self.depLabelDic)
         depParserLabels = to_categorical(depParserLabels, num_classes=classNum)
         results = self.model.evaluate(depParserData, depParserLabels, batch_size=32, verbose=0)
-        sys.stdout.write('Dep Parsing accuracy = {0}\nLoss = {1}, \n'.format(
+        sys.stdout.write('Dep Parsing accuracy ({0}) = {1}\nLoss = {2}, \n'.format(
+            'unlabeled' if params['unlabeled'] else 'labeled',
             round(results[1] * 100, 1), round(results[0], 3)))
 
     @staticmethod
@@ -114,7 +167,6 @@ class Network:
             return [es]
         return None
 
-
     @staticmethod
     def getWeightMatrix(lang, tokenIndices):
         if params['pretrained']:
@@ -133,7 +185,7 @@ class Network:
         :return:
         """
         wordEmbDic = facebookEmb.loadFastTextEmbeddings(lang)
-        #idxs = range(0, len(vocab))
+        # idxs = range(0, len(vocab))
         embeddingMatrix = zeros((len(vocab), params['tokenEmb']))
         indexWordVocab = dict()
         for k, v in vocab.items():
@@ -176,7 +228,7 @@ class Vocabulary:
 
     @staticmethod
     def getSynLabels(corpus):
-        syntacticLabelVocab = {unk: 5, empty: 5, 'root':5}
+        syntacticLabelVocab = {unk: 5, empty: 5, 'root': 5}
         for depGraph in corpus.trainDepGraphs:
             for n in depGraph.nodes:
                 if depGraph.nodes[n]['rel'] is not None:
@@ -197,6 +249,38 @@ class Vocabulary:
 
 
 class DataFactory(object):
+    @staticmethod
+    def trainNLTKParser(corpus):
+
+        import tempfile
+        from nltk.parse import DependencyEvaluator
+        input_file = tempfile.NamedTemporaryFile(prefix='transition_parse.train', dir=tempfile.gettempdir(),
+                                                 delete=False)
+
+        parser_std = TransitionParser('arc-standard')
+        parser_std._create_training_examples_arc_std(corpus.trainDepGraphs, input_file)
+        parser_std.train(corpus.trainDepGraphs, 'temp.arcstd.model')
+        result = parser_std.parse(corpus.testDepGraphs, 'temp.arcstd.model')
+        de = DependencyEvaluator(result, corpus.testDepGraphs)
+        print 'LAS = {0}, UAS = {1}'.format(round(de.eval()[0] * 100, 1), round(de.eval()[1] * 100, 1))
+
+    @staticmethod
+    def printDataEntry(de, vocab, conf, sent):
+        reverdedTokenDic, reverdedPOSDic, reverdedSRDic = dict(), dict(), dict()
+        for k, v in vocab.tokenIndices.items():
+            reverdedTokenDic[v] = k
+        for k, v in vocab.posIndices.items():
+            reverdedPOSDic[v] = k
+        for k, v in vocab.syntacticLabelIndices.items():
+            reverdedSRDic[v] = k
+        buff = [r for r in conf.buffer if r != 0]
+        stack = [r for r in conf.stack if r != 0]
+        print  'Buffer=' + ' '.join(sent.tokens[i - 1].text for i in buff)
+        print  'Stack=' + ' '.join(sent.tokens[i - 1].text for i in stack)
+        print  'Arcs=' + ' '.join(sent.tokens[a[0] - 1].text +'-'+a[1]+ '-'+sent.tokens[a[2] - 1].text for a in conf.arcs)
+        print  'Words=' + ' '.join(reverdedTokenDic[m] for m in de[0])
+        print  'POSs=' + ' '.join(reverdedPOSDic[m] for m in de[1])
+        print  'SynRels=' + ' '.join(reverdedSRDic[m] for m in de[2])
 
     @staticmethod
     def getData(corpus, vocabulary, train=True):
@@ -204,9 +288,6 @@ class DataFactory(object):
         Create the training example in the libsvm format and write it to the input_file.
         Reference : Page 32, Chapter 3. Dependency Parsing by Sandra Kubler, Ryan McDonal and Joakim Nivre (2009)
         """
-        # print vocabulary.tokenIndices
-        # print vocabulary.posIndices
-        # print vocabulary.syntacticLabelIndices
         transParser = TransitionParser(TransitionParser.ARC_STANDARD)
         transition = Transition(transParser.ARC_STANDARD)
         count_proj = 0
@@ -224,6 +305,7 @@ class DataFactory(object):
                 dataEntry = DataFactory.getDataEntry(conf, sent, vocabulary)
                 for i in range(3):
                     data[i].append(dataEntry[i])
+                # DataFactory.printDataEntry(dataEntry, vocabulary, conf, sent)
                 b0 = conf.buffer[0]
                 if len(conf.stack) > 0:
                     s0 = conf.stack[len(conf.stack) - 1]
@@ -231,12 +313,13 @@ class DataFactory(object):
                     rel = transParser._get_dep_relation(b0, s0, depgraph)
                     if rel is not None:
                         if conf.stack[-1] - 1 >= 0 and conf.buffer[0] - 1 >= 0:
-                            sent.tokens[conf.stack[-1] - 1].dependencyParent = sent.tokens[conf.buffer[0] - 1]
-                        sent.tokens[conf.stack[-1] - 1].dependencyLabel = rel
+                            sent.tokens[conf.stack[-1] - 1].predictedDepParent = sent.tokens[conf.buffer[0] - 1]
+                            sent.tokens[conf.stack[-1] - 1].predictedDepLabel = rel
                         key = Transition.LEFT_ARC + ':' + rel
                         if key not in labelDic:
                             labelDic[key] = len(labelDic)
                         transition.left_arc(conf, rel)
+                        # print 'LEFT_ARC'
                         labels.append(labelDic[key])
                         continue
                     # Right-arc operation
@@ -254,11 +337,13 @@ class DataFactory(object):
                         if precondition:
                             key = Transition.RIGHT_ARC + ':' + rel
                             if conf.stack[-1] - 1 >= 0 and conf.buffer[0] - 1 >= 0:
-                                sent.tokens[conf.buffer[0] - 1].dependencyParent = sent.tokens[conf.stack[-1] - 1]
+                                sent.tokens[conf.buffer[0] - 1].predictedDepParent = sent.tokens[conf.stack[-1] - 1]
                             else:
-                                sent.tokens[conf.buffer[0] - 1].dependencyParent = None
-                            sent.tokens[conf.buffer[0] - 1].dependencyLabel = rel
+                                sent.tokens[conf.buffer[0] - 1].predictedDepParent = None
+                            if conf.buffer[0] - 1 >= 0:
+                                sent.tokens[conf.buffer[0] - 1].predictedDepLabel = rel
                             transition.right_arc(conf, rel)
+                            # print 'RIGHT_ARC'
                             if key not in labelDic:
                                 labelDic[key] = len(labelDic)
                             labels.append(labelDic[key])
@@ -268,12 +353,32 @@ class DataFactory(object):
                 if key not in labelDic:
                     labelDic[key] = len(labelDic)
                 transition.shift(conf)
+                # print 'SHIFT'
                 labels.append(labelDic[key])
-        print(" Number of training examples : " + str(len(corpus.trainDepGraphs)))
-        print(" Number of valid (projective) examples : " + str(count_proj))
+
+        exNum = len(corpus.trainDepGraphs) if train else len(corpus.testDepGraphs)
+        print(" Number of {0} examples : {1}".format('training' if train else 'evaluation', exNum))
+        print(" Number of projective examples : " + str(count_proj))
         if params['unlabeled']:
             labels = DataFactory.toUnlabeled(labels, labelDic)
         return [np.asarray(data[i]) for i in range(3)], labels, labelDic
+
+    @staticmethod
+    def getProjectivityStats(corpus, train=True):
+        """
+        Create the training example in the libsvm format and write it to the input_file.
+        Reference : Page 32, Chapter 3. Dependency Parsing by Sandra Kubler, Ryan McDonal and Joakim Nivre (2009)
+        """
+        transParser = TransitionParser(TransitionParser.ARC_STANDARD)
+        projective = 0
+        sentNum = len(corpus.trainingSents if train else corpus.testingSents)
+        for i in range(sentNum):
+            depgraph = corpus.trainDepGraphs[i] if train else corpus.testDepGraphs[i]
+            if transParser._is_projective(depgraph):
+                projective += 1
+        print " Number of training examples : " + str(sentNum)
+        print " Number of valid (projective) examples : " + str(projective)
+        print " Projectivity proportion : " + str(float(projective) / sentNum * 100)
 
     @staticmethod
     def toUnlabeled(labels, labelDic):
@@ -353,46 +458,38 @@ class DataFactory(object):
     @staticmethod
     def getLeftMostChildren(token, sent):
         leftMostChildren = []
-        if token.position - 1 > 0 :
+        if token.position - 1 > 0:
             for t in sent.tokens[:token.position - 1]:
-                if t.dependencyParent == token.position:
+                if t.predictedDepParent and t.predictedDepParent.position == token.position:
                     leftMostChildren.append(t)
         return leftMostChildren
 
-
     @staticmethod
     def getLeftMostOfLeftMostChildren(token, sent):
-        leftMostChildren = []
-        if token.position - 1> 0:
-            for t in sent.tokens[:token.position - 1]:
-                if t.dependencyParent == token.position:
-                    leftMostChildren.append(t)
-                    break
-            if leftMostChildren:
-                leftMostOfLeftMost = DataFactory.getLeftMostChildren(leftMostChildren[0], sent)
-                if leftMostOfLeftMost:
-                    return leftMostOfLeftMost[0]
+        leftMostChildren = DataFactory.getLeftMostChildren(token, sent)
+
+        if leftMostChildren:
+            leftMostOfLeftMost = DataFactory.getLeftMostChildren(leftMostChildren[0], sent)
+            if leftMostOfLeftMost:
+                return leftMostOfLeftMost[0]
         return None
+
 
     @staticmethod
     def getRightMostOfRightMostChildren(token, sent):
-        rightMostChildren = []
-        if token.position - 1 > 0:
-            for t in sent.tokens[:token.position - 1]:
-                if t.dependencyParent == token.position:
-                    rightMostChildren.append(t)
-                    break
-            if rightMostChildren:
-                rightMostOfRightMost = DataFactory.getRightMostChildren(rightMostChildren[0], sent)
-                if rightMostOfRightMost:
-                    return rightMostOfRightMost[0]
+        rightMostChildren = DataFactory.getRightMostChildren(token, sent)
+        if rightMostChildren:
+            rightMostOfRightMost = DataFactory.getRightMostChildren(rightMostChildren[0], sent)
+            if rightMostOfRightMost:
+                return rightMostOfRightMost[0]
         return None
+
 
     @staticmethod
     def getRightMostChildren(token, sent):
         rightMostChildren = []
         for t in reversed(sent.tokens[token.position:]):
-            if t.dependencyParent == token.position:
+            if t.predictedDepParent and t.predictedDepParent.position == token.position:
                 rightMostChildren.append(t)
         return rightMostChildren
 
@@ -433,8 +530,8 @@ class DataFactory(object):
         if t is not None:
             if t == 'root':
                 dataEntry[2].append(vocab.syntacticLabelIndices['root'])
-            elif t.dependencyLabel.lower() in vocab.syntacticLabelIndices:
-                dataEntry[2].append(vocab.syntacticLabelIndices[t.dependencyLabel.lower()])
+            elif t.predictedDepLabel.lower() in vocab.syntacticLabelIndices:
+                dataEntry[2].append(vocab.syntacticLabelIndices[t.predictedDepLabel.lower()])
             else:
                 dataEntry[2].append(vocab.syntacticLabelIndices[unk])
         else:
@@ -471,7 +568,7 @@ class DataFactory(object):
     @staticmethod
     def getSyntacticLabelIndice(t, vocab):
         if t:
-            k = t.dependencyLabel.lower()
+            k = t.predictedDepLabel.lower()
             if k in vocab:
                 return vocab[k]
             return vocab[unk]

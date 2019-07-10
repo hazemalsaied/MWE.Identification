@@ -216,7 +216,7 @@ if __name__ == '__main__':
     # configuration['tmp']['trainIden'] = False
     # configuration['tmp']['trainJointly'] = False
     # configuration['tmp']['trainDepParser'] = True
-
+    configuration['chenParams']['unlabeled'] = False
     xp(['FR'], Dataset.sharedtask2, XpMode.chenManning, Evaluation.trainVsDev)
     # import rsg
     # configuration['others']['analyzePerformance'] = False

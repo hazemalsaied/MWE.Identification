@@ -1109,6 +1109,8 @@ class Token:
             self.morphologicalInfo = morphologicalInfo
         self.dependencyParent = dependencyParent
         self.dependencyLabel = dependencyLabel
+        self.predictedDepParent = None
+        self.predictedDepLabel = None
         self.parentMWEs = []
         self.directParent = None
         self.parent = None
@@ -1642,6 +1644,7 @@ def getVMWEByTokens(tokens):
 def createDepGraph(sent):
     cuptData = '\n'.join(t.line for t in sent.tokens)
     conllData = cuptSentToConllU(cuptData)
+    #print conllData
     return DependencyGraph(conllData)
 
 

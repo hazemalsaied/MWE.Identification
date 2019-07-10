@@ -151,7 +151,7 @@ configuration = {
         'cvFolds': 5,
         'currentIter': -1,
         'shuffleTrain': False,
-        'debugTrainNum': 100,
+        'debugTrainNum': 10,
         'test': 0.2,
         'tokenAvg': 270000,
         'testTokenAvg': 43000,
@@ -329,7 +329,7 @@ configuration['path']['projectPath'] = os.path.dirname(__file__)[:-len(os.path.b
 
 
 class TendConfig:
-
+    @staticmethod
     def mlpWide():
         configuration['sampling'].update({
             'importantSentences': True,
