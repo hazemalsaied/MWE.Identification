@@ -962,5 +962,5 @@ def generateOarsub(xpNum=21, duration=100, tourNum=1, name='mlp'):
 if __name__ == '__main__':
     # generateOarsub(xpNum=5, duration=50, tourNum=1, name='chenManning.')
     getNewScores(
-        [f for f in os.listdir('../Reports/Reports/') if f.startswith('mlpPhrase')], None
+        [f for f in os.listdir('../Reports/Reports/') if f.startswith('mlpW')], None
         , pilot=False, withTitles=False, pos=False, onFixed=True, onCorpus=False, ftb=False)

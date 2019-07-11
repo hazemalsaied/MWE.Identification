@@ -198,8 +198,8 @@ def evaluateMLPPhrase(langs=allSharedtask2Lang):
 def evaluateMLPWide(langs=allSharedtask2Lang):
     configuration['others']['analyzePerformance'] = True
     configuration['tmp']['createDepGraphs'] = False
-    BestConfig.mlpWide()
-    xp(langs, Dataset.sharedtask2, XpMode.mlpWide, Evaluation.trainVsDev)
+    # BestConfig.mlpWide()
+    # xp(langs, Dataset.sharedtask2, XpMode.mlpWide, Evaluation.trainVsDev)
     TendConfig.mlpWide()
     xp(langs, Dataset.sharedtask2, XpMode.mlpWide, Evaluation.trainVsDev)
 
@@ -216,12 +216,12 @@ if __name__ == '__main__':
     # configuration['tmp']['trainIden'] = False
     # configuration['tmp']['trainJointly'] = False
     # configuration['tmp']['trainDepParser'] = True
-    configuration['chenParams']['unlabeled'] = False
-    xp(['FR'], Dataset.sharedtask2, XpMode.chenManning, Evaluation.trainVsDev)
+    # configuration['chenParams']['unlabeled'] = False
+    # xp(['FR'], Dataset.sharedtask2, XpMode.chenManning, Evaluation.trainVsDev)
     # import rsg
     # configuration['others']['analyzePerformance'] = False
     # rsg.runRSGSpontaneously(pilotLangs, Dataset.sharedtask2, XpMode.mlpWide, Evaluation.fixedSize,
     #                         xpNumByThread=250)
-    # evaluateMLPPhrase()
+    evaluateMLPWide()
 
 
