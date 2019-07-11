@@ -1316,16 +1316,26 @@ class Generator:
     def generateChenManning():
         Standard.setChenManningParameters()
         configuration['chenParams'].update({
-            'monitor': Generator.generateValue(['val_loss', 'val_acc'], False, True),
-            'earlyStopping': Generator.generateValue([True, False], False, True)
+            'tokenEmb': int(Generator.generateValue([25, 400], True)),
+            'posEmb': int(Generator.generateValue([5, 100], True)),
+            'synLabelEmb': int(Generator.generateValue([5, 100], True)),
+            'dense1UnitNumber': int(Generator.generateValue([25, 400], True)),
+            'dense1Activation': 'relu',
+            'dense1Dropout': int(Generator.generateValue([.1, .2,.3, .4, .5, .6, .7], False)),
+            'lr': round(Generator.generateValue([0.01, 0.2], True), 3),
+            'batchSize': int(Generator.generateValue([16, 32, 48, 64, 96, 128, 256], False)),
+            'unlabeled': False,
+            'l2': Generator.generateValue([10e-2, 10e-3, 10e-4, 10e-5, 10e-6, 10e-7], False, True),
+            'regularizer': Generator.generateValue([True, False], False, True),
+            'cubeActivation': Generator.generateValue([True, False], False, True),
+            'pretrained': Generator.generateValue([False, True], False, False),
+            'earlyStopping': Generator.generateValue([True, False], False, False),
+            'epochs': 20,
+            'minDelta': round(Generator.generateValue([0.001, 0.1], True), 3),
+            'patience': 4,
+            'monitor': Generator.generateValue(['val_loss', 'val_acc'], False, False),
+            'validationSplit': .2
         })
-        if configuration['chenParams']['earlyStopping']:
-            configuration['chenParams']['epochs'] = 100
-            configuration['chenParams']['minDelta'] = round(Generator.generateValue([.0001, 0.1], True), 5)
-            configuration['chenParams']['patience'] = int(Generator.generateValue([2, 10], True))
-        else:
-            configuration['chenParams']['epochs'] = int(Generator.generateValue([5, 50], True))
 
-        configuration['chenParams']['lr'] = round(Generator.generateValue([0.01, 0.2], True), 3)
         configuration['embedding']['lemma'] = Generator.generateValue([True, False], False, True)
         configuration['sampling']['importantSentences'] = False

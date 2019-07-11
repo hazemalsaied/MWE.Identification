@@ -201,7 +201,7 @@ def evaluateMLPWide(langs=allSharedtask2Lang):
     # BestConfig.mlpWide()
     # xp(langs, Dataset.sharedtask2, XpMode.mlpWide, Evaluation.trainVsDev)
     TendConfig.mlpWide()
-    xp(langs, Dataset.sharedtask2, XpMode.mlpWide, Evaluation.trainVsDev)
+    xp(langs, Dataset.sharedtask2, XpMode.mlpWide, Evaluation.trainVsTest)
 
 
 if __name__ == '__main__':
@@ -220,8 +220,7 @@ if __name__ == '__main__':
     # xp(['FR'], Dataset.sharedtask2, XpMode.chenManning, Evaluation.trainVsDev)
     # import rsg
     # configuration['others']['analyzePerformance'] = False
-    # rsg.runRSGSpontaneously(pilotLangs, Dataset.sharedtask2, XpMode.mlpWide, Evaluation.fixedSize,
-    #                         xpNumByThread=250)
+    # rsg.runRSGSpontaneously(['FR'], Dataset.sharedtask2, XpMode.chenManning, Evaluation.trainVsDev, xpNumByThread=100)
     evaluateMLPWide()
 
 

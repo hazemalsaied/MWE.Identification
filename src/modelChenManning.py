@@ -58,7 +58,6 @@ class Network:
                 depGraph.nodes[n]['head'] = None
                 depGraph.nodes[n]['deps'] = []
             conf = Configuration(depGraph)
-            print sent.text
             while len(conf.buffer) > 0:
                 probVector = self.predict(conf, sent)
                 trans = sorted(range(len(probVector)), key=lambda k: probVector[k], reverse=True)[0]
@@ -86,7 +85,6 @@ class Network:
                 c_node['rel'] = rel
             result.append(new_depgraph)
         return result
-
 
     def test(self, corpus):
         depParserData, depParserLabels, depLabelDic = DataFactory.getData(corpus, self.vocabulary, train=False)
@@ -262,7 +260,7 @@ class DataFactory(object):
         parser_std.train(corpus.trainDepGraphs, 'temp.arcstd.model')
         result = parser_std.parse(corpus.testDepGraphs, 'temp.arcstd.model')
         de = DependencyEvaluator(result, corpus.testDepGraphs)
-        print 'LAS = {0}, UAS = {1}'.format(round(de.eval()[0] * 100, 1), round(de.eval()[1] * 100, 1))
+        print 'LAS = {0}\nUAS = {1}'.format(round(de.eval()[0] * 100, 1), round(de.eval()[1] * 100, 1))
 
     @staticmethod
     def printDataEntry(de, vocab, conf, sent):

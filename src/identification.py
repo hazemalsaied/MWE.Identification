@@ -1,6 +1,6 @@
 import datetime
 import logging
-
+from nltk.parse import DependencyEvaluator
 import config
 #import modelCompactKiper
 import modelCompoRnn
@@ -267,15 +267,16 @@ def parseAndTrain(corpus):
     if configuration['xp']['chenManning']:
         # modelChenManning.DataFactory.trainNLTKParser(corpus)
         # configuration['tmp']['dontParse'] = True
-        modelChenManning.DataFactory.getProjectivityStats(corpus)
+        # return None, None
+        # modelChenManning.DataFactory.getProjectivityStats(corpus)
         network = modelChenManning.Network(corpus)
         network.train()
         # network.test(corpus)
         result = network.parse(corpus)
         configuration['tmp']['dontParse'] = True
-        from nltk.parse import DependencyEvaluator
+
         de = DependencyEvaluator(result, corpus.testDepGraphs)
-        print 'LAS = {0}, UAS = {1}'.format(round(de.eval()[0] * 100, 1), round(de.eval()[1] * 100, 1))
+        print 'LAS = {0}\nUAS = {1}'.format(round(de.eval()[0] * 100, 1), round(de.eval()[1] * 100, 1))
         return network, None
     if configuration['xp']['compoRnn']:
         network = modelCompoRnn.Network(corpus)
@@ -308,8 +309,11 @@ def parseAndTrain(corpus):
             # network.testIden(corpus)
         elif configuration['tmp']['trainDepParser']:
             network.trainDepParser()
-            network.testDepParser(corpus)
+            result = network.parse(corpus)
             configuration['tmp']['dontParse'] = True
+            de = DependencyEvaluator(result, corpus.testDepGraphs)
+            print 'LAS = {0}\nUAS = {1}'.format(round(de.eval()[0] * 100, 1), round(de.eval()[1] * 100, 1))
+            return network, None
         else:
             network.trainTagging(corpus)
             configuration['multitasking']['testOnToken'] = True
