@@ -7,6 +7,7 @@ from collections import Counter
 import numpy
 
 from config import configuration
+import xpTools
 
 tabs, seperator, doubleSep, finalLine = '\t', '\n' + '_' * 98 + '\n', '\n' + '=' * 98 + '\n', '\n' + '*|' * 49 + '\n'
 PATH_ROOT_REPORTS_DIR = os.path.join(configuration['path']['projectPath'], 'Reports')
@@ -531,75 +532,28 @@ def getSeedScores(files, folder=None, pilot=False, withTitles=True, withTitle2=F
                                                                                                                :-1])
 
 
-def getNewScores(files, folder=None, pilot=False, pos=False, withTitles=True, onCorpus=False, onFixed=False, ftb=False):
-    for f in files:
-        print str(f)
-        titles, scores, params, langs, titles2, seeds, stats, precisions, recalls, misidentified, nonidentified, mwePosTags, posTags = \
-            mineNewFile(str(f), folder, ftb=ftb)
-        # scores, params = mineCoopFile(str(f))
-        if pilot:
+def getNewScores(files, division):
+    for ff in files:
+        print str(ff)
+        configs, scores, langs, stats, precisions, recalls, misidentified, nonidentified, trainTimes= \
+            mineNewFile(str(ff))
+        if division == 'fixed':
             x = 3
-            for i in range(len(titles)):
-                # if withTitle2:
-                # withTitle2 = False
-                #    sys.stdout.write('BG, BG,BG, PT, PT,PT, TR,TR, TR, BG_AVG, PT_AVG, TR_AVG ' + titles2[i][:-1])
-                sys.stdout.write('{0},{1},{2},{3},{4}\n'.format(
+            for i in range(len(configs)):
+                sys.stdout.write('{0},{1},{2},{3},{4},{5},{6},{7}\n'.format(
                     scores[i * x] if i * x < len(scores) else 0,
                     scores[i * x + 1] if i * x + 1 < len(scores) else 0,
                     scores[i * x + 2] if i * x + 2 < len(scores) else 0,
-                    titles[i][:-1], str(f)
-                ))
-        # POS tagging
-        # if pilot:
-        #     x = 3
-        #     for i in range(len(titles)):
-        #         # if withTitle2:
-        #         # withTitle2 = False
-        #         #    sys.stdout.write('BG, BG,BG, PT, PT,PT, TR,TR, TR, BG_AVG, PT_AVG, TR_AVG ' + titles2[i][:-1])
-        #         sys.stdout.write('{0},{1},{2},{3},{4},{5},{6},{7}\n'.format(
-        #             poss[i*x ] if pos and i*x < len(poss) else 0,
-        #             poss[i * x + 1] if pos and i * x + 1 < len(poss) else 0,
-        #             poss[i * x + 2] if pos and i * x + 2 < len(poss) else 0,
-        #             poss2[i*x] if pos and i * x  < len(poss2) else 0,
-        #             poss2[i * x + 1] if pos and i * x + 1 < len(poss2) else 0,
-        #             poss2[i * x + 2] if pos and i * x + 2 < len(poss2) else 0,
-        #             # scores[i * x] if i * x < len(scores) else -1,
-        #             # scores[i * x + 1] if i * x + 1 < len(scores) else -1,
-        #             # scores[i * x + 2] if i * x + 2 < len(scores) else -1,
-        #             titles[i][:-1], str(f)
-        # POS + Identification
-        # if pilot:
-        #     x = 3
-        #     for i in range(len(titles)):
-        #         # if withTitle2:
-        #         # withTitle2 = False
-        #         #    sys.stdout.write('BG, BG,BG, PT, PT,PT, TR,TR, TR, BG_AVG, PT_AVG, TR_AVG ' + titles2[i][:-1])
-        #         avg1 = round(scores[i * x],1) if i * x < len(scores) else -1
-        #         avg2 = round(scores[i * x + 1],1) if i * x + 1 < len(scores) else -1
-        #         avg3 = round(scores[i * x + 2], 3) if i * x + 2 < len(scores) else -1
-        #         avgPos = poss[i] if pos and i < len(poss) else 0
-        #         avgPos2 = poss2[i] if pos and i < len(poss2) else 0
-        #         avgg = round((avg1 + avg2 + avg3) / 3., 1)
-        #         sys.stdout.write('{0},{1},{2},{3},{4},{5},{6},{7},{8}{9},{10}\n'.format(
-        #             poss[i*x ] if pos and i*x < len(poss) else 0,
-        #             poss[i * x + 1] if pos and i * x + 1 < len(poss) else 0,
-        #             poss[i * x + 2] if pos and i * x + 2 < len(poss) else 0,
-        #             poss2[i*x] if pos and i * x  < len(poss2) else 0,
-        #             poss2[i * x+1] if pos and i * x + 1 < len(poss2) else 0,
-        #             poss2[i * x+2] if pos and i * x + 2 < len(poss2) else 0,
-        #             scores[i * x] if i * x < len(scores) else -1,
-        #             scores[i * x + 1] if i * x + 1 < len(scores) else -1,
-        #             scores[i * x + 2] if i * x + 2 < len(scores) else -1,
-        #             ',' + titles[i][:-1] ,
-        #             str(f)
-        #         ))
-        elif onCorpus:
+                    trainTimes[i * x] if i * x < len(trainTimes) else 0,
+                    trainTimes[i * x + 1] if i * x + 1 < len(trainTimes) else 0,
+                    trainTimes[i * x + 2] if i * x + 2 < len(trainTimes) else 0,
+                    configs[i][:-1],
+                    str(ff)))
+        elif division == 'corpus':
             for i, v in enumerate(scores):
                 line = ','.join(str(x) for x in [langs[i], v, precisions[i], recalls[i]])
                 print line
-        elif onFixed:
-            for i in range(len(posTags)):
-                print posTags[i], ',', mwePosTags[i] if i < len(mwePosTags) else 0
+        elif division == 'dev':
             newStats = []
             for i in range(int(len(stats) / 5.)):
                 newStats.append(stats[i * 5])  # g
@@ -616,53 +570,23 @@ def getNewScores(files, folder=None, pilot=False, pos=False, withTitles=True, on
                 line = ','.join(str(x) for x in [langs[i], v, precisions[i], recalls[i]] +
                                 stats[i * 96:(i + 1) * 96] +
                                 misidentified[i * 9: (i + 1) * 9] +
-                                nonidentified[i * 13: (i + 1) * 13]
-                                ) + \
-                       (',' + titles[i][:-1] + '\n' if withTitles else '') + '\n'
-                sys.stdout.write(line)
-
-        # elif onFixed:
-        #     newStats = []
-        #     for i in range(int(len(stats) / 5.)):
-        #         newStats.append(stats[i*5]) # g
-        #         newStats.append(stats[i*5 + 1]) # pred
-        #         newStats.append(stats[i*5 + 2]) # F
-        #         newStats.append(round(stats[i*5 + 3] * 100,1)) # P
-        #         newStats.append(round(stats[i*5 + 4] * 100,1)) # R
-        #         if newStats[-1] + newStats[-2] != 0:
-        #             newStats.append(round(2 * newStats[-1] * newStats[-2] / (newStats[-1] + newStats[-2]), 1))
-        #         else:
-        #             newStats.append(0)
-        #     stats = newStats
-        #     for i, v in enumerate(scores):
-        #         line = ','.join(str(x) for x in [langs[i], v, precisions[i], recalls[i]] +
-        #                         stats[i * 96:(i + 1) * 96] +
-        #                         misidentified[i * 9: (i + 1) * 9] +
-        #                         nonidentified[i * 13: (i + 1) * 13]
-        #                         ) + \
-        #                (',' + titles[i][:-1] + '\n' if withTitles else '') + '\n'
-        #         sys.stdout.write(line)
-        #         # if i % 2 == 1 and v > scores[i - 1]:
-        #         #     sys.stdout.write(line)
-        #         # if i % 2 == 0 and v >= scores[i + 1] :
-        #         #     sys.stdout.write(line)
-        else:
-            for i in range(len(scores)):
-                print ','.join(str(x) for x in [langs[i], scores[i], precisions[i], recalls[i]]) + ',' + titles[i][
-                                                                                                         :-1] if withTitles else ''
-            # for i in range(len(titles)):
-            #     if i*2 + 1 < len(scores):
-            #         print str(scores[i*2]) +','+ str(scores[i*2 + 1]) + ',' + titles[i][:-1]
+                                nonidentified[i * 13: (i + 1) * 13])
+                sys.stdout.write(line + '\n')
 
 
 def parseChenManningReports(files):
     for ff in files:
-        print str(ff)
         path = os.path.join('../Reports/Reports/', ff)
         configs = mineReport(path, '# Configs:')
-        accs = mineReport(path, 'Dep Parsing accuracy = ')
-        for i in range(len(accs)):
-            print ','.join(str(x) for x in [accs[i], configs[i]])
+        params = mineReport(path, 'Total params: ')
+        lass = mineReport(path, 'LAS = ')
+        uass = mineReport(path, 'UAS = ')
+        for i in range(len(lass)):
+            print ','.join(str(x) for x in [lass[i],
+                                            uass[i],
+                                            params[i].split(',')[0] + '.' + params[i].split(',')[1][0],
+                                            configs[i],
+                                            str(ff)])
 
 
 goldLine = '	Gold:'
@@ -670,26 +594,17 @@ predictedLine = '	Predicted:'
 fLine = '	F :'
 
 
-def mineNewFile(newFile, folder=None, ftb=False):
-    x = ('MLP.New/' + folder) if folder else ''
-    path = os.path.join('../Reports/Reports/', x, newFile)
-    titles, params, scores, precisions, recalls, langs, titles2, seeds, stats, misidentified, nonIdentified, mwePosTags, posTags = \
-        [], [], [], [], [], [], [], [], [], [], [], [], []
+def mineNewFile(newFile):
+    path = os.path.join('../Reports/Reports/', newFile)
+    configs, scores, precisions, recalls, langs, stats, misidentified, nonIdentified, trainTime = \
+        [], [], [], [], [], [], [], [], []
     previousLine = ''
-    seedLine = '# Seed:'
+    trainTimeLine = '	TRAINING TIME:'
     with open(path, 'r') as log:
-        # shouldContinue = True
         isMisidentified, isNonidentified = False, False
         for line in log.readlines():
-            # if shouldContinue:
-            #     if line.startswith('XP Starts: 14/1') or line.startswith('XP Starts: 15/1') or \
-            #             line.startswith('XP Starts: 16/1') or line.startswith('XP Starts: 17/1'):
-            #         shouldContinue = False
-            #     continue
-            if line.startswith('POS tagging accuracy (MWEs)'):
-                mwePosTags.append(line[:-1].split('=')[1])
-            if line.startswith('POS tagging accuracy = '):
-                posTags.append(line[:-1].split('=')[1])
+            if line.startswith(trainTimeLine):
+                trainTime.append(line[len(trainTimeLine):-9])
             if line.startswith('Misidentified:'):
                 isMisidentified = True  # False
                 continue
@@ -697,7 +612,6 @@ def mineNewFile(newFile, folder=None, ftb=False):
                 misidentified.append(line[:-1].split(':')[1])
             if isMisidentified and line.startswith('	MWTs:'):
                 isMisidentified = False
-
             if line.startswith('Non-identified:'):
                 isNonidentified = True  # False
                 continue
@@ -708,17 +622,13 @@ def mineNewFile(newFile, folder=None, ftb=False):
                 if len(nonIdentified) / 13 != len(misidentified) / 9:
                     for i in range(9 * (len(nonIdentified) / 13 - len(misidentified) / 9)):
                         misidentified.append(0)
-            if ftb and line.startswith('	MWTs:'):
-                isNonidentified = False
+            # if ftb and line.startswith('	MWTs:'):
+            #     isNonidentified = False
             if line.startswith('	P, R  :') and previousLine.startswith('	Identification :'):
                 precisions.append(float(line[:-1].split(':')[1].split(',')[0]) * 100)
                 recalls.append(float(line[:-1].split(':')[1].split(',')[1]) * 100)
-            if line.startswith(seedLine):
-                seeds.append(int(line[len(seedLine):-1]))
             if line.startswith('# Configs:'):
-                titles.append(line)
-            if line.startswith('# CTitles:'):
-                titles2.append(line)
+                configs.append(line)
             if line.__contains__(' Train ('):
                 langs.append(line.strip()[:2])
             if line.startswith(langLine) or line.startswith(langLine1):
@@ -726,9 +636,6 @@ def mineNewFile(newFile, folder=None, ftb=False):
                     langs.append(line[len(langLine):len(langLine) + 2])
                 else:
                     langs.append(line[len(langLine1):len(langLine1) + 2])
-            if line.startswith(paramLine):
-                paramsValue = toNum(line[len(paramLine):len(paramLine) + 8].strip())
-                params.append(round(int(paramsValue) / 1000000., 2))
             if line.startswith(scoreLine) and previousLine.startswith('='):
                 fScore = toNum(line[len(scoreLine):len(scoreLine) + 5].strip())
                 while len(fScore) < 4:
@@ -743,9 +650,9 @@ def mineNewFile(newFile, folder=None, ftb=False):
                 stats.append(float(line.split(':')[1].split(',')[1]))
 
             if line.startswith(titleLine) and not line.startswith('WARNING:root:Title: Language : FR'):
-                titles.append(line[len(titleLine):].strip())
+                configs.append(line[len(titleLine):].strip())
             previousLine = line
-    return titles, scores, params, langs, titles2, seeds, stats, precisions, recalls, misidentified, nonIdentified, mwePosTags, posTags
+    return configs, scores, langs, stats, precisions, recalls, misidentified, nonIdentified, trainTime
 
 
 def mineReport(path, line, usePreviousLine=False, previousLine=''):
@@ -811,57 +718,55 @@ def mineSTScriptRes(newFile):
                 res.append(round(float(line[-5:-1]) / 100., 1))
                 res.append(round(float(line.split('=')[2][:-2]) * 100., 1))
                 res.append(round(float(line.split('=')[4][:-2]) * 100., 1))
-            # if line.startswith('* MWE-based:'):
-
-            if line.startswith('* Tok-based:'):
-                res.append(round(float(line[-5:-1]) / 100., 1))
-                res.append(round(float(line.split('=')[2][:-2]) * 100., 1))
-                res.append(round(float(line.split('=')[4][:-2]) * 100., 1))
+            # if line.startswith('* Tok-based:'):
+            #     res.append(round(float(line[-5:-1]) / 100., 1))
+            #     res.append(round(float(line.split('=')[2][:-2]) * 100., 1))
+            #     res.append(round(float(line.split('=')[4][:-2]) * 100., 1))
             if line.startswith('* Continuous: MWE-based:'):
                 res.append(round(float(line[-5:-1]) / 100., 1))
                 res.append(round(float(line.split('=')[2][:-2]) * 100., 1))
                 res.append(round(float(line.split('=')[4][:-2]) * 100., 1))
-            if line.startswith('* Continuous: MWE-proportion:'):
-                res.append(line.split('%')[0].split('=')[-1] + ' , ' + line.split('%')[1].split('=')[-1])
+            # if line.startswith('* Continuous: MWE-proportion:'):
+            #     res.append(line.split('%')[0].split('=')[-1] + ' , ' + line.split('%')[1].split('=')[-1])
             if line.startswith('* Discontinuous: MWE-based:'):
                 res.append(round(float(line[-5:-1]) / 100., 1))
                 res.append(round(float(line.split('=')[2][:-2]) * 100., 1))
                 res.append(round(float(line.split('=')[4][:-2]) * 100., 1))
-            if line.startswith('* Discontinuous: MWE-proportion:'):
-                res.append(line.split('%')[0].split('=')[-1] + ' , ' + line.split('%')[1].split('=')[-1])
+            # if line.startswith('* Discontinuous: MWE-proportion:'):
+            #     res.append(line.split('%')[0].split('=')[-1] + ' , ' + line.split('%')[1].split('=')[-1])
             if line.startswith('* Multi-token: MWE-based: '):
                 res.append(round(float(line[-5:-1]) / 100., 1))
                 res.append(round(float(line.split('=')[2][:-2]) * 100., 1))
                 res.append(round(float(line.split('=')[4][:-2]) * 100., 1))
-            if line.startswith('* Multi-token: MWE-proportion:'):
-                res.append(line.split('%')[0].split('=')[-1] + ' , ' + line.split('%')[1].split('=')[-1])
+            # if line.startswith('* Multi-token: MWE-proportion:'):
+            #     res.append(line.split('%')[0].split('=')[-1] + ' , ' + line.split('%')[1].split('=')[-1])
             if line.startswith('* Single-token: MWE-based:'):
                 res.append(round(float(line[-5:-1]) / 100., 1))
                 res.append(round(float(line.split('=')[2][:-2]) * 100., 1))
                 res.append(round(float(line.split('=')[4][:-2]) * 100., 1))
-            if line.startswith('* Single-token: MWE-proportion:'):
-                res.append(line.split('%')[0].split('=')[-1] + ' , ' + line.split('%')[1].split('=')[-1])
+            # if line.startswith('* Single-token: MWE-proportion:'):
+            #     res.append(line.split('%')[0].split('=')[-1] + ' , ' + line.split('%')[1].split('=')[-1])
             if line.startswith('* Seen-in-train: MWE-based:'):
                 res.append(round(float(line[-5:-1]) / 100., 1))
                 res.append(round(float(line.split('=')[2][:-2]) * 100., 1))
                 res.append(round(float(line.split('=')[4][:-2]) * 100., 1))
-            if line.startswith('* Seen-in-train: MWE-proportion:'):
-                res.append(line.split('%')[0].split('=')[-1] + ' , ' + line.split('%')[1].split('=')[
-                    -1])  # line.split('%')[0].split('=')[-1] + ' / ' + line.split('%')[1].split('=')[-1])
+            # if line.startswith('* Seen-in-train: MWE-proportion:'):
+            #     res.append(line.split('%')[0].split('=')[-1] + ' , ' + line.split('%')[1].split('=')[
+            #         -1])  # line.split('%')[0].split('=')[-1] + ' / ' + line.split('%')[1].split('=')[-1])
             if line.startswith('* Unseen-in-train: MWE-based:'):
                 res.append(round(float(line[-5:-1]) / 100., 1))
                 res.append(round(float(line.split('=')[2][:-2]) * 100., 1))
                 res.append(round(float(line.split('=')[4][:-2]) * 100., 1))
-            if line.startswith('* Unseen-in-train: MWE-proportion:'):
-                res.append(line.split('%')[0].split('=')[-1] + ' , ' + line.split('%')[1].split('=')[-1])
+            # if line.startswith('* Unseen-in-train: MWE-proportion:'):
+            #     res.append(line.split('%')[0].split('=')[-1] + ' , ' + line.split('%')[1].split('=')[-1])
             if line.startswith('* Variant-of-train: MWE-based: '):
                 res.append(round(float(line[-5:-1]) / 100., 1))
                 res.append(round(float(line.split('=')[2][:-2]) * 100., 1))
                 res.append(round(float(line.split('=')[4][:-2]) * 100., 1))
-            if line.startswith('* Variant-of-train: MWE-proportion:'):
-                res.append(line.split('%')[0].split('=')[-1] + ' , ' + line.split('%')[1].split('=')[-1])
-            if line.startswith('* Identical-to-train: MWE-proportion:'):
-                res.append(line.split('%')[0].split('=')[-1] + ' , ' + line.split('%')[1].split('=')[-1])
+            # if line.startswith('* Variant-of-train: MWE-proportion:'):
+            #     res.append(line.split('%')[0].split('=')[-1] + ' , ' + line.split('%')[1].split('=')[-1])
+            # if line.startswith('* Identical-to-train: MWE-proportion:'):
+            #     res.append(line.split('%')[0].split('=')[-1] + ' , ' + line.split('%')[1].split('=')[-1])
             if line.startswith('* Identical-to-train: MWE-based:'):
                 res.append(round(float(line[-5:-1]) / 100., 1))
                 res.append(round(float(line.split('=')[2][:-2]) * 100., 1))
@@ -954,13 +859,53 @@ def analyzeCatReport():
 def generateOarsub(xpNum=21, duration=100, tourNum=1, name='mlp'):
     for i in range(1, xpNum + 1):
         sys.stdout.write('oarsub -p "GPU_MODEL <> \'NO\'" -q production -l nodes=1,walltime={0} '
-                         '"NNIdenSys/Scripts/nonCompo.sh" -n {3}{1}.{2} '
+                         '"NNIdenSys/Scripts/nonCompo.sh" -n {4}{1}.{2} '
                          '-O Reports/{3}{1}.{2} -E Reports/{3}{1}.{2}\n'.
-                         format(duration, tourNum, i, name))
+                         format(duration, tourNum, i, name, name[-10:]))
+
+
+def getListOfFiles(dirName):
+    # create a list of file and sub directories
+    # names in the given directory
+    listOfFile = os.listdir(dirName)
+    allFiles = list()
+    # Iterate over all the entries
+    for entry in listOfFile:
+        # Create full path
+        fullPath = os.path.join(dirName, entry)
+        # If entry is a directory then get the list of files in this directory
+        if os.path.isdir(fullPath):
+            allFiles = allFiles + getListOfFiles(fullPath)
+        else:
+            allFiles.append(fullPath)
+
+    return allFiles
+
+
+def cleanReports():
+    proPath = os.path.dirname(__file__)[:-len(os.path.basename(os.path.dirname(__file__)))]
+    directory = os.path.join(proPath, 'Reports/Reports/')
+    lab1 = 'WARNING'
+    lab2 = 'INFO'
+    files = getListOfFiles(directory)
+    for filename in files:
+        # filePath = os.path.join(directory, filename)
+        with open(filename, 'r') as ff:
+            text = ''
+            lines = ff.readlines()
+            for l in lines:
+                if not l.startswith(lab1) and not l.startswith(lab2) and not l.startswith('+'):
+                    text += l
+                else:
+                    pass
+        if text:
+            with open(filename, 'w') as ff:
+                ff.write(text)
 
 
 if __name__ == '__main__':
-    # generateOarsub(xpNum=8, duration=50, tourNum=1, name='chenManning.')
-    getNewScores(
-        [f for f in os.listdir('../Reports/Reports/') if f.startswith('mlpWide.trends.dev')], None
-        , pilot=False, withTitles=False, pos=False, onFixed=True, onCorpus=False, ftb=False)
+    files = [f for f in os.listdir('../Reports/Reports/') if f.startswith('rmlp1')]
+    # cleanReports()
+    generateOarsub(xpNum=10, duration=72, tourNum=1, name='rmlpTree')
+    # parseChenManningReports(files)
+    # getNewScores(files, ['corpus', 'fixed', 'dev'][1])

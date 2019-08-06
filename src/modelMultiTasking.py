@@ -1,17 +1,19 @@
 # unk = configuration['constants']['unk']
 # empty = configuration['constants']['empty']
 import copy
+import random
 from random import uniform
 
 import keras
 import numpy as np
 from imblearn.over_sampling import RandomOverSampler
 from keras import optimizers
-from keras.callbacks import ModelCheckpoint, EarlyStopping
+from keras.callbacks import EarlyStopping
 from keras.layers import Input, Dense, Flatten, Embedding
 from keras.models import Model
 from keras.preprocessing.sequence import pad_sequences
 from keras.utils import to_categorical
+from nltk.parse import DependencyEvaluator
 from nltk.parse.transitionparser import TransitionParser, Transition, Configuration
 
 import reports
@@ -23,6 +25,7 @@ from reports import *
 from transitions import TransitionType
 from wordEmbLoader import empty
 from wordEmbLoader import unk, number
+from parser import parse
 
 enableCategorization = False
 
@@ -32,59 +35,124 @@ importantFrequentWordDic = dict()
 
 global idenInputArrNum, taggingInputArray, depParserInuptArrNum
 
-params = configuration['multitasking']
+mtParams = configuration['multitasking']
+trainParams = configuration['nn']
+
 
 class Network:
     def __init__(self, corpus):
         global idenInputArrNum, taggingInputArray, depParserInuptArrNum
         self.depLabelDic = dict()
-        taggingInputArray = 2 + int(params['useCapitalization']) + int(params['useSymbols'])
-        idenInputArrNum = taggingInputArray * (3 +  params['useB1'] +  params['useBx'])
+        taggingInputArray = 2 + int(mtParams['useCapitalization']) + int(mtParams['useSymbols'])
+        idenInputArrNum = taggingInputArray * (3 + mtParams['useB1'] + mtParams['useBx'])
         depParserInuptArrNum = taggingInputArray * 18 + 1
         self.vocabulary = Vocabulary(corpus)
-        if configuration['tmp']['trainDepParser']:
+        if configuration['tmp']['trainDepParser'] or configuration['tmp']['trainJointly'] or configuration['tmp']['trainInTransfert']:
             self.depParserData, self.depParserLabels, self.depLabelDic = SynDataFactory.getData(corpus, self.vocabulary)
 
         self.taggingModel, self.idenModel, self.depParsingModel = Builder.build(self.vocabulary, len(self.depLabelDic))
 
+    def trainAll(self, corpus):
+        taggingData, taggingLbls = TaggingDataFactory.getTaggingData(self.vocabulary, corpus)
+        taggingLbls = to_categorical(taggingLbls, num_classes=len(self.vocabulary.posIndices))
+        idenData, idenLbls = self.getIdenData(corpus)
+        idenData, idenLbls = DataFactory.overSample(idenData, idenLbls)
+        sys.stdout.write('POS Tagging data = {0}\n'.format(len(taggingLbls)))
+        sys.stdout.write('Identication data = {0}\n'.format(len(idenLbls)))
+        sys.stdout.write('Dependency parsing = {0}\n'.format(len(self.depParserLabels)))
+        idenLbls = to_categorical(idenLbls, num_classes=4)
+        depParserLabels = to_categorical(self.depParserLabels, num_classes=len(self.depLabelDic))
+        historyList = []
+        for x in range(trainParams['initialEpochs']):
+            sys.stdout.write('POS tagging: {0}\n'.format(x + 1))
+            self.taggingModel.fit(taggingData, taggingLbls,
+                                  batch_size=trainParams['taggingBatchSize'],
+                                  verbose=2)
+        posIdx, idenIdx, depIdx = trainParams['initialEpochs'] + 1, 1, 1
+        for x in range(trainParams['jointLearningEpochs']):
+            alpha = random.uniform(0, 1)
+            if alpha < .33:
+                sys.stdout.write(
+                    'POS tagging: {0}\n'.format(posIdx))
+                self.taggingModel.fit(taggingData, taggingLbls,
+                                      verbose=2,
+                                      batch_size=trainParams['taggingBatchSize'])
+                posIdx += 1
+            elif .66 > alpha >= .33:
+                sys.stdout.write('Dependency Parsing: {0}\n'.format(depIdx))
+                self.depParsingModel.fit(self.depParserData, depParserLabels,
+                                               validation_split=trainParams['validationSplit'],
+                                               batch_size=trainParams['depParserBatchSize'],
+                                               verbose=2)
+                depIdx += 1
+            else:
+                sys.stdout.write('MWE identification: {0}\n'.format(idenIdx))
+                his = self.idenModel.fit(idenData, idenLbls,
+                                   verbose=2,
+                                   batch_size=trainParams['identBatchSize'])
+                historyList.append(his)
+                if Network.shouldStopLearning(historyList):
+                    break
+                idenIdx += 1
+
+    def trainInTransfert(self, corpus):
+        self.trainTagging(corpus)
+        configuration['multitasking']['testOnToken'] = True
+        self.testTagging(corpus)
+        configuration['multitasking']['testOnToken'] = False
+        self.testTagging(corpus, title='POS tagging accuracy (MWEs)')
+        configuration['multitasking']['testOnToken'] = True
+
+        self.trainIden(corpus)
+        parse(corpus.testingSents, self, None)
+        self.trainDepParser()
+        self.evaluateDepParsing(corpus)
+
+
     def train(self, corpus):
         epochNumber = 100
-        taggingBatchSize = 32
         taggingData, taggingLbls = TaggingDataFactory.getTaggingData(self.vocabulary, corpus)
         idenData, idenLbls = self.getIdenData(corpus)
-        self.taggingModel.fit(taggingData, taggingLbls, validation_split=.2, epochs=1,
-                              batch_size=taggingBatchSize, verbose=2)
+        trainParams = configuration['nn']
+        self.taggingModel.fit(taggingData, taggingLbls,
+                              validation_split=trainParams['validationSplit'],
+                              epochs=1,
+                              batch_size=trainParams['taggingBatchSize'],
+                              verbose=2)
         idenLoss, taggingLoss = [], []
         for i in range(epochNumber):
             if uniform(0, 1) > .5:
-                history = self.taggingModel.fit(taggingData, taggingLbls, validation_split=.2,
+                history = self.taggingModel.fit(taggingData, taggingLbls,
+                                                validation_split=trainParams['validationSplit'],
                                                 epochs=1,
-                                                batch_size=taggingBatchSize, verbose=2)
+                                                batch_size=trainParams['taggingBatchSize'],
+                                                verbose=2)
                 taggingLoss.append(history.history['loss'])
             else:
-                history = self.idenModel.fit(idenData, idenLbls, validation_split=.2, epochs=1,
-                                             batch_size=taggingBatchSize, verbose=2)
+                history = self.idenModel.fit(idenData, idenLbls,
+                                             validation_split=trainParams['validationSplit'],
+                                             epochs=1,
+                                             batch_size=trainParams['taggingBatchSize'],
+                                             verbose=2)
                 idenLoss.append(history.history['loss'])
                 # TODO check the early stopping
 
     def trainDepParser(self):
-        es = EarlyStopping(monitor='val_loss',
-                           min_delta=configuration['nn']['minDelta'],
-                           patience=configuration['nn']['patience'],
-                           verbose=configuration['others']['verbose'])
-
-        # if configuration['sampling']['overSampling']:
-        #     depParserData, depParserLabels = overSample(depParserData, depParserLabels)
         depParserLabels = to_categorical(self.depParserLabels, num_classes=len(self.depLabelDic))
+        sys.stdout.write('Dependency parsing = {0}\n'.format(len(self.depParserLabels)))
         self.depParsingModel.fit(self.depParserData, depParserLabels,
-                                 validation_split=.2,
-                                 epochs=100,
-                                 batch_size=params['depParserBatchSize'],
+                                 validation_split=trainParams['validationSplit'],
+                                 epochs=trainParams['epochs'],
+                                 batch_size=trainParams['depParserBatchSize'],
                                  verbose=2,
-                                 callbacks=[es])
+                                 callbacks=Network.getCallBacks())
+
+    def evaluateDepParsing(self, corpus):
+        result = self.parse(corpus)
+        de = DependencyEvaluator(result, corpus.testDepGraphs)
+        print 'UAS = {0}\nLAS = {1}'.format(round(de.eval()[0] * 100, 1), round(de.eval()[1] * 100, 1))
 
     def predictDepParsing(self, conf, sent):
-
         inputs = SynDataFactory.getDataEntry(conf, sent, self.vocabulary)
         inputs = [np.asarray([d]) for d in inputs]
         probVectors = self.depParsingModel.predict(inputs, batch_size=1)
@@ -98,11 +166,10 @@ class Network:
             sent = corpus.testingSents[i]
             depGraph = copy.deepcopy(corpus.testDepGraphs[i])
             for n in depGraph.nodes:
-                depGraph.nodes[n]['rel'] = None
+                depGraph.nodes[n]['rel'] = ''
                 depGraph.nodes[n]['head'] = None
-                depGraph.nodes[n]['deps'] = []
             conf = Configuration(depGraph)
-            print sent.text
+            # print sent.text
             while len(conf.buffer) > 0:
                 probVector = self.predictDepParsing(conf, sent)
                 trans = sorted(range(len(probVector)), key=lambda k: probVector[k], reverse=True)[0]
@@ -119,54 +186,35 @@ class Network:
                         elif baseTransition[:4].lower() == Transition.SHIFT[:4].lower():
                             if operation.shift(conf) != -1:
                                 break
-            new_depgraph = copy.deepcopy(depGraph)
-            for key in new_depgraph.nodes:
-                node = new_depgraph.nodes[key]
-                node['rel'] = ''
-                node['head'] = 0
             for (head, rel, child) in conf.arcs:
-                c_node = new_depgraph.nodes[child]
+                c_node = depGraph.nodes[child]
                 c_node['head'] = head
                 c_node['rel'] = rel
-            result.append(new_depgraph)
+            result.append(depGraph)
         return result
 
-    # def testDepParser(self, corpus):
-    #     depParserData, depParserLabels, depLabelDic = self.parser.getTrainData(corpus, self)
-    #     depParserLabels = to_categorical(depParserLabels, num_classes=len(self.depLabelDic))
-    #     results = self.depParsingModel.evaluate(depParserData, depParserLabels, batch_size=32, verbose=0)
-    #     sys.stdout.write('Dep Parsing accuracy = {0}\nLoss = {1}, \n'.format(
-    #         round(results[1] * 100, 1), round(results[0], 3)))
-
     def trainIden(self, corpus):
+        trainParams = configuration['nn']
         idenData, idenLbls = self.getIdenData(corpus)
-        if configuration['sampling']['overSampling']:
-            idenData, idenLbls = DataFactory.overSample(idenData, idenLbls)
+        idenData, idenLbls = DataFactory.overSample(idenData, idenLbls)
         idenLbls = to_categorical(idenLbls, num_classes=4)
-        self.idenModel.fit(idenData, idenLbls, validation_split=.2,
-                           epochs=100,
-                           batch_size=params['identBatchSize'],
+        sys.stdout.write('Identication data = {0}\n'.format(len(idenLbls)))
+        self.idenModel.fit(idenData, idenLbls, validation_split=trainParams['validationSplit'],
+                           epochs=trainParams['epochs'],
+                           batch_size=trainParams['identBatchSize'],
                            verbose=2,
-                           callbacks=[
-                               EarlyStopping(monitor='val_loss',
-                                             min_delta=configuration['nn']['minDelta'],
-                                             patience=configuration['nn']['patience'],
-                                             verbose=configuration['others']['verbose'])
-                           ])
+                           callbacks=Network.getCallBacks())
 
     def trainTagging(self, corpus):
         taggingData, taggingLbls = TaggingDataFactory.getTaggingData(self.vocabulary, corpus)
         taggingLbls = to_categorical(taggingLbls, num_classes=len(self.vocabulary.posIndices))
-        es = EarlyStopping(monitor='val_loss',
-                           min_delta=configuration['nn']['minDelta'],
-                           patience=configuration['nn']['patience'],
-                           verbose=configuration['others']['verbose'])
+        sys.stdout.write('POS Tagging data = {0}\n'.format(len(taggingLbls)))
         self.taggingModel.fit(taggingData, taggingLbls,
                               validation_split=.2,
                               epochs=100,
-                              batch_size=params['taggingBatchSize'],
+                              batch_size=configuration['nn']['taggingBatchSize'],
                               verbose=2,
-                              callbacks=[es])
+                              callbacks=Network.getCallBacks())
 
     def trainTaggerAndIdentifier(self, corpus):
         taggingData, taggingLbls = TaggingDataFactory.getTaggingData(self.vocabulary, corpus)
@@ -178,23 +226,23 @@ class Network:
         sys.stdout.write('POS Tagging data = {0}\n'.format(len(taggingLbls)))
         idenLbls = to_categorical(idenLbls, num_classes=4)
         historyList = []
-        for x in range(params['initialEpochs']):
+        for x in range(mtParams['initialEpochs']):
             sys.stdout.write('POS tagging: {0}\n'.format(x + 1))
             self.taggingModel.fit(taggingData, taggingLbls,
-                                  batch_size=params['taggingBatchSize'],
+                                  batch_size=configuration['nn']['taggingBatchSize'],
                                   verbose=2)
-        for x in range(params['jointLearningEpochs']):
+        for x in range(configuration['nn']['jointLearningEpochs']):
             if x % 2 == 0:
                 sys.stdout.write(
-                    'POS tagging: {0}\n'.format(int(x / 2) + 1 + params['initialEpochs']))
+                    'POS tagging: {0}\n'.format(int(x / 2) + 1 + mtParams['initialEpochs']))
                 self.taggingModel.fit(taggingData, taggingLbls,
                                       verbose=2,
-                                      batch_size=params['taggingBatchSize'])
+                                      batch_size=configuration['nn']['taggingBatchSize'])
             else:
                 sys.stdout.write('MWE identification: {0}\n'.format(int(x / 2) + 1))
                 his = self.idenModel.fit(idenData, idenLbls,
                                          verbose=2,
-                                         batch_size=params['identBatchSize'])
+                                         batch_size=mtParams['identBatchSize'])
                 historyList.append(his)
                 if Network.shouldStopLearning(historyList):
                     break
@@ -215,10 +263,7 @@ class Network:
         taggingData, taggingLbls = TaggingDataFactory.getTaggingData(self.vocabulary, corpus, train=False)
         taggingLbls = to_categorical(taggingLbls, num_classes=len(self.vocabulary.posIndices))
         results = self.taggingModel.evaluate(taggingData, taggingLbls, batch_size=32, verbose=0)
-        sys.stdout.write('{0} = {1}\nLoss = {2}, \n'.format(title,
-                                                            round(results[1] * 100, 1), round(results[0], 3)))
-
-
+        sys.stdout.write('{0} = {1}\n'.format(title, round(results[1] * 100, 1)))
 
     def getPredData(self, trans, sent):
         data = []
@@ -234,6 +279,8 @@ class Network:
     def getIdenData(self, corpus, train=True):
         data, labels = [[] for _ in range(idenInputArrNum)], []
         for sent in corpus.trainingSents if train else corpus.testingSents:
+            if train and not sent.vMWEs:
+                continue
             trans = sent.initialTransition
             while trans and trans.next:
                 focusedElems = DataFactory.getIdenTransData(trans)
@@ -244,8 +291,6 @@ class Network:
                 labels.append(trans.next.type.value if trans.next.type.value <= 2 else 3)
                 trans = trans.next
         return [np.asarray(data[i]) for i in range(idenInputArrNum)], labels
-
-
 
     def addTransData(self, trans, sent, corpus, labels, data, linearModels=None, linearNormalizers=None,
                      dynamicVocab=False):
@@ -309,7 +354,7 @@ class Network:
                                                           parse=parse)
             tokenIdxs.append(tokenIdx)
             posIdxs.append(posIdx)
-            if params['useB1']:
+            if mtParams['useB1']:
                 if len(trans.configuration.buffer) > 1:
                     tokenIdx, posIdx = self.vocabulary.getIndices([trans.configuration.buffer[1]],
                                                                   dynamicVocab=dynamicVocab, parse=parse)
@@ -321,10 +366,10 @@ class Network:
         else:
             tokenIdxs.append(emptyTokenIdx)
             posIdxs.append(emptyPosIdx)
-            if params['useB1']:
+            if mtParams['useB1']:
                 tokenIdxs.append(emptyTokenIdx)
                 posIdxs.append(emptyPosIdx)
-        if params['useBx']:
+        if mtParams['useBx']:
             if trans.configuration.reduced:
                 tokenIdx, posIdx = self.vocabulary.getIndices([trans.configuration.reduced], dynamicVocab=dynamicVocab,
                                                               parse=parse)
@@ -337,42 +382,35 @@ class Network:
         return np.asarray(tokenIdxs), np.asarray(posIdxs)
 
     @staticmethod
-    def getOptimizer():
+    def getOptimizer(key):
         if configuration['others']['verbose']:
             sys.stdout.write(reports.seperator + reports.tabs +
-                             'Optimizer : Adagrad,  learning rate = {0}'.format(params['lr'])
+                             'Optimizer : Adagrad,  learning rate = {0}'.format(configuration['nn'][key])
                              + reports.seperator)
-        return optimizers.Adagrad(lr=params['lr'], epsilon=None, decay=0.0)
+        return optimizers.Adagrad(lr=configuration['nn'][key], epsilon=None, decay=0.0)
 
     @staticmethod
     def getCallBacks():
-        bestWeightPath = reports.getBestWeightFilePath()
-        callbacks = [
-            ModelCheckpoint(bestWeightPath, monitor='val_loss', verbose=1, save_best_only=True, mode='max')
-        ] if bestWeightPath else []
-        es = EarlyStopping(monitor='val_loss',
-                           min_delta=configuration['nn']['minDelta'],
-                           patience=configuration['nn']['patience'],
+        trainParams = configuration['nn']
+        es = EarlyStopping(monitor=trainParams['monitor'],
+                           min_delta=trainParams['minDelta'],
+                           patience=trainParams['patience'],
                            verbose=configuration['others']['verbose'])
-        if configuration['nn']['earlyStop']:
-            callbacks.append(es)
-        if configuration['nn']['checkPoint']:
-            mc = ModelCheckpoint(
-                os.path.join(configuration['path']['projectPath'], 'Reports', configuration['path']['checkPointPath']),
-                monitor='val_acc', mode='max', verbose=1, save_best_only=True)
-            callbacks.append(mc)
-        return callbacks
+        return [es]
 
     @staticmethod
-    def shouldStopLearning(historyList, patience=4, minDelta=.1):
+    def shouldStopLearning(historyList,
+                           patience=configuration['nn']['patience'],
+                           minDelta=configuration['nn']['minDelta']):
         if len(historyList) <= patience:
             return False
         for i in range(patience):
-            if historyList[len(historyList) - i - 1].history['loss'][0] - \
-                    historyList[len(historyList) - i - 2].history['loss'][0] <= minDelta:
+            if historyList[len(historyList) - i - 1].history[configuration['nn']['monitor']][0] - \
+                    historyList[len(historyList) - i - 2].history[configuration['nn']['monitor']][0] <= minDelta:
                 continue
             else:
                 return False
+        sys.stdout.write('Early stopping applied\n')
         return True
 
 
@@ -382,7 +420,7 @@ class TaggingDataFactory:
         data, lbls = [[] for _ in range(taggingInputArray)], []
         for s in corpus.allTrainingSents if train else corpus.testingSents:
             for item in s.tokens + s.vMWEs:
-                if not train and not params['testOnToken'] and \
+                if not train and not mtParams['testOnToken'] and \
                         str(item.__class__).endswith('corpus.Token'):
                     continue
                 tokens = [item] if str(item.__class__).endswith('corpus.Token') else item.tokens
@@ -391,6 +429,8 @@ class TaggingDataFactory:
                     data[i].append(outputs[i])
                 lbls.append(outputs[-1])
         return [np.asarray(d) for d in data], lbls
+
+
 class Vocabulary:
     def __init__(self, corpus):
         self.affixeDic = self.getAffixeDic(corpus)
@@ -409,33 +449,33 @@ class Vocabulary:
             if not configuration['xp']['compo'] else ''
         res += seperator
         return res
-    
+
     def getTaggingEntry(self, tokens, s):
         outputs = []
         if tokens == [None]:
-            outputs = [[self.tokenIndices[unk]] * (params['windowSize'] * 2 + 1),
+            outputs = [[self.tokenIndices[unk]] * (mtParams['windowSize'] * 2 + 1),
                        [self.affixeIndices[unk]] * 12]
-            if params['useCapitalization']:
+            if mtParams['useCapitalization']:
                 outputs.append([2] * 3)
-            if params['useSymbols']:
+            if mtParams['useSymbols']:
                 outputs.append([0])
             outputs.append(self.posIndices[unk])
             return outputs
         if tokens == ['empty']:
-            outputs = [[self.tokenIndices[empty]] * (params['windowSize'] * 2 + 1),
+            outputs = [[self.tokenIndices[empty]] * (mtParams['windowSize'] * 2 + 1),
                        [self.affixeIndices[empty]] * 12]
-            if params['useCapitalization']:
+            if mtParams['useCapitalization']:
                 outputs.append([2] * 3)
-            if params['useSymbols']:
+            if mtParams['useSymbols']:
                 outputs.append([0])
             outputs.append(self.posIndices[empty])
             return outputs
         if tokens == ['root']:
-            outputs = [[self.tokenIndices['root']] * (params['windowSize'] * 2 + 1),
+            outputs = [[self.tokenIndices['root']] * (mtParams['windowSize'] * 2 + 1),
                        [self.affixeIndices[unk]] * 12]
-            if params['useCapitalization']:
+            if mtParams['useCapitalization']:
                 outputs.append([2] * 3)
-            if params['useSymbols']:
+            if mtParams['useSymbols']:
                 outputs.append([0])
             outputs.append(self.posIndices['root'])
             return outputs
@@ -443,10 +483,10 @@ class Vocabulary:
         outputs.append(tokenIdxs)
         affixes = self.getAffixeIndices(tokens, s)
         outputs.append(affixes)
-        if params['useCapitalization']:
+        if mtParams['useCapitalization']:
             capitalIdx = DataFactory.getCapitalizationInfo(tokens, s)
             outputs.append(capitalIdx)
-        if params['useSymbols']:
+        if mtParams['useSymbols']:
             symbols = DataFactory.getSymbolInfo(tokens)
             outputs.append(symbols)
         attachedPos = '_'.join(t.posTag.lower() for t in tokens)
@@ -454,9 +494,8 @@ class Vocabulary:
         outputs.append(posIdx)
         return outputs
 
-
     def getTokenIdxs(self, tokens, s):
-        windowSize = params['windowSize']
+        windowSize = mtParams['windowSize']
         positions = [int(t.position) - 1 for t in tokens]
         minPos, maxPos, tokenIdxs = min(positions), max(positions), []
         res = getLemmaString(tokens) + ' ' + str(minPos) + ' ' + str(maxPos) + ' '
@@ -492,8 +531,7 @@ class Vocabulary:
             tokenIdxs.append(self.tokenIndices[unk])
             res += ' unk'
         return tokenIdxs
-    
-    
+
     def getAffixeIndices(self, tokens, s):
         affixes = []
         txts = DataFactory.getContextTexts(tokens, s)
@@ -521,7 +559,7 @@ class Vocabulary:
             else:
                 affixes += [self.affixeIndices[unk]] * 4
         return affixes
-    
+
     def getAffixeDic(self, corpus):
         affixeDic = dict()
         for s in corpus.trainingSents:
@@ -596,7 +634,7 @@ class Vocabulary:
     def printTagging(self, de):
         reversedTokens, reversedAffixes = dict(), dict()
         for i in range(2):
-            for k,v in [self.tokenIndices, self.affixeIndices][i]:
+            for k, v in [self.tokenIndices, self.affixeIndices][i]:
                 [reversedTokens, reversedAffixes][i][v] = k
         tokens = ' '.join(reversedTokens[e] for e in de[0])
         affixes = ' '.join(reversedAffixes[e] for e in de[1])
@@ -615,6 +653,7 @@ class Vocabulary:
                     else:
                         syntacticLabelVocab[k] += 1
         return syntacticLabelVocab
+
     @staticmethod
     def getFrequencyDics(corpus):
         syntacticLabelVocab = Vocabulary.getSynLabels(corpus)
@@ -633,7 +672,6 @@ class Vocabulary:
                                 tokenTxt = number
                         tokenVocab[tokenTxt] = 1 if tokenTxt not in tokenVocab else tokenVocab[tokenTxt] + 1
                         posVocab[posTxt] = 1 if posTxt not in posVocab else posVocab[posTxt] + 1
-                        tokenTxt = DataFactory.addDynamicVersion(tokens, corpus)
                         if tokenTxt:
                             tokenVocab[tokenTxt] = 1 if tokenTxt not in tokenVocab else tokenVocab[tokenTxt] + 1
 
@@ -642,12 +680,12 @@ class Vocabulary:
         return tokenVocab, posVocab, syntacticLabelVocab
 
     @staticmethod
-    def cleanVocab(tokenVocab, freqTaux=0):
+    def cleanVocab(tokenVocab, mweTokenDictionary, freqTaux=0):
         if configuration['others']['verbose']:
             sys.stdout.write(tabs + 'Non frequent word cleaning:' + doubleSep)
             sys.stdout.write(tabs + 'Before : {0}\n'.format(len(tokenVocab)))
         for k in tokenVocab.keys():
-            if tokenVocab[k] <= freqTaux and '_' not in k and k.lower() not in corpus.mweTokenDictionary:
+            if tokenVocab[k] <= freqTaux and '_' not in k and k.lower() not in mweTokenDictionary:
                 if configuration['embedding']['compactVocab']:
                     del tokenVocab[k]
                 elif uniform(0, 1) < configuration['constants']['alpha']:
@@ -689,15 +727,16 @@ class Vocabulary:
             posTxt += t.posTag + '_'
         return tokenTxt[:-1], posTxt[:-1].lower()
 
+
 class Builder:
     @staticmethod
     def build(vocab, depParserClassNum):
         taggingModel, sharedLayers = Builder.buildTaggingModel(vocab)
-        if configuration['tmp']['trainIden'] or configuration['tmp']['trainJointly']:
+        if configuration['tmp']['trainIden'] or configuration['tmp']['trainJointly'] or configuration['tmp']['trainInTransfert']:
             idenModel = Builder.buildIdenModel(sharedLayers)
         else:
             idenModel = None
-        if configuration['tmp']['trainDepParser']:
+        if configuration['tmp']['trainDepParser'] or configuration['tmp']['trainJointly'] or configuration['tmp']['trainInTransfert']:
             depParsingModel = Builder.buildDepParsingModel(sharedLayers, depParserClassNum, vocab)
         else:
             depParsingModel = None
@@ -705,11 +744,11 @@ class Builder:
 
     @staticmethod
     def buildTaggingModel(vocab):
-        inputToks = Input((params['windowSize'] * 2 + 1,), dtype='int32', name='tokens')
+        inputToks = Input((mtParams['windowSize'] * 2 + 1,), dtype='int32', name='tokens')
         inputAffixe = Input((12,), dtype='int32', name='affixes')
         inputLayers = [inputToks, inputAffixe]
-        sharedTokEmb = Embedding(len(vocab.tokenIndices), params['tokenDim'], name='tokenEmb')
-        sharedAffixeEmb = Embedding(len(vocab.affixeIndices), params['affixeDim'],
+        sharedTokEmb = Embedding(len(vocab.tokenIndices), mtParams['tokenDim'], name='tokenEmb')
+        sharedAffixeEmb = Embedding(len(vocab.affixeIndices), mtParams['affixeDim'],
                                     name='affixeseEmb')
 
         taggingFlatten = Flatten()(sharedTokEmb(inputToks))
@@ -719,40 +758,18 @@ class Builder:
         Builder.addCapitalizationLayer(inputLayers, concFlatten, sharedLayers)
         Builder.addSymbolLayer(inputLayers, concFlatten, sharedLayers)
         concFlatten = keras.layers.concatenate(concFlatten)
-        sharedDense = Dense(params['taggingDenseUnits'], activation='relu', name='posDense')
+        sharedDense = Dense(mtParams['taggingDenseUnits'], activation='relu', name='posDense')
         sharedLayers = [sharedDense] + sharedLayers
         taggingDense = sharedDense(concFlatten)
 
         taggingSoftmax = Dense(len(vocab.posIndices), activation='softmax')(taggingDense)
         taggingModel = Model(inputs=inputLayers, outputs=taggingSoftmax)
         taggingModel.compile(loss=configuration['nn']['loss'],
-                             optimizer=Network.getOptimizer(),
+                             optimizer=Network.getOptimizer('taggingLR'),
                              metrics=['accuracy'])
         if configuration['others']['verbose']:
             sys.stdout.write(str(taggingModel.summary()) + doubleSep)
         return taggingModel, sharedLayers
-
-    @staticmethod
-    def addCapitalizationLayer(inputLayers, concFlatten, sharedLayers):
-        sharedCapitalEmb = Embedding(4, params['capitalDim'], name='capitalizationEmb')
-        if params['useCapitalization']:
-            inputCapital = Input((3,), dtype='int32', name='capitalization')
-            inputLayers.append(inputCapital)
-            capitalEmb = sharedCapitalEmb(inputCapital)
-            capitalFlatten = Flatten()(capitalEmb)
-            concFlatten.append(capitalFlatten)
-            sharedLayers.append(sharedCapitalEmb)
-
-    @staticmethod
-    def addSymbolLayer(inputLayers, concFlatten, sharedLayers):
-        sharedSymbolEmb = Embedding(20, params['symbolDim'], name='symbolsEmb')
-        if params['useSymbols']:
-            inputSymbol = Input((1,), dtype='int32', name='symbol')
-            inputLayers.append(inputSymbol)
-            symbolEmb = sharedSymbolEmb(inputSymbol)
-            symbolFlatten = Flatten()(symbolEmb)
-            concFlatten.append(symbolFlatten)
-            sharedLayers.append(sharedSymbolEmb)
 
     @staticmethod
     def buildDepParsingModel(sharedLayers, classNum, vocab):
@@ -767,21 +784,21 @@ class Builder:
             depParsingDenseLayers.append(denseLayer)
 
         synLblInput = Input((12,), dtype='int32', name='SyntacticLabels')
-        depParsingLayers = [synLblInput] + depParsingLayers #.append(synLblInput)
-        synLblEmb = Embedding(len(vocab.syntacticLabelIndices), params['sytacticLabelDim'],
+        depParsingLayers = [synLblInput] + depParsingLayers  # .append(synLblInput)
+        synLblEmb = Embedding(len(vocab.syntacticLabelIndices), mtParams['sytacticLabelDim'],
                               name='SyntacticLabelEmb')(synLblInput)
         synLblFlatten = Flatten()(synLblEmb)
         depParsingDenseLayers = [synLblFlatten] + depParsingDenseLayers
-        #depParsingDenseLayers.append(synLblFlatten)
+        # depParsingDenseLayers.append(synLblFlatten)
 
         concDense = keras.layers.concatenate(depParsingDenseLayers)
-        depParsingDense = Dense(params['depParsingDenseUnitNumber'],
+        depParsingDense = Dense(mtParams['depParsingDenseUnits'],
                                 activation='relu',
                                 name='depParsingDense')(concDense)
         depParsingSoftmax = Dense(classNum, activation='softmax', name='depParsingSoftMax')(depParsingDense)
         depParsingModel = Model(inputs=depParsingLayers, outputs=depParsingSoftmax)
         depParsingModel.compile(loss=configuration['nn']['loss'],
-                                optimizer=Network.getOptimizer(),
+                                optimizer=Network.getOptimizer('depParsingLR'),
                                 metrics=['accuracy'])
 
         if configuration['others']['verbose']:
@@ -792,9 +809,9 @@ class Builder:
     def buildIdenModel(sharedLayers):
         idenInputLayers, idenDenseLayers = [], []
         focusedElements = ['b0', 's0', 's1']
-        if params['useB1']:
+        if mtParams['useB1']:
             focusedElements = ['b1'] + focusedElements
-        if params['useBx']:
+        if mtParams['useBx']:
             focusedElements = ['bx'] + focusedElements
         for i in focusedElements:
             inputLayers, denseLayer = Builder.buildPosModule(sharedLayers, i)
@@ -802,12 +819,12 @@ class Builder:
             idenDenseLayers.append(denseLayer)
 
         concDense = keras.layers.concatenate(idenDenseLayers)
-        idenDense = Dense(params['IdenDenseUnitNumber'], activation='relu', name='idenDense')(
+        idenDense = Dense(mtParams['idenDenseUnits'], activation='relu', name='idenDense')(
             concDense)
         idenSoftmax = Dense(4, activation='softmax', name='idenSoftMax')(idenDense)
         idenModel = Model(inputs=idenInputLayers, outputs=idenSoftmax)
         idenModel.compile(loss=configuration['nn']['loss'],
-                          optimizer=Network.getOptimizer(),
+                          optimizer=Network.getOptimizer('idenLR'),
                           metrics=['accuracy'])
 
         if configuration['others']['verbose']:
@@ -816,8 +833,8 @@ class Builder:
 
     @staticmethod
     def buildPosModule(sharedLayers, title):
-        inputSize, tokenEmb = params['windowSize'] * 2 + 1, \
-                              params['tokenDim']
+        inputSize, tokenEmb = mtParams['windowSize'] * 2 + 1, \
+                              mtParams['tokenDim']
         inputToks = Input((inputSize,), dtype='int32', name=title + 'Tokens')
         inputAffixe = Input((12,), dtype='int32', name=title + 'Affixes')
         inputLayers = [inputToks, inputAffixe]
@@ -826,13 +843,13 @@ class Builder:
         taggingAffixeEmb = sharedLayers[2](inputAffixe)
         taggingAffixeFlatten = Flatten()(taggingAffixeEmb)
         concFlatten = [taggingFlatten, taggingAffixeFlatten]
-        if params['useCapitalization']:
+        if mtParams['useCapitalization']:
             inputCapital = Input((3,), dtype='int32', name=title + 'Capitalization')
             inputLayers.append(inputCapital)
             capitalEmb = sharedLayers[3](inputCapital)
             capitalFlatten = Flatten()(capitalEmb)
             concFlatten.append(capitalFlatten)
-        if params['useSymbols']:
+        if mtParams['useSymbols']:
             inputSymbol = Input((1,), dtype='int32', name=title + 'Symbols')
             inputLayers.append(inputSymbol)
             symbolEmb = sharedLayers[-1](inputSymbol)
@@ -842,167 +859,35 @@ class Builder:
         taggingDense = sharedLayers[0](concFlatten)
         return inputLayers, taggingDense
 
+    @staticmethod
+    def addCapitalizationLayer(inputLayers, concFlatten, sharedLayers):
+        sharedCapitalEmb = Embedding(4, mtParams['capitalDim'], name='capitalizationEmb')
+        if mtParams['useCapitalization']:
+            inputCapital = Input((3,), dtype='int32', name='capitalization')
+            inputLayers.append(inputCapital)
+            capitalEmb = sharedCapitalEmb(inputCapital)
+            capitalFlatten = Flatten()(capitalEmb)
+            concFlatten.append(capitalFlatten)
+            sharedLayers.append(sharedCapitalEmb)
+
+    @staticmethod
+    def addSymbolLayer(inputLayers, concFlatten, sharedLayers):
+        sharedSymbolEmb = Embedding(20, mtParams['symbolDim'], name='symbolsEmb')
+        if mtParams['useSymbols']:
+            inputSymbol = Input((1,), dtype='int32', name='symbol')
+            inputLayers.append(inputSymbol)
+            symbolEmb = sharedSymbolEmb(inputSymbol)
+            symbolFlatten = Flatten()(symbolEmb)
+            concFlatten.append(symbolFlatten)
+            sharedLayers.append(sharedSymbolEmb)
+
 
 class DataFactory:
-    
-    @staticmethod
-    def old_getDepParsingData( corpus, network):
-        """
-        Create the training example in the libsvm format and write it to the input_file.
-        Reference : Page 32, Chapter 3. Dependency Parsing by Sandra Kubler, Ryan McDonal and Joakim Nivre (2009)
-        """
-        transParser = TransitionParser(TransitionParser.ARC_STANDARD)
-        operation = Transition(transParser.ARC_STANDARD)
-        count_proj = 0
-        data, labels, labelDic = [[] for _ in range(depParserInuptArrNum)], [], dict()
-        for i in range(len(corpus.trainingSents)):
-            depgraph = corpus.trainDepGraphs[i]
-            sent = corpus.trainingSents[i]
-            if not transParser._is_projective(depgraph):
-                continue
-            count_proj += 1
-            conf = Configuration(depgraph)
-            while len(conf.buffer) > 0:
-                b0 = conf.buffer[0]
-                dataEntry = DataFactory.getDataEntry(conf, sent, network)
-                if len(dataEntry) != 73:
-                    print conf
-                for i in range(depParserInuptArrNum):
-                    data[i].append(dataEntry[i])
-                if len(conf.stack) > 0:
-                    s0 = conf.stack[len(conf.stack) - 1]
-                    # Left-arc operation
-                    rel = transParser._get_dep_relation(b0, s0, depgraph)
-                    if rel is not None:
-                        if conf.stack[-1] - 1 >= 0 and conf.buffer[0] - 1 >= 0:
-                            sent.tokens[conf.stack[-1] - 1].dependencyParent = sent.tokens[conf.buffer[0] - 1]
-                        sent.tokens[conf.stack[-1] - 1].dependencyLabel = rel
-                        key = Transition.LEFT_ARC + ':' + rel
-                        if key not in labelDic:
-                            labelDic[key] = len(labelDic)
-                        operation.left_arc(conf, rel)
-                        labels.append(labelDic[key])
-
-                        continue
-                    # Right-arc operation
-                    rel = transParser._get_dep_relation(s0, b0, depgraph)
-                    if rel is not None:
-                        precondition = True
-                        # Get the max-index of buffer
-                        maxID = conf._max_address
-                        for w in range(maxID + 1):
-                            if w != b0:
-                                relw = transParser._get_dep_relation(b0, w, depgraph)
-                                if relw is not None:
-                                    if (b0, relw, w) not in conf.arcs:
-                                        precondition = False
-                        if precondition:
-                            key = Transition.RIGHT_ARC + ':' + rel
-                            if conf.stack[-1] - 1 >= 0 and conf.buffer[0] - 1 >= 0:
-                                sent.tokens[conf.buffer[0] - 1].dependencyParent = sent.tokens[conf.stack[-1] - 1]
-                            else:
-                                sent.tokens[conf.buffer[0] - 1].dependencyParent = None
-                            sent.tokens[conf.buffer[0] - 1].dependencyLabel = rel
-                            operation.right_arc(conf, rel)
-                            if key not in labelDic:
-                                labelDic[key] = len(labelDic)
-                            labels.append(labelDic[key])
-                            continue
-                # Shift operation as the default
-                key = Transition.SHIFT
-                if key not in labelDic:
-                    labelDic[key] = len(labelDic)
-                operation.shift(conf)
-                labels.append(labelDic[key])
-        print(" Number of training examples : " + str(len(corpus.trainDepGraphs)))
-        print(" Number of valid (projective) examples : " + str(count_proj))
-        return [np.asarray(data[i]) for i in range(depParserInuptArrNum)], labels, labelDic
-
-    @staticmethod
-    def getDepParsingData(corpus, vocabulary, train=True):
-        """
-        Create the training example in the libsvm format and write it to the input_file.
-        Reference : Page 32, Chapter 3. Dependency Parsing by Sandra Kubler, Ryan McDonal and Joakim Nivre (2009)
-        """
-        transParser = TransitionParser(TransitionParser.ARC_STANDARD)
-        transition = Transition(transParser.ARC_STANDARD)
-        count_proj = 0
-        data, labels, labelDic = [[] for _ in range(3)], [], dict()
-        sents = corpus.trainingSents if train else corpus.testingSents
-        depGraphs = corpus.trainDepGraphs if train else corpus.testDepGraphs
-        for i in range(len(sents)):
-            depgraph = depGraphs[i]
-            sent = sents[i]
-            if not transParser._is_projective(depgraph):
-                continue
-            count_proj += 1
-            conf = Configuration(depgraph)
-            while len(conf.buffer) > 0:
-                dataEntry = DataFactory.getDataEntry(conf, sent, vocabulary)
-                for i in range(3):
-                    data[i].append(dataEntry[i])
-                # DataFactory.printDataEntry(dataEntry, vocabulary, conf, sent)
-                b0 = conf.buffer[0]
-                if len(conf.stack) > 0:
-                    s0 = conf.stack[len(conf.stack) - 1]
-                    # Left-arc operation
-                    rel = transParser._get_dep_relation(b0, s0, depgraph)
-                    if rel is not None:
-                        if conf.stack[-1] - 1 >= 0 and conf.buffer[0] - 1 >= 0:
-                            sent.tokens[conf.stack[-1] - 1].predictedDepParent = sent.tokens[conf.buffer[0] - 1]
-                            sent.tokens[conf.stack[-1] - 1].predictedDepLabel = rel
-                        key = Transition.LEFT_ARC + ':' + rel
-                        if key not in labelDic:
-                            labelDic[key] = len(labelDic)
-                        transition.left_arc(conf, rel)
-                        # print 'LEFT_ARC'
-                        labels.append(labelDic[key])
-                        continue
-                    # Right-arc operation
-                    rel = transParser._get_dep_relation(s0, b0, depgraph)
-                    if rel is not None:
-                        precondition = True
-                        # Get the max-index of buffer
-                        maxID = conf._max_address
-                        for w in range(maxID + 1):
-                            if w != b0:
-                                relw = transParser._get_dep_relation(b0, w, depgraph)
-                                if relw is not None:
-                                    if (b0, relw, w) not in conf.arcs:
-                                        precondition = False
-                        if precondition:
-                            key = Transition.RIGHT_ARC + ':' + rel
-                            if conf.stack[-1] - 1 >= 0 and conf.buffer[0] - 1 >= 0:
-                                sent.tokens[conf.buffer[0] - 1].predictedDepParent = sent.tokens[conf.stack[-1] - 1]
-                            else:
-                                sent.tokens[conf.buffer[0] - 1].predictedDepParent = None
-                            if conf.buffer[0] - 1 >= 0:
-                                sent.tokens[conf.buffer[0] - 1].predictedDepLabel = rel
-                            transition.right_arc(conf, rel)
-                            # print 'RIGHT_ARC'
-                            if key not in labelDic:
-                                labelDic[key] = len(labelDic)
-                            labels.append(labelDic[key])
-                            continue
-                # Shift operation as the default
-                key = Transition.SHIFT
-                if key not in labelDic:
-                    labelDic[key] = len(labelDic)
-                transition.shift(conf)
-                # print 'SHIFT'
-                labels.append(labelDic[key])
-
-        exNum = len(corpus.trainDepGraphs) if train else len(corpus.testDepGraphs)
-        print(" Number of {0} examples : {1}".format('training' if train else 'evaluation', exNum))
-        print(" Number of projective examples : " + str(count_proj))
-        if params['unlabeled']:
-            labels = DataFactory.toUnlabeled(labels, labelDic)
-        return [np.asarray(data[i]) for i in range(3)], labels, labelDic
 
     @staticmethod
     def getIdenTransData(trans):
-        focusedElems = [[trans.configuration.reduced]] if params['useBx'] else []
-        if params['useB1']:
+        focusedElems = [[trans.configuration.reduced]] if mtParams['useBx'] else []
+        if mtParams['useB1']:
             focusedElems.append([trans.configuration.buffer[1]] if len(trans.configuration.buffer) > 1 else [None])
         focusedElems.append([trans.configuration.buffer[0]] if len(trans.configuration.buffer) > 0 else [None])
         focusedElems.append(
@@ -1022,14 +907,14 @@ class DataFactory:
         ros = RandomOverSampler(random_state=0)
         newIdenData, newIdenLbls = ros.fit_sample(newIdenData, idenLbls)
         idenData = []
-        dataDivision = [2 * params['windowSize'] + 1, 12]
-        if params['useCapitalization']:
+        dataDivision = [2 * mtParams['windowSize'] + 1, 12]
+        if mtParams['useCapitalization']:
             dataDivision.append(3)
-        if params['useSymbols']:
+        if mtParams['useSymbols']:
             dataDivision.append(1)
 
-        dataDivision = dataDivision * (3 + (1 if params['useB1'] else 0) +
-                                       (1 if params['useBx'] else 0))
+        dataDivision = dataDivision * (3 + (1 if mtParams['useB1'] else 0) +
+                                       (1 if mtParams['useBx'] else 0))
         for i in range(idenInputArrNum):
             idenData.append([])
         for i in range(len(newIdenData)):
@@ -1117,145 +1002,6 @@ class DataFactory:
         return np.asarray(pad_sequences([seq], maxlen=padConf[label], value=emptyIdx))[0]
 
     @staticmethod
-    def getBufferTokens(conf, sent, vocab, dataEntry):
-        for i in range(3):
-            if i < len(conf.buffer):
-                bi = conf.buffer[i] - 1
-                DataFactory.addTokenTaggingEntries(sent.tokens[bi], sent, dataEntry, vocab)
-            else:
-                DataFactory.addTokenTaggingEntries(None, sent, dataEntry, vocab)
-
-    @staticmethod
-    def getStackTokens(conf, sent, vocab,  dataEntry):
-        for i in range(1, 4):
-            if i < len(conf.stack):
-                si = conf.stack[-i] - 1
-                if si == -1:
-                    DataFactory.addTokenTaggingEntries('root', sent, dataEntry, vocab)
-                else:
-                    DataFactory.addTokenTaggingEntries(sent.tokens[si], sent, dataEntry, vocab)
-            else:
-                DataFactory.addTokenTaggingEntries(None, sent, dataEntry, vocab)
-
-    @staticmethod
-    def getSyntacticLabelIndice(t, vocab):
-        if t:
-            k = t.dependencyLabel.lower()
-            if k in vocab:
-                return vocab[k]
-            return vocab[unk]
-        return vocab[empty]
-
-    @staticmethod
-    def getStackLeftMosts(conf, sent, vocab, synVocab, dataEntry):
-        syntacticLabels = []
-        for i in range(2):
-            if len(conf.stack) >= 2 - i:
-                if conf.stack[i - 2] > 0:
-                    si = sent.tokens[conf.stack[i - 2] - 1]
-                    leftMostChildren = DataFactory.getLeftMostChildren(si, sent)
-                    for t in leftMostChildren[:2]:
-                        DataFactory.addTokenTaggingEntries(t, sent, dataEntry, vocab)
-                        syntacticLabels.append(DataFactory.getSyntacticLabelIndice(t, synVocab))
-                    for _ in range(2 - len(leftMostChildren)):
-                        DataFactory.addTokenTaggingEntries(None, sent, dataEntry, vocab)
-                        syntacticLabels.append(DataFactory.getSyntacticLabelIndice(None, synVocab))
-                else:
-                    DataFactory.addTokenTaggingEntries(None, sent, dataEntry, vocab)
-                    syntacticLabels.append(DataFactory.getSyntacticLabelIndice(None, synVocab))
-                    DataFactory.addTokenTaggingEntries(None, sent, dataEntry, vocab)
-                    syntacticLabels.append(DataFactory.getSyntacticLabelIndice(None, synVocab))
-            else:
-                DataFactory.addTokenTaggingEntries(None, sent, dataEntry, vocab)
-                syntacticLabels.append(DataFactory.getSyntacticLabelIndice(None, synVocab))
-                DataFactory.addTokenTaggingEntries(None, sent, dataEntry, vocab)
-                syntacticLabels.append(DataFactory.getSyntacticLabelIndice(None, synVocab))
-        return syntacticLabels
-
-    @staticmethod
-    def getStackRightMosts(conf, sent, vocab, synVocab,  dataEntry):
-        syntacticLabels = []
-        for i in range(2):
-            if len(conf.stack) >= 2 - i:
-                if conf.stack[i - 2] > 0:
-                    si = sent.tokens[conf.stack[i - 2] - 1]
-                    rightMostChildren = DataFactory.getRightMostChildren(si, sent)
-                    for t in rightMostChildren[:2]:
-                        DataFactory.addTokenTaggingEntries(t, sent, dataEntry, vocab)
-                        syntacticLabels.append(DataFactory.getSyntacticLabelIndice(t, synVocab))
-                    for _ in range(2 - len(rightMostChildren)):
-                        DataFactory.addTokenTaggingEntries(None, sent, dataEntry, vocab)
-                        syntacticLabels.append(DataFactory.getSyntacticLabelIndice(None, synVocab))
-                else:
-                    DataFactory.addTokenTaggingEntries(None, sent, dataEntry, vocab)
-                    syntacticLabels.append(DataFactory.getSyntacticLabelIndice(None, synVocab))
-                    DataFactory.addTokenTaggingEntries(None, sent, dataEntry, vocab)
-                    syntacticLabels.append(DataFactory.getSyntacticLabelIndice(None, synVocab))
-            else:
-                DataFactory.addTokenTaggingEntries(None, sent, dataEntry, vocab)
-                syntacticLabels.append(DataFactory.getSyntacticLabelIndice(None, synVocab))
-                DataFactory.addTokenTaggingEntries(None, sent, dataEntry, vocab)
-                syntacticLabels.append(DataFactory.getSyntacticLabelIndice(None, synVocab))
-        return syntacticLabels
-
-    @staticmethod
-    def getStackLeftAndRightMostOfLeftAndRightMosts(conf, sent, vocab, synVocab, dataEntry):
-        syntacticLabels = []
-        for i in range(2):
-            if len(conf.stack) >= 2 - i and conf.stack[i - 2] > 0:
-                si = sent.tokens[conf.stack[i - 2] - 1]
-                leftMostOfLeftMostChild = DataFactory.getLeftMostOfLeftMostChildren(si, sent)
-                DataFactory.addTokenTaggingEntries(leftMostOfLeftMostChild, sent, dataEntry, vocab)
-                syntacticLabels.append(DataFactory.getSyntacticLabelIndice(leftMostOfLeftMostChild, synVocab))
-                rightMostOfRightMostChild = DataFactory.getRightMostOfRightMostChildren(si, sent)
-                DataFactory.addTokenTaggingEntries(rightMostOfRightMostChild, sent, dataEntry, vocab)
-                syntacticLabels.append(DataFactory.getSyntacticLabelIndice(rightMostOfRightMostChild, synVocab))
-            else:
-                DataFactory.addTokenTaggingEntries(None, sent, dataEntry, vocab)
-                syntacticLabels.append(DataFactory.getSyntacticLabelIndice(None, synVocab))
-                DataFactory.addTokenTaggingEntries(None, sent, dataEntry, vocab)
-                syntacticLabels.append(DataFactory.getSyntacticLabelIndice(None, synVocab))
-        return syntacticLabels
-
-    @staticmethod
-    def getLeftMostChildren(token, sent):
-        leftMostChildren = []
-        for t in sent.tokens[:token.position - 1]:
-            if t.dependencyParent == token.position:
-                leftMostChildren.append(t)
-        return leftMostChildren
-
-    @staticmethod
-    def getLeftMostOfLeftMostChildren(token, sent):
-        leftMostChildren = []
-        for t in sent.tokens[:token.position - 1]:
-            if t.dependencyParent == token.position:
-                leftMostChildren.append(t)
-                break
-        if leftMostChildren:
-            return DataFactory.getLeftMostChildren(leftMostChildren[0], sent)[0]
-        return None
-
-    @staticmethod
-    def getRightMostOfRightMostChildren(token, sent):
-        rightMostChildren = []
-        for t in sent.tokens[:token.position - 1]:
-            if t.dependencyParent == token.position:
-                rightMostChildren.append(t)
-                break
-        if rightMostChildren:
-            return DataFactory.getRightMostChildren(rightMostChildren[0], sent)[0]
-        return None
-
-    @staticmethod
-    def getRightMostChildren(token, sent):
-        rightMostChildren = []
-        for t in reversed(sent.tokens[token.position:]):
-            if t.dependencyParent == token.position:
-                rightMostChildren.append(t)
-        return rightMostChildren
-
-    @staticmethod
     def addTokenTaggingEntries(token, sent, dataEntry, vocab):
         if token and isinstance(token, Token) and token.getTokenOrLemma() in vocab.tokenIndices:
             taggingEntries = vocab.getTaggingEntry([token], sent)
@@ -1272,32 +1018,6 @@ class DataFactory:
                 for j in range(len(taggingEntries) - 1):
                     dataEntry.append(taggingEntries[j])
 
-    @staticmethod
-    def getDataEntry(conf, sent, network):
-        tokenVocab = network.vocabulary.tokenIndices
-        syntacticLabelVocab = network.vocabulary.syntacticLabelIndices
-        dataEntry = []
-        DataFactory.getBufferTokens(conf, sent, tokenVocab,  dataEntry)
-        DataFactory.getStackTokens(conf, sent, tokenVocab,  dataEntry)
-        syntacticLabels = DataFactory.getStackLeftMosts(conf, sent, tokenVocab, syntacticLabelVocab, dataEntry)
-        syntacticLabels += DataFactory.getStackRightMosts(conf, sent, tokenVocab, syntacticLabelVocab, dataEntry)
-        syntacticLabels += DataFactory.getStackLeftAndRightMostOfLeftAndRightMosts(conf, sent, tokenVocab,
-                                                                                   syntacticLabelVocab,
-                                                                                   dataEntry)
-        dataEntry.append(syntacticLabels)
-        return dataEntry
-
-    @staticmethod
-    def addDynamicVersion(tokens, corpus):
-        if not configuration['embedding']['dynamicVocab'] or not tokens or len(tokens) <= 1:
-            return None
-        shouldDynamize = [True if t.getLemma() in corpus.importantFrequentWords else False for t in tokens]
-        if False in shouldDynamize and True in shouldDynamize:
-            return '_'.join(
-                t.getTokenOrLemma() if t.getLemma() in corpus.importantFrequentWords else unk for t in tokens)
-        return None
-
-
 
 class SynDataFactory(object):
 
@@ -1311,7 +1031,7 @@ class SynDataFactory(object):
         transition = Transition(transParser.ARC_STANDARD)
         count_proj = 0
         data, labels, labelDic = [[] for _ in range(depParserInuptArrNum)], [], dict()
-        sents = corpus.trainingSents if train else corpus.testingSents
+        sents = corpus.allTrainingSents if train else corpus.testingSents
         depGraphs = corpus.trainDepGraphs if train else corpus.testDepGraphs
         for i in range(len(sents)):
             depgraph = depGraphs[i]
@@ -1324,7 +1044,7 @@ class SynDataFactory(object):
                 dataEntry = SynDataFactory.getDataEntry(conf, sent, vocabulary)
                 for i in range(depParserInuptArrNum):
                     data[i].append(dataEntry[i])
-                SynDataFactory.printDataEntry(dataEntry, vocabulary, conf, sent)
+                # SynDataFactory.printDataEntry(dataEntry, vocabulary, conf, sent)
                 b0 = conf.buffer[0]
                 if len(conf.stack) > 0:
                     s0 = conf.stack[len(conf.stack) - 1]
@@ -1383,10 +1103,10 @@ class SynDataFactory(object):
     @staticmethod
     def getDataEntry(conf, sent, vocab):
         dataEntry = [[]]
-        SynDataFactory.getBufferTokens(conf, sent, vocab,  dataEntry)
-        SynDataFactory.getStackTokens(conf, sent, vocab,  dataEntry)
-        SynDataFactory.getStackLeftMosts(conf, sent, vocab,  dataEntry)
-        SynDataFactory.getStackRightMosts(conf, sent, vocab,  dataEntry)
+        SynDataFactory.getBufferTokens(conf, sent, vocab, dataEntry)
+        SynDataFactory.getStackTokens(conf, sent, vocab, dataEntry)
+        SynDataFactory.getStackLeftMosts(conf, sent, vocab, dataEntry)
+        SynDataFactory.getStackRightMosts(conf, sent, vocab, dataEntry)
         SynDataFactory.getStackLeftAndRightMostOfLeftAndRightMosts(conf, sent, vocab, dataEntry)
         return dataEntry
 
@@ -1434,9 +1154,9 @@ class SynDataFactory(object):
             if len(conf.stack) >= 2 - i and conf.stack[i - 2] > 0:
                 si = sent.tokens[conf.stack[i - 2] - 1]
                 leftMostOfLeftMostChild = SynDataFactory.getLeftMostOfLeftMostChildren(si, sent)
-                SynDataFactory.addAllIdxs(leftMostOfLeftMostChild, sent, vocab,  dataEntry)
+                SynDataFactory.addAllIdxs(leftMostOfLeftMostChild, sent, vocab, dataEntry)
                 rightMostOfRightMostChild = SynDataFactory.getRightMostOfRightMostChildren(si, sent)
-                SynDataFactory.addAllIdxs(rightMostOfRightMostChild, sent, vocab,  dataEntry)
+                SynDataFactory.addAllIdxs(rightMostOfRightMostChild, sent, vocab, dataEntry)
             else:
                 SynDataFactory.addAllIdxs(None, sent, vocab, dataEntry)
                 SynDataFactory.addAllIdxs(None, sent, vocab, dataEntry)
@@ -1460,7 +1180,6 @@ class SynDataFactory(object):
                 return leftMostOfLeftMost[0]
         return None
 
-
     @staticmethod
     def getRightMostOfRightMostChildren(token, sent):
         rightMostChildren = SynDataFactory.getRightMostChildren(token, sent)
@@ -1469,7 +1188,6 @@ class SynDataFactory(object):
             if rightMostOfRightMost:
                 return rightMostOfRightMost[0]
         return None
-
 
     @staticmethod
     def getRightMostChildren(token, sent):
@@ -1483,7 +1201,6 @@ class SynDataFactory(object):
     def addAllIdxs(t, sent, vocab, dataEntry):
         DataFactory.addTokenTaggingEntries(t, sent, dataEntry, vocab)
         SynDataFactory.addSynLabelIdx(t, vocab, dataEntry)
-
 
     @staticmethod
     def addSynLabelIdx(t, vocab, dataEntry):
@@ -1502,8 +1219,11 @@ class SynDataFactory(object):
         for i in range(3):
             if i < len(conf.buffer):
                 bi = conf.buffer[i] - 1
-                biToken = sent.tokens[bi]
-                DataFactory.addTokenTaggingEntries(biToken, sent, dataEntry, vocab)
+                if bi >= 0:
+                    biToken = sent.tokens[bi]
+                    DataFactory.addTokenTaggingEntries(biToken, sent, dataEntry, vocab)
+                else:
+                    DataFactory.addTokenTaggingEntries('root', sent, dataEntry, vocab)
             else:
                 DataFactory.addTokenTaggingEntries(None, sent, dataEntry, vocab)
 

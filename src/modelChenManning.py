@@ -11,17 +11,22 @@ from keras.utils import to_categorical
 from keras.utils.generic_utils import get_custom_objects
 from nltk.parse.transitionparser import TransitionParser, Transition, Configuration
 from numpy import zeros
-
+from nltk.parse import DependencyEvaluator
 import facebookEmb
 import reports
 from reports import *
 from wordEmbLoader import empty
 from wordEmbLoader import unk
-
+from operator import itemgetter
+from scipy import sparse
+from os import remove
+from numpy import array
 params = configuration['chenParams']
 consts = configuration['chenConstant']
-
-
+from sklearn.svm import *
+import tempfile
+from sklearn.datasets import load_svmlight_file
+from copy import deepcopy
 class Network:
     def __init__(self, corpus):
         self.depLabelDic = dict()
@@ -71,7 +76,7 @@ class Network:
                         elif baseTransition[:4].lower() == Transition.RIGHT_ARC[:4].lower():
                             if operation.right_arc(conf, k.split(":")[1]) != -1:
                                 break
-                        elif baseTransition[:4].lower() == Transition.SHIFT[:4].lower():
+                        else:#elif baseTransition[:4].lower() == Transition.SHIFT[:4].lower():
                             if operation.shift(conf) != -1:
                                 break
             new_depgraph = copy.deepcopy(depGraph)
@@ -247,20 +252,7 @@ class Vocabulary:
 
 
 class DataFactory(object):
-    @staticmethod
-    def trainNLTKParser(corpus):
 
-        import tempfile
-        from nltk.parse import DependencyEvaluator
-        input_file = tempfile.NamedTemporaryFile(prefix='transition_parse.train', dir=tempfile.gettempdir(),
-                                                 delete=False)
-
-        parser_std = TransitionParser('arc-standard')
-        parser_std._create_training_examples_arc_std(corpus.trainDepGraphs, input_file)
-        parser_std.train(corpus.trainDepGraphs, 'temp.arcstd.model')
-        result = parser_std.parse(corpus.testDepGraphs, 'temp.arcstd.model')
-        de = DependencyEvaluator(result, corpus.testDepGraphs)
-        print 'LAS = {0}\nUAS = {1}'.format(round(de.eval()[0] * 100, 1), round(de.eval()[1] * 100, 1))
 
     @staticmethod
     def printDataEntry(de, vocab, conf, sent):
@@ -571,3 +563,100 @@ class DataFactory(object):
                 return vocab[k]
             return vocab[unk]
         return vocab[empty]
+
+
+class NLTKParser:
+    @staticmethod
+    def evaluate(corpus):
+
+        transParser = TransitionParser('arc-standard')
+        model = NLTKParser.train(transParser, corpus)
+        result = NLTKParser.parse(transParser, corpus.testDepGraphs, model)
+        de = DependencyEvaluator(corpus.testDepGraphs, result)
+        print 'UAS = {0}\nLAS = {1}'.format(round(de.eval()[0] * 100, 1), round(de.eval()[1] * 100, 1))
+        return de
+
+    @staticmethod
+    def train(transParser, corpus):
+
+        # try:
+        input_file = tempfile.NamedTemporaryFile(
+            prefix='transition_parse.train',
+            dir=tempfile.gettempdir(),
+            delete=False)
+
+        transParser._create_training_examples_arc_std(corpus.trainDepGraphs, input_file)
+
+        input_file.close()
+        # Using the temporary file to train the libsvm classifier
+        x_train, y_train = load_svmlight_file(input_file.name)
+        # The parameter is set according to the paper:
+        # Algorithms for Deterministic Incremental Dependency Parsing by Joakim Nivre
+        # Todo : because of probability = True => very slow due to
+        # cross-validation. Need to improve the speed here
+        model = LinearSVC(random_state=0)
+
+        model.fit(x_train, y_train)
+        # Save the model to file name (as pickle)
+        # pickle.dump(model, open(modelfile, 'wb'))
+        return model
+
+        # finally:
+        #    return None
+
+    @staticmethod
+    def parse(transParser, depgraphs, model):
+        result = []
+        # First load the model
+        operation = Transition(TransitionParser.ARC_STANDARD)
+        for depgraph in depgraphs:
+            conf = Configuration(depgraph)
+            while len(conf.buffer) > 0:
+                #if not conf.stack and conf.buffer == [0]:
+                #    break
+                features = conf.extract_features()
+                col, row, data = [], [],[]
+                for feature in features:
+                    if feature in transParser._dictionary:
+                        col.append(transParser._dictionary[feature])
+                        row.append(0)
+                        data.append(1.0)
+                np_col = array(sorted(col))  # NB : index must be sorted
+                np_row = array(row)
+                np_data = array(data)
+                x_test = sparse.csr_matrix((np_data, (np_row, np_col)), shape=(1, len(transParser._dictionary)))
+                pred_prob = model.predict(x_test)[0]
+                if pred_prob in transParser._match_transition:
+                    # print pred_prob
+                    strTransition = transParser._match_transition[pred_prob]
+                    baseTransition = strTransition.split(":")[0]
+                    if len(strTransition.split(":")) > 1:
+                        rel = strTransition.split(":")[1]
+
+                    if baseTransition[:4].lower() == Transition.LEFT_ARC[:4].lower():
+                        if operation.left_arc(conf, rel) == -1:
+                            if operation.shift(conf) == -1:
+                                break
+                    elif baseTransition[:4].lower() == Transition.RIGHT_ARC[:4].lower():
+                        if operation.right_arc(conf, rel) == -1:
+                            if operation.shift(conf) == -1:
+                                break
+                    else:
+                        if operation.shift(conf) == -1:
+                            break
+                else:
+                    raise ValueError("The predicted transition is not recognized, expected errors")
+            # Finish with operations build the dependency graph from Conf.arcs
+            new_depgraph = deepcopy(depgraph)
+            for key in new_depgraph.nodes:
+                node = new_depgraph.nodes[key]
+                node['rel'] = ''
+                # With the default, all the token depend on the Root
+                node['head'] = 0
+            for (head, rel, child) in conf.arcs:
+                c_node = new_depgraph.nodes[child]
+                c_node['head'] = head
+                c_node['rel'] = rel
+            result.append(new_depgraph)
+
+        return result

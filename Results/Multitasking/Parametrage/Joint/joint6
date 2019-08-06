@@ -1,39 +1,3 @@
-INFO: activate-binutils_linux-64.sh made the following environmental changes:
-+ADDR2LINE=/home/halsaied/miniconda2/bin/x86_64-conda_cos6-linux-gnu-addr2line
-+AR=/home/halsaied/miniconda2/bin/x86_64-conda_cos6-linux-gnu-ar
-+AS=/home/halsaied/miniconda2/bin/x86_64-conda_cos6-linux-gnu-as
-+CXXFILT=/home/halsaied/miniconda2/bin/x86_64-conda_cos6-linux-gnu-c++filt
-+ELFEDIT=/home/halsaied/miniconda2/bin/x86_64-conda_cos6-linux-gnu-elfedit
-+GPROF=/home/halsaied/miniconda2/bin/x86_64-conda_cos6-linux-gnu-gprof
-+HOST=x86_64-conda_cos6-linux-gnu
-+LD_GOLD=/home/halsaied/miniconda2/bin/x86_64-conda_cos6-linux-gnu-ld.gold
-+LD=/home/halsaied/miniconda2/bin/x86_64-conda_cos6-linux-gnu-ld
-+NM=/home/halsaied/miniconda2/bin/x86_64-conda_cos6-linux-gnu-nm
-+OBJCOPY=/home/halsaied/miniconda2/bin/x86_64-conda_cos6-linux-gnu-objcopy
-+OBJDUMP=/home/halsaied/miniconda2/bin/x86_64-conda_cos6-linux-gnu-objdump
-+RANLIB=/home/halsaied/miniconda2/bin/x86_64-conda_cos6-linux-gnu-ranlib
-+READELF=/home/halsaied/miniconda2/bin/x86_64-conda_cos6-linux-gnu-readelf
-+SIZE=/home/halsaied/miniconda2/bin/x86_64-conda_cos6-linux-gnu-size
-+STRINGS=/home/halsaied/miniconda2/bin/x86_64-conda_cos6-linux-gnu-strings
-+STRIP=/home/halsaied/miniconda2/bin/x86_64-conda_cos6-linux-gnu-strip
-INFO: activate-gcc_linux-64.sh made the following environmental changes:
-+CC=/home/halsaied/miniconda2/bin/x86_64-conda_cos6-linux-gnu-cc
-+CFLAGS=-march=nocona -mtune=haswell -ftree-vectorize -fPIC -fstack-protector-strong -fno-plt -O2 -pipe
-+_CONDA_PYTHON_SYSCONFIGDATA_NAME=_sysconfigdata_x86_64_conda_cos6_linux_gnu
-+CPPFLAGS=-DNDEBUG -D_FORTIFY_SOURCE=2 -O2
-+CPP=/home/halsaied/miniconda2/bin/x86_64-conda_cos6-linux-gnu-cpp
-+DEBUG_CFLAGS=-march=nocona -mtune=haswell -ftree-vectorize -fPIC -fstack-protector-all -fno-plt -Og -g -Wall -Wextra -fvar-tracking-assignments -pipe
-+DEBUG_CPPFLAGS=-D_DEBUG -D_FORTIFY_SOURCE=2 -Og
-+GCC_AR=/home/halsaied/miniconda2/bin/x86_64-conda_cos6-linux-gnu-gcc-ar
-+GCC=/home/halsaied/miniconda2/bin/x86_64-conda_cos6-linux-gnu-gcc
-+GCC_NM=/home/halsaied/miniconda2/bin/x86_64-conda_cos6-linux-gnu-gcc-nm
-+GCC_RANLIB=/home/halsaied/miniconda2/bin/x86_64-conda_cos6-linux-gnu-gcc-ranlib
-+LDFLAGS=-Wl,-O2 -Wl,--sort-common -Wl,--as-needed -Wl,-z,relro -Wl,-z,now
-INFO: activate-gxx_linux-64.sh made the following environmental changes:
-+CXXFLAGS=-fvisibility-inlines-hidden -std=c++17 -fmessage-length=0 -march=nocona -mtune=haswell -ftree-vectorize -fPIC -fstack-protector-strong -fno-plt -O2 -pipe
-+CXX=/home/halsaied/miniconda2/bin/x86_64-conda_cos6-linux-gnu-c++
-+DEBUG_CXXFLAGS=-fvisibility-inlines-hidden -std=c++17 -fmessage-length=0 -march=nocona -mtune=haswell -ftree-vectorize -fPIC -fstack-protector-all -fno-plt -Og -g -Wall -Wextra -fvar-tracking-assignments -pipe
-+GXX=/home/halsaied/miniconda2/bin/x86_64-conda_cos6-linux-gnu-g++
 Can not use cuDNN on context None: cannot compile with cuDNN. We got this error:
 /tmp/try_flags_qf4zS9.c:4:10: fatal error: cudnn.h: No such file or directory
  #include <cudnn.h>
@@ -45,29 +9,6 @@ Mapped name None to device cuda: Tesla K40m (0000:03:00.0)
 /home/halsaied/miniconda2/lib/python2.7/site-packages/h5py/__init__.py:36: FutureWarning: Conversion of the second argument of issubdtype from `float` to `np.floating` is deprecated. In future, it will be treated as `np.float64 == np.dtype(float).type`.
   from ._conv import register_converters as _register_converters
 Using Theano backend.
-WARNING (theano.gof.cmodule): The same cache key is associated to different modules (/home/halsaied/.theano/compiledir_Linux-4.9--amd64-x86_64-with-debian-9.8--2.7.14-64/tmp1crdYn and /home/halsaied/.theano/compiledir_Linux-4.9--amd64-x86_64-with-debian-9.8--2.7.14-64/tmprZlnyD). This is not supposed to happen! You may need to manually delete your cache directory to fix this.
-WARNING (theano.gof.cmodule): The same cache key is associated to different modules (/home/halsaied/.theano/compiledir_Linux-4.9--amd64-x86_64-with-debian-9.8--2.7.14-64/tmp1crdYn and /home/halsaied/.theano/compiledir_Linux-4.9--amd64-x86_64-with-debian-9.8--2.7.14-64/tmprZlnyD). This is not supposed to happen! You may need to manually delete your cache directory to fix this.
-WARNING (theano.gof.cmodule): The same cache key is associated to different modules (/home/halsaied/.theano/compiledir_Linux-4.9--amd64-x86_64-with-debian-9.8--2.7.14-64/tmp1crdYn and /home/halsaied/.theano/compiledir_Linux-4.9--amd64-x86_64-with-debian-9.8--2.7.14-64/tmprZlnyD). This is not supposed to happen! You may need to manually delete your cache directory to fix this.
-WARNING (theano.gof.cmodule): The same cache key is associated to different modules (/home/halsaied/.theano/compiledir_Linux-4.9--amd64-x86_64-with-debian-9.8--2.7.14-64/tmp1crdYn and /home/halsaied/.theano/compiledir_Linux-4.9--amd64-x86_64-with-debian-9.8--2.7.14-64/tmprZlnyD). This is not supposed to happen! You may need to manually delete your cache directory to fix this.
-WARNING (theano.gof.cmodule): The same cache key is associated to different modules (/home/halsaied/.theano/compiledir_Linux-4.9--amd64-x86_64-with-debian-9.8--2.7.14-64/tmp1crdYn and /home/halsaied/.theano/compiledir_Linux-4.9--amd64-x86_64-with-debian-9.8--2.7.14-64/tmprZlnyD). This is not supposed to happen! You may need to manually delete your cache directory to fix this.
-WARNING (theano.gof.cmodule): The same cache key is associated to different modules (/home/halsaied/.theano/compiledir_Linux-4.9--amd64-x86_64-with-debian-9.8--2.7.14-64/tmp1crdYn and /home/halsaied/.theano/compiledir_Linux-4.9--amd64-x86_64-with-debian-9.8--2.7.14-64/tmprZlnyD). This is not supposed to happen! You may need to manually delete your cache directory to fix this.
-WARNING (theano.gof.cmodule): The same cache key is associated to different modules (/home/halsaied/.theano/compiledir_Linux-4.9--amd64-x86_64-with-debian-9.8--2.7.14-64/tmp1crdYn and /home/halsaied/.theano/compiledir_Linux-4.9--amd64-x86_64-with-debian-9.8--2.7.14-64/tmprZlnyD). This is not supposed to happen! You may need to manually delete your cache directory to fix this.
-WARNING (theano.gof.cmodule): The same cache key is associated to different modules (/home/halsaied/.theano/compiledir_Linux-4.9--amd64-x86_64-with-debian-9.8--2.7.14-64/tmp1crdYn and /home/halsaied/.theano/compiledir_Linux-4.9--amd64-x86_64-with-debian-9.8--2.7.14-64/tmprZlnyD). This is not supposed to happen! You may need to manually delete your cache directory to fix this.
-WARNING (theano.gof.cmodule): The same cache key is associated to different modules (/home/halsaied/.theano/compiledir_Linux-4.9--amd64-x86_64-with-debian-9.8--2.7.14-64/tmp1crdYn and /home/halsaied/.theano/compiledir_Linux-4.9--amd64-x86_64-with-debian-9.8--2.7.14-64/tmprZlnyD). This is not supposed to happen! You may need to manually delete your cache directory to fix this.
-WARNING (theano.gof.cmodule): The same cache key is associated to different modules (/home/halsaied/.theano/compiledir_Linux-4.9--amd64-x86_64-with-debian-9.8--2.7.14-64/tmp1crdYn and /home/halsaied/.theano/compiledir_Linux-4.9--amd64-x86_64-with-debian-9.8--2.7.14-64/tmprZlnyD). This is not supposed to happen! You may need to manually delete your cache directory to fix this.
-WARNING (theano.gof.cmodule): The same cache key is associated to different modules (/home/halsaied/.theano/compiledir_Linux-4.9--amd64-x86_64-with-debian-9.8--2.7.14-64/tmp1crdYn and /home/halsaied/.theano/compiledir_Linux-4.9--amd64-x86_64-with-debian-9.8--2.7.14-64/tmprZlnyD). This is not supposed to happen! You may need to manually delete your cache directory to fix this.
-WARNING (theano.gof.cmodule): The same cache key is associated to different modules (/home/halsaied/.theano/compiledir_Linux-4.9--amd64-x86_64-with-debian-9.8--2.7.14-64/tmp1crdYn and /home/halsaied/.theano/compiledir_Linux-4.9--amd64-x86_64-with-debian-9.8--2.7.14-64/tmprZlnyD). This is not supposed to happen! You may need to manually delete your cache directory to fix this.
-WARNING (theano.gof.cmodule): The same cache key is associated to different modules (/home/halsaied/.theano/compiledir_Linux-4.9--amd64-x86_64-with-debian-9.8--2.7.14-64/tmp1crdYn and /home/halsaied/.theano/compiledir_Linux-4.9--amd64-x86_64-with-debian-9.8--2.7.14-64/tmprZlnyD). This is not supposed to happen! You may need to manually delete your cache directory to fix this.
-WARNING (theano.gof.cmodule): The same cache key is associated to different modules (/home/halsaied/.theano/compiledir_Linux-4.9--amd64-x86_64-with-debian-9.8--2.7.14-64/tmp1crdYn and /home/halsaied/.theano/compiledir_Linux-4.9--amd64-x86_64-with-debian-9.8--2.7.14-64/tmprZlnyD). This is not supposed to happen! You may need to manually delete your cache directory to fix this.
-WARNING (theano.gof.cmodule): The same cache key is associated to different modules (/home/halsaied/.theano/compiledir_Linux-4.9--amd64-x86_64-with-debian-9.8--2.7.14-64/tmp1crdYn and /home/halsaied/.theano/compiledir_Linux-4.9--amd64-x86_64-with-debian-9.8--2.7.14-64/tmprZlnyD). This is not supposed to happen! You may need to manually delete your cache directory to fix this.
-INFO (theano.gof.compilelock): Waiting for existing lock by unknown process (I am process '5196')
-INFO (theano.gof.compilelock): To manually release the lock, delete /home/halsaied/.theano/compiledir_Linux-4.9--amd64-x86_64-with-debian-9.8--2.7.14-64/lock_dir
-INFO (theano.gof.compilelock): Waiting for existing lock by process '5264' (I am process '5196')
-INFO (theano.gof.compilelock): To manually release the lock, delete /home/halsaied/.theano/compiledir_Linux-4.9--amd64-x86_64-with-debian-9.8--2.7.14-64/lock_dir
-INFO (theano.gof.compilelock): Waiting for existing lock by unknown process (I am process '5196')
-INFO (theano.gof.compilelock): To manually release the lock, delete /home/halsaied/.theano/compiledir_Linux-4.9--amd64-x86_64-with-debian-9.8--2.7.14-64/lock_dir
-INFO (theano.gof.compilelock): Waiting for existing lock by unknown process (I am process '5196')
-INFO (theano.gof.compilelock): To manually release the lock, delete /home/halsaied/.theano/compiledir_Linux-4.9--amd64-x86_64-with-debian-9.8--2.7.14-64/lock_dir
 	Mode: MULTITASKING
 ==================================================================================================
 	Dataset: SHAREDTASK2
@@ -3909,8 +3850,6 @@ Loss = 0.193,
 ==================================================================================================
 	XP Ends: 23/4 (18 h:21)
 ==================================================================================================
-INFO (theano.gof.compilelock): Waiting for existing lock by unknown process (I am process '5196')
-INFO (theano.gof.compilelock): To manually release the lock, delete /home/halsaied/.theano/compiledir_Linux-4.9--amd64-x86_64-with-debian-9.8--2.7.14-64/lock_dir
 	Mode: MULTITASKING
 ==================================================================================================
 	Dataset: SHAREDTASK2
@@ -7207,8 +7146,6 @@ Loss = 0.29,
 ==================================================================================================
 	XP Ends: 23/4 (20 h:21)
 ==================================================================================================
-INFO (theano.gof.compilelock): Waiting for existing lock by unknown process (I am process '5196')
-INFO (theano.gof.compilelock): To manually release the lock, delete /home/halsaied/.theano/compiledir_Linux-4.9--amd64-x86_64-with-debian-9.8--2.7.14-64/lock_dir
 	Mode: MULTITASKING
 ==================================================================================================
 	Dataset: SHAREDTASK2
@@ -9352,8 +9289,6 @@ Loss = 0.335,
 ==================================================================================================
 	XP Ends: 23/4 (21 h:40)
 ==================================================================================================
-INFO (theano.gof.compilelock): Waiting for existing lock by unknown process (I am process '5196')
-INFO (theano.gof.compilelock): To manually release the lock, delete /home/halsaied/.theano/compiledir_Linux-4.9--amd64-x86_64-with-debian-9.8--2.7.14-64/lock_dir
 	Mode: MULTITASKING
 ==================================================================================================
 	Dataset: SHAREDTASK2
@@ -15037,8 +14972,6 @@ Loss = 0.246,
 ==================================================================================================
 	XP Ends: 24/4 (1 h:36)
 ==================================================================================================
-INFO (theano.gof.compilelock): Waiting for existing lock by process '5264' (I am process '5196')
-INFO (theano.gof.compilelock): To manually release the lock, delete /home/halsaied/.theano/compiledir_Linux-4.9--amd64-x86_64-with-debian-9.8--2.7.14-64/lock_dir
 	Mode: MULTITASKING
 ==================================================================================================
 	Dataset: SHAREDTASK2
@@ -16754,8 +16687,6 @@ Loss = 0.181,
 ==================================================================================================
 	XP Ends: 24/4 (3 h:1)
 ==================================================================================================
-INFO (theano.gof.compilelock): Waiting for existing lock by unknown process (I am process '5196')
-INFO (theano.gof.compilelock): To manually release the lock, delete /home/halsaied/.theano/compiledir_Linux-4.9--amd64-x86_64-with-debian-9.8--2.7.14-64/lock_dir
 	Mode: MULTITASKING
 ==================================================================================================
 	Dataset: SHAREDTASK2
@@ -18006,8 +17937,6 @@ Loss = 0.209,
 ==================================================================================================
 	XP Ends: 24/4 (3 h:57)
 ==================================================================================================
-INFO (theano.gof.compilelock): Waiting for existing lock by unknown process (I am process '5196')
-INFO (theano.gof.compilelock): To manually release the lock, delete /home/halsaied/.theano/compiledir_Linux-4.9--amd64-x86_64-with-debian-9.8--2.7.14-64/lock_dir
 	Mode: MULTITASKING
 ==================================================================================================
 	Dataset: SHAREDTASK2
@@ -20566,8 +20495,6 @@ Loss = 0.192,
 ==================================================================================================
 	XP Ends: 24/4 (6 h:19)
 ==================================================================================================
-INFO (theano.gof.compilelock): Waiting for existing lock by unknown process (I am process '5196')
-INFO (theano.gof.compilelock): To manually release the lock, delete /home/halsaied/.theano/compiledir_Linux-4.9--amd64-x86_64-with-debian-9.8--2.7.14-64/lock_dir
 	Mode: MULTITASKING
 ==================================================================================================
 	Dataset: SHAREDTASK2
@@ -23064,8 +22991,6 @@ Loss = 0.292,
 ==================================================================================================
 	XP Ends: 24/4 (8 h:19)
 ==================================================================================================
-INFO (theano.gof.compilelock): Waiting for existing lock by unknown process (I am process '5196')
-INFO (theano.gof.compilelock): To manually release the lock, delete /home/halsaied/.theano/compiledir_Linux-4.9--amd64-x86_64-with-debian-9.8--2.7.14-64/lock_dir
 	Mode: MULTITASKING
 ==================================================================================================
 	Dataset: SHAREDTASK2
@@ -23658,8 +23583,6 @@ Loss = 0.255,
 ==================================================================================================
 	XP Ends: 24/4 (8 h:35)
 ==================================================================================================
-INFO (theano.gof.compilelock): Waiting for existing lock by unknown process (I am process '5196')
-INFO (theano.gof.compilelock): To manually release the lock, delete /home/halsaied/.theano/compiledir_Linux-4.9--amd64-x86_64-with-debian-9.8--2.7.14-64/lock_dir
 	Mode: MULTITASKING
 ==================================================================================================
 	Dataset: SHAREDTASK2
@@ -24566,8 +24489,6 @@ Loss = 0.238,
 ==================================================================================================
 	XP Ends: 24/4 (9 h:9)
 ==================================================================================================
-INFO (theano.gof.compilelock): Waiting for existing lock by unknown process (I am process '5196')
-INFO (theano.gof.compilelock): To manually release the lock, delete /home/halsaied/.theano/compiledir_Linux-4.9--amd64-x86_64-with-debian-9.8--2.7.14-64/lock_dir
 	Mode: MULTITASKING
 ==================================================================================================
 	Dataset: SHAREDTASK2
@@ -25838,8 +25759,6 @@ Loss = 0.221,
 ==================================================================================================
 	XP Ends: 24/4 (10 h:10)
 ==================================================================================================
-INFO (theano.gof.compilelock): Waiting for existing lock by unknown process (I am process '5196')
-INFO (theano.gof.compilelock): To manually release the lock, delete /home/halsaied/.theano/compiledir_Linux-4.9--amd64-x86_64-with-debian-9.8--2.7.14-64/lock_dir
 	Mode: MULTITASKING
 ==================================================================================================
 	Dataset: SHAREDTASK2

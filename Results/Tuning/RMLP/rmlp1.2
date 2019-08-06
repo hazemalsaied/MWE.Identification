@@ -1,0 +1,800 @@
+INFO: activate-binutils_linux-64.sh made the following environmental changes:
++ADDR2LINE=/home/halsaied/miniconda2/bin/x86_64-conda_cos6-linux-gnu-addr2line
++AR=/home/halsaied/miniconda2/bin/x86_64-conda_cos6-linux-gnu-ar
++AS=/home/halsaied/miniconda2/bin/x86_64-conda_cos6-linux-gnu-as
++CXXFILT=/home/halsaied/miniconda2/bin/x86_64-conda_cos6-linux-gnu-c++filt
++ELFEDIT=/home/halsaied/miniconda2/bin/x86_64-conda_cos6-linux-gnu-elfedit
++GPROF=/home/halsaied/miniconda2/bin/x86_64-conda_cos6-linux-gnu-gprof
++HOST=x86_64-conda_cos6-linux-gnu
++LD_GOLD=/home/halsaied/miniconda2/bin/x86_64-conda_cos6-linux-gnu-ld.gold
++LD=/home/halsaied/miniconda2/bin/x86_64-conda_cos6-linux-gnu-ld
++NM=/home/halsaied/miniconda2/bin/x86_64-conda_cos6-linux-gnu-nm
++OBJCOPY=/home/halsaied/miniconda2/bin/x86_64-conda_cos6-linux-gnu-objcopy
++OBJDUMP=/home/halsaied/miniconda2/bin/x86_64-conda_cos6-linux-gnu-objdump
++RANLIB=/home/halsaied/miniconda2/bin/x86_64-conda_cos6-linux-gnu-ranlib
++READELF=/home/halsaied/miniconda2/bin/x86_64-conda_cos6-linux-gnu-readelf
++SIZE=/home/halsaied/miniconda2/bin/x86_64-conda_cos6-linux-gnu-size
++STRINGS=/home/halsaied/miniconda2/bin/x86_64-conda_cos6-linux-gnu-strings
++STRIP=/home/halsaied/miniconda2/bin/x86_64-conda_cos6-linux-gnu-strip
+INFO: activate-gcc_linux-64.sh made the following environmental changes:
++CC=/home/halsaied/miniconda2/bin/x86_64-conda_cos6-linux-gnu-cc
++CFLAGS=-march=nocona -mtune=haswell -ftree-vectorize -fPIC -fstack-protector-strong -fno-plt -O2 -pipe
++_CONDA_PYTHON_SYSCONFIGDATA_NAME=_sysconfigdata_x86_64_conda_cos6_linux_gnu
++CPPFLAGS=-DNDEBUG -D_FORTIFY_SOURCE=2 -O2
++CPP=/home/halsaied/miniconda2/bin/x86_64-conda_cos6-linux-gnu-cpp
++DEBUG_CFLAGS=-march=nocona -mtune=haswell -ftree-vectorize -fPIC -fstack-protector-all -fno-plt -Og -g -Wall -Wextra -fvar-tracking-assignments -pipe
++DEBUG_CPPFLAGS=-D_DEBUG -D_FORTIFY_SOURCE=2 -Og
++GCC_AR=/home/halsaied/miniconda2/bin/x86_64-conda_cos6-linux-gnu-gcc-ar
++GCC=/home/halsaied/miniconda2/bin/x86_64-conda_cos6-linux-gnu-gcc
++GCC_NM=/home/halsaied/miniconda2/bin/x86_64-conda_cos6-linux-gnu-gcc-nm
++GCC_RANLIB=/home/halsaied/miniconda2/bin/x86_64-conda_cos6-linux-gnu-gcc-ranlib
++LDFLAGS=-Wl,-O2 -Wl,--sort-common -Wl,--as-needed -Wl,-z,relro -Wl,-z,now
+INFO: activate-gxx_linux-64.sh made the following environmental changes:
++CXXFLAGS=-fvisibility-inlines-hidden -std=c++17 -fmessage-length=0 -march=nocona -mtune=haswell -ftree-vectorize -fPIC -fstack-protector-strong -fno-plt -O2 -pipe
++CXX=/home/halsaied/miniconda2/bin/x86_64-conda_cos6-linux-gnu-c++
++DEBUG_CXXFLAGS=-fvisibility-inlines-hidden -std=c++17 -fmessage-length=0 -march=nocona -mtune=haswell -ftree-vectorize -fPIC -fstack-protector-all -fno-plt -Og -g -Wall -Wextra -fvar-tracking-assignments -pipe
++GXX=/home/halsaied/miniconda2/bin/x86_64-conda_cos6-linux-gnu-g++
+Can not use cuDNN on context None: cannot compile with cuDNN. We got this error:
+/tmp/try_flags_7M8Huj.c:4:10: fatal error: cudnn.h: No such file or directory
+ #include <cudnn.h>
+          ^~~~~~~~~
+compilation terminated.
+
+Preallocating 3841/4043 Mb (0.950000) on cuda
+Mapped name None to device cuda: GeForce GTX 980 (0000:03:00.0)
+/home/halsaied/miniconda2/lib/python2.7/site-packages/h5py/__init__.py:36: FutureWarning: Conversion of the second argument of issubdtype from `float` to `np.floating` is deprecated. In future, it will be treated as `np.float64 == np.dtype(float).type`.
+  from ._conv import register_converters as _register_converters
+Using Theano backend.
+WARNING (theano.gof.cmodule): The same cache key is associated to different modules (/home/halsaied/.theano/compiledir_Linux-4.9--amd64-x86_64-with-debian-9.9--2.7.14-64/tmpG3Y6bO and /home/halsaied/.theano/compiledir_Linux-4.9--amd64-x86_64-with-debian-9.9--2.7.14-64/tmpVXynUs). This is not supposed to happen! You may need to manually delete your cache directory to fix this.
+WARNING (theano.gof.cmodule): The same cache key is associated to different modules (/home/halsaied/.theano/compiledir_Linux-4.9--amd64-x86_64-with-debian-9.9--2.7.14-64/tmpG3Y6bO and /home/halsaied/.theano/compiledir_Linux-4.9--amd64-x86_64-with-debian-9.9--2.7.14-64/tmpVXynUs). This is not supposed to happen! You may need to manually delete your cache directory to fix this.
+WARNING (theano.gof.cmodule): The same cache key is associated to different modules (/home/halsaied/.theano/compiledir_Linux-4.9--amd64-x86_64-with-debian-9.9--2.7.14-64/tmpG3Y6bO and /home/halsaied/.theano/compiledir_Linux-4.9--amd64-x86_64-with-debian-9.9--2.7.14-64/tmpVXynUs). This is not supposed to happen! You may need to manually delete your cache directory to fix this.
+WARNING (theano.gof.cmodule): The same cache key is associated to different modules (/home/halsaied/.theano/compiledir_Linux-4.9--amd64-x86_64-with-debian-9.9--2.7.14-64/tmpG3Y6bO and /home/halsaied/.theano/compiledir_Linux-4.9--amd64-x86_64-with-debian-9.9--2.7.14-64/tmpVXynUs). This is not supposed to happen! You may need to manually delete your cache directory to fix this.
+WARNING (theano.gof.cmodule): The same cache key is associated to different modules (/home/halsaied/.theano/compiledir_Linux-4.9--amd64-x86_64-with-debian-9.9--2.7.14-64/tmpG3Y6bO and /home/halsaied/.theano/compiledir_Linux-4.9--amd64-x86_64-with-debian-9.9--2.7.14-64/tmpVXynUs). This is not supposed to happen! You may need to manually delete your cache directory to fix this.
+WARNING (theano.gof.cmodule): The same cache key is associated to different modules (/home/halsaied/.theano/compiledir_Linux-4.9--amd64-x86_64-with-debian-9.9--2.7.14-64/tmpG3Y6bO and /home/halsaied/.theano/compiledir_Linux-4.9--amd64-x86_64-with-debian-9.9--2.7.14-64/tmpVXynUs). This is not supposed to happen! You may need to manually delete your cache directory to fix this.
+WARNING (theano.gof.cmodule): The same cache key is associated to different modules (/home/halsaied/.theano/compiledir_Linux-4.9--amd64-x86_64-with-debian-9.9--2.7.14-64/tmpG3Y6bO and /home/halsaied/.theano/compiledir_Linux-4.9--amd64-x86_64-with-debian-9.9--2.7.14-64/tmpVXynUs). This is not supposed to happen! You may need to manually delete your cache directory to fix this.
+WARNING (theano.gof.cmodule): The same cache key is associated to different modules (/home/halsaied/.theano/compiledir_Linux-4.9--amd64-x86_64-with-debian-9.9--2.7.14-64/tmpG3Y6bO and /home/halsaied/.theano/compiledir_Linux-4.9--amd64-x86_64-with-debian-9.9--2.7.14-64/tmpVXynUs). This is not supposed to happen! You may need to manually delete your cache directory to fix this.
+WARNING (theano.gof.cmodule): The same cache key is associated to different modules (/home/halsaied/.theano/compiledir_Linux-4.9--amd64-x86_64-with-debian-9.9--2.7.14-64/tmpG3Y6bO and /home/halsaied/.theano/compiledir_Linux-4.9--amd64-x86_64-with-debian-9.9--2.7.14-64/tmpVXynUs). This is not supposed to happen! You may need to manually delete your cache directory to fix this.
+WARNING (theano.gof.cmodule): The same cache key is associated to different modules (/home/halsaied/.theano/compiledir_Linux-4.9--amd64-x86_64-with-debian-9.9--2.7.14-64/tmpG3Y6bO and /home/halsaied/.theano/compiledir_Linux-4.9--amd64-x86_64-with-debian-9.9--2.7.14-64/tmpVXynUs). This is not supposed to happen! You may need to manually delete your cache directory to fix this.
+WARNING (theano.gof.cmodule): The same cache key is associated to different modules (/home/halsaied/.theano/compiledir_Linux-4.9--amd64-x86_64-with-debian-9.9--2.7.14-64/tmpG3Y6bO and /home/halsaied/.theano/compiledir_Linux-4.9--amd64-x86_64-with-debian-9.9--2.7.14-64/tmpVXynUs). This is not supposed to happen! You may need to manually delete your cache directory to fix this.
+WARNING (theano.gof.cmodule): The same cache key is associated to different modules (/home/halsaied/.theano/compiledir_Linux-4.9--amd64-x86_64-with-debian-9.9--2.7.14-64/tmpG3Y6bO and /home/halsaied/.theano/compiledir_Linux-4.9--amd64-x86_64-with-debian-9.9--2.7.14-64/tmpVXynUs). This is not supposed to happen! You may need to manually delete your cache directory to fix this.
+WARNING (theano.gof.cmodule): The same cache key is associated to different modules (/home/halsaied/.theano/compiledir_Linux-4.9--amd64-x86_64-with-debian-9.9--2.7.14-64/tmpG3Y6bO and /home/halsaied/.theano/compiledir_Linux-4.9--amd64-x86_64-with-debian-9.9--2.7.14-64/tmpVXynUs). This is not supposed to happen! You may need to manually delete your cache directory to fix this.
+WARNING (theano.gof.cmodule): The same cache key is associated to different modules (/home/halsaied/.theano/compiledir_Linux-4.9--amd64-x86_64-with-debian-9.9--2.7.14-64/tmpG3Y6bO and /home/halsaied/.theano/compiledir_Linux-4.9--amd64-x86_64-with-debian-9.9--2.7.14-64/tmpVXynUs). This is not supposed to happen! You may need to manually delete your cache directory to fix this.
+WARNING (theano.gof.cmodule): The same cache key is associated to different modules (/home/halsaied/.theano/compiledir_Linux-4.9--amd64-x86_64-with-debian-9.9--2.7.14-64/tmpG3Y6bO and /home/halsaied/.theano/compiledir_Linux-4.9--amd64-x86_64-with-debian-9.9--2.7.14-64/tmpVXynUs). This is not supposed to happen! You may need to manually delete your cache directory to fix this.
+WARNING (theano.gof.cmodule): The same cache key is associated to different modules (/home/halsaied/.theano/compiledir_Linux-4.9--amd64-x86_64-with-debian-9.9--2.7.14-64/tmpG3Y6bO and /home/halsaied/.theano/compiledir_Linux-4.9--amd64-x86_64-with-debian-9.9--2.7.14-64/tmpVXynUs). This is not supposed to happen! You may need to manually delete your cache directory to fix this.
+WARNING (theano.gof.cmodule): The same cache key is associated to different modules (/home/halsaied/.theano/compiledir_Linux-4.9--amd64-x86_64-with-debian-9.9--2.7.14-64/tmp5FQncj and /home/halsaied/.theano/compiledir_Linux-4.9--amd64-x86_64-with-debian-9.9--2.7.14-64/tmpqAJZSI). This is not supposed to happen! You may need to manually delete your cache directory to fix this.
+WARNING (theano.gof.cmodule): The same cache key is associated to different modules (/home/halsaied/.theano/compiledir_Linux-4.9--amd64-x86_64-with-debian-9.9--2.7.14-64/tmp5FQncj and /home/halsaied/.theano/compiledir_Linux-4.9--amd64-x86_64-with-debian-9.9--2.7.14-64/tmpqAJZSI). This is not supposed to happen! You may need to manually delete your cache directory to fix this.
+WARNING (theano.gof.cmodule): The same cache key is associated to different modules (/home/halsaied/.theano/compiledir_Linux-4.9--amd64-x86_64-with-debian-9.9--2.7.14-64/tmp5FQncj and /home/halsaied/.theano/compiledir_Linux-4.9--amd64-x86_64-with-debian-9.9--2.7.14-64/tmpqAJZSI). This is not supposed to happen! You may need to manually delete your cache directory to fix this.
+WARNING (theano.gof.cmodule): The same cache key is associated to different modules (/home/halsaied/.theano/compiledir_Linux-4.9--amd64-x86_64-with-debian-9.9--2.7.14-64/tmp5FQncj and /home/halsaied/.theano/compiledir_Linux-4.9--amd64-x86_64-with-debian-9.9--2.7.14-64/tmpqAJZSI). This is not supposed to happen! You may need to manually delete your cache directory to fix this.
+WARNING (theano.gof.cmodule): The same cache key is associated to different modules (/home/halsaied/.theano/compiledir_Linux-4.9--amd64-x86_64-with-debian-9.9--2.7.14-64/tmp5FQncj and /home/halsaied/.theano/compiledir_Linux-4.9--amd64-x86_64-with-debian-9.9--2.7.14-64/tmpqAJZSI). This is not supposed to happen! You may need to manually delete your cache directory to fix this.
+WARNING (theano.gof.cmodule): The same cache key is associated to different modules (/home/halsaied/.theano/compiledir_Linux-4.9--amd64-x86_64-with-debian-9.9--2.7.14-64/tmp5FQncj and /home/halsaied/.theano/compiledir_Linux-4.9--amd64-x86_64-with-debian-9.9--2.7.14-64/tmpqAJZSI). This is not supposed to happen! You may need to manually delete your cache directory to fix this.
+WARNING (theano.gof.cmodule): The same cache key is associated to different modules (/home/halsaied/.theano/compiledir_Linux-4.9--amd64-x86_64-with-debian-9.9--2.7.14-64/tmp5FQncj and /home/halsaied/.theano/compiledir_Linux-4.9--amd64-x86_64-with-debian-9.9--2.7.14-64/tmpqAJZSI). This is not supposed to happen! You may need to manually delete your cache directory to fix this.
+WARNING (theano.gof.cmodule): The same cache key is associated to different modules (/home/halsaied/.theano/compiledir_Linux-4.9--amd64-x86_64-with-debian-9.9--2.7.14-64/tmp5FQncj and /home/halsaied/.theano/compiledir_Linux-4.9--amd64-x86_64-with-debian-9.9--2.7.14-64/tmpqAJZSI). This is not supposed to happen! You may need to manually delete your cache directory to fix this.
+WARNING (theano.gof.cmodule): The same cache key is associated to different modules (/home/halsaied/.theano/compiledir_Linux-4.9--amd64-x86_64-with-debian-9.9--2.7.14-64/tmp6CCV3W and /home/halsaied/.theano/compiledir_Linux-4.9--amd64-x86_64-with-debian-9.9--2.7.14-64/tmpqDJ1vM). This is not supposed to happen! You may need to manually delete your cache directory to fix this.
+WARNING (theano.gof.cmodule): The same cache key is associated to different modules (/home/halsaied/.theano/compiledir_Linux-4.9--amd64-x86_64-with-debian-9.9--2.7.14-64/tmp6CCV3W and /home/halsaied/.theano/compiledir_Linux-4.9--amd64-x86_64-with-debian-9.9--2.7.14-64/tmpqDJ1vM). This is not supposed to happen! You may need to manually delete your cache directory to fix this.
+WARNING (theano.gof.cmodule): The same cache key is associated to different modules (/home/halsaied/.theano/compiledir_Linux-4.9--amd64-x86_64-with-debian-9.9--2.7.14-64/tmp6CCV3W and /home/halsaied/.theano/compiledir_Linux-4.9--amd64-x86_64-with-debian-9.9--2.7.14-64/tmpqDJ1vM). This is not supposed to happen! You may need to manually delete your cache directory to fix this.
+WARNING (theano.gof.cmodule): The same cache key is associated to different modules (/home/halsaied/.theano/compiledir_Linux-4.9--amd64-x86_64-with-debian-9.9--2.7.14-64/tmp6CCV3W and /home/halsaied/.theano/compiledir_Linux-4.9--amd64-x86_64-with-debian-9.9--2.7.14-64/tmpqDJ1vM). This is not supposed to happen! You may need to manually delete your cache directory to fix this.
+WARNING (theano.gof.cmodule): The same cache key is associated to different modules (/home/halsaied/.theano/compiledir_Linux-4.9--amd64-x86_64-with-debian-9.9--2.7.14-64/tmp6CCV3W and /home/halsaied/.theano/compiledir_Linux-4.9--amd64-x86_64-with-debian-9.9--2.7.14-64/tmpqDJ1vM). This is not supposed to happen! You may need to manually delete your cache directory to fix this.
+WARNING (theano.gof.cmodule): The same cache key is associated to different modules (/home/halsaied/.theano/compiledir_Linux-4.9--amd64-x86_64-with-debian-9.9--2.7.14-64/tmp6CCV3W and /home/halsaied/.theano/compiledir_Linux-4.9--amd64-x86_64-with-debian-9.9--2.7.14-64/tmpqDJ1vM). This is not supposed to happen! You may need to manually delete your cache directory to fix this.
+WARNING (theano.gof.cmodule): The same cache key is associated to different modules (/home/halsaied/.theano/compiledir_Linux-4.9--amd64-x86_64-with-debian-9.9--2.7.14-64/tmp6CCV3W and /home/halsaied/.theano/compiledir_Linux-4.9--amd64-x86_64-with-debian-9.9--2.7.14-64/tmpqDJ1vM). This is not supposed to happen! You may need to manually delete your cache directory to fix this.
+WARNING (theano.gof.cmodule): The same cache key is associated to different modules (/home/halsaied/.theano/compiledir_Linux-4.9--amd64-x86_64-with-debian-9.9--2.7.14-64/tmp6CCV3W and /home/halsaied/.theano/compiledir_Linux-4.9--amd64-x86_64-with-debian-9.9--2.7.14-64/tmpqDJ1vM). This is not supposed to happen! You may need to manually delete your cache directory to fix this.
+WARNING (theano.gof.cmodule): The same cache key is associated to different modules (/home/halsaied/.theano/compiledir_Linux-4.9--amd64-x86_64-with-debian-9.9--2.7.14-64/tmp6CCV3W and /home/halsaied/.theano/compiledir_Linux-4.9--amd64-x86_64-with-debian-9.9--2.7.14-64/tmpqDJ1vM). This is not supposed to happen! You may need to manually delete your cache directory to fix this.
+WARNING (theano.gof.cmodule): The same cache key is associated to different modules (/home/halsaied/.theano/compiledir_Linux-4.9--amd64-x86_64-with-debian-9.9--2.7.14-64/tmp6CCV3W and /home/halsaied/.theano/compiledir_Linux-4.9--amd64-x86_64-with-debian-9.9--2.7.14-64/tmpqDJ1vM). This is not supposed to happen! You may need to manually delete your cache directory to fix this.
+WARNING (theano.gof.cmodule): The same cache key is associated to different modules (/home/halsaied/.theano/compiledir_Linux-4.9--amd64-x86_64-with-debian-9.9--2.7.14-64/tmp6CCV3W and /home/halsaied/.theano/compiledir_Linux-4.9--amd64-x86_64-with-debian-9.9--2.7.14-64/tmpqDJ1vM). This is not supposed to happen! You may need to manually delete your cache directory to fix this.
+WARNING (theano.gof.cmodule): The same cache key is associated to different modules (/home/halsaied/.theano/compiledir_Linux-4.9--amd64-x86_64-with-debian-9.9--2.7.14-64/tmp6CCV3W and /home/halsaied/.theano/compiledir_Linux-4.9--amd64-x86_64-with-debian-9.9--2.7.14-64/tmpqDJ1vM). This is not supposed to happen! You may need to manually delete your cache directory to fix this.
+WARNING (theano.gof.cmodule): The same cache key is associated to different modules (/home/halsaied/.theano/compiledir_Linux-4.9--amd64-x86_64-with-debian-9.9--2.7.14-64/tmp6CCV3W and /home/halsaied/.theano/compiledir_Linux-4.9--amd64-x86_64-with-debian-9.9--2.7.14-64/tmpqDJ1vM). This is not supposed to happen! You may need to manually delete your cache directory to fix this.
+WARNING (theano.gof.cmodule): The same cache key is associated to different modules (/home/halsaied/.theano/compiledir_Linux-4.9--amd64-x86_64-with-debian-9.9--2.7.14-64/tmp6CCV3W and /home/halsaied/.theano/compiledir_Linux-4.9--amd64-x86_64-with-debian-9.9--2.7.14-64/tmpqDJ1vM). This is not supposed to happen! You may need to manually delete your cache directory to fix this.
+WARNING (theano.gof.cmodule): The same cache key is associated to different modules (/home/halsaied/.theano/compiledir_Linux-4.9--amd64-x86_64-with-debian-9.9--2.7.14-64/tmp6CCV3W and /home/halsaied/.theano/compiledir_Linux-4.9--amd64-x86_64-with-debian-9.9--2.7.14-64/tmpqDJ1vM). This is not supposed to happen! You may need to manually delete your cache directory to fix this.
+WARNING (theano.gof.cmodule): The same cache key is associated to different modules (/home/halsaied/.theano/compiledir_Linux-4.9--amd64-x86_64-with-debian-9.9--2.7.14-64/tmp6CCV3W and /home/halsaied/.theano/compiledir_Linux-4.9--amd64-x86_64-with-debian-9.9--2.7.14-64/tmpqDJ1vM). This is not supposed to happen! You may need to manually delete your cache directory to fix this.
+WARNING (theano.gof.cmodule): The same cache key is associated to different modules (/home/halsaied/.theano/compiledir_Linux-4.9--amd64-x86_64-with-debian-9.9--2.7.14-64/tmp6CCV3W and /home/halsaied/.theano/compiledir_Linux-4.9--amd64-x86_64-with-debian-9.9--2.7.14-64/tmpqDJ1vM). This is not supposed to happen! You may need to manually delete your cache directory to fix this.
+WARNING (theano.gof.cmodule): The same cache key is associated to different modules (/home/halsaied/.theano/compiledir_Linux-4.9--amd64-x86_64-with-debian-9.9--2.7.14-64/tmp6CCV3W and /home/halsaied/.theano/compiledir_Linux-4.9--amd64-x86_64-with-debian-9.9--2.7.14-64/tmpqDJ1vM). This is not supposed to happen! You may need to manually delete your cache directory to fix this.
+WARNING (theano.gof.cmodule): The same cache key is associated to different modules (/home/halsaied/.theano/compiledir_Linux-4.9--amd64-x86_64-with-debian-9.9--2.7.14-64/tmp6CCV3W and /home/halsaied/.theano/compiledir_Linux-4.9--amd64-x86_64-with-debian-9.9--2.7.14-64/tmpqDJ1vM). This is not supposed to happen! You may need to manually delete your cache directory to fix this.
+WARNING (theano.gof.cmodule): The same cache key is associated to different modules (/home/halsaied/.theano/compiledir_Linux-4.9--amd64-x86_64-with-debian-9.9--2.7.14-64/tmp6CCV3W and /home/halsaied/.theano/compiledir_Linux-4.9--amd64-x86_64-with-debian-9.9--2.7.14-64/tmpqDJ1vM). This is not supposed to happen! You may need to manually delete your cache directory to fix this.
+WARNING (theano.gof.cmodule): The same cache key is associated to different modules (/home/halsaied/.theano/compiledir_Linux-4.9--amd64-x86_64-with-debian-9.9--2.7.14-64/tmp6CCV3W and /home/halsaied/.theano/compiledir_Linux-4.9--amd64-x86_64-with-debian-9.9--2.7.14-64/tmpqDJ1vM). This is not supposed to happen! You may need to manually delete your cache directory to fix this.
+WARNING (theano.gof.cmodule): The same cache key is associated to different modules (/home/halsaied/.theano/compiledir_Linux-4.9--amd64-x86_64-with-debian-9.9--2.7.14-64/tmp6CCV3W and /home/halsaied/.theano/compiledir_Linux-4.9--amd64-x86_64-with-debian-9.9--2.7.14-64/tmpqDJ1vM). This is not supposed to happen! You may need to manually delete your cache directory to fix this.
+WARNING (theano.gof.cmodule): The same cache key is associated to different modules (/home/halsaied/.theano/compiledir_Linux-4.9--amd64-x86_64-with-debian-9.9--2.7.14-64/tmp6CCV3W and /home/halsaied/.theano/compiledir_Linux-4.9--amd64-x86_64-with-debian-9.9--2.7.14-64/tmpqDJ1vM). This is not supposed to happen! You may need to manually delete your cache directory to fix this.
+WARNING (theano.gof.cmodule): The same cache key is associated to different modules (/home/halsaied/.theano/compiledir_Linux-4.9--amd64-x86_64-with-debian-9.9--2.7.14-64/tmp6CCV3W and /home/halsaied/.theano/compiledir_Linux-4.9--amd64-x86_64-with-debian-9.9--2.7.14-64/tmpqDJ1vM). This is not supposed to happen! You may need to manually delete your cache directory to fix this.
+WARNING (theano.gof.cmodule): The same cache key is associated to different modules (/home/halsaied/.theano/compiledir_Linux-4.9--amd64-x86_64-with-debian-9.9--2.7.14-64/tmp6CCV3W and /home/halsaied/.theano/compiledir_Linux-4.9--amd64-x86_64-with-debian-9.9--2.7.14-64/tmpqDJ1vM). This is not supposed to happen! You may need to manually delete your cache directory to fix this.
+WARNING (theano.gof.cmodule): The same cache key is associated to different modules (/home/halsaied/.theano/compiledir_Linux-4.9--amd64-x86_64-with-debian-9.9--2.7.14-64/tmp6CCV3W and /home/halsaied/.theano/compiledir_Linux-4.9--amd64-x86_64-with-debian-9.9--2.7.14-64/tmpqDJ1vM). This is not supposed to happen! You may need to manually delete your cache directory to fix this.
+WARNING (theano.gof.cmodule): The same cache key is associated to different modules (/home/halsaied/.theano/compiledir_Linux-4.9--amd64-x86_64-with-debian-9.9--2.7.14-64/tmp6CCV3W and /home/halsaied/.theano/compiledir_Linux-4.9--amd64-x86_64-with-debian-9.9--2.7.14-64/tmpqDJ1vM). This is not supposed to happen! You may need to manually delete your cache directory to fix this.
+WARNING (theano.gof.cmodule): The same cache key is associated to different modules (/home/halsaied/.theano/compiledir_Linux-4.9--amd64-x86_64-with-debian-9.9--2.7.14-64/tmp6CCV3W and /home/halsaied/.theano/compiledir_Linux-4.9--amd64-x86_64-with-debian-9.9--2.7.14-64/tmpqDJ1vM). This is not supposed to happen! You may need to manually delete your cache directory to fix this.
+WARNING (theano.gof.cmodule): The same cache key is associated to different modules (/home/halsaied/.theano/compiledir_Linux-4.9--amd64-x86_64-with-debian-9.9--2.7.14-64/tmp6CCV3W and /home/halsaied/.theano/compiledir_Linux-4.9--amd64-x86_64-with-debian-9.9--2.7.14-64/tmpqDJ1vM). This is not supposed to happen! You may need to manually delete your cache directory to fix this.
+WARNING (theano.gof.cmodule): The same cache key is associated to different modules (/home/halsaied/.theano/compiledir_Linux-4.9--amd64-x86_64-with-debian-9.9--2.7.14-64/tmp6CCV3W and /home/halsaied/.theano/compiledir_Linux-4.9--amd64-x86_64-with-debian-9.9--2.7.14-64/tmpqDJ1vM). This is not supposed to happen! You may need to manually delete your cache directory to fix this.
+WARNING (theano.gof.cmodule): The same cache key is associated to different modules (/home/halsaied/.theano/compiledir_Linux-4.9--amd64-x86_64-with-debian-9.9--2.7.14-64/tmp6CCV3W and /home/halsaied/.theano/compiledir_Linux-4.9--amd64-x86_64-with-debian-9.9--2.7.14-64/tmpqDJ1vM). This is not supposed to happen! You may need to manually delete your cache directory to fix this.
+WARNING (theano.gof.cmodule): The same cache key is associated to different modules (/home/halsaied/.theano/compiledir_Linux-4.9--amd64-x86_64-with-debian-9.9--2.7.14-64/tmp6CCV3W and /home/halsaied/.theano/compiledir_Linux-4.9--amd64-x86_64-with-debian-9.9--2.7.14-64/tmpqDJ1vM). This is not supposed to happen! You may need to manually delete your cache directory to fix this.
+WARNING (theano.gof.cmodule): The same cache key is associated to different modules (/home/halsaied/.theano/compiledir_Linux-4.9--amd64-x86_64-with-debian-9.9--2.7.14-64/tmp6CCV3W and /home/halsaied/.theano/compiledir_Linux-4.9--amd64-x86_64-with-debian-9.9--2.7.14-64/tmpqDJ1vM). This is not supposed to happen! You may need to manually delete your cache directory to fix this.
+WARNING (theano.gof.cmodule): The same cache key is associated to different modules (/home/halsaied/.theano/compiledir_Linux-4.9--amd64-x86_64-with-debian-9.9--2.7.14-64/tmp6CCV3W and /home/halsaied/.theano/compiledir_Linux-4.9--amd64-x86_64-with-debian-9.9--2.7.14-64/tmpqDJ1vM). This is not supposed to happen! You may need to manually delete your cache directory to fix this.
+WARNING (theano.gof.cmodule): The same cache key is associated to different modules (/home/halsaied/.theano/compiledir_Linux-4.9--amd64-x86_64-with-debian-9.9--2.7.14-64/tmp6CCV3W and /home/halsaied/.theano/compiledir_Linux-4.9--amd64-x86_64-with-debian-9.9--2.7.14-64/tmpqDJ1vM). This is not supposed to happen! You may need to manually delete your cache directory to fix this.
+WARNING (theano.gof.cmodule): The same cache key is associated to different modules (/home/halsaied/.theano/compiledir_Linux-4.9--amd64-x86_64-with-debian-9.9--2.7.14-64/tmp6CCV3W and /home/halsaied/.theano/compiledir_Linux-4.9--amd64-x86_64-with-debian-9.9--2.7.14-64/tmpqDJ1vM). This is not supposed to happen! You may need to manually delete your cache directory to fix this.
+WARNING (theano.gof.cmodule): The same cache key is associated to different modules (/home/halsaied/.theano/compiledir_Linux-4.9--amd64-x86_64-with-debian-9.9--2.7.14-64/tmp6CCV3W and /home/halsaied/.theano/compiledir_Linux-4.9--amd64-x86_64-with-debian-9.9--2.7.14-64/tmpqDJ1vM). This is not supposed to happen! You may need to manually delete your cache directory to fix this.
+WARNING (theano.gof.cmodule): The same cache key is associated to different modules (/home/halsaied/.theano/compiledir_Linux-4.9--amd64-x86_64-with-debian-9.9--2.7.14-64/tmp6CCV3W and /home/halsaied/.theano/compiledir_Linux-4.9--amd64-x86_64-with-debian-9.9--2.7.14-64/tmpqDJ1vM). This is not supposed to happen! You may need to manually delete your cache directory to fix this.
+WARNING (theano.gof.cmodule): The same cache key is associated to different modules (/home/halsaied/.theano/compiledir_Linux-4.9--amd64-x86_64-with-debian-9.9--2.7.14-64/tmp6CCV3W and /home/halsaied/.theano/compiledir_Linux-4.9--amd64-x86_64-with-debian-9.9--2.7.14-64/tmpqDJ1vM). This is not supposed to happen! You may need to manually delete your cache directory to fix this.
+WARNING (theano.gof.cmodule): The same cache key is associated to different modules (/home/halsaied/.theano/compiledir_Linux-4.9--amd64-x86_64-with-debian-9.9--2.7.14-64/tmp6CCV3W and /home/halsaied/.theano/compiledir_Linux-4.9--amd64-x86_64-with-debian-9.9--2.7.14-64/tmpqDJ1vM). This is not supposed to happen! You may need to manually delete your cache directory to fix this.
+WARNING (theano.gof.cmodule): The same cache key is associated to different modules (/home/halsaied/.theano/compiledir_Linux-4.9--amd64-x86_64-with-debian-9.9--2.7.14-64/tmp6CCV3W and /home/halsaied/.theano/compiledir_Linux-4.9--amd64-x86_64-with-debian-9.9--2.7.14-64/tmpqDJ1vM). This is not supposed to happen! You may need to manually delete your cache directory to fix this.
+WARNING (theano.gof.cmodule): The same cache key is associated to different modules (/home/halsaied/.theano/compiledir_Linux-4.9--amd64-x86_64-with-debian-9.9--2.7.14-64/tmp6CCV3W and /home/halsaied/.theano/compiledir_Linux-4.9--amd64-x86_64-with-debian-9.9--2.7.14-64/tmpqDJ1vM). This is not supposed to happen! You may need to manually delete your cache directory to fix this.
+WARNING (theano.gof.cmodule): The same cache key is associated to different modules (/home/halsaied/.theano/compiledir_Linux-4.9--amd64-x86_64-with-debian-9.9--2.7.14-64/tmp6CCV3W and /home/halsaied/.theano/compiledir_Linux-4.9--amd64-x86_64-with-debian-9.9--2.7.14-64/tmpqDJ1vM). This is not supposed to happen! You may need to manually delete your cache directory to fix this.
+WARNING (theano.gof.cmodule): The same cache key is associated to different modules (/home/halsaied/.theano/compiledir_Linux-4.9--amd64-x86_64-with-debian-9.9--2.7.14-64/tmp6CCV3W and /home/halsaied/.theano/compiledir_Linux-4.9--amd64-x86_64-with-debian-9.9--2.7.14-64/tmpqDJ1vM). This is not supposed to happen! You may need to manually delete your cache directory to fix this.
+WARNING (theano.gof.cmodule): The same cache key is associated to different modules (/home/halsaied/.theano/compiledir_Linux-4.9--amd64-x86_64-with-debian-9.9--2.7.14-64/tmp6CCV3W and /home/halsaied/.theano/compiledir_Linux-4.9--amd64-x86_64-with-debian-9.9--2.7.14-64/tmpqDJ1vM). This is not supposed to happen! You may need to manually delete your cache directory to fix this.
+WARNING (theano.gof.cmodule): The same cache key is associated to different modules (/home/halsaied/.theano/compiledir_Linux-4.9--amd64-x86_64-with-debian-9.9--2.7.14-64/tmp6CCV3W and /home/halsaied/.theano/compiledir_Linux-4.9--amd64-x86_64-with-debian-9.9--2.7.14-64/tmpqDJ1vM). This is not supposed to happen! You may need to manually delete your cache directory to fix this.
+WARNING (theano.gof.cmodule): The same cache key is associated to different modules (/home/halsaied/.theano/compiledir_Linux-4.9--amd64-x86_64-with-debian-9.9--2.7.14-64/tmp6CCV3W and /home/halsaied/.theano/compiledir_Linux-4.9--amd64-x86_64-with-debian-9.9--2.7.14-64/tmpqDJ1vM). This is not supposed to happen! You may need to manually delete your cache directory to fix this.
+INFO (theano.gof.compilelock): Waiting for existing lock by process '6973' (I am process '5501')
+INFO (theano.gof.compilelock): To manually release the lock, delete /home/halsaied/.theano/compiledir_Linux-4.9--amd64-x86_64-with-debian-9.9--2.7.14-64/lock_dir
+INFO (theano.gof.compilelock): Waiting for existing lock by unknown process (I am process '5501')
+INFO (theano.gof.compilelock): To manually release the lock, delete /home/halsaied/.theano/compiledir_Linux-4.9--amd64-x86_64-with-debian-9.9--2.7.14-64/lock_dir
+INFO (theano.gof.compilelock): Waiting for existing lock by unknown process (I am process '5501')
+INFO (theano.gof.compilelock): To manually release the lock, delete /home/halsaied/.theano/compiledir_Linux-4.9--amd64-x86_64-with-debian-9.9--2.7.14-64/lock_dir
+INFO (theano.gof.compilelock): Waiting for existing lock by process '6973' (I am process '5501')
+INFO (theano.gof.compilelock): To manually release the lock, delete /home/halsaied/.theano/compiledir_Linux-4.9--amd64-x86_64-with-debian-9.9--2.7.14-64/lock_dir
+INFO (theano.gof.compilelock): Waiting for existing lock by process '6973' (I am process '5501')
+INFO (theano.gof.compilelock): To manually release the lock, delete /home/halsaied/.theano/compiledir_Linux-4.9--amd64-x86_64-with-debian-9.9--2.7.14-64/lock_dir
+	Mode: RNN
+==================================================================================================
+	Dataset: SHAREDTASK2
+==================================================================================================
+	Division: FIXEDSIZE
+==================================================================================================
+	GPU Enabled
+==================================================================================================
+# CTitles: xp, Dataset, Evaluation, favorisationCoeff, focused, importantSentences, importantTransitions, mweRepeition, overSampling, sampleWeight, average, compactVocab, dynamicVocab, keras, lemma, manual, pretrained, useB-1, useB1, bTokenNum, batchSize, denseDropout, denseUnitNum, earlyStop, focusedElements, gru, lr, posDim, posRnnUnitNum, rnnDropout, rnnSequence, s0TokenNum, s1TokenNum, shuffle, useB-1, useDense, wordDim, wordRnnUnitNum, checkPoint, dense1Activation, depParserBatchSize, depParsingLR, earlyStop, epochs, idenLR, identBatchSize, initialEpochs, jointLearningEpochs, loss, minDelta, monitor, optimizer, patience, predictVerbose, taggingBatchSize, taggingLR, validationSplit
+==================================================================================================
+xp             ,Dataset        ,Evaluation     ,favorisationCoe,focused        ,
+__________________________________________________________________________________________________
+rnn            ,sharedtask2    ,fixedSize      ,1              ,False          ,
+__________________________________________________________________________________________________
+importantSenten,importantTransi,mweRepeition   ,overSampling   ,sampleWeight   ,
+__________________________________________________________________________________________________
+True           ,False          ,35             ,True           ,False          ,
+__________________________________________________________________________________________________
+average        ,compactVocab   ,dynamicVocab   ,keras          ,lemma          ,
+__________________________________________________________________________________________________
+True           ,False          ,False          ,False          ,False          ,
+__________________________________________________________________________________________________
+manual         ,pretrained     ,useB-1         ,useB1          ,bTokenNum      ,
+__________________________________________________________________________________________________
+True           ,False          ,1              ,1              ,1              ,
+__________________________________________________________________________________________________
+batchSize      ,denseDropout   ,denseUnitNum   ,earlyStop      ,focusedElements,
+__________________________________________________________________________________________________
+64             ,0.2            ,143            ,True           ,7              ,
+__________________________________________________________________________________________________
+gru            ,lr             ,posDim         ,posRnnUnitNum  ,rnnDropout     ,
+__________________________________________________________________________________________________
+True           ,0.072          ,25             ,181            ,0.1            ,
+__________________________________________________________________________________________________
+rnnSequence    ,s0TokenNum     ,s1TokenNum     ,shuffle        ,useB-1         ,
+__________________________________________________________________________________________________
+True           ,4              ,2              ,True           ,0              ,
+__________________________________________________________________________________________________
+useDense       ,wordDim        ,wordRnnUnitNum ,checkPoint     ,dense1Activatio,
+__________________________________________________________________________________________________
+True           ,531            ,104            ,False          ,relu           ,
+__________________________________________________________________________________________________
+depParserBatchS,depParsingLR   ,earlyStop      ,epochs         ,idenLR         ,
+__________________________________________________________________________________________________
+32             ,0.02           ,True           ,15             ,0.02           ,
+__________________________________________________________________________________________________
+identBatchSize ,initialEpochs  ,jointLearningEp,loss           ,minDelta       ,
+__________________________________________________________________________________________________
+32             ,1              ,50             ,categorical_crossentropy,0.011          ,
+__________________________________________________________________________________________________
+monitor        ,optimizer      ,patience       ,predictVerbose ,taggingBatchSiz,
+__________________________________________________________________________________________________
+val_loss       ,adagrad        ,4              ,False          ,32             ,
+__________________________________________________________________________________________________
+taggingLR      ,validationSplit,
+__________________________________________________________________________________________________
+0.02           ,0.2            ,
+__________________________________________________________________________________________________
+# Configs: rnn, sharedtask2, fixedSize, 1, False, True, False, 35, True, False, True, False, False, False, False, True, False, 1, 1, 1, 64, 0.2, 143, True, 7, True, 0.072, 25, 181, 0.1, True, 4, 2, True, 0, True, 531, 104, False, relu, 32, 0.02, True, 15, 0.02, 32, 1, 50, categorical_crossentropy, 0.011, val_loss, adagrad, 4, False, 32, 0.02, 0.2
+==================================================================================================
+# Seed: 0
+==================================================================================================
+XP Starts: 2/8 (16h:54)
+==================================================================================================
+
+==================================================================================================
+	BG Train (3124)
+==================================================================================================
+	Important sentence: 3124
+	Token occurrences: 89121
+	MWE number: 1372
+	MWE occurrences: 3583
+	Continuous occurrences: 81.0 %
+	Frequent MWE occurences: 49.0 %
+	MWE length: 2.12
+	Recognizable MWEs: 100.0 %
+	MWT occurrences: 8
+
+==================================================================================================
+	 Test (1954)
+==================================================================================================
+	Important sentence: 574
+	Token occurrences: 42020
+	MWE number: 451
+	MWE occurrences: 670
+	Continuous occurrences: 75.0 %
+	MWE length: 2.14
+	Seen occurrences : 57% 
+	Recognizable MWEs: 100.0 %
+	MWT occurrences: 1
+
+==================================================================================================
+__________________________________________________________________________________________________
+Layer (type)                    Output Shape         Param #     Connected to                     
+==================================================================================================
+input_1 (InputLayer)            (None, 7)            0                                            
+__________________________________________________________________________________________________
+input_2 (InputLayer)            (None, 7)            0                                            
+__________________________________________________________________________________________________
+embedding_1 (Embedding)         (None, 7, 531)       4980249     input_1[0][0]                    
+__________________________________________________________________________________________________
+embedding_2 (Embedding)         (None, 7, 25)        475         input_2[0][0]                    
+__________________________________________________________________________________________________
+gru_1 (GRU)                     (None, 7, 104)       198432      embedding_1[0][0]                
+__________________________________________________________________________________________________
+gru_2 (GRU)                     (None, 7, 181)       112401      embedding_2[0][0]                
+__________________________________________________________________________________________________
+flatten_1 (Flatten)             (None, 728)          0           gru_1[0][0]                      
+__________________________________________________________________________________________________
+flatten_2 (Flatten)             (None, 1267)         0           gru_2[0][0]                      
+__________________________________________________________________________________________________
+dropout_1 (Dropout)             (None, 728)          0           flatten_1[0][0]                  
+__________________________________________________________________________________________________
+dropout_2 (Dropout)             (None, 1267)         0           flatten_2[0][0]                  
+__________________________________________________________________________________________________
+concatenate_1 (Concatenate)     (None, 1995)         0           dropout_1[0][0]                  
+                                                                 dropout_2[0][0]                  
+__________________________________________________________________________________________________
+dense_1 (Dense)                 (None, 143)          285428      concatenate_1[0][0]              
+__________________________________________________________________________________________________
+dropout_3 (Dropout)             (None, 143)          0           dense_1[0][0]                    
+__________________________________________________________________________________________________
+dense_2 (Dense)                 (None, 4)            576         dropout_3[0][0]                  
+==================================================================================================
+Total params: 5,577,561
+Trainable params: 5,577,561
+Non-trainable params: 0
+__________________________________________________________________________________________________
+None
+==================================================================================================
+	Resampling:
+==================================================================================================
+	data size before sampling = 181825
+	data size after sampling = 356484
+Train on 285187 samples, validate on 71297 samples
+Epoch 1/15
+ - 50s - loss: 12.0784 - acc: 0.2504 - val_loss: 12.1130 - val_acc: 0.2485
+Epoch 2/15
+ - 51s - loss: 12.0825 - acc: 0.2504 - val_loss: 12.1130 - val_acc: 0.2485
+Epoch 3/15
+ - 50s - loss: 12.0825 - acc: 0.2504 - val_loss: 12.1130 - val_acc: 0.2485
+Epoch 4/15
+ - 50s - loss: 12.0825 - acc: 0.2504 - val_loss: 12.1130 - val_acc: 0.2485
+Epoch 5/15
+ - 50s - loss: 12.0825 - acc: 0.2504 - val_loss: 12.1130 - val_acc: 0.2485
+Epoch 00005: early stopping
+	TRAINING TIME: 5.92 minutes 
+==================================================================================================
+	PARSING TIME: 1.72 minutes 
+==================================================================================================
+	Identification : 0
+	P, R  : 0.0, 0.0
+
+==================================================================================================
+	XP Ends: 2/8 (17 h:2)
+==================================================================================================
+ERROR:root:ATTENTION: Oracle problems with 2 sentences!
+# Seed: 0
+==================================================================================================
+XP Starts: 2/8 (17h:2)
+==================================================================================================
+
+==================================================================================================
+	PT Train (2305)
+==================================================================================================
+	Important sentence: 2305
+	Token occurrences: 60342
+	MWE number: 1412
+	MWE occurrences: 2542
+	Continuous occurrences: 58.0 %
+	Frequent MWE occurences: 21.0 %
+	MWE length: 2.22
+	Recognizable MWEs: 100.0 %
+	MWT occurrences: 1
+	Embedded occurrences: 5
+
+==================================================================================================
+	 Test (3117)
+==================================================================================================
+	Important sentence: 494
+	Token occurrences: 64078
+	MWE number: 429
+	MWE occurrences: 553
+	Continuous occurrences: 59.0 %
+	MWE length: 2.25
+	Seen occurrences : 62% 
+	Recognizable MWEs: 98.0 %
+	Embedded occurrences: 4
+	Interleaving occurrences: 8
+
+==================================================================================================
+__________________________________________________________________________________________________
+Layer (type)                    Output Shape         Param #     Connected to                     
+==================================================================================================
+input_3 (InputLayer)            (None, 7)            0                                            
+__________________________________________________________________________________________________
+input_4 (InputLayer)            (None, 7)            0                                            
+__________________________________________________________________________________________________
+embedding_3 (Embedding)         (None, 7, 531)       3848688     input_3[0][0]                    
+__________________________________________________________________________________________________
+embedding_4 (Embedding)         (None, 7, 25)        475         input_4[0][0]                    
+__________________________________________________________________________________________________
+gru_3 (GRU)                     (None, 7, 104)       198432      embedding_3[0][0]                
+__________________________________________________________________________________________________
+gru_4 (GRU)                     (None, 7, 181)       112401      embedding_4[0][0]                
+__________________________________________________________________________________________________
+flatten_3 (Flatten)             (None, 728)          0           gru_3[0][0]                      
+__________________________________________________________________________________________________
+flatten_4 (Flatten)             (None, 1267)         0           gru_4[0][0]                      
+__________________________________________________________________________________________________
+dropout_4 (Dropout)             (None, 728)          0           flatten_3[0][0]                  
+__________________________________________________________________________________________________
+dropout_5 (Dropout)             (None, 1267)         0           flatten_4[0][0]                  
+__________________________________________________________________________________________________
+concatenate_2 (Concatenate)     (None, 1995)         0           dropout_4[0][0]                  
+                                                                 dropout_5[0][0]                  
+__________________________________________________________________________________________________
+dense_3 (Dense)                 (None, 143)          285428      concatenate_2[0][0]              
+__________________________________________________________________________________________________
+dropout_6 (Dropout)             (None, 143)          0           dense_3[0][0]                    
+__________________________________________________________________________________________________
+dense_4 (Dense)                 (None, 4)            576         dropout_6[0][0]                  
+==================================================================================================
+Total params: 4,446,000
+Trainable params: 4,446,000
+Non-trainable params: 0
+__________________________________________________________________________________________________
+None
+==================================================================================================
+	Resampling:
+==================================================================================================
+	data size before sampling = 123224
+	data size after sampling = 241368
+Train on 193094 samples, validate on 48274 samples
+Epoch 1/15
+ - 33s - loss: 8.6492 - acc: 0.4628 - val_loss: 8.3025 - val_acc: 0.4849
+Epoch 2/15
+ - 33s - loss: 8.2224 - acc: 0.4899 - val_loss: 8.3025 - val_acc: 0.4849
+Epoch 3/15
+ - 39s - loss: 8.2223 - acc: 0.4899 - val_loss: 8.3025 - val_acc: 0.4849
+Epoch 4/15
+ - 37s - loss: 8.2223 - acc: 0.4899 - val_loss: 8.3025 - val_acc: 0.4849
+Epoch 5/15
+ - 38s - loss: 8.2224 - acc: 0.4899 - val_loss: 8.3025 - val_acc: 0.4849
+Epoch 00005: early stopping
+	TRAINING TIME: 3.27 minutes 
+==================================================================================================
+	PARSING TIME: 2.58 minutes 
+==================================================================================================
+	Identification : 0
+	P, R  : 0.0, 0.0
+
+==================================================================================================
+	XP Ends: 2/8 (17 h:8)
+==================================================================================================
+/home/halsaied/miniconda2/lib/python2.7/site-packages/nltk/parse/dependencygraph.py:399: UserWarning: The graph doesn't contain a node that depends on the root element.
+  "The graph doesn't contain a node " "that depends on the root element."
+# Seed: 0
+==================================================================================================
+XP Starts: 2/8 (17h:8)
+==================================================================================================
+
+==================================================================================================
+	TR Train (3585)
+==================================================================================================
+	Important sentence: 3585
+	Token occurrences: 120124
+	MWE number: 2979
+	MWE occurrences: 4870
+	Continuous occurrences: 49.0 %
+	Frequent MWE occurences: 24.0 %
+	MWE length: 2.06
+	Recognizable MWEs: 100.0 %
+	MWT occurrences: 2
+
+==================================================================================================
+	 Test (1320)
+==================================================================================================
+	Important sentence: 385
+	Token occurrences: 27196
+	MWE number: 418
+	MWE occurrences: 510
+	Continuous occurrences: 50.0 %
+	MWE length: 2.07
+	Seen occurrences : 43% 
+	Recognizable MWEs: 100.0 %
+
+==================================================================================================
+__________________________________________________________________________________________________
+Layer (type)                    Output Shape         Param #     Connected to                     
+==================================================================================================
+input_5 (InputLayer)            (None, 7)            0                                            
+__________________________________________________________________________________________________
+input_6 (InputLayer)            (None, 7)            0                                            
+__________________________________________________________________________________________________
+embedding_5 (Embedding)         (None, 7, 531)       9747036     input_5[0][0]                    
+__________________________________________________________________________________________________
+embedding_6 (Embedding)         (None, 7, 25)        350         input_6[0][0]                    
+__________________________________________________________________________________________________
+gru_5 (GRU)                     (None, 7, 104)       198432      embedding_5[0][0]                
+__________________________________________________________________________________________________
+gru_6 (GRU)                     (None, 7, 181)       112401      embedding_6[0][0]                
+__________________________________________________________________________________________________
+flatten_5 (Flatten)             (None, 728)          0           gru_5[0][0]                      
+__________________________________________________________________________________________________
+flatten_6 (Flatten)             (None, 1267)         0           gru_6[0][0]                      
+__________________________________________________________________________________________________
+dropout_7 (Dropout)             (None, 728)          0           flatten_5[0][0]                  
+__________________________________________________________________________________________________
+dropout_8 (Dropout)             (None, 1267)         0           flatten_6[0][0]                  
+__________________________________________________________________________________________________
+concatenate_3 (Concatenate)     (None, 1995)         0           dropout_7[0][0]                  
+                                                                 dropout_8[0][0]                  
+__________________________________________________________________________________________________
+dense_5 (Dense)                 (None, 143)          285428      concatenate_3[0][0]              
+__________________________________________________________________________________________________
+dropout_9 (Dropout)             (None, 143)          0           dense_5[0][0]                    
+__________________________________________________________________________________________________
+dense_6 (Dense)                 (None, 4)            576         dropout_9[0][0]                  
+==================================================================================================
+Total params: 10,344,223
+Trainable params: 10,344,223
+Non-trainable params: 0
+__________________________________________________________________________________________________
+None
+==================================================================================================
+	Resampling:
+==================================================================================================
+	data size before sampling = 245118
+	data size after sampling = 480496
+Train on 384396 samples, validate on 96100 samples
+Epoch 1/15
+ - 73s - loss: 12.0886 - acc: 0.2498 - val_loss: 12.0745 - val_acc: 0.2509
+Epoch 2/15
+ - 74s - loss: 12.0921 - acc: 0.2498 - val_loss: 12.0745 - val_acc: 0.2509
+Epoch 3/15
+ - 74s - loss: 12.0921 - acc: 0.2498 - val_loss: 12.0745 - val_acc: 0.2509
+Epoch 4/15
+ - 74s - loss: 12.0921 - acc: 0.2498 - val_loss: 12.0745 - val_acc: 0.2509
+Epoch 5/15
+ - 77s - loss: 12.0921 - acc: 0.2498 - val_loss: 12.0745 - val_acc: 0.2509
+Epoch 00005: early stopping
+	TRAINING TIME: 6.47 minutes 
+==================================================================================================
+	PARSING TIME: 2.13 minutes 
+==================================================================================================
+	Identification : 0
+	P, R  : 0.0, 0.0
+
+==================================================================================================
+	XP Ends: 2/8 (17 h:17)
+==================================================================================================
+ERROR (theano.gof.opt): Optimization failure due to: constant_folding
+ERROR:theano.gof.opt:Optimization failure due to: constant_folding
+ERROR (theano.gof.opt): node: InplaceDimShuffle{x,x}(TensorConstant{-0.0910975037348554})
+ERROR:theano.gof.opt:node: InplaceDimShuffle{x,x}(TensorConstant{-0.0910975037348554})
+ERROR (theano.gof.opt): TRACEBACK:
+ERROR:theano.gof.opt:TRACEBACK:
+ERROR (theano.gof.opt): Traceback (most recent call last):
+  File "/home/halsaied/miniconda2/lib/python2.7/site-packages/theano/gof/opt.py", line 2019, in process_node
+    replacements = lopt.transform(node)
+  File "/home/halsaied/miniconda2/lib/python2.7/site-packages/theano/tensor/opt.py", line 6507, in constant_folding
+    no_recycling=[], impl=impl)
+  File "/home/halsaied/miniconda2/lib/python2.7/site-packages/theano/gof/op.py", line 955, in make_thunk
+    no_recycling)
+  File "/home/halsaied/miniconda2/lib/python2.7/site-packages/theano/gof/op.py", line 858, in make_c_thunk
+    output_storage=node_output_storage)
+  File "/home/halsaied/miniconda2/lib/python2.7/site-packages/theano/gof/cc.py", line 1217, in make_thunk
+    keep_lock=keep_lock)
+  File "/home/halsaied/miniconda2/lib/python2.7/site-packages/theano/gof/cc.py", line 1157, in __compile__
+    keep_lock=keep_lock)
+  File "/home/halsaied/miniconda2/lib/python2.7/site-packages/theano/gof/cc.py", line 1620, in cthunk_factory
+    key=key, lnk=self, keep_lock=keep_lock)
+  File "/home/halsaied/miniconda2/lib/python2.7/site-packages/theano/gof/cmodule.py", line 1140, in module_from_key
+    module = self._get_from_hash(module_hash, key, keep_lock=keep_lock)
+  File "/home/halsaied/miniconda2/lib/python2.7/site-packages/theano/gof/cmodule.py", line 1040, in _get_from_hash
+    key_data.add_key(key, save_pkl=bool(key[0]))
+  File "/home/halsaied/miniconda2/lib/python2.7/site-packages/theano/gof/cmodule.py", line 504, in add_key
+    self.save_pkl()
+  File "/home/halsaied/miniconda2/lib/python2.7/site-packages/theano/gof/cmodule.py", line 525, in save_pkl
+    with open(self.key_pkl, 'wb') as f:
+IOError: [Errno 2] No such file or directory: '/home/halsaied/.theano/compiledir_Linux-4.9--amd64-x86_64-with-debian-9.9--2.7.14-64/tmpxEgMhr/key.pkl'
+
+ERROR:theano.gof.opt:Traceback (most recent call last):
+  File "/home/halsaied/miniconda2/lib/python2.7/site-packages/theano/gof/opt.py", line 2019, in process_node
+    replacements = lopt.transform(node)
+  File "/home/halsaied/miniconda2/lib/python2.7/site-packages/theano/tensor/opt.py", line 6507, in constant_folding
+    no_recycling=[], impl=impl)
+  File "/home/halsaied/miniconda2/lib/python2.7/site-packages/theano/gof/op.py", line 955, in make_thunk
+    no_recycling)
+  File "/home/halsaied/miniconda2/lib/python2.7/site-packages/theano/gof/op.py", line 858, in make_c_thunk
+    output_storage=node_output_storage)
+  File "/home/halsaied/miniconda2/lib/python2.7/site-packages/theano/gof/cc.py", line 1217, in make_thunk
+    keep_lock=keep_lock)
+  File "/home/halsaied/miniconda2/lib/python2.7/site-packages/theano/gof/cc.py", line 1157, in __compile__
+    keep_lock=keep_lock)
+  File "/home/halsaied/miniconda2/lib/python2.7/site-packages/theano/gof/cc.py", line 1620, in cthunk_factory
+    key=key, lnk=self, keep_lock=keep_lock)
+  File "/home/halsaied/miniconda2/lib/python2.7/site-packages/theano/gof/cmodule.py", line 1140, in module_from_key
+    module = self._get_from_hash(module_hash, key, keep_lock=keep_lock)
+  File "/home/halsaied/miniconda2/lib/python2.7/site-packages/theano/gof/cmodule.py", line 1040, in _get_from_hash
+    key_data.add_key(key, save_pkl=bool(key[0]))
+  File "/home/halsaied/miniconda2/lib/python2.7/site-packages/theano/gof/cmodule.py", line 504, in add_key
+    self.save_pkl()
+  File "/home/halsaied/miniconda2/lib/python2.7/site-packages/theano/gof/cmodule.py", line 525, in save_pkl
+    with open(self.key_pkl, 'wb') as f:
+IOError: [Errno 2] No such file or directory: '/home/halsaied/.theano/compiledir_Linux-4.9--amd64-x86_64-with-debian-9.9--2.7.14-64/tmpxEgMhr/key.pkl'
+
+ERROR (theano.gof.opt): Optimization failure due to: constant_folding
+ERROR:theano.gof.opt:Optimization failure due to: constant_folding
+ERROR (theano.gof.opt): node: InplaceDimShuffle{x,x}(TensorConstant{0.0910975037348554})
+ERROR:theano.gof.opt:node: InplaceDimShuffle{x,x}(TensorConstant{0.0910975037348554})
+ERROR (theano.gof.opt): TRACEBACK:
+ERROR:theano.gof.opt:TRACEBACK:
+ERROR (theano.gof.opt): Traceback (most recent call last):
+  File "/home/halsaied/miniconda2/lib/python2.7/site-packages/theano/gof/opt.py", line 2019, in process_node
+    replacements = lopt.transform(node)
+  File "/home/halsaied/miniconda2/lib/python2.7/site-packages/theano/tensor/opt.py", line 6507, in constant_folding
+    no_recycling=[], impl=impl)
+  File "/home/halsaied/miniconda2/lib/python2.7/site-packages/theano/gof/op.py", line 955, in make_thunk
+    no_recycling)
+  File "/home/halsaied/miniconda2/lib/python2.7/site-packages/theano/gof/op.py", line 858, in make_c_thunk
+    output_storage=node_output_storage)
+  File "/home/halsaied/miniconda2/lib/python2.7/site-packages/theano/gof/cc.py", line 1217, in make_thunk
+    keep_lock=keep_lock)
+  File "/home/halsaied/miniconda2/lib/python2.7/site-packages/theano/gof/cc.py", line 1157, in __compile__
+    keep_lock=keep_lock)
+  File "/home/halsaied/miniconda2/lib/python2.7/site-packages/theano/gof/cc.py", line 1620, in cthunk_factory
+    key=key, lnk=self, keep_lock=keep_lock)
+  File "/home/halsaied/miniconda2/lib/python2.7/site-packages/theano/gof/cmodule.py", line 1140, in module_from_key
+    module = self._get_from_hash(module_hash, key, keep_lock=keep_lock)
+  File "/home/halsaied/miniconda2/lib/python2.7/site-packages/theano/gof/cmodule.py", line 1040, in _get_from_hash
+    key_data.add_key(key, save_pkl=bool(key[0]))
+  File "/home/halsaied/miniconda2/lib/python2.7/site-packages/theano/gof/cmodule.py", line 504, in add_key
+    self.save_pkl()
+  File "/home/halsaied/miniconda2/lib/python2.7/site-packages/theano/gof/cmodule.py", line 525, in save_pkl
+    with open(self.key_pkl, 'wb') as f:
+IOError: [Errno 2] No such file or directory: '/home/halsaied/.theano/compiledir_Linux-4.9--amd64-x86_64-with-debian-9.9--2.7.14-64/tmpxEgMhr/key.pkl'
+
+ERROR:theano.gof.opt:Traceback (most recent call last):
+  File "/home/halsaied/miniconda2/lib/python2.7/site-packages/theano/gof/opt.py", line 2019, in process_node
+    replacements = lopt.transform(node)
+  File "/home/halsaied/miniconda2/lib/python2.7/site-packages/theano/tensor/opt.py", line 6507, in constant_folding
+    no_recycling=[], impl=impl)
+  File "/home/halsaied/miniconda2/lib/python2.7/site-packages/theano/gof/op.py", line 955, in make_thunk
+    no_recycling)
+  File "/home/halsaied/miniconda2/lib/python2.7/site-packages/theano/gof/op.py", line 858, in make_c_thunk
+    output_storage=node_output_storage)
+  File "/home/halsaied/miniconda2/lib/python2.7/site-packages/theano/gof/cc.py", line 1217, in make_thunk
+    keep_lock=keep_lock)
+  File "/home/halsaied/miniconda2/lib/python2.7/site-packages/theano/gof/cc.py", line 1157, in __compile__
+    keep_lock=keep_lock)
+  File "/home/halsaied/miniconda2/lib/python2.7/site-packages/theano/gof/cc.py", line 1620, in cthunk_factory
+    key=key, lnk=self, keep_lock=keep_lock)
+  File "/home/halsaied/miniconda2/lib/python2.7/site-packages/theano/gof/cmodule.py", line 1140, in module_from_key
+    module = self._get_from_hash(module_hash, key, keep_lock=keep_lock)
+  File "/home/halsaied/miniconda2/lib/python2.7/site-packages/theano/gof/cmodule.py", line 1040, in _get_from_hash
+    key_data.add_key(key, save_pkl=bool(key[0]))
+  File "/home/halsaied/miniconda2/lib/python2.7/site-packages/theano/gof/cmodule.py", line 504, in add_key
+    self.save_pkl()
+  File "/home/halsaied/miniconda2/lib/python2.7/site-packages/theano/gof/cmodule.py", line 525, in save_pkl
+    with open(self.key_pkl, 'wb') as f:
+IOError: [Errno 2] No such file or directory: '/home/halsaied/.theano/compiledir_Linux-4.9--amd64-x86_64-with-debian-9.9--2.7.14-64/tmpxEgMhr/key.pkl'
+
+ERROR (theano.gof.opt): Optimization failure due to: constant_folding
+ERROR:theano.gof.opt:Optimization failure due to: constant_folding
+ERROR (theano.gof.opt): node: InplaceDimShuffle{x,x}(TensorConstant{-0.0910975037348554})
+ERROR:theano.gof.opt:node: InplaceDimShuffle{x,x}(TensorConstant{-0.0910975037348554})
+ERROR (theano.gof.opt): TRACEBACK:
+ERROR:theano.gof.opt:TRACEBACK:
+ERROR (theano.gof.opt): Traceback (most recent call last):
+  File "/home/halsaied/miniconda2/lib/python2.7/site-packages/theano/gof/opt.py", line 2019, in process_node
+    replacements = lopt.transform(node)
+  File "/home/halsaied/miniconda2/lib/python2.7/site-packages/theano/tensor/opt.py", line 6507, in constant_folding
+    no_recycling=[], impl=impl)
+  File "/home/halsaied/miniconda2/lib/python2.7/site-packages/theano/gof/op.py", line 955, in make_thunk
+    no_recycling)
+  File "/home/halsaied/miniconda2/lib/python2.7/site-packages/theano/gof/op.py", line 858, in make_c_thunk
+    output_storage=node_output_storage)
+  File "/home/halsaied/miniconda2/lib/python2.7/site-packages/theano/gof/cc.py", line 1217, in make_thunk
+    keep_lock=keep_lock)
+  File "/home/halsaied/miniconda2/lib/python2.7/site-packages/theano/gof/cc.py", line 1157, in __compile__
+    keep_lock=keep_lock)
+  File "/home/halsaied/miniconda2/lib/python2.7/site-packages/theano/gof/cc.py", line 1620, in cthunk_factory
+    key=key, lnk=self, keep_lock=keep_lock)
+  File "/home/halsaied/miniconda2/lib/python2.7/site-packages/theano/gof/cmodule.py", line 1140, in module_from_key
+    module = self._get_from_hash(module_hash, key, keep_lock=keep_lock)
+  File "/home/halsaied/miniconda2/lib/python2.7/site-packages/theano/gof/cmodule.py", line 1040, in _get_from_hash
+    key_data.add_key(key, save_pkl=bool(key[0]))
+  File "/home/halsaied/miniconda2/lib/python2.7/site-packages/theano/gof/cmodule.py", line 501, in add_key
+    assert key not in self.keys
+AssertionError
+
+ERROR:theano.gof.opt:Traceback (most recent call last):
+  File "/home/halsaied/miniconda2/lib/python2.7/site-packages/theano/gof/opt.py", line 2019, in process_node
+    replacements = lopt.transform(node)
+  File "/home/halsaied/miniconda2/lib/python2.7/site-packages/theano/tensor/opt.py", line 6507, in constant_folding
+    no_recycling=[], impl=impl)
+  File "/home/halsaied/miniconda2/lib/python2.7/site-packages/theano/gof/op.py", line 955, in make_thunk
+    no_recycling)
+  File "/home/halsaied/miniconda2/lib/python2.7/site-packages/theano/gof/op.py", line 858, in make_c_thunk
+    output_storage=node_output_storage)
+  File "/home/halsaied/miniconda2/lib/python2.7/site-packages/theano/gof/cc.py", line 1217, in make_thunk
+    keep_lock=keep_lock)
+  File "/home/halsaied/miniconda2/lib/python2.7/site-packages/theano/gof/cc.py", line 1157, in __compile__
+    keep_lock=keep_lock)
+  File "/home/halsaied/miniconda2/lib/python2.7/site-packages/theano/gof/cc.py", line 1620, in cthunk_factory
+    key=key, lnk=self, keep_lock=keep_lock)
+  File "/home/halsaied/miniconda2/lib/python2.7/site-packages/theano/gof/cmodule.py", line 1140, in module_from_key
+    module = self._get_from_hash(module_hash, key, keep_lock=keep_lock)
+  File "/home/halsaied/miniconda2/lib/python2.7/site-packages/theano/gof/cmodule.py", line 1040, in _get_from_hash
+    key_data.add_key(key, save_pkl=bool(key[0]))
+  File "/home/halsaied/miniconda2/lib/python2.7/site-packages/theano/gof/cmodule.py", line 501, in add_key
+    assert key not in self.keys
+AssertionError
+
+	Mode: RNN
+==================================================================================================
+	Dataset: SHAREDTASK2
+==================================================================================================
+	Division: FIXEDSIZE
+==================================================================================================
+	GPU Enabled
+==================================================================================================
+# CTitles: xp, Dataset, Evaluation, favorisationCoeff, focused, importantSentences, importantTransitions, mweRepeition, overSampling, sampleWeight, average, compactVocab, dynamicVocab, keras, lemma, manual, pretrained, useB-1, useB1, bTokenNum, batchSize, denseDropout, denseUnitNum, earlyStop, focusedElements, gru, lr, posDim, posRnnUnitNum, rnnDropout, rnnSequence, s0TokenNum, s1TokenNum, shuffle, useB-1, useDense, wordDim, wordRnnUnitNum, checkPoint, dense1Activation, depParserBatchSize, depParsingLR, earlyStop, epochs, idenLR, identBatchSize, initialEpochs, jointLearningEpochs, loss, minDelta, monitor, optimizer, patience, predictVerbose, taggingBatchSize, taggingLR, validationSplit
+==================================================================================================
+xp             ,Dataset        ,Evaluation     ,favorisationCoe,focused        ,
+__________________________________________________________________________________________________
+rnn            ,sharedtask2    ,fixedSize      ,1              ,False          ,
+__________________________________________________________________________________________________
+importantSenten,importantTransi,mweRepeition   ,overSampling   ,sampleWeight   ,
+__________________________________________________________________________________________________
+True           ,False          ,35             ,True           ,False          ,
+__________________________________________________________________________________________________
+average        ,compactVocab   ,dynamicVocab   ,keras          ,lemma          ,
+__________________________________________________________________________________________________
+True           ,True           ,False          ,False          ,True           ,
+__________________________________________________________________________________________________
+manual         ,pretrained     ,useB-1         ,useB1          ,bTokenNum      ,
+__________________________________________________________________________________________________
+True           ,False          ,1              ,1              ,4              ,
+__________________________________________________________________________________________________
+batchSize      ,denseDropout   ,denseUnitNum   ,earlyStop      ,focusedElements,
+__________________________________________________________________________________________________
+16             ,0.1            ,13             ,True           ,7              ,
+__________________________________________________________________________________________________
+gru            ,lr             ,posDim         ,posRnnUnitNum  ,rnnDropout     ,
+__________________________________________________________________________________________________
+True           ,0.122          ,51             ,142            ,0.2            ,
+__________________________________________________________________________________________________
+rnnSequence    ,s0TokenNum     ,s1TokenNum     ,shuffle        ,useB-1         ,
+__________________________________________________________________________________________________
+False          ,4              ,2              ,False          ,0              ,
+__________________________________________________________________________________________________
+useDense       ,wordDim        ,wordRnnUnitNum ,checkPoint     ,dense1Activatio,
+__________________________________________________________________________________________________
+True           ,450            ,91             ,False          ,relu           ,
+__________________________________________________________________________________________________
+depParserBatchS,depParsingLR   ,earlyStop      ,epochs         ,idenLR         ,
+__________________________________________________________________________________________________
+32             ,0.02           ,True           ,15             ,0.02           ,
+__________________________________________________________________________________________________
+identBatchSize ,initialEpochs  ,jointLearningEp,loss           ,minDelta       ,
+__________________________________________________________________________________________________
+32             ,1              ,50             ,categorical_crossentropy,0.025          ,
+__________________________________________________________________________________________________
+monitor        ,optimizer      ,patience       ,predictVerbose ,taggingBatchSiz,
+__________________________________________________________________________________________________
+val_loss       ,adagrad        ,4              ,False          ,32             ,
+__________________________________________________________________________________________________
+taggingLR      ,validationSplit,
+__________________________________________________________________________________________________
+0.02           ,0.2            ,
+__________________________________________________________________________________________________
+# Configs: rnn, sharedtask2, fixedSize, 1, False, True, False, 35, True, False, True, True, False, False, True, True, False, 1, 1, 4, 16, 0.1, 13, True, 7, True, 0.122, 51, 142, 0.2, False, 4, 2, False, 0, True, 450, 91, False, relu, 32, 0.02, True, 15, 0.02, 32, 1, 50, categorical_crossentropy, 0.025, val_loss, adagrad, 4, False, 32, 0.02, 0.2
+==================================================================================================
+# Seed: 0
+==================================================================================================
+XP Starts: 2/8 (17h:17)
+==================================================================================================
+
+==================================================================================================
+	BG Train (3124)
+==================================================================================================
+	Important sentence: 3124
+	Token occurrences: 89121
+	MWE number: 1372
+	MWE occurrences: 3583
+	Continuous occurrences: 81.0 %
+	Frequent MWE occurences: 49.0 %
+	MWE length: 2.12
+	Recognizable MWEs: 100.0 %
+	MWT occurrences: 8
+
+==================================================================================================
+	 Test (1954)
+==================================================================================================
+	Important sentence: 574
+	Token occurrences: 42020
+	MWE number: 451
+	MWE occurrences: 670
+	Continuous occurrences: 75.0 %
+	MWE length: 2.14
+	Seen occurrences : 57% 
+	Recognizable MWEs: 100.0 %
+	MWT occurrences: 1
+
+==================================================================================================
+Traceback (most recent call last):
+  File "src/xpNonCompo.py", line 279, in <module>
+    # rsg.runRSGSpontaneously(pilotLangs, Dataset.sharedtask2, XpMode.rmlp, Evaluation.fixedSize, xpNumByThread=200)
+  File "/home/halsaied/NNIdenSys/src/rsg.py", line 27, in runRSGSpontaneously
+    complentary=complentary, outputCupt=False)
+  File "/home/halsaied/NNIdenSys/src/xpTools.py", line 27, in xp
+    runXp(lang, mlpInLinear, linearInMlp, complentary, s, cuptTitle=title)
+  File "/home/halsaied/NNIdenSys/src/xpTools.py", line 48, in runXp
+    corpus = identify(lang)
+  File "/home/halsaied/NNIdenSys/src/identification.py", line 29, in identify
+    network, vectorizer = parseAndTrain(corpus)
+  File "/home/halsaied/NNIdenSys/src/identification.py", line 257, in parseAndTrain
+    network = modelRMLP.Network(corpus)
+  File "/home/halsaied/NNIdenSys/src/modelRMLP.py", line 33, in __init__
+    self.model = Network.build()
+  File "/home/halsaied/NNIdenSys/src/modelRMLP.py", line 44, in build
+    tokenRnn = GRU(rnnConf['wordRnnUnitNum'], return_sequences=rnnConf['rnnSequence'])(tokenEmb)
+  File "/home/halsaied/miniconda2/lib/python2.7/site-packages/keras/layers/recurrent.py", line 500, in __call__
+    return super(RNN, self).__call__(inputs, **kwargs)
+  File "/home/halsaied/miniconda2/lib/python2.7/site-packages/keras/engine/topology.py", line 592, in __call__
+    self.build(input_shapes[0])
+  File "/home/halsaied/miniconda2/lib/python2.7/site-packages/keras/layers/recurrent.py", line 461, in build
+    self.cell.build(step_input_shape)
+  File "/home/halsaied/miniconda2/lib/python2.7/site-packages/keras/layers/recurrent.py", line 1224, in build
+    constraint=self.kernel_constraint)
+  File "/home/halsaied/miniconda2/lib/python2.7/site-packages/keras/legacy/interfaces.py", line 91, in wrapper
+    return func(*args, **kwargs)
+  File "/home/halsaied/miniconda2/lib/python2.7/site-packages/keras/engine/topology.py", line 416, in add_weight
+    constraint=constraint)
+  File "/home/halsaied/miniconda2/lib/python2.7/site-packages/keras/backend/theano_backend.py", line 150, in variable
+    value = value.eval()
+  File "/home/halsaied/miniconda2/lib/python2.7/site-packages/theano/gof/graph.py", line 522, in eval
+    self._fn_cache[inputs] = theano.function(inputs, self)
+  File "/home/halsaied/miniconda2/lib/python2.7/site-packages/theano/compile/function.py", line 317, in function
+    output_keys=output_keys)
+  File "/home/halsaied/miniconda2/lib/python2.7/site-packages/theano/compile/pfunc.py", line 486, in pfunc
+    output_keys=output_keys)
+  File "/home/halsaied/miniconda2/lib/python2.7/site-packages/theano/compile/function_module.py", line 1839, in orig_function
+    name=name)
+  File "/home/halsaied/miniconda2/lib/python2.7/site-packages/theano/compile/function_module.py", line 1519, in __init__
+    optimizer_profile = optimizer(fgraph)
+  File "/home/halsaied/miniconda2/lib/python2.7/site-packages/theano/gof/opt.py", line 99, in __call__
+    return self.optimize(fgraph)
+  File "/home/halsaied/miniconda2/lib/python2.7/site-packages/theano/gof/opt.py", line 88, in optimize
+    ret = self.apply(fgraph, *args, **kwargs)
+  File "/home/halsaied/miniconda2/lib/python2.7/site-packages/theano/gof/opt.py", line 242, in apply
+    sub_prof = optimizer.optimize(fgraph)
+  File "/home/halsaied/miniconda2/lib/python2.7/site-packages/theano/gof/opt.py", line 88, in optimize
+    ret = self.apply(fgraph, *args, **kwargs)
+  File "/home/halsaied/miniconda2/lib/python2.7/site-packages/theano/gof/opt.py", line 2525, in apply
+    sub_prof = gopt.apply(fgraph)
+  File "/home/halsaied/miniconda2/lib/python2.7/site-packages/theano/gof/opt.py", line 2128, in apply
+    nb += self.process_node(fgraph, node)
+  File "/home/halsaied/miniconda2/lib/python2.7/site-packages/theano/gof/opt.py", line 2024, in process_node
+    lopt, node)
+  File "/home/halsaied/miniconda2/lib/python2.7/site-packages/theano/gof/opt.py", line 1918, in warn_inplace
+    return NavigatorOptimizer.warn(exc, nav, repl_pairs, local_opt, node)
+  File "/home/halsaied/miniconda2/lib/python2.7/site-packages/theano/gof/opt.py", line 1904, in warn
+    raise exc
+AssertionError
+WARNING (theano.gof.cmodule): A module that was loaded by this ModuleCache can no longer be read from file /home/halsaied/.theano/compiledir_Linux-4.9--amd64-x86_64-with-debian-9.9--2.7.14-64/tmpxEgMhr/367f127a65c0f4aaa34389bc7b82c4fa5c2ecceb949e57e09ec98fcbc9408937.so... this could lead to problems.
+WARNING:theano.gof.cmodule:A module that was loaded by this ModuleCache can no longer be read from file /home/halsaied/.theano/compiledir_Linux-4.9--amd64-x86_64-with-debian-9.9--2.7.14-64/tmpxEgMhr/367f127a65c0f4aaa34389bc7b82c4fa5c2ecceb949e57e09ec98fcbc9408937.so... this could lead to problems.
+WARNING (theano.gof.cmodule): Removing key file /home/halsaied/.theano/compiledir_Linux-4.9--amd64-x86_64-with-debian-9.9--2.7.14-64/tmpxEgMhr/key.pkl because the corresponding module is gone from the file system.
+WARNING:theano.gof.cmodule:Removing key file /home/halsaied/.theano/compiledir_Linux-4.9--amd64-x86_64-with-debian-9.9--2.7.14-64/tmpxEgMhr/key.pkl because the corresponding module is gone from the file system.

@@ -6,7 +6,7 @@ from numpy import zeros
 from config import configuration
 
 
-def getEmbMatrix(lang, vocab, dimension=configuration['mlp']['tokenEmb'],inverseVocab=False):
+def getEmbMatrix(lang, vocab, dimension=300,inverseVocab=False):
     """
     create a pretrained embedding matrix by loading the pretrained embeddings of simple words
     of the vocabulary that exist in FastText, initializing random embeddings for new words,
@@ -35,7 +35,7 @@ def getEmbMatrix(lang, vocab, dimension=configuration['mlp']['tokenEmb'],inverse
         newWord = False
         if '_' in vocab[i]:
             words= vocab[i].split('_')
-            avVec =  np.zeros((1, configuration['mlp']['tokenEmb']))
+            avVec =  np.zeros((1, 300))
             for w in words:
                 if w in wordEmbDic:
                     avVec += np.asarray(wordEmbDic[w], dtype=float)

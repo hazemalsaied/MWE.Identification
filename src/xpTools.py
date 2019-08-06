@@ -4,7 +4,6 @@ import datetime
 from enum import Enum
 from theano import function, config, shared, tensor
 
-import reports
 from corpus import *
 from identification import identify, identifyWithMlpInLinear, identifyWithLinearInMlp, identifyWithBoth
 
@@ -41,7 +40,7 @@ def runXp(lang, mlpInLinear, linearInMlp, complentary, seed, cuptTitle=''):
         corpus.createMWEFiles(seed, title='complementary'+cuptTitle)
     elif configuration['evaluation']['cv']:
         for j in range(configuration['others']['cvFolds']):
-            sys.stdout.write(reports.tabs + 'Iteration {0}'.format(j))
+            sys.stdout.write('\t' + 'Iteration {0}'.format(j))
             corpus = identify(lang, foldId=j)
             corpus.createMWEFiles(seed, title='fold.{0}'.format(j)+cuptTitle)
     else:
@@ -49,7 +48,7 @@ def runXp(lang, mlpInLinear, linearInMlp, complentary, seed, cuptTitle=''):
         if corpus:
             corpus.createMWEFiles(seed, title=cuptTitle)
     now = datetime.datetime.now()
-    sys.stdout.write(reports.tabs + 'XP Ends: %d/%d (%d h:%d)' %
+    sys.stdout.write('\t' + 'XP Ends: %d/%d (%d h:%d)' %
                      (now.day, now.month, now.hour, now.minute) + doubleSep)
     sys.stdout.flush()
 
@@ -113,18 +112,24 @@ def getParameters(xpMode, printTilte=True):
         for k in sorted(configuration['multitasking'].keys()):
             titles.append(k)
             values.append(configuration['multitasking'][k])
-    elif xpMode == XpMode.rnn:
+        for k in sorted(configuration['nn'].keys()):
+            titles.append(k)
+            values.append(configuration['nn'][k])
+    elif xpMode == XpMode.rmlp:
         for k in sorted(configuration['rnn'].keys()):
             titles.append(k)
             values.append(configuration['rnn'][k])
+        for k in sorted(configuration['nn'].keys()):
+            titles.append(k)
+            values.append(configuration['nn'][k])
     elif xpMode == XpMode.linear:
         for k in sorted(configuration['features'].keys()):
             titles.append(k)
             values.append(configuration['features'][k])
-    elif xpMode == XpMode.compoRnn:
-        for k in sorted(configuration['compoRnn'].keys()):
+    elif xpMode == XpMode.rmlpTree:
+        for k in sorted(configuration['rmlpTree'].keys()):
             titles.append(k)
-            values.append(configuration['compoRnn'][k])
+            values.append(configuration['rmlpTree'][k])
     elif xpMode == XpMode.mlpWide:
         for k in sorted(configuration['mlp'].keys()):
             titles.append(k)
@@ -178,10 +183,10 @@ class XpMode(Enum):
     compo = 1
     pytorch = 2
     kiperwasser = 3
-    rnn = 4
+    rmlp = 4
     rnnNonCompo = 5
     kiperComp = 6
-    compoRnn = 7
+    rmlpTree = 7
     multitasking = 8
     mlpWide = 9
     mlpPhrase = 10
@@ -210,11 +215,11 @@ def setXPMode(v):
     configuration['xp'].update({
         'linear': True if v == XpMode.linear else False,
         'compo': True if v == XpMode.compo else False,
-        'compoRnn': True if v == XpMode.compoRnn else False,
+        'rmlpTree': True if v == XpMode.rmlpTree else False,
         'multitasking': True if v == XpMode.multitasking else False,
         'kiperwasser': True if v == XpMode.kiperwasser else False,
         'kiperComp': True if v == XpMode.kiperComp else False,
-        'rnn': True if v == XpMode.rnn else False,
+        'rnn': True if v == XpMode.rmlp else False,
         'rnnNonCompo': True if v == XpMode.rnnNonCompo else False,
         'mlpWide': True if v == XpMode.mlpWide else False,
         'mlpPhrase': True if v == XpMode.mlpPhrase else False,

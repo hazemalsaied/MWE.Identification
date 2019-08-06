@@ -1,0 +1,115 @@
+Can not use cuDNN on context None: cannot compile with cuDNN. We got this error:
+/tmp/try_flags_2BdhQP.c:4:10: fatal error: cudnn.h: No such file or directory
+ #include <cudnn.h>
+          ^~~~~~~~~
+compilation terminated.
+
+Preallocating 10869/11441 Mb (0.950000) on cuda
+Mapped name None to device cuda: Tesla K40m (0000:03:00.0)
+/home/halsaied/miniconda2/lib/python2.7/site-packages/h5py/__init__.py:36: FutureWarning: Conversion of the second argument of issubdtype from `float` to `np.floating` is deprecated. In future, it will be treated as `np.float64 == np.dtype(float).type`.
+  from ._conv import register_converters as _register_converters
+Using Theano backend.
+ERROR:root:ATTENTION: Oracle problems with 2 sentences!
+	Mode: CHENMANNING
+==================================================================================================
+	Dataset: SHAREDTASK2
+==================================================================================================
+	Division: TRAINVSDEV
+==================================================================================================
+	GPU Enabled
+==================================================================================================
+# CTitles: xp, Dataset, Evaluation, favorisationCoeff, focused, importantSentences, importantTransitions, mweRepeition, overSampling, sampleWeight, average, compactVocab, dynamicVocab, keras, lemma, manual, pretrained, useB-1, useB1, batchSize, cubeActivation, dense1Activation, dense1Dropout, dense1UnitNumber, earlyStopping, epochs, l2, lr, minDelta, monitor, patience, posEmb, pretrained, regularizer, synLabelEmb, tokenEmb, unlabeled, validationSplit
+==================================================================================================
+xp             ,Dataset        ,Evaluation     ,favorisationCoe,focused        ,
+__________________________________________________________________________________________________
+chenManning    ,sharedtask2    ,trainVsDev     ,1              ,False          ,
+__________________________________________________________________________________________________
+importantSenten,importantTransi,mweRepeition   ,overSampling   ,sampleWeight   ,
+__________________________________________________________________________________________________
+False          ,False          ,35             ,False          ,False          ,
+__________________________________________________________________________________________________
+average        ,compactVocab   ,dynamicVocab   ,keras          ,lemma          ,
+__________________________________________________________________________________________________
+True           ,False          ,False          ,False          ,True           ,
+__________________________________________________________________________________________________
+manual         ,pretrained     ,useB-1         ,useB1          ,batchSize      ,
+__________________________________________________________________________________________________
+True           ,False          ,1              ,1              ,32             ,
+__________________________________________________________________________________________________
+cubeActivation ,dense1Activatio,dense1Dropout  ,dense1UnitNumbe,earlyStopping  ,
+__________________________________________________________________________________________________
+True           ,relu           ,0              ,167            ,True           ,
+__________________________________________________________________________________________________
+epochs         ,l2             ,lr             ,minDelta       ,monitor        ,
+__________________________________________________________________________________________________
+20             ,0.001          ,0.187          ,0.018          ,val_acc        ,
+__________________________________________________________________________________________________
+patience       ,posEmb         ,pretrained     ,regularizer    ,synLabelEmb    ,
+__________________________________________________________________________________________________
+4              ,11             ,False          ,False          ,6              ,
+__________________________________________________________________________________________________
+tokenEmb       ,unlabeled      ,validationSplit,
+__________________________________________________________________________________________________
+149            ,False          ,0.2            ,
+__________________________________________________________________________________________________
+# Configs: chenManning, sharedtask2, trainVsDev, 1, False, False, False, 35, False, False, True, False, False, False, True, True, False, 1, 1, 32, True, relu, 0, 167, True, 20, 0.001, 0.187, 0.018, val_acc, 4, 11, False, False, 6, 149, False, 0.2
+==================================================================================================
+# Seed: 0
+==================================================================================================
+XP Starts: 11/7 (16h:19)
+==================================================================================================
+
+==================================================================================================
+	FR Train (17225)
+==================================================================================================
+	Important sentence: 3889
+	Token occurrences: 420762
+	MWE number: 1606
+	MWE occurrences: 4521
+	Continuous occurrences: 59.0 %
+	Frequent MWE occurences: 51.0 %
+	MWE length: 2.29
+	Recognizable MWEs: 100.0 %
+	MWT occurrences: 3
+	Embedded occurrences: 33
+
+==================================================================================================
+	 Test (2236)
+==================================================================================================
+	Important sentence: 537
+	Token occurrences: 54685
+	MWE number: 393
+	MWE occurrences: 629
+	Continuous occurrences: 57.0 %
+	MWE length: 2.26
+	Seen occurrences : 75% 
+	Recognizable MWEs: 99.0 %
+	MWT occurrences: 2
+	Embedded occurrences: 7
+	Interleaving occurrences: 5
+
+==================================================================================================
+ Number of training examples : 17225
+ Number of projective examples : 15875
+Traceback (most recent call last):
+  File "src/xpNonCompo.py", line 223, in <module>
+    rsg.runRSGSpontaneously(['FR'], Dataset.sharedtask2, XpMode.chenManning, Evaluation.trainVsDev, xpNumByThread=100)
+  File "/home/halsaied/NNIdenSys/src/rsg.py", line 27, in runRSGSpontaneously
+    complentary=complentary, outputCupt=False)
+  File "/home/halsaied/NNIdenSys/src/xpTools.py", line 27, in xp
+    runXp(lang, mlpInLinear, linearInMlp, complentary, s, cuptTitle=title)
+  File "/home/halsaied/NNIdenSys/src/xpTools.py", line 48, in runXp
+    corpus = identify(lang)
+  File "/home/halsaied/NNIdenSys/src/identification.py", line 29, in identify
+    network, vectorizer = parseAndTrain(corpus)
+  File "/home/halsaied/NNIdenSys/src/identification.py", line 272, in parseAndTrain
+    network = modelChenManning.Network(corpus)
+  File "/home/halsaied/NNIdenSys/src/modelChenManning.py", line 30, in __init__
+    self.model = Network.build(self.vocabulary, self.depLabelDic, corpus.langName)
+  File "/home/halsaied/NNIdenSys/src/modelChenManning.py", line 109, in build
+    weights=Network.getWeightMatrix(langName, vocabulary.tokenIndices))(inputToken)
+  File "/home/halsaied/NNIdenSys/src/modelChenManning.py", line 171, in getWeightMatrix
+    embeddingMatrix = Network.getEmbMatrix(lang, tokenIndices)
+  File "/home/halsaied/NNIdenSys/src/modelChenManning.py", line 193, in getEmbMatrix
+    embeddingMatrix[i] = np.asarray(wordEmbDic[indexWordVocab[i]], dtype=float)
+ValueError: could not broadcast input array from shape (300) into shape (140)

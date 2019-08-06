@@ -1,0 +1,150 @@
+Can not use cuDNN on context None: cannot compile with cuDNN. We got this error:
+/tmp/try_flags_5DCUdA.c:4:10: fatal error: cudnn.h: No such file or directory
+ #include <cudnn.h>
+          ^~~~~~~~~
+compilation terminated.
+
+Preallocating 3841/4043 Mb (0.950000) on cuda
+Mapped name None to device cuda: GeForce GTX 980 (0000:03:00.0)
+/home/halsaied/miniconda2/lib/python2.7/site-packages/h5py/__init__.py:36: FutureWarning: Conversion of the second argument of issubdtype from `float` to `np.floating` is deprecated. In future, it will be treated as `np.float64 == np.dtype(float).type`.
+  from ._conv import register_converters as _register_converters
+Using Theano backend.
+ERROR:root:ATTENTION: Oracle problems with 2 sentences!
+	Mode: CHENMANNING
+==================================================================================================
+	Dataset: SHAREDTASK2
+==================================================================================================
+	Division: TRAINVSDEV
+==================================================================================================
+	GPU Enabled
+==================================================================================================
+# CTitles: xp, Dataset, Evaluation, favorisationCoeff, focused, importantSentences, importantTransitions, mweRepeition, overSampling, sampleWeight, average, compactVocab, dynamicVocab, keras, lemma, manual, pretrained, useB-1, useB1, batchSize, cubeActivation, dense1Activation, dense1Dropout, dense1UnitNumber, earlyStopping, epochs, l2, lr, minDelta, monitor, patience, posEmb, pretrained, regularizer, synLabelEmb, tokenEmb, unlabeled, validationSplit
+==================================================================================================
+xp             ,Dataset        ,Evaluation     ,favorisationCoe,focused        ,
+__________________________________________________________________________________________________
+chenManning    ,sharedtask2    ,trainVsDev     ,1              ,False          ,
+__________________________________________________________________________________________________
+importantSenten,importantTransi,mweRepeition   ,overSampling   ,sampleWeight   ,
+__________________________________________________________________________________________________
+False          ,False          ,35             ,False          ,False          ,
+__________________________________________________________________________________________________
+average        ,compactVocab   ,dynamicVocab   ,keras          ,lemma          ,
+__________________________________________________________________________________________________
+True           ,False          ,False          ,False          ,True           ,
+__________________________________________________________________________________________________
+manual         ,pretrained     ,useB-1         ,useB1          ,batchSize      ,
+__________________________________________________________________________________________________
+True           ,False          ,1              ,1              ,128            ,
+__________________________________________________________________________________________________
+cubeActivation ,dense1Activatio,dense1Dropout  ,dense1UnitNumbe,earlyStopping  ,
+__________________________________________________________________________________________________
+False          ,relu           ,0              ,45             ,True           ,
+__________________________________________________________________________________________________
+epochs         ,l2             ,lr             ,minDelta       ,monitor        ,
+__________________________________________________________________________________________________
+20             ,0.001          ,0.023          ,0.025          ,val_loss       ,
+__________________________________________________________________________________________________
+patience       ,posEmb         ,pretrained     ,regularizer    ,synLabelEmb    ,
+__________________________________________________________________________________________________
+4              ,25             ,False          ,True           ,22             ,
+__________________________________________________________________________________________________
+tokenEmb       ,unlabeled      ,validationSplit,
+__________________________________________________________________________________________________
+219            ,False          ,0.2            ,
+__________________________________________________________________________________________________
+# Configs: chenManning, sharedtask2, trainVsDev, 1, False, False, False, 35, False, False, True, False, False, False, True, True, False, 1, 1, 128, False, relu, 0, 45, True, 20, 0.001, 0.023, 0.025, val_loss, 4, 25, False, True, 22, 219, False, 0.2
+==================================================================================================
+# Seed: 0
+==================================================================================================
+XP Starts: 11/7 (16h:18)
+==================================================================================================
+
+==================================================================================================
+	FR Train (17225)
+==================================================================================================
+	Important sentence: 3889
+	Token occurrences: 420762
+	MWE number: 1606
+	MWE occurrences: 4521
+	Continuous occurrences: 59.0 %
+	Frequent MWE occurences: 51.0 %
+	MWE length: 2.29
+	Recognizable MWEs: 100.0 %
+	MWT occurrences: 3
+	Embedded occurrences: 33
+
+==================================================================================================
+	 Test (2236)
+==================================================================================================
+	Important sentence: 537
+	Token occurrences: 54685
+	MWE number: 393
+	MWE occurrences: 629
+	Continuous occurrences: 57.0 %
+	MWE length: 2.26
+	Seen occurrences : 75% 
+	Recognizable MWEs: 99.0 %
+	MWT occurrences: 2
+	Embedded occurrences: 7
+	Interleaving occurrences: 5
+
+==================================================================================================
+ Number of training examples : 17225
+ Number of projective examples : 15875
+
+__________________________________________________________________________________________________
+	Optimizer : Adagrad,  learning rate = 0.049
+__________________________________________________________________________________________________
+__________________________________________________________________________________________________
+Layer (type)                    Output Shape         Param #     Connected to                     
+==================================================================================================
+input_1 (InputLayer)            (None, 18)           0                                            
+__________________________________________________________________________________________________
+input_2 (InputLayer)            (None, 18)           0                                            
+__________________________________________________________________________________________________
+input_3 (InputLayer)            (None, 12)           0                                            
+__________________________________________________________________________________________________
+embedding_1 (Embedding)         (None, 18, 279)      9047691     input_1[0][0]                    
+__________________________________________________________________________________________________
+embedding_2 (Embedding)         (None, 18, 28)       560         input_2[0][0]                    
+__________________________________________________________________________________________________
+embedding_3 (Embedding)         (None, 12, 12)       612         input_3[0][0]                    
+__________________________________________________________________________________________________
+flatten_1 (Flatten)             (None, 5022)         0           embedding_1[0][0]                
+__________________________________________________________________________________________________
+flatten_2 (Flatten)             (None, 504)          0           embedding_2[0][0]                
+__________________________________________________________________________________________________
+flatten_3 (Flatten)             (None, 144)          0           embedding_3[0][0]                
+__________________________________________________________________________________________________
+concatenate_1 (Concatenate)     (None, 5670)         0           flatten_1[0][0]                  
+                                                                 flatten_2[0][0]                  
+                                                                 flatten_3[0][0]                  
+__________________________________________________________________________________________________
+dense_1 (Dense)                 (None, 73)           413983      concatenate_1[0][0]              
+__________________________________________________________________________________________________
+activation_2 (Activation)       (None, 73)           0           dense_1[0][0]                    
+__________________________________________________________________________________________________
+dropout_1 (Dropout)             (None, 73)           0           activation_2[0][0]               
+__________________________________________________________________________________________________
+dense_2 (Dense)                 (None, 86)           6364        dropout_1[0][0]                  
+==================================================================================================
+Total params: 9,469,210
+Trainable params: 9,469,210
+Non-trainable params: 0
+__________________________________________________________________________________________________
+None
+==================================================================================================
+Train on 599334 samples, validate on 149834 samples
+Epoch 1/20
+ - 17s - loss: 0.3678 - acc: 0.8864 - val_loss: 0.3082 - val_acc: 0.9009
+Epoch 2/20
+ - 17s - loss: 0.1942 - acc: 0.9400 - val_loss: 0.3003 - val_acc: 0.9026
+Epoch 3/20
+ - 17s - loss: 0.1278 - acc: 0.9616 - val_loss: 0.3242 - val_acc: 0.9009
+Epoch 4/20
+ - 17s - loss: 0.0905 - acc: 0.9746 - val_loss: 0.3497 - val_acc: 0.8987
+Epoch 5/20
+ - 17s - loss: 0.0672 - acc: 0.9822 - val_loss: 0.3754 - val_acc: 0.8984
+Epoch 6/20
+ - 17s - loss: 0.0520 - acc: 0.9872 - val_loss: 0.4041 - val_acc: 0.8973
+## OAR [2019-07-12 14:37:23] Job 1999224 KILLED ##

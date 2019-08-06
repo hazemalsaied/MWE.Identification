@@ -125,7 +125,7 @@ def nextTrans(t, sent, model, vectorizer, sentEmbs=None, tokens=None, linearMode
         else:
             probVector = model.decision_function(vectorizer.transform(featDic))[0]
             predictedTrans = sorted(range(len(probVector)), key=lambda k: probVector[k], reverse=True)
-    elif configuration['xp']['compoRnn']:
+    elif configuration['xp']['rmlpTree']:
         probVector = model.predict(t)
         predictedTrans = sorted(range(len(probVector)), key=lambda k: probVector[k], reverse=True)
     elif configuration['xp']['multitasking']:

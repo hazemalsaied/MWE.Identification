@@ -50,25 +50,25 @@ def runRSG(langs, dataset, xpMode, division, fileName,
            complentary=complentary)
 
 def generateConf(xpMode):
-    if xpMode == XpMode.rnn:
-        Generator.generateRNNConf()
+    if xpMode == XpMode.rmlp:
+        Generator.rmlp()
     elif xpMode == XpMode.linear:
-        Generator.generateLinearConf()
+        Generator.svm()
     elif xpMode == XpMode.kiperwasser:
-        Generator.generateKiperwasserConf()
-    elif xpMode == XpMode.compoRnn:
-        Generator.generateCompoRnnConf()
+        Generator.kiper()
+    elif xpMode == XpMode.rmlpTree:
+        Generator.rmlpTree()
     elif xpMode == XpMode.multitasking:
-        Generator.generateMultTaskingConf()
+        Generator.mt()
     elif xpMode == XpMode.mlpPhrase:
-        Generator.generateMlpPhrase()
+        Generator.mlpPhrase()
     elif xpMode == XpMode.chenManning:
-        Generator.generateChenManning()
+        Generator.chenManning()
     else:
         if configuration['tmp']['tunePretrained']:
-            Generator.generateMLPConfForPretrained()
+            Generator.mlpOpen()
         else:
-            Generator.generateMLPConf()
+            Generator.mlp()
 
 
 def createRSG(fileName, xpMode, xpNum=1000):

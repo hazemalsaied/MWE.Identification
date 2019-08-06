@@ -8,7 +8,7 @@ from keras.models import Model
 from keras.utils import to_categorical
 
 from corpus import getTokens
-from modelNonCompo import attachTokens
+from modelMLP import attachTokens, cleanTokenVocab
 from reports import seperator, doubleSep, tabs
 from wordEmbLoader import unk, number, empty
 from config import configuration
@@ -18,11 +18,12 @@ enableCategorization = False
 class Network:
     def __init__(self, corpus):
         global tokenVocab, posVocab
-        tokenVocab, posVocab = getVocab(corpus)
+        tokenVocab, posVocab = getVocab(corpus, compact=configuration['embedding']['compactVocab'])
         printVocabReport()
         inputLayers, concLayers = [], []
-        inputToken = Input((3,))
-        inputPos = Input((3,))
+        inputTokenNumber = 3 + configuration['embedding']['useB1'] + configuration['embedding']['useB-1']
+        inputToken = Input((inputTokenNumber,))
+        inputPos = Input((inputTokenNumber,))
         inputLayers.append(inputToken)
         inputLayers.append(inputPos)
         tokenEmb, posEmb = 48, 12
@@ -66,20 +67,20 @@ def train(cls, corpus):
     optimizer = keras.optimizers.Adagrad(lr=configuration['rnn']['lr'], epsilon=None, decay=0.0)
     cls.model.compile(loss='categorical_crossentropy', optimizer=optimizer, metrics=['accuracy'])
     cls.model.fit(data, labels,
-                  validation_split=.1,
+                  validation_split=.2,
                   epochs=configuration['nn']['epochs'],
                   batch_size=configuration['rnn']['batchSize'],
                   verbose=2)
 
 
-def getVocab(corpus, compact=True):
+def getVocab(corpus, compact=False):
     tokenCounter, posCounter = Counter(), Counter()
     for s in corpus.trainingSents:
         t = s.initialTransition
         while t:
             if t.configuration.stack:
                 tokens = getTokens(t.configuration.stack[-1])
-                tokenTxt, posTxt = attachTokens(tokens)
+                tokenTxt, posTxt = attachTokens(tokens, dynamicVocab=configuration['embedding']['dynamicVocab'])
                 tokenCounter.update({tokenTxt: 1})
                 posCounter.update({posTxt: 1})
             t = t.next
@@ -94,7 +95,8 @@ def getVocab(corpus, compact=True):
     tokenCounter.update({unk: 1, number: 1, empty: 1})
     posCounter.update({unk: 1, empty: 1})
 
-    return {w: i for i, w in enumerate(tokenCounter.keys())}, {w: i for i, w in enumerate(posCounter.keys())}
+    return {w: i for i, w in enumerate(tokenCounter.keys())}, \
+           {w: i for i, w in enumerate(posCounter.keys())}
 
 
 def getIdxs(conf):

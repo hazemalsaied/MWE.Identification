@@ -2,16 +2,16 @@ import datetime
 import logging
 from nltk.parse import DependencyEvaluator
 import config
-#import modelCompactKiper
-import modelCompoRnn
-#import modelKiperwasser
+import modelCompactKiper
+import modelKiperwasser
 import modelMlpPhrase
+import modelRMLPTree
 import modelLinear
 import modelMultiTasking
-import modelNonCompo
+import modelMLP
 import modelMlpWide
 import modelChenManning
-import modelRnn
+import modelRMLP
 import modelRnnNonCompo
 import oracle
 import reports
@@ -45,6 +45,19 @@ def identify(lang, foldId=-1):
             s.initialTransition = None
             sys.stdout.write(str(s))
     return corpus
+
+
+def getST1TrainFiles():
+    path = '/Users/halsaied/PycharmProjects/MWE.Identification/Baseline/Results/CV/TrainDataSet'
+    configuration['tmp']['shuffleOrRedistribute'] = False
+    for l in xpTools.allSharedtask1Lang:
+        corpus = Corpus(l)
+        pointer = len(corpus.trainDataSet) / 10
+        for i in range(5):
+            corpus.trainingSents = corpus.trainDataSet[0:i* pointer] + corpus.trainDataSet[(i+1)* pointer:]
+            conllU = corpus.toConllU(useCupt=True, train=True, gold=True)
+            with open(os.path.join(path, l, l + str(i+1) + '.train.txt'), 'w') as ff:
+                ff.write(conllU)
 
 def getTransDistribution(corpus):
     shNum, rdNum, mgNum, mkNum = 0, 0, 0, 0
@@ -98,7 +111,7 @@ def identifyWithBoth(lang):
     linearModel, linearVectorizer = parseAndTrain(corpus)
     getExcutionTime('Training time', startTime)
     setXPMode(None)
-    config.setMLPConf()
+    config.BestConfig.mlp()
     startTime = datetime.datetime.now()
     mlpModel, mlpVectorizer = parseAndTrain(corpus)
     getExcutionTime('Training time', startTime)
@@ -145,7 +158,7 @@ def identifyWithLinearInMlp(lang, tuning=False, seed=0):
     corpus = Corpus(lang)
     oracle.parse(corpus)
     startTime = datetime.datetime.now()
-    model = modelNonCompo.Network(corpus, linearInMLP=True)
+    model = modelMLP.Network(corpus, linearInMLP=True)
     model.train(corpus, linearModels=linearModels, linearNormalizers=linearVecs)
     getExcutionTime('Training time', startTime)
     startTime = datetime.datetime.now()
@@ -159,28 +172,28 @@ def identifyWithLinearInMlp(lang, tuning=False, seed=0):
 def modifyConf(linear=False, tuning=False):
     if linear:
         if tuning:
-            config.generateLinearConf()
+            config.Generator.svm()
         else:
             if configuration['dataset']['ftb']:
-                config.setSvmFtbConf()
+                config.LinearConf.setSvmFtbConf()
             elif configuration['dataset']['dimsum']:
-                config.setSvmDiMSUMConf()
+                config.LinearConf.setSvmDiMSUMConf()
             else:
-                config.setSVMConf()
+                config.LinearConf.setSVMConf()
         configuration['sampling'].update({
             'overSampling': False,
             'importantSentences': False,
         })
     else:
         if tuning:
-            config.generateMLPConf()
+            config.Generator.mlp()
         else:
             if configuration['dataset']['ftb']:
-                config.setMlpFtbConf()
+                config.BestConfig.mlpFtb()
             elif configuration['dataset']['dimsum']:
-                config.setMlpDiMSUMConf()
+                config.BestConfig.mlpDimsum()
             else:
-                config.setMlpTendanceConf()
+                config.TrendConfig.mlp()
                 configuration['embedding']['pretrained'] = False
 
 
@@ -239,7 +252,7 @@ def jackknifingAFold(lang, foldIdx=-1, linear=True, all=False):
     if linear:
         network, vectorizer = modelLinear.train(corpus)
     else:
-        network = modelNonCompo.Network(corpus)
+        network = modelRMLP.Network(corpus)
         network.train(corpus)
     # parse(corpus.testingSents, network, vectorizer)
     # evaluate(corpus.testingSents)
@@ -254,8 +267,8 @@ def parseAndTrain(corpus):
     if configuration['xp']['linear']:
         return modelLinear.train(corpus)
     if configuration['xp']['rnn']:
-        network = modelRnn.Network(corpus)
-        modelRnn.train(network, corpus)
+        network = modelRMLP.Network(corpus)
+        network.train(corpus)
         return network, None
     if configuration['xp']['mlpWide']:
         network = modelMlpWide.Network(corpus)
@@ -265,22 +278,21 @@ def parseAndTrain(corpus):
         network = modelMlpPhrase.train(corpus)
         return network, None
     if configuration['xp']['chenManning']:
-        # modelChenManning.DataFactory.trainNLTKParser(corpus)
-        # configuration['tmp']['dontParse'] = True
-        # return None, None
-        # modelChenManning.DataFactory.getProjectivityStats(corpus)
-        network = modelChenManning.Network(corpus)
-        network.train()
-        # network.test(corpus)
-        result = network.parse(corpus)
-        configuration['tmp']['dontParse'] = True
-
-        de = DependencyEvaluator(result, corpus.testDepGraphs)
-        print 'LAS = {0}\nUAS = {1}'.format(round(de.eval()[0] * 100, 1), round(de.eval()[1] * 100, 1))
-        return network, None
-    if configuration['xp']['compoRnn']:
-        network = modelCompoRnn.Network(corpus)
-        modelCompoRnn.train(network, corpus)
+        if configuration['tmp']['nltk']:
+            modelChenManning.NLTKParser.evaluate(corpus)
+            configuration['tmp']['dontParse'] = True
+            return None, None
+        else:
+            network = modelChenManning.Network(corpus)
+            network.train()
+            result = network.parse(corpus)
+            configuration['tmp']['dontParse'] = True
+            de = DependencyEvaluator(corpus.testDepGraphs, result)
+            print 'UAS = {0}\nLAS = {1}'.format(round(de.eval()[0] * 100, 1), round(de.eval()[1] * 100, 1))
+            return network, None
+    if configuration['xp']['rmlpTree']:
+        network = modelRMLPTree.Network(corpus)
+        modelRMLPTree.train(network, corpus)
         return network, None
     if configuration['xp']['rnnNonCompo']:
         network = modelRnnNonCompo.Network(corpus)
@@ -295,7 +307,20 @@ def parseAndTrain(corpus):
 
     if configuration['xp']['multitasking']:
         network = modelMultiTasking.Network(corpus)
-        if configuration['tmp']['trainJointly']:
+        if configuration['tmp']['trainInTransfert']:
+            network.trainInTransfert(corpus)
+            configuration['tmp']['dontParse'] = True
+            return network, None
+        elif configuration['tmp']['trainJointly']:
+            network.trainAll(corpus)
+            configuration['multitasking']['testOnToken'] = True
+            network.testTagging(corpus)
+            configuration['multitasking']['testOnToken'] = False
+            network.testTagging(corpus, title='POS tagging accuracy (MWEs)')
+            configuration['multitasking']['testOnToken'] = True
+            network.evaluateDepParsing(corpus)
+            return network, None
+        elif configuration['tmp']['trainTaggerAndIdentifier']:
             network.trainTaggerAndIdentifier(corpus)
             # parse(corpus.testingSents, network, None)
             configuration['multitasking']['testOnToken'] = True
@@ -303,16 +328,16 @@ def parseAndTrain(corpus):
             configuration['multitasking']['testOnToken'] = False
             network.testTagging(corpus, title='POS tagging accuracy (MWEs)')
             configuration['multitasking']['testOnToken'] = True
+            network.evaluateDepParsing(corpus)
+            return network, None
         elif configuration['tmp']['trainIden']:
             network.trainIden(corpus)
             # parse(corpus.testingSents, network, None)
             # network.testIden(corpus)
         elif configuration['tmp']['trainDepParser']:
             network.trainDepParser()
-            result = network.parse(corpus)
+            network.evaluateDepParsing(corpus)
             configuration['tmp']['dontParse'] = True
-            de = DependencyEvaluator(result, corpus.testDepGraphs)
-            print 'LAS = {0}\nUAS = {1}'.format(round(de.eval()[0] * 100, 1), round(de.eval()[1] * 100, 1))
             return network, None
         else:
             network.trainTagging(corpus)
@@ -323,7 +348,7 @@ def parseAndTrain(corpus):
             configuration['multitasking']['testOnToken'] = True
             configuration['tmp']['dontParse'] = True
         return network, None
-    network = modelNonCompo.Network(corpus)
+    network = modelMLP.Network(corpus)
     network.train(corpus)
     return network, None
 

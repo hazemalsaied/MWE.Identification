@@ -101,7 +101,7 @@ class Corpus:
                 self.trainDataSet = readMWEFile(mweFile)
                 self.testDataSet = readMWEFile(testMweFile)
 
-        if not configuration['evaluation']['cv']:
+        if not configuration['evaluation']['cv'] and configuration['tmp']['shuffleOrRedistribute']:
             if not configuration['evaluation']['corpus'] and \
                     not configuration['dataset']['ftb'] and not \
                     configuration['dataset']['dimsum']:

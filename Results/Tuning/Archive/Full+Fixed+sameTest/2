@@ -1,39 +1,3 @@
-INFO: activate-binutils_linux-64.sh made the following environmental changes:
-+ADDR2LINE=/home/halsaied/miniconda2/bin/x86_64-conda_cos6-linux-gnu-addr2line
-+AR=/home/halsaied/miniconda2/bin/x86_64-conda_cos6-linux-gnu-ar
-+AS=/home/halsaied/miniconda2/bin/x86_64-conda_cos6-linux-gnu-as
-+CXXFILT=/home/halsaied/miniconda2/bin/x86_64-conda_cos6-linux-gnu-c++filt
-+ELFEDIT=/home/halsaied/miniconda2/bin/x86_64-conda_cos6-linux-gnu-elfedit
-+GPROF=/home/halsaied/miniconda2/bin/x86_64-conda_cos6-linux-gnu-gprof
-+HOST=x86_64-conda_cos6-linux-gnu
-+LD_GOLD=/home/halsaied/miniconda2/bin/x86_64-conda_cos6-linux-gnu-ld.gold
-+LD=/home/halsaied/miniconda2/bin/x86_64-conda_cos6-linux-gnu-ld
-+NM=/home/halsaied/miniconda2/bin/x86_64-conda_cos6-linux-gnu-nm
-+OBJCOPY=/home/halsaied/miniconda2/bin/x86_64-conda_cos6-linux-gnu-objcopy
-+OBJDUMP=/home/halsaied/miniconda2/bin/x86_64-conda_cos6-linux-gnu-objdump
-+RANLIB=/home/halsaied/miniconda2/bin/x86_64-conda_cos6-linux-gnu-ranlib
-+READELF=/home/halsaied/miniconda2/bin/x86_64-conda_cos6-linux-gnu-readelf
-+SIZE=/home/halsaied/miniconda2/bin/x86_64-conda_cos6-linux-gnu-size
-+STRINGS=/home/halsaied/miniconda2/bin/x86_64-conda_cos6-linux-gnu-strings
-+STRIP=/home/halsaied/miniconda2/bin/x86_64-conda_cos6-linux-gnu-strip
-INFO: activate-gcc_linux-64.sh made the following environmental changes:
-+CC=/home/halsaied/miniconda2/bin/x86_64-conda_cos6-linux-gnu-cc
-+CFLAGS=-march=nocona -mtune=haswell -ftree-vectorize -fPIC -fstack-protector-strong -fno-plt -O2 -pipe
-+_CONDA_PYTHON_SYSCONFIGDATA_NAME=_sysconfigdata_x86_64_conda_cos6_linux_gnu
-+CPPFLAGS=-DNDEBUG -D_FORTIFY_SOURCE=2 -O2
-+CPP=/home/halsaied/miniconda2/bin/x86_64-conda_cos6-linux-gnu-cpp
-+DEBUG_CFLAGS=-march=nocona -mtune=haswell -ftree-vectorize -fPIC -fstack-protector-all -fno-plt -Og -g -Wall -Wextra -fvar-tracking-assignments -pipe
-+DEBUG_CPPFLAGS=-D_DEBUG -D_FORTIFY_SOURCE=2 -Og
-+GCC_AR=/home/halsaied/miniconda2/bin/x86_64-conda_cos6-linux-gnu-gcc-ar
-+GCC=/home/halsaied/miniconda2/bin/x86_64-conda_cos6-linux-gnu-gcc
-+GCC_NM=/home/halsaied/miniconda2/bin/x86_64-conda_cos6-linux-gnu-gcc-nm
-+GCC_RANLIB=/home/halsaied/miniconda2/bin/x86_64-conda_cos6-linux-gnu-gcc-ranlib
-+LDFLAGS=-Wl,-O2 -Wl,--sort-common -Wl,--as-needed -Wl,-z,relro -Wl,-z,now
-INFO: activate-gxx_linux-64.sh made the following environmental changes:
-+CXXFLAGS=-fvisibility-inlines-hidden -std=c++17 -fmessage-length=0 -march=nocona -mtune=haswell -ftree-vectorize -fPIC -fstack-protector-strong -fno-plt -O2 -pipe
-+CXX=/home/halsaied/miniconda2/bin/x86_64-conda_cos6-linux-gnu-c++
-+DEBUG_CXXFLAGS=-fvisibility-inlines-hidden -std=c++17 -fmessage-length=0 -march=nocona -mtune=haswell -ftree-vectorize -fPIC -fstack-protector-all -fno-plt -Og -g -Wall -Wextra -fvar-tracking-assignments -pipe
-+GXX=/home/halsaied/miniconda2/bin/x86_64-conda_cos6-linux-gnu-g++
 Can not use cuDNN on context None: cannot compile with cuDNN. We got this error:
 /tmp/try_flags_tpuDmr.c:4:10: fatal error: cudnn.h: No such file or directory
  #include <cudnn.h>
@@ -45,34 +9,6 @@ Mapped name None to device cuda: Tesla K40m (0000:03:00.0)
 /home/halsaied/miniconda2/lib/python2.7/site-packages/h5py/__init__.py:36: FutureWarning: Conversion of the second argument of issubdtype from `float` to `np.floating` is deprecated. In future, it will be treated as `np.float64 == np.dtype(float).type`.
   from ._conv import register_converters as _register_converters
 Using Theano backend.
-INFO (theano.gof.compilelock): Waiting for existing lock by process '5656' (I am process '18205')
-INFO (theano.gof.compilelock): To manually release the lock, delete /home/halsaied/.theano/compiledir_Linux-4.9--amd64-x86_64-with-debian-9.5--2.7.14-64/lock_dir
-INFO (theano.gof.compilelock): Waiting for existing lock by process '16574' (I am process '18205')
-INFO (theano.gof.compilelock): To manually release the lock, delete /home/halsaied/.theano/compiledir_Linux-4.9--amd64-x86_64-with-debian-9.5--2.7.14-64/lock_dir
-INFO (theano.gof.compilelock): Waiting for existing lock by unknown process (I am process '18205')
-INFO (theano.gof.compilelock): To manually release the lock, delete /home/halsaied/.theano/compiledir_Linux-4.9--amd64-x86_64-with-debian-9.5--2.7.14-64/lock_dir
-INFO (theano.gof.compilelock): Waiting for existing lock by process '9410' (I am process '18205')
-INFO (theano.gof.compilelock): To manually release the lock, delete /home/halsaied/.theano/compiledir_Linux-4.9--amd64-x86_64-with-debian-9.5--2.7.14-64/lock_dir
-INFO (theano.gof.compilelock): Waiting for existing lock by process '5656' (I am process '18205')
-INFO (theano.gof.compilelock): To manually release the lock, delete /home/halsaied/.theano/compiledir_Linux-4.9--amd64-x86_64-with-debian-9.5--2.7.14-64/lock_dir
-INFO (theano.gof.compilelock): Waiting for existing lock by unknown process (I am process '18205')
-INFO (theano.gof.compilelock): To manually release the lock, delete /home/halsaied/.theano/compiledir_Linux-4.9--amd64-x86_64-with-debian-9.5--2.7.14-64/lock_dir
-INFO (theano.gof.compilelock): Waiting for existing lock by process '16574' (I am process '18205')
-INFO (theano.gof.compilelock): To manually release the lock, delete /home/halsaied/.theano/compiledir_Linux-4.9--amd64-x86_64-with-debian-9.5--2.7.14-64/lock_dir
-INFO (theano.gof.compilelock): Waiting for existing lock by process '16574' (I am process '18205')
-INFO (theano.gof.compilelock): To manually release the lock, delete /home/halsaied/.theano/compiledir_Linux-4.9--amd64-x86_64-with-debian-9.5--2.7.14-64/lock_dir
-INFO (theano.gof.compilelock): Waiting for existing lock by process '16574' (I am process '18205')
-INFO (theano.gof.compilelock): To manually release the lock, delete /home/halsaied/.theano/compiledir_Linux-4.9--amd64-x86_64-with-debian-9.5--2.7.14-64/lock_dir
-INFO (theano.gof.compilelock): Waiting for existing lock by unknown process (I am process '18205')
-INFO (theano.gof.compilelock): To manually release the lock, delete /home/halsaied/.theano/compiledir_Linux-4.9--amd64-x86_64-with-debian-9.5--2.7.14-64/lock_dir
-INFO (theano.gof.compilelock): Waiting for existing lock by process '9410' (I am process '18205')
-INFO (theano.gof.compilelock): To manually release the lock, delete /home/halsaied/.theano/compiledir_Linux-4.9--amd64-x86_64-with-debian-9.5--2.7.14-64/lock_dir
-INFO (theano.gof.compilelock): Waiting for existing lock by unknown process (I am process '18205')
-INFO (theano.gof.compilelock): To manually release the lock, delete /home/halsaied/.theano/compiledir_Linux-4.9--amd64-x86_64-with-debian-9.5--2.7.14-64/lock_dir
-INFO (theano.gof.compilelock): Waiting for existing lock by process '15758' (I am process '18205')
-INFO (theano.gof.compilelock): To manually release the lock, delete /home/halsaied/.theano/compiledir_Linux-4.9--amd64-x86_64-with-debian-9.5--2.7.14-64/lock_dir
-INFO (theano.gof.compilelock): Waiting for existing lock by process '15758' (I am process '18205')
-INFO (theano.gof.compilelock): To manually release the lock, delete /home/halsaied/.theano/compiledir_Linux-4.9--amd64-x86_64-with-debian-9.5--2.7.14-64/lock_dir
 10_True_True_218_41_frequent_True_22_relu_0.216_False_512_relu_0.2_adagrad_0.04_128_40
 	GPU Enabled
 ==================================================================================================
@@ -5544,8 +5480,6 @@ Epoch 2/40
  - 22s - loss: 0.0919 - acc: 0.9586 - val_loss: 0.0561 - val_acc: 0.9837
 Epoch 3/40
  - 22s - loss: 0.0865 - acc: 0.9597 - val_loss: 0.0560 - val_acc: 0.9831
-INFO (theano.gof.compilelock): Waiting for existing lock by unknown process (I am process '18205')
-INFO (theano.gof.compilelock): To manually release the lock, delete /home/halsaied/.theano/compiledir_Linux-4.9--amd64-x86_64-with-debian-9.5--2.7.14-64/lock_dir
 
 ==================================================================================================
 	Training time : 0:02:49.419769
@@ -12891,8 +12825,6 @@ Epoch 2/40
  - 19s - loss: 0.0802 - acc: 0.9729 - val_loss: 0.0541 - val_acc: 0.9826
 Epoch 3/40
  - 19s - loss: 0.0737 - acc: 0.9743 - val_loss: 0.0530 - val_acc: 0.9830
-INFO (theano.gof.compilelock): Waiting for existing lock by unknown process (I am process '18205')
-INFO (theano.gof.compilelock): To manually release the lock, delete /home/halsaied/.theano/compiledir_Linux-4.9--amd64-x86_64-with-debian-9.5--2.7.14-64/lock_dir
 
 ==================================================================================================
 	Training time : 0:02:41.006607
@@ -31216,8 +31148,6 @@ Epoch 2/40
  - 20s - loss: 0.0506 - acc: 0.9838 - val_loss: 0.0451 - val_acc: 0.9859
 Epoch 3/40
  - 20s - loss: 0.0467 - acc: 0.9847 - val_loss: 0.0456 - val_acc: 0.9855
-INFO (theano.gof.compilelock): Waiting for existing lock by unknown process (I am process '18205')
-INFO (theano.gof.compilelock): To manually release the lock, delete /home/halsaied/.theano/compiledir_Linux-4.9--amd64-x86_64-with-debian-9.5--2.7.14-64/lock_dir
 
 ==================================================================================================
 	Training time : 0:02:53.910213
@@ -33266,8 +33196,6 @@ Epoch 2/40
  - 17s - loss: 0.0889 - acc: 0.9649 - val_loss: 0.0396 - val_acc: 0.9882
 Epoch 3/40
  - 17s - loss: 0.0818 - acc: 0.9661 - val_loss: 0.0389 - val_acc: 0.9886
-INFO (theano.gof.compilelock): Waiting for existing lock by unknown process (I am process '18205')
-INFO (theano.gof.compilelock): To manually release the lock, delete /home/halsaied/.theano/compiledir_Linux-4.9--amd64-x86_64-with-debian-9.5--2.7.14-64/lock_dir
 
 ==================================================================================================
 	Training time : 0:02:25.615232

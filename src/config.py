@@ -36,20 +36,15 @@ configuration = {
         'capitalDim': 3,
         'symbolDim': 8,
         'taggingDenseUnits': 128,
-        'IdenDenseUnitNumber': 64,
-        'depParsingDenseUnitNumber': 64,
+        'idenDenseUnits': 64,
         'useCapitalization': True,
         'useSymbols': True,
         'testOnToken': True,
         'useB1': True,
         'useBx': True,
-        'taggingBatchSize': 32,
-        'identBatchSize': 32,
-        'depParserBatchSize': 32,
-        'initialEpochs': 1,
-        'jointLearningEpochs': 100,
+
         'sytacticLabelDim': 25,
-        'lr': 0.02
+        'depParsingDenseUnits': 200
     },
     'xp': {
         'linear': False,
@@ -59,7 +54,7 @@ configuration = {
         'mlpPhrase': False,
         'rnn': False,
         'rnnNonCompo': False,
-        'compoRnn': False,
+        'rmlpTree': False,
         'multitasking': False,
         'mlpWide': False,
         'chenManning': False
@@ -111,11 +106,10 @@ configuration = {
         'dense1Dropout': 0.4,
         'posWindow': 3
     },
-    'compoRnn': {
+    'rmlpTree': {
         'posEmb': 42,
         'tokenEmb': 480,
         'trainable': True,
-        'batchSize': 64,
         'lr': 0.059,
         'denseUnitNumber': 60,
         'denseDropout': 0.4,
@@ -144,14 +138,19 @@ configuration = {
         'markObligatory': False,
         'addTokens': False,
         'onGroup': False,
-        'group': 'tweebank'
+        'group': 'tweebank',
+        'nltk': False,
+        'trainTaggerAndIdentifier': False,
+        'trainInTransfert': False,
+        'shuffleOrRedistribute': True
+
     },
     'others': {
         'tuneCoop': False,
         'cvFolds': 5,
         'currentIter': -1,
         'shuffleTrain': False,
-        'debugTrainNum': 10,
+        'debugTrainNum': 100,
         'test': 0.2,
         'tokenAvg': 270000,
         'testTokenAvg': 43000,
@@ -215,19 +214,31 @@ configuration = {
         's0TokenNum': 4,
         's1TokenNum': 2,
         'bTokenNum': 1,
+        'useB-1': 0,
         'shuffle': False,
         'rnnSequence': False
-    }, 'nn': {
+    },
+    'nn': {
+        'validationSplit': .2,
+        'monitor': 'val_loss',
         'loss': 'categorical_crossentropy',
         'optimizer': 'adagrad',
-        'epochs': 40,
+        'epochs': 15,
         'earlyStop': True,
         'checkPoint': False,
         'minDelta': .2,
         'patience': 4,
         'dense1Activation': 'relu',
         'predictVerbose': False,
-        'validationSplit': .2
+        'depParserBatchSize': 32,
+        'identBatchSize': 32,
+        'idenLR': .02,
+        'taggingLR': .02,
+        'depParsingLR': .02,
+        'taggingBatchSize': 32,
+        'jointLearningEpochs': 50,
+        'initialEpochs': 1,
+        'batchSize': 32
     },
     'mlp2': {
         'features': False,
@@ -328,7 +339,8 @@ configuration = {
 configuration['path']['projectPath'] = os.path.dirname(__file__)[:-len(os.path.basename(os.path.dirname(__file__)))]
 
 
-class TendConfig:
+class TrendConfig:
+
     @staticmethod
     def mlpWide():
         configuration['sampling'].update({
@@ -342,8 +354,8 @@ class TendConfig:
             'useB-1': 1,
             'manual': False,
             'keras': False,
-            'pretrained': False,
-            'average': False,
+            'pretrained': True,
+            'average': True,
             'compactVocab': True,
             'lemma': True,
             'dynamicVocab': False
@@ -353,9 +365,9 @@ class TendConfig:
             'tokenEmb': 300,
             'dense1UnitNumber': 215,
             'dense1Dropout': 0.3,
-            'lr': 0.03,
+            'lr': 0.034,
             'trainable': True,
-            'batchSize': 60,
+            'batchSize': 64,
             'posWindow': 3
         })
 
@@ -365,28 +377,28 @@ class TendConfig:
             'phraseMaxLength': 50,
             'phraseTokenEmb': 80,
             'phrasePosEmb': 18,
-            'gru': False,
+            'gru': True,
             'wordRnnUnitNum': 110,
             'useB1': True,
-            'useB-1': False,
+            'useB-1': True,
             'transPosEmb': 15,
             'transTokenEmb': 95,
             'denseUnitNumber': 115,
-            'lr': .05
+            'lr': .057
         })
         configuration['embedding']['lemma'] = True
         configuration['sampling']['importantSentences'] = True
         configuration['sampling']['overSampling'] = True
 
     @staticmethod
-    def setTrendMTConfForPOS():
+    def mtPos():
         configuration['multitasking'].update({
             'tokenDim': 69,
             'affixeDim': 13,
             'capitalDim': 3,
             'symbolDim': 9,
             'taggingDenseUnits': 89,
-            'IdenDenseUnitNumber': 88,
+            'idenDenseUnits': 88,
             'useCapitalization': True,
             'useSymbols': True,
             'testOnToken': True,
@@ -400,14 +412,14 @@ class TendConfig:
         configuration['sampling']['overSampling'] = True
 
     @staticmethod
-    def setTrendMTConfForIden():
+    def mtIden():
         configuration['multitasking'].update({
             'tokenDim': 89,
             'affixeDim': 13,
             'capitalDim': 3,
             'symbolDim': 9,
             'taggingDenseUnits': 87,
-            'IdenDenseUnitNumber': 81,
+            'idenDenseUnits': 81,
             'useCapitalization': True,
             'useSymbols': True,
             'testOnToken': True,
@@ -421,14 +433,14 @@ class TendConfig:
         configuration['sampling']['overSampling'] = True
 
     @staticmethod
-    def setTrendMTConfForJoint():
+    def mtJoint():
         configuration['multitasking'].update({
             'tokenDim': 83,
             'affixeDim': 13,
             'capitalDim': 3,
             'symbolDim': 8,
             'taggingDenseUnits': 90,
-            'IdenDenseUnitNumber': 64,
+            'idenDenseUnits': 64,
             'useCapitalization': True,
             'useSymbols': True,
             'testOnToken': True,
@@ -436,16 +448,15 @@ class TendConfig:
             'useBx': True,
             'identBatchSize': 41,
             'taggingBatchSize': 39,
-            'initialEpochs': 2,
-            'jointLearningEpochs': 100,
             'lr': 0.04
         })
+        configuration['nn']['initialEpochs'] = 2
         configuration['embedding']['lemma'] = True
         configuration['sampling']['importantSentences'] = True
         configuration['sampling']['overSampling'] = True
 
     @staticmethod
-    def setMlpTendanceConf():
+    def mlp():
         configuration['sampling'].update({
             'importantSentences': True,
             'overSampling': True,
@@ -473,6 +484,36 @@ class TendConfig:
             'batchSize': 48,
         })
 
+    @staticmethod
+    def mlpFtb():
+        configuration['sampling'].update({
+            'importantSentences': True,
+            'overSampling': True,
+            'sampleWeight': False,
+            'favorisationCoeff': 8,
+            'focused': True,
+            'mweRepeition': 16})
+        configuration['embedding'].update({
+            'useB1': 1,
+            'useB-1': 0,
+            'manual': False,
+            'keras': False,
+            'pretrained': True,
+            'average': True,
+            'compactVocab': True,
+            'lemma': True,
+            'dynamicVocab': False
+        })
+        configuration['mlp'].update({
+            'posEmb': 60,
+            'tokenEmb': 300,
+            'dense1UnitNumber': 200,
+            'dense1Dropout': 0.3,
+            'lr': 0.04,
+            'trainable': True,
+            'batchSize': 64,
+        })
+
         # configuration['sampling'].update({
         #     'importantSentences': True,
         #     'overSampling': True,
@@ -498,10 +539,40 @@ class TendConfig:
         #
         # })
 
+    @staticmethod
+    def mlpDimsum():
+        configuration['sampling'].update({
+            'importantSentences': True,
+            'overSampling': True,
+            'sampleWeight': True,
+            'favorisationCoeff': 8,
+            'focused': False,
+            'mweRepeition': 16})
+        configuration['embedding'].update({
+            'useB1': 1,
+            'useB-1': 1,
+            'manual': False,
+            'keras': False,
+            'pretrained': True,
+            'average': True,
+            'compactVocab': True,
+            'lemma': True,
+            'dynamicVocab': True
+        })
+        configuration['mlp'].update({
+            'posEmb': 60,
+            'tokenEmb': 300,
+            'dense1UnitNumber': 200,
+            'dense1Dropout': 0.3,
+            'lr': 0.035,
+            'trainable': True,
+            'batchSize': 64,
+        })
+
 
 class Standard:
     @staticmethod
-    def setChenManningParameters():
+    def chenManningParameters():
         configuration['chenParams']['dense1Dropout'] = .5
         configuration['chenParams']['lr'] = .01
         configuration['chenParams']['dense1UnitNumber'] = 200
@@ -518,6 +589,7 @@ class Standard:
 
 
 class BestConfig:
+
     @staticmethod
     def mlpWide():
         configuration['sampling'].update({
@@ -531,7 +603,7 @@ class BestConfig:
             'useB-1': 1,
             'manual': False,
             'keras': False,
-            'pretrained': False,
+            'pretrained': True,
             'average': True,
             'compactVocab': True,
             'lemma': True,
@@ -545,8 +617,9 @@ class BestConfig:
             'lr': 0.04,
             'trainable': True,
             'batchSize': 128,
-            'posWindow':2
+            'posWindow': 2
         })
+
     @staticmethod
     def mlpPhrase():
         configuration['mlpPhrase'].update({
@@ -567,14 +640,14 @@ class BestConfig:
         configuration['sampling']['overSampling'] = True
 
     @staticmethod
-    def setBestMTConfForJoint():
+    def mtJoint():
         configuration['multitasking'].update({
             'tokenDim': 140,
             'affixeDim': 14,
             'capitalDim': 1,
             'symbolDim': 5,
             'taggingDenseUnits': 78,
-            'IdenDenseUnitNumber': 30,
+            'idenDenseUnits': 30,
             'useCapitalization': False,
             'useSymbols': True,
             'testOnToken': True,
@@ -582,56 +655,95 @@ class BestConfig:
             'useBx': True,
             'identBatchSize': 37,
             'taggingBatchSize': 21,
-            'initialEpochs': 3,
-            'jointLearningEpochs': 100,
             'lr': 0.05
         })
+        configuration['nn']['initialEpochs'] = 3
         configuration['embedding']['lemma'] = True
         configuration['sampling']['importantSentences'] = True
         configuration['sampling']['overSampling'] = True
 
-    @staticmethod
-    def setMlpFtbConf():
-        samling = configuration['sampling']
-        samling['importantSentences'] = True
-        samling['overSampling'] = True
-        samling['sampleWeight'] = True
-        samling['favorisationCoeff'] = 3
-        samling['focused'] = True
-
-        configuration['nn']['optimizer'] = 'adagrad'
-        configuration['mlp']['lr'] = 0.059
-
-        configuration['embedding']['lemma'] = True
-        configuration['mlp']['posEmb'] = 103
-        configuration['mlp']['tokenEmb'] = 410
-        configuration['embedding']['compactVocab'] = True
-
-        configuration['mlp']['dense1UnitNumber'] = 167
-        configuration['mlp']['dense1Dropout'] = 0.16
-
-    @staticmethod
-    def setMlpDiMSUMConf():
-        samling = configuration['sampling']
-        samling['importantSentences'] = True
-        samling['overSampling'] = True
-        samling['sampleWeight'] = True
-        samling['favorisationCoeff'] = 13
-        samling['focused'] = True
-
-        configuration['nn']['optimizer'] = 'adagrad'
-        configuration['mlp']['lr'] = 0.059
-
-        configuration['embedding']['lemma'] = True
-        configuration['mlp']['posEmb'] = 118
-        configuration['mlp']['tokenEmb'] = 326
-        configuration['embedding']['compactVocab'] = True
-
-        configuration['mlp']['dense1UnitNumber'] = 172
-        configuration['mlp']['dense1Dropout'] = 0.38
+    # @staticmethod
+    # def mlpFtb():
+    #     samling = configuration['sampling']
+    #     samling['importantSentences'] = True
+    #     samling['overSampling'] = True
+    #     samling['sampleWeight'] = True
+    #     samling['favorisationCoeff'] = 3
+    #     samling['focused'] = True
+    #
+    #     configuration['nn']['optimizer'] = 'adagrad'
+    #     configuration['mlp']['lr'] = 0.059
+    #
+    #     configuration['embedding']['lemma'] = True
+    #     configuration['mlp']['posEmb'] = 103
+    #     configuration['mlp']['tokenEmb'] = 410
+    #     configuration['embedding']['compactVocab'] = True
+    #
+    #     configuration['mlp']['dense1UnitNumber'] = 167
+    #     configuration['mlp']['dense1Dropout'] = 0.16
 
     @staticmethod
-    def setMLPConf():
+    def mlpDimsumClosed():
+        configuration['sampling'].update({
+            'importantSentences': True,
+            'overSampling': True,
+            'sampleWeight': False,
+            'favorisationCoeff': 1,
+            'focused': False,
+            'mweRepeition': 15})
+        configuration['embedding'].update({
+            'useB1': 1,
+            'useB-1': 0,
+            'manual': True,
+            'keras': False,
+            'pretrained': False,
+            'average': True,
+            'compactVocab': False,
+            'lemma': False,
+            'dynamicVocab': True
+        })
+        configuration['mlp'].update({
+            'posEmb': 90,
+            'tokenEmb': 470,
+            'dense1UnitNumber': 140,
+            'dense1Dropout': 0.1,
+            'lr': 0.016,
+            'trainable': True,
+            'batchSize': 16,
+        })
+
+    @staticmethod
+    def mlpDimsumOpen():
+        configuration['sampling'].update({
+            'importantSentences': True,
+            'overSampling': True,
+            'sampleWeight': False,
+            'favorisationCoeff': 1,
+            'focused': False,
+            'mweRepeition': 15})
+        configuration['embedding'].update({
+            'useB1': 1,
+            'useB-1': 0,
+            'manual': False,
+            'keras': False,
+            'pretrained': True,
+            'average': True,
+            'compactVocab': True,
+            'lemma': True,
+            'dynamicVocab': True
+        })
+        configuration['mlp'].update({
+            'posEmb': 72,
+            'tokenEmb': 300,
+            'dense1UnitNumber': 580,
+            'dense1Dropout': 0.1,
+            'lr': 0.031,
+            'trainable': True,
+            'batchSize': 48,
+        })
+
+    @staticmethod
+    def mlp():
         configuration['sampling'].update({
             'importantSentences': True,
             'overSampling': True,
@@ -685,7 +797,7 @@ class BestConfig:
         # })
 
     @staticmethod
-    def setMlpOpenConf():
+    def mlpOpen():
         configuration['sampling'].update({
             'importantSentences': True,
             'overSampling': True,
@@ -739,7 +851,7 @@ class BestConfig:
         # })
 
     @staticmethod
-    def setOptimalRSGForMLPFTB():
+    def mlpFtbClosed():
         configuration['sampling'].update({
             'importantSentences': True,
             'overSampling': True,
@@ -769,7 +881,7 @@ class BestConfig:
         })
 
     @staticmethod
-    def setMlpFtbOpenConf():
+    def mlpFtbOpen():
         configuration['sampling'].update({
             'importantSentences': True,
             'overSampling': True,
@@ -797,33 +909,8 @@ class BestConfig:
             'batchSize': 128,
         })
 
-        # configuration['sampling'].update({
-        #     'importantSentences': True,
-        #     'overSampling': True,
-        #     'sampleWeight': True,
-        #     'favorisationCoeff': 6,
-        #     'focused': True})
-        # configuration['embedding'].update({
-        #     'lemma': True,
-        #     'compactVocab': False,
-        #     'dynamicVocab': False,
-        #     'useB-1': 0,
-        #     'useB1': 1
-        # })
-        # configuration['mlp'].update({
-        #     'posEmb': 42,
-        #     'tokenEmb': 480,
-        #     'dense1UnitNumber': 58,
-        #     'dense1Dropout': 0.429,
-        #     'lr': 0.059,
-        #     'optimizer': 'adagrad',
-        #     'trainable': True,
-        #     'batchSize': 64,
-        #
-        # })
-
     @staticmethod
-    def setRnnConf():
+    def rmlp():
         configuration['rnn']['gru'] = True
         configuration['rnn']['useDense'] = True
         configuration['embedding']['compactVocab'] = True
@@ -842,14 +929,14 @@ class BestConfig:
         configuration['rnn']['batchSize'] = 16
 
     @staticmethod
-    def setBestMTConfForPOS():
+    def mtPos():
         configuration['multitasking'].update({
             'tokenDim': 190,
             'affixeDim': 20,
             'capitalDim': 4,
             'symbolDim': 11,
             'taggingDenseUnits': 36,
-            'IdenDenseUnitNumber': 197,
+            'idenDenseUnits': 197,
             'useCapitalization': False,
             'useSymbols': True,
             'testOnToken': True,
@@ -863,14 +950,14 @@ class BestConfig:
         configuration['sampling']['overSampling'] = True
 
     @staticmethod
-    def setBestMTConfForIden():
+    def mtIdent():
         configuration['multitasking'].update({
             'tokenDim': 77,
             'affixeDim': 18,
             'capitalDim': 5,
             'symbolDim': 8,
             'taggingDenseUnits': 166,
-            'IdenDenseUnitNumber': 74,
+            'idenDenseUnits': 74,
             'useCapitalization': False,
             'useSymbols': True,
             'testOnToken': True,
@@ -1103,7 +1190,7 @@ class Generator:
                 return plage[random.randint(0, len(plage) - 1)]
 
     @staticmethod
-    def generateCompoRnnConf():
+    def rmlpTree():
         configuration['sampling'].update({
             'overSampling': True,
             'importantSentences': True,
@@ -1127,24 +1214,30 @@ class Generator:
 
         if configuration['embedding']['pretrained']:
             configuration['embedding']['manual'] = False
-        configuration['compoRnn'].update({
+
+        configuration['rmlpTree'].update({
             'wordRnnUnitNum': int(Generator.generateValue([25, 200], uniform=False, continousPlage=True)),
             'posRnnUnitNum': int(Generator.generateValue([25, 200], uniform=False, continousPlage=True)),
             'rnnDropout': float(Generator.generateValue([.1, .2, .3, .4, .5, .6], continousPlage=False, uniform=True)),
             'gru': Generator.generateValue([True, False], continousPlage=False, uniform=False),
-            'posEmb': int(Generator.generateValue([15, 150], uniform=False, continousPlage=True)),
+            'posEmb': int(Generator.generateValue([15, 75], uniform=False, continousPlage=True)),
             'tokenEmb': 300 if configuration['embedding']['pretrained'] else
-            int(Generator.generateValue([100, 600], uniform=False, continousPlage=True)),
-            'denseUnitNumber': int(Generator.generateValue([25, 600], uniform=False, continousPlage=True)),
+            int(Generator.generateValue([100, 300], uniform=False, continousPlage=True)),
+            'denseUnitNumber': int(Generator.generateValue([25, 200], uniform=False, continousPlage=True)),
             'denseDropout': float(
                 Generator.generateValue([.1, .2, .3, .4, .5, .6], continousPlage=False, uniform=True)),
-            'batchSize': Generator.generateValue([16, 32, 48, 64, 128], continousPlage=False, uniform=True),
             'lr': round(Generator.generateValue([.01, .2], continousPlage=True, uniform=False), 3),
             'shuffle': Generator.generateValue([True, False], continousPlage=False, uniform=False),
         })
+        configuration['nn'].update({
+            'monitor': Generator.generateValue(['val_loss', 'val_acc'], False, False),
+            'earlyStop': True, # Generator.generateValue([True, False], False, False),
+            'minDelta': round(Generator.generateValue([0.001, 0.1], True), 3),
+            'batchSize': int(Generator.generateValue([96, 128, 256], False))
+        })
 
     @staticmethod
-    def generateMLPConf():
+    def mlp():
         configuration['sampling'].update({
             'overSampling': True,
             'importantSentences': True,
@@ -1177,9 +1270,14 @@ class Generator:
             'lr': round(Generator.generateValue([.01, .1], continousPlage=True, uniform=False), 3),
             'posWindow': Generator.generateValue([1, 2, 3, 4], continousPlage=False, uniform=True)
         })
+        configuration['nn'].update({
+            'monitor': Generator.generateValue(['val_loss', 'val_acc'], False, False),
+            'earlyStop': Generator.generateValue([True, False], False, False),
+            'minDelta': round(Generator.generateValue([0.001, 0.1], True), 3),
+        })
 
     @staticmethod
-    def generateMLPConfForPretrained():
+    def mlpOpen():
         configuration['sampling'].update({
             'overSampling': True,
             'importantSentences': True,
@@ -1213,23 +1311,42 @@ class Generator:
         })
 
     @staticmethod
-    def generateRNNConf():
-        configuration['rnn']['wordDim'] = int(Generator.generateValue([250, 600], True, True))
-        configuration['rnn']['posDim'] = int(Generator.generateValue([25, 100], True, True))
-
-        configuration['rnn']['gru'] = True  # Generator.generateValue([True, False], False, False)
-        configuration['rnn']['wordRnnUnitNum'] = int(Generator.generateValue([25, 200], True, True))
-        configuration['rnn']['posRnnUnitNum'] = int(Generator.generateValue([25, 200], True, True))
-        configuration['rnn']['rnnDropout'] = round(Generator.generateValue([0, .3], True, True), 1)
-
-        configuration['rnn']['useDense'] = True  # Generator.generateValue([True, False], False, False)
-        configuration['rnn']['denseDropout'] = 0  # round(Generator.generateValue([0, .5], True, True), 1)
-        configuration['rnn']['denseUnitNum'] = int(Generator.generateValue([5, 200], True, True))
-        configuration['rnn']['batchSize'] = 64  # Generator.generateValue([16, 32, 64, 128], False, True)
-        configuration['nn']['compactVocab'] = Generator.generateValue([True, False], False, False)
+    def rmlp():
+        configuration['rnn'].update({
+            'wordDim': int(Generator.generateValue([50, 300], True, True)),
+            'posDim': int(Generator.generateValue([25, 75], True, True)),
+            'gru': Generator.generateValue([True, False], False, False),
+            'wordRnnUnitNum': int(Generator.generateValue([25, 150], True, True)),
+            'posRnnUnitNum': int(Generator.generateValue([25, 100], True, True)),
+            'rnnDropout': round(Generator.generateValue([0, .3], True, True), 1),
+            'denseDropout': round(Generator.generateValue([0, .5], True, True), 1),
+            'denseUnitNum': int(Generator.generateValue([5, 150], True, True)),
+            'lr': round(Generator.generateValue([0.01, 0.2], True), 3),
+            'earlyStop': True,
+            's0TokenNum': 4,
+            's1TokenNum': 2,
+            'bTokenNum': int(Generator.generateValue([1, 5], True, True)),
+            'useB-1': int(Generator.generateValue([0, 1], False, False)),
+            'shuffle': Generator.generateValue([False, True], False),
+            'rnnSequence': Generator.generateValue([False, True], False)
+        })
+        configuration['nn'].update({
+            'monitor': Generator.generateValue(['val_loss', 'val_acc'], False, False),
+            'earlyStop': Generator.generateValue([True, False], False, False),
+            'minDelta': round(Generator.generateValue([0.001, 0.1], True), 3),
+            'batchSize': int(Generator.generateValue([96, 128, 256], False)),
+        })
+        configuration['sampling']['importantSentences'] = True
+        configuration['sampling']['overSampling'] = True
+        configuration['embedding']['lemma'] = Generator.generateValue([True, False], False)
+        configuration['embedding']['pretrained'] = Generator.generateValue([True, False], False)
+        if configuration['embedding']['pretrained']:
+            configuration['rnn']['wordDim'] = 300
+        configuration['embedding']['compactVocab'] = Generator.generateValue([False, True], False)
+        configuration['embedding']['dynamicVocab'] = Generator.generateValue([False, True], False)
 
     @staticmethod
-    def generateLinearConf():
+    def svm():
         configuration['features'].update({
             'lemma': True,
             'token': Generator.generateValue([True, False], favorisationTaux=.3),
@@ -1253,7 +1370,7 @@ class Generator:
         })
 
     @staticmethod
-    def generateKiperwasserConf():
+    def kiper():
         kiperConf = configuration['kiperwasser']
         kiperConf['wordDim'] = int(Generator.generateValue([50, 500], True))
         kiperConf['posDim'] = int(Generator.generateValue([15, 150], True))
@@ -1269,32 +1386,7 @@ class Generator:
         configuration['embedding']['lemma'] = True  # Generator.generateValue([True, False], False)
 
     @staticmethod
-    def generateMultTaskingConf():
-        configuration['multitasking'].update({
-            'windowSize': 3,
-            'tokenDim': int(Generator.generateValue([25, 200], True)),
-            'affixeDim': int(Generator.generateValue([5, 25], True)),
-            'capitalDim': int(Generator.generateValue([1, 10], True)),
-            'symbolDim': int(Generator.generateValue([5, 15], True)),
-            'taggingDenseUnits': int(Generator.generateValue([25, 200], True)),
-            'IdenDenseUnitNumber': int(Generator.generateValue([25, 200], True)),
-            'useCapitalization': Generator.generateValue([True, False], False),
-            'useSymbols': Generator.generateValue([True, False], False),
-            'testOnToken': True,
-            'useB1': Generator.generateValue([True, False], False),
-            'useBx': Generator.generateValue([True, False], False),
-            'taggingBatchSize': int(Generator.generateValue([8, 128], True)),
-            'identBatchSize': int(Generator.generateValue([8, 128], True)),
-            'initialEpochs': int(Generator.generateValue([1, 5], True)),
-            'jointLearningEpochs': int(Generator.generateValue([8, 20], True)),
-            'lr': round(Generator.generateValue([0.01, 0.2], True), 3)
-        })
-        configuration['embedding']['lemma'] = Generator.generateValue([True, False], False)
-        configuration['sampling']['importantSentences'] = True
-        configuration['sampling']['overSampling'] = True
-
-    @staticmethod
-    def generateMlpPhrase():
+    def mlpPhrase():
         configuration['mlpPhrase'].update({
             'phraseMaxLength': 50,
             'phraseTokenEmb': int(Generator.generateValue([25, 200], True)),
@@ -1313,15 +1405,15 @@ class Generator:
         configuration['sampling']['overSampling'] = True
 
     @staticmethod
-    def generateChenManning():
-        Standard.setChenManningParameters()
+    def chenManning():
+        Standard.chenManningParameters()
         configuration['chenParams'].update({
             'tokenEmb': int(Generator.generateValue([25, 400], True)),
             'posEmb': int(Generator.generateValue([5, 100], True)),
             'synLabelEmb': int(Generator.generateValue([5, 100], True)),
             'dense1UnitNumber': int(Generator.generateValue([25, 400], True)),
             'dense1Activation': 'relu',
-            'dense1Dropout': int(Generator.generateValue([.1, .2,.3, .4, .5, .6, .7], False)),
+            'dense1Dropout': float(Generator.generateValue([.1, .2, .3, .4, .5, .6, .7], False)),
             'lr': round(Generator.generateValue([0.01, 0.2], True), 3),
             'batchSize': int(Generator.generateValue([16, 32, 48, 64, 96, 128, 256], False)),
             'unlabeled': False,
@@ -1336,6 +1428,52 @@ class Generator:
             'monitor': Generator.generateValue(['val_loss', 'val_acc'], False, False),
             'validationSplit': .2
         })
-
+        if configuration['chenParams']['pretrained']:
+            configuration['chenParams']['tokenEmb'] = 300
         configuration['embedding']['lemma'] = Generator.generateValue([True, False], False, True)
         configuration['sampling']['importantSentences'] = False
+
+    @staticmethod
+    def mt():
+        configuration['multitasking'].update({
+            'windowSize': 3,
+            # Embedding dimensions
+            'tokenDim': int(Generator.generateValue([25, 200], True)),
+            'affixeDim': int(Generator.generateValue([5, 25], True)),
+            'capitalDim': int(Generator.generateValue([1, 10], True)),
+            'symbolDim': int(Generator.generateValue([5, 15], True)),
+            'useB1': Generator.generateValue([True, False], False),
+            'useBx': Generator.generateValue([True, False], False),
+            # Dense layers
+            'taggingDenseUnits': int(Generator.generateValue([25, 200], True)),
+            'idenDenseUnits': int(Generator.generateValue([25, 200], True)),
+            'depParsingDenseUnits': int(Generator.generateValue([25, 300], True)),
+            'sytacticLabelDim': int(Generator.generateValue([5, 50], True)),
+            # Tagging module
+            'useCapitalization': Generator.generateValue([True, False], False),
+            'useSymbols': Generator.generateValue([True, False], False),
+            'testOnToken': True
+        })
+        configuration['nn'].update({
+            'validationSplit': .2,
+            'monitor': Generator.generateValue(['val_loss', 'val_acc'], False, False),
+            'loss': 'categorical_crossentropy',
+            'optimizer': 'adagrad',
+            'epochs': 20,
+            'earlyStop': Generator.generateValue([True, False], False, False),
+            'checkPoint': False,
+            'minDelta': round(Generator.generateValue([0.001, 0.1], True), 3),
+            'patience': 4,
+            'predictVerbose': False,
+            'depParserBatchSize': int(Generator.generateValue([16, 32, 48, 64, 96, 128, 256], False)),
+            'taggingBatchSize': int(Generator.generateValue([16, 32, 48, 64, 96, 128, 256], False)),
+            'identBatchSize': int(Generator.generateValue([16, 32, 48, 64, 96, 128, 256], False)),
+            'idenLR': round(Generator.generateValue([0.01, 0.2], True), 3),
+            'taggingLR': round(Generator.generateValue([0.01, 0.2], True), 3),
+            'depParsingLR': round(Generator.generateValue([0.01, 0.2], True), 3),
+            'initialEpochs': int(Generator.generateValue([1, 5], True)),
+
+        })
+        configuration['embedding']['lemma'] = Generator.generateValue([True, False], False)
+        configuration['sampling']['importantSentences'] = True
+        configuration['sampling']['overSampling'] = True

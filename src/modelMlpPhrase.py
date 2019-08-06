@@ -16,7 +16,7 @@ import reports
 import sampling
 from config import configuration
 from corpus import getTokens
-from modelNonCompo import Vocabulary
+from modelMLP import Vocabulary
 from reports import tabs
 from wordEmbLoader import empty, unk
 

@@ -1,7 +1,7 @@
 # from rsg import *
-from config import TendConfig, BestConfig, LinearConf
+from config import TrendConfig, BestConfig, LinearConf
 from xpTools import *
-
+from identification import getST1TrainFiles
 
 def debug():
     configuration['embedding'].update({
@@ -55,14 +55,14 @@ def getPOSTagEffect():
 
 
 def resamplingEffect():
-    BestConfig.setMLPConf()
+    BestConfig.mlp()
     configuration['sampling'].update({
         'importantSentences': False,
         'overSampling': False,
         'sampleWeight': False,
         'focused': False})
     xp(allSharedtask2Lang, Dataset.sharedtask2, None, Evaluation.corpus, seeds=[0, 1], xpNum=3, outputCupt=False)
-    TendConfig.setMlpTendanceConf()
+    TrendConfig.mlp()
     configuration['sampling'].update({
         'importantSentences': False,
         'overSampling': False,
@@ -72,32 +72,46 @@ def resamplingEffect():
 
 
 def evaluateST2EnFixed():
-    BestConfig.setMLPConf()
+    BestConfig.mlp()
     xp(allSharedtask2Lang, Dataset.sharedtask2, None, Evaluation.fixedSize, seeds=range(2))
 
 
 def evaluateFTB():
-    BestConfig.setMLPConf()
+    BestConfig.mlp()
     xp(['FR'], Dataset.ftb, None, Evaluation.corpus, seeds=range(2))
     xp(['FR'], Dataset.ftb, None, Evaluation.fixedSize, seeds=range(2))
-    TendConfig.setMlpTendanceConf()
+    TrendConfig.mlp()
     xp(['FR'], Dataset.ftb, None, Evaluation.corpus, seeds=range(2))
     xp(['FR'], Dataset.ftb, None, Evaluation.fixedSize, seeds=range(2))
-    BestConfig.setMlpOpenConf()
+    BestConfig.mlpOpen()
     xp(['FR'], Dataset.ftb, None, Evaluation.corpus, seeds=range(2))
     xp(['FR'], Dataset.ftb, None, Evaluation.fixedSize, seeds=range(2))
 
 
 def evaluateDiMSUM():
-    BestConfig.setMLPConf()
+    BestConfig.mlp()
     xp(['EN'], Dataset.dimsum, None, Evaluation.corpus, seeds=range(2))
-    xp(['EN'], Dataset.dimsum, None, Evaluation.dev, seeds=range(2))
-    TendConfig.setMlpTendanceConf()
+    # xp(['EN'], Dataset.dimsum, None, Evaluation.dev, seeds=range(2))
+    TrendConfig.mlp()
     xp(['EN'], Dataset.dimsum, None, Evaluation.corpus, seeds=range(2))
-    xp(['EN'], Dataset.dimsum, None, Evaluation.dev, seeds=range(2))
-    BestConfig.setMlpOpenConf()
+    # xp(['EN'], Dataset.dimsum, None, Evaluation.dev, seeds=range(2))
+    BestConfig.mlpOpen()
     xp(['EN'], Dataset.dimsum, None, Evaluation.corpus, seeds=range(2))
-    xp(['EN'], Dataset.dimsum, None, Evaluation.dev, seeds=range(2))
+    # xp(['EN'], Dataset.dimsum, None, Evaluation.dev, seeds=range(2))
+
+
+def evaluateDiMSUMAfterTunning():
+    BestConfig.mlpDimsum()
+    xp(['EN'], Dataset.dimsum, None, Evaluation.corpus, seeds=range(2))
+    # xp(['EN'], Dataset.dimsum, None, Evaluation.dev, seeds=range(2))
+    TrendConfig.mlpDimsum()
+    xp(['EN'], Dataset.dimsum, None, Evaluation.corpus, seeds=range(2))
+    # xp(['EN'], Dataset.dimsum, None, Evaluation.dev, seeds=range(2))
+    BestConfig.mlpDimsum()
+    configuration['mlp']['tokenEmb'] = 300
+    configuration['embedding']['pretrained'] = True
+    xp(['EN'], Dataset.dimsum, None, Evaluation.corpus, seeds=range(2))
+    # xp(['EN'], Dataset.dimsum, None, Evaluation.dev, seeds=range(2))
 
 
 def evaluateCoop():
@@ -121,7 +135,7 @@ def tuneWithFB():
 
 def tuneCompoRnn():
     import rsg
-    rsg.runRSGSpontaneously(['BG'], Dataset.sharedtask2, XpMode.compoRnn, Evaluation.fixedSize,
+    rsg.runRSGSpontaneously(['BG'], Dataset.sharedtask2, XpMode.rmlpTree, Evaluation.fixedSize,
                             seeds=range(1), xpNum=1, xpNumByThread=50)
 
 
@@ -135,11 +149,11 @@ def evaluatePosInMultitasking(langs=allSharedtask2Lang, division=Evaluation.trai
     configuration['tmp']['trainJointly'] = False
     configuration['tmp']['trainIden'] = False
 
-    BestConfig.setBestMTConfForPOS()
+    BestConfig.mtPos()
     xp(langs, Dataset.sharedtask2,
        XpMode.multitasking, division, seeds=[0])
 
-    TendConfig.setTrendMTConfForPOS()
+    TrendConfig.mtPos()
     xp(langs, Dataset.sharedtask2,
        XpMode.multitasking, division, seeds=[0])
 
@@ -149,11 +163,11 @@ def evaluateIdenInMultitasking(langs=allSharedtask2Lang, division=Evaluation.tra
     configuration['tmp']['trainJointly'] = False
     configuration['tmp']['trainIden'] = True
 
-    BestConfig.setBestMTConfForIden()
+    BestConfig.mtIdent()
     xp(langs, Dataset.sharedtask2,
        XpMode.multitasking, division, seeds=[0])
 
-    TendConfig.setTrendMTConfForIden()
+    TrendConfig.mtIden()
     xp(langs, Dataset.sharedtask2,
        XpMode.multitasking, division, seeds=[0])
 
@@ -163,11 +177,11 @@ def evaluateJointIdent(langs=allSharedtask2Lang, division=Evaluation.trainVsDev)
     configuration['tmp']['trainIden'] = False
     configuration['tmp']['trainJointly'] = True
 
-    BestConfig.setBestMTConfForJoint()
+    BestConfig.mtJoint()
     xp(langs, Dataset.sharedtask2,
        XpMode.multitasking, division, seeds=[0])
 
-    TendConfig.setTrendMTConfForJoint()
+    TrendConfig.mtJoint()
     xp(langs, Dataset.sharedtask2,
        XpMode.multitasking, division, seeds=[0])
 
@@ -186,41 +200,68 @@ def createConllFiles(langs=allSharedtask2Lang):
                     ff.write(conll)
 
 
-def evaluateMLPPhrase(langs=allSharedtask2Lang):
+def evaluateMLPPhrase():
     configuration['others']['analyzePerformance'] = True
     configuration['tmp']['createDepGraphs'] = False
+    # BestConfig.mlpPhrase()
+    # xp(allSharedtask2Lang, Dataset.sharedtask2, XpMode.mlpPhrase, Evaluation.trainVsDev, seeds=range(1))
+    TrendConfig.mlpPhrase()
+    xp(allSharedtask2Lang, Dataset.sharedtask2, XpMode.mlpPhrase, Evaluation.trainVsDev, seeds=range(1))
     BestConfig.mlpPhrase()
-    xp(langs, Dataset.sharedtask2, XpMode.mlpPhrase, Evaluation.trainVsDev)
-    TendConfig.mlpPhrase()
-    xp(langs, Dataset.sharedtask2, XpMode.mlpPhrase, Evaluation.trainVsDev)
+    xp(allSharedtask2Lang, Dataset.sharedtask2, XpMode.mlpPhrase, Evaluation.corpus, seeds=range(1))
+    TrendConfig.mlpPhrase()
+    xp(allSharedtask2Lang, Dataset.sharedtask2, XpMode.mlpPhrase, Evaluation.corpus, seeds=range(1))
 
 
-def evaluateMLPWide(langs=allSharedtask2Lang):
+def evaluateMLPWide():
     configuration['others']['analyzePerformance'] = True
     configuration['tmp']['createDepGraphs'] = False
-    # BestConfig.mlpWide()
-    # xp(langs, Dataset.sharedtask2, XpMode.mlpWide, Evaluation.trainVsDev)
-    TendConfig.mlpWide()
-    xp(langs, Dataset.sharedtask2, XpMode.mlpWide, Evaluation.trainVsTest)
+    BestConfig.mlpWide()
+    xp(allSharedtask2Lang, Dataset.sharedtask2, XpMode.mlpWide, Evaluation.trainVsDev, seeds=range(1))
+    TrendConfig.mlpWide()
+    xp(allSharedtask2Lang, Dataset.sharedtask2, XpMode.mlpWide, Evaluation.trainVsDev, seeds=range(1))
+    BestConfig.mlpWide()
+    xp(allSharedtask2Lang, Dataset.sharedtask2, XpMode.mlpWide, Evaluation.corpus, seeds=range(1))
+    TrendConfig.mlpWide()
+    xp(allSharedtask2Lang, Dataset.sharedtask2, XpMode.mlpWide, Evaluation.corpus, seeds=range(1))
+
+
+def evaluateMLPWideOnClosed():
+    configuration['others']['analyzePerformance'] = True
+    configuration['tmp']['createDepGraphs'] = False
+    BestConfig.mlpWide()
+    configuration['embedding']['pretrained'] = False
+    xp(allSharedtask2Lang, Dataset.sharedtask2, XpMode.mlpWide, Evaluation.trainVsDev, seeds=range(1))
+    TrendConfig.mlpWide()
+    configuration['embedding']['pretrained'] = False
+    xp(allSharedtask2Lang, Dataset.sharedtask2, XpMode.mlpWide, Evaluation.trainVsDev, seeds=range(1))
+    BestConfig.mlpWide()
+    configuration['embedding']['pretrained'] = False
+    xp(allSharedtask2Lang, Dataset.sharedtask2, XpMode.mlpWide, Evaluation.corpus, seeds=range(1))
+    TrendConfig.mlpWide()
+    configuration['embedding']['pretrained'] = False
+    xp(allSharedtask2Lang, Dataset.sharedtask2, XpMode.mlpWide, Evaluation.corpus, seeds=range(1))
+
 
 
 if __name__ == '__main__':
     reload(sys)
     sys.setdefaultencoding('utf8')
-    # evaluateIdenInMultitasking()
-    # evaluateJointIdent() # ['FR'], None)
-    # configuration['others']['analyzePerformance'] = True
-    # configuration['tmp']['createDepGraphs'] = False
-    # evaluateMultitasking(['FR'], None)
 
-    # configuration['tmp']['trainIden'] = False
-    # configuration['tmp']['trainJointly'] = False
-    # configuration['tmp']['trainDepParser'] = True
-    # configuration['chenParams']['unlabeled'] = False
-    # xp(['FR'], Dataset.sharedtask2, XpMode.chenManning, Evaluation.trainVsDev)
+    getST1TrainFiles()
+    # rmlpTree
     # import rsg
     # configuration['others']['analyzePerformance'] = False
-    # rsg.runRSGSpontaneously(['FR'], Dataset.sharedtask2, XpMode.chenManning, Evaluation.trainVsDev, xpNumByThread=100)
-    evaluateMLPWide()
+    # rsg.runRSGSpontaneously(pilotLangs, Dataset.sharedtask2, XpMode.rmlpTree, Evaluation.fixedSize, xpNumByThread=200)
+
+    # rmlp
+    # import rsg
+    # configuration['others']['analyzePerformance'] = False
+    # rsg.runRSGSpontaneously(pilotLangs, Dataset.sharedtask2, XpMode.rmlp, Evaluation.fixedSize, xpNumByThread=200)
+
+    # configuration['embedding']['pretrained'] = False
+    # configuration['tmp']['trainJointly'] = True
+    # configuration['nn']['jointLearningEpochs'] = 10
+    # xp(['FR'], Dataset.sharedtask2, XpMode.multitasking, None) # Evaluation.trainVsDev
 
 

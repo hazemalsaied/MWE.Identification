@@ -10,6 +10,16 @@ mweKey, mwtKey, partSeenKey, seenKey, barelySeenKey = 'mwe', '0.3 mwt', '2.1 See
 interleavingKey, embeddedKey, newKey, freqSeenKey = '0.1 Interleaving', '0.2 Embedded', \
                                                     '1.1 New', '2.3 Seen : frequently'
 
+def analyzeST1Corpus(langs, xpMode, dataset, division, testFileName):
+    for l in langs:
+        finalTestFileName = testFileName + l + '.cupt'
+        setXPMode(xpMode)
+        corpus = readIdentifiedCorpus(l, None, division, finalTestFileName)
+        evaluate(corpus.testingSents)
+        # analyzePerformance(corpus)
+        # catAnalysis = getCatAnalysis(corpus)
+        # analysis = getErrorAnalysis(corpus)
+        # report(analysis, catAnalysis, l)
 
 def analyzeCorpus(langs, xpMode, dataset, division, testFileName):
     for l in langs:
