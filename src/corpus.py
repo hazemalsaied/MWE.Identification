@@ -6,14 +6,16 @@ import pickle
 import random
 import re
 
-from reports import *
 from nltk.parse import DependencyGraph
+
+from reports import *
 
 
 class Corpus:
     """
         a class used to encapsulate all the information of the corpus
     """
+
     def __init__(self, langName, foldId=-1):
         """
             an initializer of the corpus, responsible of creating a structure of objects encapsulating all the
@@ -294,10 +296,15 @@ class Corpus:
             datasetConf, modelConf = configuration['dataset'], configuration['xp']
             dataset = 'ST2' if datasetConf['sharedtask2'] else \
                 ('FTB' if datasetConf['ftb'] else ('DiMSUM' if datasetConf['dimsum'] else 'ST1'))
-            model = 'SVM' if modelConf['linear'] else (
-                'Kiperwasser' if modelConf['kiperwasser'] else (
-                    'RNN' if modelConf['rnn'] else 'MLP'))
-            folder = os.path.join(configuration['path']['projectPath'], configuration['path']['output'], dataset, model)
+
+            model = 'MLP'
+            for k in configuration['xp'].keys():
+                if configuration['xp'][k] and type(True) == type(configuration['xp'][k]):
+                    model = k.upper()
+            folder = os.path.join(configuration['path']['projectPath'],
+                                  configuration['path']['output'],
+                                  dataset,
+                                  model)
             if not os.path.exists(folder):
                 os.makedirs(folder)
             import datetime
@@ -307,13 +314,13 @@ class Corpus:
                 if configuration['evaluation'][k]:
                     division = k.lower()
                     break
-            fileHeader = '{0}.{1}.{2}.{3}.{4}'.format(division, title, seed, today, self.langName)
+            fileHeader = (title + '.' if title else title) + ('.'.join(str(_) for _ in [division, model, dataset, seed, today, self.langName]))
             with open(os.path.join(folder, fileHeader + '.cupt'), 'w') as f:
                 f.write(self.toConllU())
-            with open(os.path.join(folder, fileHeader + '.gold.cupt'), 'w') as f:
-                f.write(self.toConllU(gold=True))
-            with open(os.path.join(folder, fileHeader + '.train.cupt'), 'w') as f:
-                f.write(self.toConllU(gold=True, train=True))
+            # with open(os.path.join(folder, fileHeader + '.gold.cupt'), 'w') as f:
+            #    f.write(self.toConllU(gold=True))
+            # with open(os.path.join(folder, fileHeader + '.train.cupt'), 'w') as f:
+            #    f.write(self.toConllU(gold=True, train=True))
             sys.stdout.write(tabs + 'Cupt files: {0}\n'.format(fileHeader) + doubleSep)
 
     def createMWEDict(self):
@@ -499,7 +506,7 @@ class Corpus:
             else:
                 self.testingSents = self.trainingSents
         if configuration['dataset']['dimsum'] and configuration['evaluation']['corpus'] and \
-            configuration['tmp']['onGroup']:
+                configuration['tmp']['onGroup']:
             self.testingSents = []
             for s in self.testDataSet:
                 if s.group != '' and s.group.startswith(configuration['tmp']['group']):
@@ -1181,12 +1188,12 @@ class Token:
         return '{0}\t{1}\t{2}\t{3}\t{4}\t{5}\t{6}\t{7}\t{8}\t{9}{10}\n'.format(
             self.position,
             self.text,
-            self.lemma,
-            self.abstractPosTag,
-            self.posTag,
-            self.morphologicalInfo,
-            self.dependencyParent,
-            self.dependencyLabel,
+            self.lemma if self.lemma else '_',
+            self.abstractPosTag if self.abstractPosTag else '_',
+            self.posTag if self.posTag else '_',
+            self.morphologicalInfo if self.morphologicalInfo else '_',
+            self.dependencyParent if self.dependencyParent else '_',
+            self.dependencyLabel if self.dependencyLabel else '_',
             '_', '_',
             '\t' + mweInfo if useCupt else ''
         )
@@ -1286,7 +1293,8 @@ def printStats(sents, title, mweDic=None, langName='', test=False):
     sys.stdout.write(tabs + 'Token occurrences: {0}\n'.format(tokenNum))
     sys.stdout.write(tabs + 'MWE number: {0}\n'.format(len(mwes)))
     sys.stdout.write(tabs + 'MWE occurrences: {0}\n'.format(mweNum))
-    sys.stdout.write(tabs + 'Continuous occurrences: {0} %\n'.format(round(float(continousMweNum) / mweNum * 100, 0) if mweNum > 0 else 0))
+    sys.stdout.write(tabs + 'Continuous occurrences: {0} %\n'.format(
+        round(float(continousMweNum) / mweNum * 100, 0) if mweNum > 0 else 0))
     sys.stdout.write(tabs + 'Frequent MWE occurences: {0} %\n'.format(
         round(float(frequentMwes) / mweNum * 100, 0)) if not test and mweNum > 0 else '')
     sys.stdout.write(tabs + 'MWE length: {0}\n'.format(getMWEMeanLength(sents)))
@@ -1644,7 +1652,7 @@ def getVMWEByTokens(tokens):
 def createDepGraph(sent):
     cuptData = '\n'.join(t.line for t in sent.tokens)
     conllData = cuptSentToConllU(cuptData)
-    #print conllData
+    # print conllData
     return DependencyGraph(conllData)
 
 
@@ -1963,7 +1971,7 @@ def cuptSentToConllU(cuptTxt, withoutComments=True):
         elif line == '\n':
             conll += line
         elif not line.startswith('#') or line != '\n':
-            if len(line.split('\t')[0].split('-')) ==1:
+            if len(line.split('\t')[0].split('-')) == 1:
                 parts = line.split('\t')[:-1]
                 if ' ' in parts[1]:
                     parts[1] = parts[1].replace(' ', '-')
@@ -1973,9 +1981,10 @@ def cuptSentToConllU(cuptTxt, withoutComments=True):
                     parts[7] = 'ROOT'
                 # for t in parts:
                 #    conll += t + '\t'
-                conll += '\t'.join(p for p in  parts) + '\n'# conll[:-1] + '\n'
+                conll += '\t'.join(p for p in parts) + '\n'  # conll[:-1] + '\n'
                 # conll += '\t'.join(t for t in line.split('\t')[:-1]) + '\n'
     return conll
+
 
 def cuptToConllU(filePath, withoutComments=True):
     with open(filePath, 'r') as corpusFile:
@@ -1989,7 +1998,7 @@ def cuptToConllU(filePath, withoutComments=True):
             elif line == '\n':
                 conll += line
             elif not line.startswith('#') or line != '\n':
-                if len(line.split('\t')[0].split('-')) ==1:
+                if len(line.split('\t')[0].split('-')) == 1:
                     parts = line.split('\t')[:-1]
                     if ' ' in parts[1]:
                         parts[1] = parts[1].replace(' ', '-')
@@ -1999,9 +2008,10 @@ def cuptToConllU(filePath, withoutComments=True):
                         parts[7] = 'root'
                     # for t in parts:
                     #    conll += t + '\t'
-                    conll += '\t'.join(p for p in parts) + '\n'# conll[:-1] + '\n'
+                    conll += '\t'.join(p for p in parts) + '\n'  # conll[:-1] + '\n'
                     # conll += '\t'.join(t for t in line.split('\t')[:-1]) + '\n'
     return conll
+
 
 def getAllLangStats(langs):
     res = ''
@@ -2019,11 +2029,14 @@ def getRelevantModelAndNormalizer(sent, trainingSent, models, normalizers, test=
     foldNum = int(str(float(trainingSent.index(sent) / (len(trainingSent) / 5)))[0])
     return models[foldNum], normalizers[foldNum] if normalizers else None
 
+
 def getLemmaString(tokens):
-        return ' '.join(
-            t.lemma.lower() if t.lemma.lower() and t.lemma.lower() != '_' else t.text for t in tokens).lower()
+    return ' '.join(
+        t.lemma.lower() if t.lemma.lower() and t.lemma.lower() != '_' else t.text for t in tokens).lower()
+
+
 if __name__ == '__main__':
     # sents = readFTB('/Users/halsaied/PycharmProjects/NNIdenSys/ressources/FTB/dev.expandedcpd.gold.conll')
     # Token(1,'1'), [[Token(2,'2'),Token(3,'3')], Token(4,'4')], [Token(5,'5')],
-    dimsumToCupt(os.path.join(configuration['path']['projectPath'] ,'/ressources/dimsum/dimsum16.test'))
-    dimsumToCupt(os.path.join(configuration['path']['projectPath'] ,'/ressources/dimsum/dimsum16.train'))
+    dimsumToCupt(os.path.join(configuration['path']['projectPath'], '/ressources/dimsum/dimsum16.test'))
+    dimsumToCupt(os.path.join(configuration['path']['projectPath'], '/ressources/dimsum/dimsum16.train'))

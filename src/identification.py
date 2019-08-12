@@ -1,17 +1,19 @@
 import datetime
 import logging
+
 from nltk.parse import DependencyEvaluator
+
 import config
+import modelChenManning
 import modelCompactKiper
 import modelKiperwasser
-import modelMlpPhrase
-import modelRMLPTree
 import modelLinear
-import modelMultiTasking
 import modelMLP
+import modelMlpPhrase
 import modelMlpWide
-import modelChenManning
+import modelMultiTasking
 import modelRMLP
+import modelRMLPTree
 import modelRnnNonCompo
 import oracle
 import reports
@@ -47,17 +49,7 @@ def identify(lang, foldId=-1):
     return corpus
 
 
-def getST1TrainFiles():
-    path = '/Users/halsaied/PycharmProjects/MWE.Identification/Baseline/Results/CV/TrainDataSet'
-    configuration['tmp']['shuffleOrRedistribute'] = False
-    for l in xpTools.allSharedtask1Lang:
-        corpus = Corpus(l)
-        pointer = len(corpus.trainDataSet) / 10
-        for i in range(5):
-            corpus.trainingSents = corpus.trainDataSet[0:i* pointer] + corpus.trainDataSet[(i+1)* pointer:]
-            conllU = corpus.toConllU(useCupt=True, train=True, gold=True)
-            with open(os.path.join(path, l, l + str(i+1) + '.train.txt'), 'w') as ff:
-                ff.write(conllU)
+
 
 def getTransDistribution(corpus):
     shNum, rdNum, mgNum, mkNum = 0, 0, 0, 0
@@ -77,8 +69,10 @@ def getTransDistribution(corpus):
                 mkNum += 1
             t = t.next
     print len(corpus.trainingSents), importantSents
-    print shNum, rdNum, mgNum, mkNum, (shNum+ rdNum+ mgNum+ mkNum)
+    print shNum, rdNum, mgNum, mkNum, (shNum + rdNum + mgNum + mkNum)
     return
+
+
 def getDimsumStats(corpus):
     if not configuration['tmp']['dimsulStats']:
         return
@@ -107,7 +101,7 @@ def identifyWithBoth(lang):
     corpus = Corpus(lang)
     oracle.parse(corpus)
     startTime = datetime.datetime.now()
-    modifyConf(linear=True,tuning=False)
+    modifyConf(linear=True, tuning=False)
     linearModel, linearVectorizer = parseAndTrain(corpus)
     getExcutionTime('Training time', startTime)
     setXPMode(None)
@@ -197,7 +191,6 @@ def modifyConf(linear=False, tuning=False):
                 configuration['embedding']['pretrained'] = False
 
 
-
 def identifyWithMlpInLinear(lang, tuning=False):
     mlpModels, mlpNormalizers = jackknifing(lang, False)
     modifyConf(linear=True, tuning=tuning)
@@ -213,6 +206,7 @@ def identifyWithMlpInLinear(lang, tuning=False):
     evaluate(corpus.testingSents)
     configuration['xp']['linear'] = False
     return corpus
+
 
 def getExcutionTime(label, start):
     sys.stdout.write('{0}{1}: {2} minutes {3}'.format(reports.tabs,

@@ -1,7 +1,6 @@
 # from rsg import *
 from config import TrendConfig, BestConfig, LinearConf
 from xpTools import *
-from identification import getST1TrainFiles
 
 def debug():
     configuration['embedding'].update({
@@ -200,6 +199,51 @@ def createConllFiles(langs=allSharedtask2Lang):
                     ff.write(conll)
 
 
+def evaluateRMLP(langs=allSharedtask2Lang, xpMode=XpMode.rmlp):
+
+    configuration['others']['analyzePerformance'] = True
+    configuration['tmp']['createDepGraphs'] = False
+
+    division = Evaluation.trainVsDev
+    BestConfig.rmlpClosed()
+    xp(langs, Dataset.sharedtask2, xpMode, division, title='RMLP.CPP.Closed')
+    BestConfig.rmlpOpen()
+    xp(langs, Dataset.sharedtask2, xpMode, division, title='RMLP.CPP.Open')
+    TrendConfig.rmlp()
+    xp(langs, Dataset.sharedtask2, xpMode, division, title='RMLP.CT')
+
+    # CORPUS
+    division = Evaluation.corpus
+    BestConfig.rmlpClosed()
+    xp(langs, Dataset.sharedtask2, xpMode, division, title='RMLP.CPP.Closed')
+    BestConfig.rmlpOpen()
+    xp(langs, Dataset.sharedtask2, xpMode, division, title='RMLP.CPP.Open')
+    TrendConfig.rmlp()
+    xp(langs, Dataset.sharedtask2, xpMode, division, title='RMLP.CT')
+
+
+def evaluateRMLPTree(langs=allSharedtask2Lang, xpMode=XpMode.rmlpTree):
+
+    configuration['others']['analyzePerformance'] = True
+    configuration['tmp']['createDepGraphs'] = False
+
+    division = Evaluation.trainVsDev
+    BestConfig.rmlpClosed()
+    xp(langs, Dataset.sharedtask2, xpMode, division, title='RMLP.Tree.CPP.Closed')
+    BestConfig.rmlpOpen()
+    xp(langs, Dataset.sharedtask2, xpMode, division, title='RMLP.Tree.CPP.Open')
+    TrendConfig.rmlp()
+    xp(langs, Dataset.sharedtask2, xpMode, division, title='RMLP.Tree.CT')
+
+    # CORPUS
+    division = Evaluation.corpus
+    BestConfig.rmlpClosed()
+    xp(langs, Dataset.sharedtask2, xpMode, division, title='RMLP.Tree.CPP.Closed')
+    BestConfig.rmlpOpen()
+    xp(langs, Dataset.sharedtask2, xpMode, division, title='RMLP.Tree.CPP.Open')
+    TrendConfig.rmlp()
+    xp(langs, Dataset.sharedtask2, xpMode, division, title='RMLP.Tree.CT')
+    
 def evaluateMLPPhrase():
     configuration['others']['analyzePerformance'] = True
     configuration['tmp']['createDepGraphs'] = False
@@ -242,22 +286,120 @@ def evaluateMLPWideOnClosed():
     configuration['embedding']['pretrained'] = False
     xp(allSharedtask2Lang, Dataset.sharedtask2, XpMode.mlpWide, Evaluation.corpus, seeds=range(1))
 
+def analyzeResampling(langs=allSharedtask2Lang, xpMode=XpMode.linear, division=Evaluation.trainVsDev, xpNum=5):
+    
+    # without any resampling
+    TrendConfig.mlp()
+    # LinearConf.setSVMConf()
+    configuration['sampling'].update({
+        'sampleWeight': False,
+        'favorisationCoeff': 1,
+        'focused': False,
+        'overSampling': False,
+        'importantSentences': False,
+        'importantTransitions': False,
+        'mweRepeition': 35
+    })
+    xp(langs, Dataset.sharedtask2, xpMode, division, xpNum=xpNum)
+    
+    # importantSentences  
+    configuration['sampling'].update({
+        'sampleWeight': False,
+        'favorisationCoeff': 1,
+        'focused': False,
+        'overSampling': False,
+        'importantSentences': True,
+        'importantTransitions': False,
+        'mweRepeition': 35
+    })
+    xp(langs, Dataset.sharedtask2, xpMode, division, xpNum=xpNum)
+
+    # overSampling  
+    configuration['sampling'].update({
+        'sampleWeight': False,
+        'favorisationCoeff': 1,
+        'focused': False,
+        'overSampling': True,
+        'importantSentences': False,
+        'importantTransitions': False,
+        'mweRepeition': 35
+    })
+    xp(langs, Dataset.sharedtask2, xpMode, division, xpNum=xpNum)
+
+    # focused  
+    configuration['sampling'].update({
+        'sampleWeight': False,
+        'favorisationCoeff': 1,
+        'focused': True,
+        'overSampling': False,
+        'importantSentences': False,
+        'importantTransitions': False,
+        'mweRepeition': 30
+    })
+    xp(langs, Dataset.sharedtask2, xpMode, division, xpNum=xpNum)
+    
+    # sampleWeight
+    configuration['sampling'].update({
+        'sampleWeight': True,
+        'favorisationCoeff': 30 ,
+        'focused': False,
+        'overSampling': False,
+        'importantSentences': False,
+        'importantTransitions': False,
+        'mweRepeition': 15
+    })
+    xp(langs, Dataset.sharedtask2, xpMode, division, xpNum=xpNum)
+    
+    # overSampling  + importantSentences
+    configuration['sampling'].update({
+        'sampleWeight': False,
+        'favorisationCoeff': 1,
+        'focused': False,
+        'overSampling': True,
+        'importantSentences': True,
+        'importantTransitions': False,
+        'mweRepeition': 35
+    })
+    xp(langs, Dataset.sharedtask2, xpMode, division, xpNum=xpNum)
+
+    # overSampling  + importantSentences + focused
+    configuration['sampling'].update({
+        'sampleWeight': False,
+        'favorisationCoeff': 1,
+        'focused': True,
+        'overSampling': True,
+        'importantSentences': True,
+        'importantTransitions': False,
+        'mweRepeition': 30
+    })
+    xp(langs, Dataset.sharedtask2, xpMode, division, xpNum=xpNum)
+    
+    
+    # overSampling  + importantSentences + sampleWeight
+    configuration['sampling'].update({
+        'sampleWeight': False,
+        'favorisationCoeff': 1,
+        'focused': True,
+        'overSampling': True,
+        'importantSentences': True,
+        'importantTransitions': False,
+        'mweRepeition': 30
+    })
+    xp(langs, Dataset.sharedtask2, xpMode, division, xpNum=xpNum)
+
 
 
 if __name__ == '__main__':
     reload(sys)
     sys.setdefaultencoding('utf8')
+    # evaluateRMLP()
+    # evaluateRMLPTree()
+    # svm.resampling
+    # analyzeResampling(allSharedtask2Lang, division= Evaluation.trainVsDev, xpNum=1)
+    
+    # mlp.resampling
+    analyzeResampling(allSharedtask2Lang, division=Evaluation.trainVsDev, xpNum=5)
 
-    getST1TrainFiles()
-    # rmlpTree
-    # import rsg
-    # configuration['others']['analyzePerformance'] = False
-    # rsg.runRSGSpontaneously(pilotLangs, Dataset.sharedtask2, XpMode.rmlpTree, Evaluation.fixedSize, xpNumByThread=200)
-
-    # rmlp
-    # import rsg
-    # configuration['others']['analyzePerformance'] = False
-    # rsg.runRSGSpontaneously(pilotLangs, Dataset.sharedtask2, XpMode.rmlp, Evaluation.fixedSize, xpNumByThread=200)
 
     # configuration['embedding']['pretrained'] = False
     # configuration['tmp']['trainJointly'] = True

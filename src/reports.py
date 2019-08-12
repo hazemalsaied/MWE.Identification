@@ -7,7 +7,6 @@ from collections import Counter
 import numpy
 
 from config import configuration
-import xpTools
 
 tabs, seperator, doubleSep, finalLine = '\t', '\n' + '_' * 98 + '\n', '\n' + '=' * 98 + '\n', '\n' + '*|' * 49 + '\n'
 PATH_ROOT_REPORTS_DIR = os.path.join(configuration['path']['projectPath'], 'Reports')
@@ -534,8 +533,7 @@ def getSeedScores(files, folder=None, pilot=False, withTitles=True, withTitle2=F
 
 def getNewScores(files, division):
     for ff in files:
-        print str(ff)
-        configs, scores, langs, stats, precisions, recalls, misidentified, nonidentified, trainTimes= \
+        configs, scores, langs, stats, precisions, recalls, misidentified, nonidentified, trainTimes = \
             mineNewFile(str(ff))
         if division == 'fixed':
             x = 3
@@ -710,10 +708,12 @@ def readAndOrderResults():
 
 
 def mineSTScriptRes(newFile):
-    path = '../Reports/Reports/{0}'.format(newFile)
+    path = '../Reports/{0}'.format(newFile)
     results, res = [], []
     with open(path, 'r') as log:
         for line in log.readlines():
+            if line.startswith('Evaluating:  '):
+                res.append(line[-4:-1])
             if line.startswith('* MWE-based:'):
                 res.append(round(float(line[-5:-1]) / 100., 1))
                 res.append(round(float(line.split('=')[2][:-2]) * 100., 1))
@@ -774,7 +774,15 @@ def mineSTScriptRes(newFile):
                 results.append(res)
                 print res
                 res = []
-    # print results
+    newResults = []
+    for i in range(int(len(results) / 5)):
+        newRes = [0] * len(results[0])
+        newRes[0] = results[i * 5][0]
+        for j in range(1, len(results[0])):
+            newRes[j] = round((results[i * 5][j] + results[i * 5 + 1][j] + results[i * 5 + 2][j] + results[i * 5 + 3][
+                j] + results[i * 5 + 4][j]) / 5, 1)
+        print newRes
+        newResults.append(newRes)
     return results
 
 
@@ -864,48 +872,87 @@ def generateOarsub(xpNum=21, duration=100, tourNum=1, name='mlp'):
                          format(duration, tourNum, i, name, name[-10:]))
 
 
-def getListOfFiles(dirName):
-    # create a list of file and sub directories
-    # names in the given directory
-    listOfFile = os.listdir(dirName)
-    allFiles = list()
-    # Iterate over all the entries
-    for entry in listOfFile:
-        # Create full path
-        fullPath = os.path.join(dirName, entry)
-        # If entry is a directory then get the list of files in this directory
-        if os.path.isdir(fullPath):
-            allFiles = allFiles + getListOfFiles(fullPath)
-        else:
-            allFiles.append(fullPath)
+class OSTools:
+    @staticmethod
+    def getListOfFiles(dirName):
+        # create a list of file and sub directories
+        # names in the given directory
+        listOfFile = os.listdir(dirName)
+        allFiles = list()
+        # Iterate over all the entries
+        for entry in listOfFile:
+            # Create full path
+            fullPath = os.path.join(dirName, entry)
+            # If entry is a directory then get the list of files in this directory
+            if os.path.isdir(fullPath):
+                allFiles = allFiles + OSTools.getListOfFiles(fullPath)
+            else:
+                allFiles.append(fullPath)
 
-    return allFiles
+        return allFiles
 
+    @staticmethod
+    def cleanReports():
+        proPath = os.path.dirname(__file__)[:-len(os.path.basename(os.path.dirname(__file__)))]
+        directory = os.path.join(proPath, 'Reports/Reports')
+        lab1 = 'WARNING'
+        lab2 = 'INFO'
+        files = OSTools.getListOfFiles(directory)
+        for filename in files:
+            # filePath = os.path.join(directory, filename)
+            with open(filename, 'r') as ff:
+                text = ''
+                lines = ff.readlines()
+                for l in lines:
+                    if not l.startswith(lab1) and not l.startswith(lab2) and not l.startswith('+'):
+                        text += l
+                    else:
+                        pass
+            if text:
+                with open(filename, 'w') as ff:
+                    ff.write(text)
 
-def cleanReports():
-    proPath = os.path.dirname(__file__)[:-len(os.path.basename(os.path.dirname(__file__)))]
-    directory = os.path.join(proPath, 'Reports/Reports/')
-    lab1 = 'WARNING'
-    lab2 = 'INFO'
-    files = getListOfFiles(directory)
-    for filename in files:
-        # filePath = os.path.join(directory, filename)
-        with open(filename, 'r') as ff:
-            text = ''
-            lines = ff.readlines()
-            for l in lines:
-                if not l.startswith(lab1) and not l.startswith(lab2) and not l.startswith('+'):
-                    text += l
-                else:
-                    pass
-        if text:
-            with open(filename, 'w') as ff:
-                ff.write(text)
+    @staticmethod
+    def deleteResultFiles():
+        directory = '/Users/halsaied/PycharmProjects/MWE.Identification/Results/Evaluation/Data'
+        files = OSTools.getListOfFiles(directory)
+        for filename in files:
+            if filename.endswith('.gold.cupt') or filename.endswith('.train.cupt'):
+                os.remove(filename)
 
+    @staticmethod
+    def moveFiles():
+        import shutil
+        dest = '/Users/halsaied/PycharmProjects/MWE.Identification/Results/baseline-cv'
+        files = OSTools.getListOfFiles(dest)
+        for ff in files:
+            filename = ff.split('/')[-1]
+            shutil.move(ff, os.path.join(dest, filename))
 
+    @staticmethod
+    def copyTrainFiles():
+        targetPath = '/Users/halsaied/PycharmProjects/MWE.Identification/Results/SVM0-CV'
+        destPath = '/Users/halsaied/PycharmProjects/MWE.Identification/Results/baseline-cv'
+        from shutil import copyfile
+        files = OSTools.getListOfFiles(targetPath)
+        for ff in files:
+            if ff.endswith('train.cupt'):
+                filename = ff.split('/')[-1]
+                filenameNumber = int(filename[2]) + 1
+                filename = filename[:2] + str(filenameNumber )+ filename[3:]
+                copyfile(ff, os.path.join(destPath, filename))
+
+    @staticmethod
+    def removeNonCuptFiles():
+        targetPath = '/Users/halsaied/PycharmProjects/MWE.Identification/Results/SVM0-CV'
+        files = OSTools.getListOfFiles(targetPath)
+        for ff in files:
+            if ff.endswith('train.txt.cupt'):
+                os.remove(ff)
 if __name__ == '__main__':
-    files = [f for f in os.listdir('../Reports/Reports/') if f.startswith('rmlp1')]
-    # cleanReports()
-    generateOarsub(xpNum=10, duration=72, tourNum=1, name='rmlpTree')
+    files = [f for f in os.listdir('../Reports/Reports/') if f.startswith('mlp')]
+    # OSTools.cleanReports()
+    # mineSTScriptRes('baseline.cv')
+    # generateOarsub(xpNum=10, duration=72, tourNum=1, name='rmlpTree')
     # parseChenManningReports(files)
-    # getNewScores(files, ['corpus', 'fixed', 'dev'][1])
+    getNewScores(files, ['corpus', 'fixed', 'dev'][0])

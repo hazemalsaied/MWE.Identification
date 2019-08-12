@@ -150,7 +150,7 @@ configuration = {
         'cvFolds': 5,
         'currentIter': -1,
         'shuffleTrain': False,
-        'debugTrainNum': 100,
+        'debugTrainNum': 10,
         'test': 0.2,
         'tokenAvg': 270000,
         'testTokenAvg': 43000,
@@ -342,6 +342,83 @@ configuration['path']['projectPath'] = os.path.dirname(__file__)[:-len(os.path.b
 class TrendConfig:
 
     @staticmethod
+    def rmlp():
+        configuration['embedding'].update({
+            'compactVocab': False,
+            'dynamicVocab':False,
+            'lemma': True,
+            'pretrained': True
+        })
+        configuration['rnn'].update({
+            'bTokenNum':3,
+            'batchSize': 160,
+            'denseDropout':	0.3,
+            'denseUnitNum':	80,
+            'gru':True,
+            'lr':.044,
+            'posDim':55,
+            'posRnnUnitNum':70,
+            'rnnDropout':0.2,
+            'rnnSequence':False,
+            'shuffle':False,
+            'useB-1':1,
+            'wordDim':300,
+            'wordRnnUnitNum':100,
+            'EarlyStop':True,
+        })
+        configuration['nn'].update({
+            'EarlyStop':True,
+            'minDelta': 0.022,
+            'monitor':'val_loss'
+        })
+
+
+
+
+    @staticmethod
+    def mlpTree():
+        configuration['sampling'].update({
+            'overSampling': True,
+            'importantSentences': True,
+            'importantTransitions': False,
+            'favorisationCoeff': 11,
+            'focused': False,
+            'mweRepeition': 16,
+            'sampleWeight': False
+        })
+
+        configuration['embedding'].update({
+            'average': True,
+            'compactVocab': True,
+            'dynamicVocab': False,
+            'lemma': True,
+            'manual': False,
+            'pretrained': True,
+            'useB-1': 1,
+            'useB1': 1
+        })
+
+        configuration['rmlpTree'].update({
+            'denseDropout': 0.3,
+            'denseUnitNumber': 90,
+            'gru': True,
+            'lr': 0.038,
+            'posEmb': 40,
+            'posRnnUnitNum': 80,
+            'rnnDropout': 0.3,
+            'rnnSequence': False,
+            'shuffle': False,
+            'tokenEmb': 300,
+            'wordRnnUnitNum': 75
+        })
+        configuration['nn'].update({
+            'monitor': 'val_loss',
+            'earlyStop': True,
+            'minDelta': 0.05,
+            'batchSize': 96
+        })
+
+    @staticmethod
     def mlpWide():
         configuration['sampling'].update({
             'importantSentences': True,
@@ -461,7 +538,7 @@ class TrendConfig:
             'importantSentences': True,
             'overSampling': True,
             'sampleWeight': False,
-            'favorisationCoeff': 2,
+            'favorisationCoeff': 15,
             'focused': False})
         configuration['embedding'].update({
             'useB1': 1,
@@ -589,6 +666,154 @@ class Standard:
 
 
 class BestConfig:
+
+    @staticmethod
+    def rmlpClosed():
+
+        configuration['embedding'].update({
+            'compactVocab': False,
+            'dynamicVocab': False,
+            'lemma': True,
+            'pretrained': False
+        })
+        configuration['rnn'].update({
+            'bTokenNum': 2,
+            'batchSize': 256,
+            'denseDropout': 0.4,
+            'denseUnitNum': 20,
+            'gru': False,
+            'lr': .027,
+            'posDim': 55,
+            'posRnnUnitNum': 50,
+            'rnnDropout': 0.2,
+            'rnnSequence': False,
+            'shuffle': False,
+            'useB-1': 0,
+            'wordDim': 175,
+            'wordRnnUnitNum': 100,
+            'EarlyStop': True,
+        })
+        configuration['nn'].update({
+            'EarlyStop': True,
+            'minDelta': .006,
+            'monitor': 'val_loss'
+        })
+
+    @staticmethod
+    def rmlpOpen():
+        configuration['embedding'].update({
+            'compactVocab': False,
+            'dynamicVocab': True,
+            'lemma': True,
+            'pretrained': True
+        })
+        configuration['rnn'].update({
+            'bTokenNum': 2,
+            'batchSize': 128,
+            'denseDropout': 0.1,
+            'denseUnitNum': 150,
+            'gru': False,
+            'lr': .031,
+            'posDim': 70,
+            'posRnnUnitNum': 40,
+            'rnnDropout': 0.2,
+            'rnnSequence': False,
+            'shuffle': False,
+            'useB-1': 0,
+            'wordDim': 300,
+            'wordRnnUnitNum': 100,
+            'EarlyStop': True,
+        })
+        configuration['nn'].update({
+            'EarlyStop': True,
+            'minDelta': .007,
+            'monitor': 'val_loss'
+        })
+
+    @staticmethod
+    def mlpTreeClosed():
+        configuration['sampling'].update({
+            'overSampling': True,
+            'importantSentences': True,
+            'importantTransitions': False,
+            'favorisationCoeff': 17,
+            'focused': True,
+            'mweRepeition': 20,
+            'sampleWeight': True
+        })
+        configuration['embedding'].update({
+            'average': False,
+            'compactVocab': False,
+            'dynamicVocab': False,
+            'lemma': True,
+            'manual': True,
+            'pretrained': False,
+            'useB-1': 0,
+            'useB1': 1
+        })
+
+        configuration['rmlpTree'].update({
+            'denseDropout': 0.6,
+            'denseUnitNumber': 140,
+            'gru': True,
+            'lr': 0.058,
+            'posEmb': 20,
+            'posRnnUnitNum': 100,
+            'rnnDropout': 0.4,
+            'rnnSequence': False,
+            'shuffle': False,
+            'tokenEmb': 110,
+            'wordRnnUnitNum': 50
+        })
+        configuration['nn'].update({
+            'monitor': 'val_loss',
+            'earlyStop': True,
+            'minDelta': 0.05,
+            'batchSize': 96
+        })
+
+    @staticmethod
+    def mlpTreeOpen():
+        configuration['sampling'].update({
+            'overSampling': True,
+            'importantSentences': True,
+            'importantTransitions': False,
+            'favorisationCoeff': 5,
+            'focused': False,
+            'mweRepeition': 15,
+            'sampleWeight': True
+        })
+        configuration['embedding'].update({
+            'average': True,
+            'compactVocab': True,
+            'dynamicVocab': False,
+            'lemma': True,
+            'manual': False,
+            'pretrained': True,
+            'useB-1': 1,
+            'useB1': 1
+        })
+
+        configuration['rmlpTree'].update({
+            'denseDropout': 0.5,
+            'denseUnitNumber': 45,
+            'gru': True,
+            'lr': 0.053,
+            'posEmb': 50,
+            'posRnnUnitNum': 100,
+            'rnnDropout': 0.3,
+            'rnnSequence': False,
+            'shuffle': False,
+            'tokenEmb': 300,
+            'wordRnnUnitNum': 115
+        })
+
+        configuration['nn'].update({
+            'monitor': 'val_loss',
+            'earlyStop': True,
+            'minDelta': 0.05,
+            'batchSize': 96
+        })
 
     @staticmethod
     def mlpWide():
@@ -909,24 +1134,7 @@ class BestConfig:
             'batchSize': 128,
         })
 
-    @staticmethod
-    def rmlp():
-        configuration['rnn']['gru'] = True
-        configuration['rnn']['useDense'] = True
-        configuration['embedding']['compactVocab'] = True
-        configuration['embedding']['lemma'] = True
 
-        configuration['sampling']['importantSentences'] = True
-        configuration['sampling']['overSampling'] = True
-
-        configuration['rnn']['wordDim'] = 410
-        configuration['rnn']['posDim'] = 54
-        configuration['rnn']['denseUnitNum'] = 51
-        configuration['rnn']['denseDropout'] = 0.1
-        configuration['rnn']['wordRnnUnitNum'] = 25
-        configuration['rnn']['posRnnUnitNum'] = 15
-        configuration['rnn']['rnnDropout'] = 0.1
-        configuration['rnn']['batchSize'] = 16
 
     @staticmethod
     def mtPos():
@@ -1231,7 +1439,7 @@ class Generator:
         })
         configuration['nn'].update({
             'monitor': Generator.generateValue(['val_loss', 'val_acc'], False, False),
-            'earlyStop': True, # Generator.generateValue([True, False], False, False),
+            'earlyStop': True,  # Generator.generateValue([True, False], False, False),
             'minDelta': round(Generator.generateValue([0.001, 0.1], True), 3),
             'batchSize': int(Generator.generateValue([96, 128, 256], False))
         })
