@@ -44,11 +44,10 @@ class ReportMiner:
             if division == 'fixed':
                 x = 3
                 for i in range(len(configs)):
-                    # sys.stdout.write('{0},{1},{2},{3},{4},{5},{6},{7}\n'.format(
-                    sys.stdout.write('{0},{1}\n'.format(
-                        # scores[i * x] if i * x < len(scores) else 0,
-                        # scores[i * x + 1] if i * x + 1 < len(scores) else 0,
-                        # scores[i * x + 2] if i * x + 2 < len(scores) else 0,
+                    sys.stdout.write('{0},{1},{2},{3},{4}\n'.format(
+                        scores[i * x] if i * x < len(scores) else 0,
+                        scores[i * x + 1] if i * x + 1 < len(scores) else 0,
+                        scores[i * x + 2] if i * x + 2 < len(scores) else 0,
                         configs[i][:-1],
                         str(ff)))
             elif division == 'corpus':

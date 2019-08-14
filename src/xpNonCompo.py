@@ -394,8 +394,8 @@ def analyzeResampling(langs=allSharedtask2Lang, xpMode=XpMode.linear,
 if __name__ == '__main__':
     reload(sys)
     sys.setdefaultencoding('utf8')
-    configuration['kiperwasser']['useBatches'] = True
-    configuration['kiperwasser']['batch'] = 16
+    # configuration['kiperwasser']['useBatches'] = True
+    #configuration['kiperwasser']['batch'] = 16
     xp(['FR'], Dataset.sharedtask2, XpMode.kiperwasser, None)
 
     # import rsg

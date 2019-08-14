@@ -126,7 +126,7 @@ class TransitionClassifier(nn.Module):
         tokenEmbed = self.w_embeddings(tokenIdxs).to(device)
         posEmbed = self.p_embeddings(posIdxs).to(device)
         sentEmbed = torch.cat([tokenEmbed, posEmbed], 1).to(device)
-        self.hiddenRnn = initHiddenRnn()
+        # self.hiddenRnn = initHiddenRnn()
         rnnOutput, self.hiddenRnn = self.rnn(sentEmbed.view(len(tokenIdxs), 1, -1), self.hiddenRnn)
         return rnnOutput.view(len(tokenIdxs), -1)
 
