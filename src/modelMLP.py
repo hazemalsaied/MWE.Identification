@@ -10,6 +10,7 @@ from keras.models import load_model
 from keras.preprocessing.sequence import pad_sequences
 from keras.utils import to_categorical
 from numpy import zeros
+from collections import Counter
 
 import facebookEmb
 import reports
@@ -308,21 +309,13 @@ def getOptimizer():
 
 
 def getCallBacks():
-    bestWeightPath = reports.getBestWeightFilePath()
-    callbacks = [
-        ModelCheckpoint(bestWeightPath, monitor='val_loss', verbose=1, save_best_only=True, mode='max')
-    ] if bestWeightPath else []
+    callbacks = []
     if configuration['nn']['earlyStop']:
         es = EarlyStopping(monitor='val_loss',
                            min_delta=configuration['nn']['minDelta'],
                            patience=configuration['nn']['patience'],
                            verbose=configuration['others']['verbose'])
         callbacks.append(es)
-    if configuration['nn']['checkPoint']:
-        mc = ModelCheckpoint(
-            os.path.join(configuration['path']['projectPath'], 'Reports', configuration['path']['checkPointPath']),
-            monitor='val_acc', mode='max', verbose=1, save_best_only=True)
-        callbacks.append(mc)
     return callbacks
 
 

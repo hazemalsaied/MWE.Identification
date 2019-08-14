@@ -2,6 +2,7 @@
 from config import TrendConfig, BestConfig, LinearConf
 from xpTools import *
 
+
 def debug():
     configuration['embedding'].update({
         'manual': True,
@@ -200,7 +201,6 @@ def createConllFiles(langs=allSharedtask2Lang):
 
 
 def evaluateRMLP(langs=allSharedtask2Lang, xpMode=XpMode.rmlp):
-
     configuration['others']['analyzePerformance'] = True
     configuration['tmp']['createDepGraphs'] = False
 
@@ -223,15 +223,14 @@ def evaluateRMLP(langs=allSharedtask2Lang, xpMode=XpMode.rmlp):
 
 
 def evaluateRMLPTree(langs=allSharedtask2Lang, xpMode=XpMode.rmlpTree):
-
     configuration['others']['analyzePerformance'] = True
     configuration['tmp']['createDepGraphs'] = False
 
     division = Evaluation.trainVsDev
     BestConfig.rmlpClosed()
-    #xp(langs, Dataset.sharedtask2, xpMode, division, title='RMLP.Tree.CPP.Closed')
+    # xp(langs, Dataset.sharedtask2, xpMode, division, title='RMLP.Tree.CPP.Closed')
     BestConfig.rmlpOpen()
-    #xp(langs, Dataset.sharedtask2, xpMode, division, title='RMLP.Tree.CPP.Open')
+    # xp(langs, Dataset.sharedtask2, xpMode, division, title='RMLP.Tree.CPP.Open')
     TrendConfig.rmlp()
     xp(langs[16:], Dataset.sharedtask2, xpMode, division, title='RMLP.Tree.CT')
 
@@ -243,7 +242,8 @@ def evaluateRMLPTree(langs=allSharedtask2Lang, xpMode=XpMode.rmlpTree):
     xp(langs, Dataset.sharedtask2, xpMode, division, title='RMLP.Tree.CPP.Open')
     TrendConfig.rmlp()
     xp(langs, Dataset.sharedtask2, xpMode, division, title='RMLP.Tree.CT')
-    
+
+
 def evaluateMLPPhrase():
     configuration['others']['analyzePerformance'] = True
     configuration['tmp']['createDepGraphs'] = False
@@ -286,15 +286,15 @@ def evaluateMLPWideOnClosed():
     configuration['embedding']['pretrained'] = False
     xp(allSharedtask2Lang, Dataset.sharedtask2, XpMode.mlpWide, Evaluation.corpus, seeds=range(1))
 
+
 def analyzeResampling(langs=allSharedtask2Lang, xpMode=XpMode.linear,
                       division=Evaluation.trainVsDev, linear=True, xpNum=5):
-    
     # without any resampling
     if linear:
         LinearConf.setSVMConf()
     else:
         TrendConfig.mlp()
-        xpMode= None
+        xpMode = None
     configuration['sampling'].update({
         'sampleWeight': False,
         'favorisationCoeff': 1,
@@ -305,7 +305,7 @@ def analyzeResampling(langs=allSharedtask2Lang, xpMode=XpMode.linear,
         'mweRepeition': 35
     })
     xp(langs, Dataset.sharedtask2, xpMode, division, xpNum=xpNum)
-    
+
     # importantSentences  
     configuration['sampling'].update({
         'sampleWeight': False,
@@ -341,11 +341,11 @@ def analyzeResampling(langs=allSharedtask2Lang, xpMode=XpMode.linear,
         'mweRepeition': 30
     })
     xp(langs, Dataset.sharedtask2, xpMode, division, xpNum=xpNum)
-    
+
     # sampleWeight
     configuration['sampling'].update({
         'sampleWeight': True,
-        'favorisationCoeff': 30 ,
+        'favorisationCoeff': 30,
         'focused': False,
         'overSampling': False,
         'importantSentences': False,
@@ -353,7 +353,7 @@ def analyzeResampling(langs=allSharedtask2Lang, xpMode=XpMode.linear,
         'mweRepeition': 15
     })
     xp(langs, Dataset.sharedtask2, xpMode, division, xpNum=xpNum)
-    
+
     # overSampling  + importantSentences
     configuration['sampling'].update({
         'sampleWeight': False,
@@ -377,7 +377,7 @@ def analyzeResampling(langs=allSharedtask2Lang, xpMode=XpMode.linear,
         'mweRepeition': 30
     })
     xp(langs, Dataset.sharedtask2, xpMode, division, xpNum=xpNum)
-    
+
     # overSampling  + importantSentences + sampleWeight
     configuration['sampling'].update({
         'sampleWeight': False,
@@ -391,12 +391,15 @@ def analyzeResampling(langs=allSharedtask2Lang, xpMode=XpMode.linear,
     xp(langs, Dataset.sharedtask2, xpMode, division, xpNum=xpNum)
 
 
-
 if __name__ == '__main__':
     reload(sys)
     sys.setdefaultencoding('utf8')
-    import rsg
-    rsg.runRSGSpontaneously(['FR'], Dataset.sharedtask2, XpMode.kiperwasser, Evaluation.fixedSize)
+    configuration['kiperwasser']['useBatches'] = True
+    configuration['kiperwasser']['batch'] = 16
+    xp(['FR'], Dataset.sharedtask2, XpMode.kiperwasser, None)
+
+    # import rsg
+    # rsg.runRSGSpontaneously(['FR'], Dataset.sharedtask2, XpMode.kiperwasser, None)
     # evaluateRMLP()
     # evaluateRMLPTree()
     # svm.resampling
@@ -406,5 +409,3 @@ if __name__ == '__main__':
     # configuration['embedding']['pretrained'] = False
     # configuration['tmp']['trainJointly'] = True
     # configuration['nn']['jointLearningEpochs'] = 10
-
-

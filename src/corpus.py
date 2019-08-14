@@ -8,16 +8,16 @@ import re
 from random import uniform
 
 from nltk.parse import DependencyGraph
-
+from collections import Counter
 from reports import *
-
+from config import configuration
 
 class Corpus:
     """
         a class used to encapsulate all the information of the corpus
     """
 
-    def __init__(self, langName, foldId=-1):
+    def __init__(self, langName):
         """
             an initializer of the corpus, responsible of creating a structure of objects encapsulating all the
             information of the corpus, its sentences, tokens and MWEs.
@@ -28,7 +28,7 @@ class Corpus:
         self.readDataSets(langName)
         self.analyzeSents()
         self.orderParentVMWEs()
-        self.getTrainAndTest(foldId=foldId)
+        self.getTrainAndTest()
         self.cleanSents()
         self.extractDictionaries()
         self.deleteNonRecognizableMWE()
@@ -134,7 +134,7 @@ class Corpus:
                 self.trainDataSet = readMWEFile(mweFile)
                 self.testDataSet = readMWEFile(testMweFile)
 
-        if not configuration['evaluation']['cv'] and configuration['tmp']['shuffleOrRedistribute']:
+        if configuration['tmp']['shuffleOrRedistribute']:
             if not configuration['evaluation']['corpus'] and \
                     not configuration['dataset']['ftb'] and not \
                     configuration['dataset']['dimsum']:
@@ -323,7 +323,8 @@ class Corpus:
         self.mweDictionary = self.getMWEDictionary()
 
     def createMWEFiles(self, seed, title=''):
-        if configuration['evaluation']['corpus'] or configuration['evaluation']['trainVsDev'] or configuration['tmp']['outputCupt']:
+        if configuration['evaluation']['corpus'] or configuration['evaluation']['trainVsDev'] or configuration['tmp'][
+            'outputCupt']:
             datasetConf, modelConf = configuration['dataset'], configuration['xp']
             dataset = 'ST2' if datasetConf['sharedtask2'] else \
                 ('FTB' if datasetConf['ftb'] else ('DiMSUM' if datasetConf['dimsum'] else 'ST1'))
@@ -480,14 +481,9 @@ class Corpus:
                     mweDictionary[lemmaString] = windows
         return mweDictionary
 
-    def getTrainAndTest(self, foldId=-1):
+    def getTrainAndTest(self):
         self.trainingSents, self.testingSents = [], []
-        if configuration['evaluation']['cv'] and foldId >= 0:
-            sents = self.trainDataSet + self.devDataSet + self.testingSents
-            foldSize = int(float(len(sents)) / configuration['others']['cvFolds'])
-            self.testingSents = sents[foldId * foldSize: (foldId + 1) * foldSize]
-            self.trainingSents = sents[0:foldId * foldSize] + sents[(foldId + 1) * foldSize:]
-        elif configuration['evaluation']['fixedSize']:
+        if configuration['evaluation']['fixedSize']:
             tokenNum = 0
             for sent in self.trainDataSet:
                 self.trainingSents.append(sent)
@@ -2066,6 +2062,7 @@ def getLemmaString(tokens):
     return ' '.join(
         t.lemma.lower() if t.lemma.lower() and t.lemma.lower() != '_' else t.text for t in tokens).lower()
 
+
 def getFTBDictionary(corpus, path='ressources/FTB/dictionary.md'):
     dictionary = dict()
     for s in corpus.trainDataSet:
@@ -2077,9 +2074,9 @@ def getFTBDictionary(corpus, path='ressources/FTB/dictionary.md'):
             if lemma not in dictionary[cat]:
                 dictionary[cat][lemma] = 1
             else:
-                dictionary[cat][lemma] = dictionary[cat][lemma]+ 1
+                dictionary[cat][lemma] = dictionary[cat][lemma] + 1
     dictionaryTxt = ''
-    for k,v in dictionary.items():
+    for k, v in dictionary.items():
         dictionaryTxt += '## {0} ({1}) \n\n'.format(k, sum(v.values()))
         idx = 1
         for kk, vv in v.items():
@@ -2087,6 +2084,7 @@ def getFTBDictionary(corpus, path='ressources/FTB/dictionary.md'):
             idx += 1
     with open(os.path.join(configuration['path']['projectPath'], path), 'w') as ff:
         ff.write(dictionaryTxt)
+
 
 if __name__ == '__main__':
     # sents = readFTB('/Users/halsaied/PycharmProjects/NNIdenSys/ressources/FTB/dev.expandedcpd.gold.conll')

@@ -1,11 +1,12 @@
 import datetime
-
-# import torch
+import numpy
+import torch
 from enum import Enum
 from theano import function, config, shared, tensor
 
 from corpus import *
-from identification import identify, identifyWithMlpInLinear, identifyWithLinearInMlp, identifyWithBoth
+from identification import identify
+from modelStacking import identifyWithMlpInLinear, identifyWithLinearInMlp, identifyWithBoth
 
 allSharedtask1Lang = ['BG', 'CS', 'DE', 'EL', 'ES', 'FA', 'FR', 'HE', 'HU', 'IT',
                       'LT', 'MT', 'PL', 'PT', 'RO', 'SV', 'SL', 'TR']
@@ -38,11 +39,6 @@ def runXp(lang, mlpInLinear, linearInMlp, complentary, seed, cuptTitle=''):
     elif complentary:
         corpus = identifyWithBoth(lang)
         corpus.createMWEFiles(seed, title='complementary' + cuptTitle)
-    elif configuration['evaluation']['cv']:
-        for j in range(configuration['others']['cvFolds']):
-            sys.stdout.write('\t' + 'Iteration {0}'.format(j))
-            corpus = identify(lang, foldId=j)
-            corpus.createMWEFiles(seed, title='fold.{0}'.format(j) + cuptTitle)
     else:
         corpus = identify(lang)
         if corpus:
@@ -195,7 +191,6 @@ class XpMode(Enum):
 
 def setTrainAndTest(v):
     configuration['evaluation'].update({
-        'cv': True if v == Evaluation.cv else False,
         'corpus': True if v == Evaluation.corpus else False,
         'fixedSize': True if v == Evaluation.fixedSize else False,
         'dev': True if v == Evaluation.dev else False,
@@ -302,3 +297,4 @@ def fromTSVtoCupt():
                             conll += '\t'.join([lineParts[0], lineParts[1]] + (['_'] * 8) + [x])
                 with open(os.path.join(path, filename + '.cupt'), 'w') as ff:
                     ff.write(conll)
+
