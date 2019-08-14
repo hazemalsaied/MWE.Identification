@@ -74,8 +74,8 @@ def parseAndTrain(corpus):
         modelRnnNonCompo.train(network, corpus)
         return network, None
     if configuration['xp']['kiperwasser']:
-        network = modelKiperwasser.train2(corpus)
-        # network = modelKiperwasser.train(corpus, configuration)
+        #network = modelKiperwasser.train2(corpus)
+        network = modelKiperwasser.train(corpus, configuration)
         return network, None
     if configuration['xp']['kiperComp']:
         network = modelCompactKiper.train(corpus, configuration)
