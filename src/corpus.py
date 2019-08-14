@@ -5,6 +5,7 @@ import itertools
 import pickle
 import random
 import re
+from random import uniform
 
 from nltk.parse import DependencyGraph
 
@@ -33,6 +34,36 @@ class Corpus:
         self.deleteNonRecognizableMWE()
         printStats(self.trainingSents, 'Train', mweDic=self.mweDictionary, langName=langName, test=False)
         printStats(self.testingSents, 'Test', mweDic=self.mweDictionary, test=True)
+
+    def toVocabulary(self):
+        unk = configuration['constants']['unk']
+        empty = configuration['constants']['empty']
+        number = configuration['constants']['number']
+        tokenCounter, posCounter = Counter(), Counter()
+        for s in self.trainingSents:
+            for t in s.tokens:
+                tokenCounter.update({t.getTokenOrLemma(): 1})
+                posCounter.update({t.posTag.lower(): 1})
+        if configuration['embedding']['compactVocab']:
+            for t in tokenCounter.keys():
+                if t not in self.mweTokenDictionary:
+                    del tokenCounter[t]
+        else:
+            for t in tokenCounter.keys():
+                if tokenCounter[t] == 1 and uniform(0, 1) < configuration['constants']['alpha']:
+                    del tokenCounter[t]
+        tokenCounter.update({unk: 1, number: 1, empty: 1})
+        posCounter.update({unk: 1, empty: 1})
+        Corpus.printVocabReport(tokenCounter, posCounter)
+        return {w: i for i, w in enumerate(tokenCounter.keys())}, {w: i for i, w in enumerate(posCounter.keys())}
+
+    @staticmethod
+    def printVocabReport(tokenCounter, posCounter):
+        res = seperator + tabs + 'Vocabulary' + doubleSep
+        res += tabs + 'Tokens := {0} * POS : {1}'.format(len(tokenCounter), len(posCounter)) \
+            if not configuration['xp']['compo'] else ''
+        res += seperator
+        return res
 
     def cleanSents(self):
         if not configuration['tmp']['cleanSents']:
@@ -292,7 +323,7 @@ class Corpus:
         self.mweDictionary = self.getMWEDictionary()
 
     def createMWEFiles(self, seed, title=''):
-        if configuration['evaluation']['corpus'] or configuration['tmp']['outputCupt']:
+        if configuration['evaluation']['corpus'] or configuration['evaluation']['trainVsDev'] or configuration['tmp']['outputCupt']:
             datasetConf, modelConf = configuration['dataset'], configuration['xp']
             dataset = 'ST2' if datasetConf['sharedtask2'] else \
                 ('FTB' if datasetConf['ftb'] else ('DiMSUM' if datasetConf['dimsum'] else 'ST1'))
@@ -314,7 +345,8 @@ class Corpus:
                 if configuration['evaluation'][k]:
                     division = k.lower()
                     break
-            fileHeader = (title + '.' if title else title) + ('.'.join(str(_) for _ in [division, model, dataset, seed, today, self.langName]))
+            fileHeader = (title + '.' if title else title) + (
+                '.'.join(str(_) for _ in [division, model, dataset, seed, today, self.langName]))
             with open(os.path.join(folder, fileHeader + '.cupt'), 'w') as f:
                 f.write(self.toConllU())
             # with open(os.path.join(folder, fileHeader + '.gold.cupt'), 'w') as f:
@@ -2034,6 +2066,27 @@ def getLemmaString(tokens):
     return ' '.join(
         t.lemma.lower() if t.lemma.lower() and t.lemma.lower() != '_' else t.text for t in tokens).lower()
 
+def getFTBDictionary(corpus, path='ressources/FTB/dictionary.md'):
+    dictionary = dict()
+    for s in corpus.trainDataSet:
+        for v in s.vMWEs:
+            cat = v.type2.lower()
+            lemma = v.getLemmaString()
+            if cat not in dictionary:
+                dictionary[cat] = {}
+            if lemma not in dictionary[cat]:
+                dictionary[cat][lemma] = 1
+            else:
+                dictionary[cat][lemma] = dictionary[cat][lemma]+ 1
+    dictionaryTxt = ''
+    for k,v in dictionary.items():
+        dictionaryTxt += '## {0} ({1}) \n\n'.format(k, sum(v.values()))
+        idx = 1
+        for kk, vv in v.items():
+            dictionaryTxt += '\t {0}. {1} : {2}\n\n'.format(idx, kk, vv)
+            idx += 1
+    with open(os.path.join(configuration['path']['projectPath'], path), 'w') as ff:
+        ff.write(dictionaryTxt)
 
 if __name__ == '__main__':
     # sents = readFTB('/Users/halsaied/PycharmProjects/NNIdenSys/ressources/FTB/dev.expandedcpd.gold.conll')

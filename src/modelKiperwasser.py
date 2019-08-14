@@ -21,14 +21,14 @@ import evaluation
 from corpus import getTokens
 from parser import parse
 from reports import seperator, doubleSep, tabs
-
+import facebookEmb
 device = 'cpu'
 dtype = torch.float
 
 enableCategorization = False
 
 configuration = config.configuration
-
+import numpy as np
 unk = configuration['constants']['unk']
 empty = configuration['constants']['empty']
 number = configuration['constants']['number']
@@ -45,9 +45,12 @@ class TransitionClassifier(nn.Module):
         if use_pretrained_w_emb, the indices.w_embeddings_matrix will be used
         """
         super(TransitionClassifier, self).__init__()
-        self.tokenVocab, self.posVocab = getVocab(corpus)
+        self.tokenVocab, self.posVocab = corpus.toVocabulary()
         self.p_embeddings = nn.Embedding(len(self.posVocab), configuration['kiperwasser']['posDim'])
         self.w_embeddings = nn.Embedding(len(self.tokenVocab), configuration['kiperwasser']['wordDim'])
+        if configuration['kiperwasser']['pretrained']:
+            self.tokenVocab, embeddingMatrix = facebookEmb.getEmbMatrix(corpus.langName, self.tokenVocab.keys())
+            self.w_embeddings.load_state_dict({'weight': torch.FloatTensor(embeddingMatrix)})
         embeddingDim = configuration['kiperwasser']['wordDim'] + configuration['kiperwasser']['posDim']
         if configuration['kiperwasser']['gru']:
             self.rnn = nn.GRU(embeddingDim,
@@ -70,7 +73,7 @@ class TransitionClassifier(nn.Module):
             configuration['kiperwasser']['focusedElemNum'] * configuration['kiperwasser']['rnnUnitNum'] * 2,
             configuration['kiperwasser']['dense1'])
         # dropout here is very detrimental
-        # self.dropout1 = nn.Dropout(p=0.3)
+        self.dropout1 = nn.Dropout(p=0.3)
         self.linear2 = nn.Linear(configuration['kiperwasser']['dense1'], 8 if enableCategorization else 4)
 
     def forward(self, sentEmbs, activeElemIdxs):
@@ -144,6 +147,78 @@ class TransitionClassifier(nn.Module):
         return torch.LongTensor(tokenIdxs).to(device), torch.LongTensor(POSIdxs).to(device)
 
 
+def getTrainData(corpus, model):
+
+    pointer = int(len(corpus.trainingSents) * (1 -  configuration['nn']['validationSplit']))
+    trainSents = corpus.trainingSents[:pointer]
+    sentRanks = range(len(trainSents))
+    shuffle(sentRanks)
+    labels, data = [], [[], [], []]
+
+    for i in sentRanks:
+        sent = trainSents[i]
+        trans = sent.initialTransition
+        transNum = 0
+        while trans and trans.next:
+            goldT = 3 if trans.next.type.value > 2 and not enableCategorization else trans.next.type.value
+            labels.append(goldT)
+            tokenIdxs, posIdxs = model.getIdxs(sent)
+            focusedIdxs = getFocusedElems(trans.configuration)
+            data[0].append(tokenIdxs)
+            data[1].append(posIdxs)
+            data[2].append(focusedIdxs)
+            if configuration['kiperwasser']['sampling'] and trans.isImportantTrans() \
+                    and transNum < configuration['kiperwasser']['samplingTaux']:
+                transNum += 1
+            else:
+                trans = trans.next
+
+    return data, labels
+
+
+def train2(corpus):
+    """
+    version avec bi-LSTM sur toute la phrase, et mise à jour des paramètres à chaque phrase
+    (calcul de la perte pour une phrase complete)
+    """
+    global device
+    device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
+    # nb of sentence positions taken to build input vector representing a parse configuration
+    model = TransitionClassifier(corpus).to(device)
+    optimizer = getOptimizer(model.parameters())
+    lossFunction = nn.NLLLoss()
+    data, labels = getTrainData(corpus, model)
+    batchNumber = int(len(data) / configuration['nn']['batchSize']) - 1
+    for epoch in range(configuration['nn']['epochs']):
+        for i in range(batchNumber):
+            # Local batches and labels
+            batchTokens = data[0][i * batchNumber:(i + 1) * batchNumber]
+            batchPoss = data[1][i * batchNumber:(i + 1) * batchNumber]
+            batchActiveTokens = data[2][i * batchNumber:(i + 1) * batchNumber]
+            batchLabels = labels[i * batchNumber:(i + 1) * batchNumber]
+
+            transLosses, retain_graph = [], True
+            tokenEmbed = model.w_embeddings(batchTokens).to(device)
+            posEmbed = model.p_embeddings(batchPoss).to(device)
+            sentEmbeds = torch.cat([tokenEmbed, posEmbed], 1).to(device)
+            model.hiddenRnn = initHiddenRnn()
+            rnnOutput, model.hiddenRnn = model.rnn(sentEmbeds.view(len(batchTokens), 1, -1), model.hiddenRnn)
+            rnnOutput =  rnnOutput.view(len(batchTokens), -1)
+            activeElems = selectRows(rnnOutput, batchActiveTokens).view((1, -1))
+            out = f.relu(model.linear1(activeElems)) \
+                if configuration['kiperwasser']['denseActivation'] == 'relu' else \
+                f.tanh(model.linear1(activeElems))
+            if configuration['kiperwasser']['denseDropout']:
+                out = model.dropout1(out)
+            out = model.linear2(out)
+            predT = f.log_softmax(out, dim=1)
+            loss = lossFunction(predT, toTensor(batchLabels))
+            loss.backward(retain_graph=retain_graph)
+            optimizer.step()
+
+
+
+
 def train(corpus, conf, trainedModel=None, trainValidation=False):
     """
     version avec bi-LSTM sur toute la phrase, et mise à jour des paramètres à chaque phrase
@@ -163,12 +238,12 @@ def train(corpus, conf, trainedModel=None, trainValidation=False):
         fileNum = randint(0, 500)
         filePath = os.path.join(configuration['path']['projectPath'], 'Reports',
                                 str(fileNum) + '.' + configuration['kiperwasser']['file'])
-        sys.stdout.write('\n' + tabs+ 'Best model path: ' + '/'.join(filePath.split('/')[-2:]) + seperator)
+        sys.stdout.write('\n' + tabs + 'Best model path: ' + '/'.join(filePath.split('/')[-2:]) + seperator)
     # losses of validation set for each epoch
     epochLosses, validLosses, validAccuracies = [], [], []
     if not trainValidation and configuration['kiperwasser']['verbose']:
-        sys.stderr.write(tabs + str(model) + doubleSep)
-        sys.stderr.write(tabs + str(optimizer) + doubleSep)
+        sys.stdout.write(tabs + str(model) + doubleSep)
+        sys.stdout.write(tabs + str(optimizer) + doubleSep)
     # ------------ if validation asked -------------
     validSeuil = configuration['nn']['validationSplit']
     pointer = int(len(corpus.trainingSents) * (1 - validSeuil))
@@ -190,12 +265,12 @@ def train(corpus, conf, trainedModel=None, trainValidation=False):
                     sentLoss.backward()
                     optimizer.step()
         epochLosses.append(epochLoss)
-        sys.stderr.write('Epoch %d:  Total loss = %f on %d\n' % (epoch, epochLoss, usedSents)
+        sys.stdout.write('Epoch %d:  Total loss = %f on %d\n' % (epoch, epochLoss, usedSents)
                          if configuration['kiperwasser']['verbose'] and not trainValidation else '')
         if not trainValidation:
             valLoss = getCorpusLoss(validSents, model, lossFunction, optimizer)
             validAcc = evaluate(validSents, model)
-            sys.stderr.write('Validation loss: %f, Identification accuracy: %f\n' % (valLoss, validAcc)
+            sys.stdout.write('Validation loss: %f, Identification accuracy: %f\n' % (valLoss, validAcc)
                              if configuration['kiperwasser']['verbose'] and not trainValidation else '')
             # save model if validation loss has decreased
             # if validLosses and valLoss <= validLosses[-1]:
@@ -204,10 +279,10 @@ def train(corpus, conf, trainedModel=None, trainValidation=False):
             # early stopping
             elif configuration['nn']['earlyStop'] and \
                     epoch > configuration['nn']['patience'] and \
-                    validAcc < max(validAccuracies):
+                    validAcc < max(validAccuracies) and os.path.isfile(filePath):
                 model = torch.load(filePath)
-                sys.stderr.write(tabs + 'identification accuracy has decreased (), '
-                                 'stop and retrain using %d epochs\n' % (epoch - 1))
+                sys.stdout.write(tabs + 'identification accuracy has decreased (), '
+                                        'stop and retrain using %d epochs\n' % (epoch - 1))
                 if configuration['kiperwasser']['trainValidationSet']:
                     configuration['nn']['epochs'] = epoch - 1  # (cf. epoch est décalé de 1)
                     return train(corpus, configuration, model, trainValidation=True)
@@ -236,13 +311,16 @@ def initHiddenRnn():
     :return:
     """
     if configuration['kiperwasser']['gru']:
-        return torch.zeros(configuration['kiperwasser']['rnnLayerNum'] * 2, configuration['kiperwasser']['batch'],
+        return torch.zeros(configuration['kiperwasser']['rnnLayerNum'] * 2,
+                           configuration['kiperwasser']['batch'],
                            configuration['kiperwasser']['rnnUnitNum']).to(device)
     else:
-        return torch.zeros(configuration['kiperwasser']['rnnLayerNum'] * 2, configuration['kiperwasser']['batch'],
+        return (torch.zeros(configuration['kiperwasser']['rnnLayerNum'] * 2,
+                           configuration['kiperwasser']['batch'],
                            configuration['kiperwasser']['rnnUnitNum']).to(device), \
-               torch.zeros(configuration['kiperwasser']['rnnLayerNum'] * 2, configuration['kiperwasser']['batch'],
-                           configuration['kiperwasser']['rnnUnitNum']).to(device)
+               torch.zeros(configuration['kiperwasser']['rnnLayerNum'] * 2,
+                           configuration['kiperwasser']['batch'],
+                           configuration['kiperwasser']['rnnUnitNum']).to(device))
 
 
 def selectRows(sentEmbeds, idxs):
@@ -268,33 +346,6 @@ def getCorpusLoss(sents, model, lossFunction, optimizer):
         loss += sentLoss.item() if sentLoss else 0.
     return loss
 
-
-def getVocab(corpus):
-    tokenCounter, posCounter = Counter(), Counter()
-    for s in corpus.trainingSents:
-        for t in s.tokens:
-            tokenCounter.update({t.getTokenOrLemma(): 1})
-            posCounter.update({t.posTag.lower(): 1})
-    if configuration['embedding']['compactVocab']:
-        for t in tokenCounter.keys():
-            if t not in corpus.mweTokenDictionary:
-                del tokenCounter[t]
-    else:
-        for t in tokenCounter.keys():
-            if tokenCounter[t] == 1 and uniform(0, 1) < configuration['constants']['alpha']:
-                del tokenCounter[t]
-    tokenCounter.update({unk: 1, number: 1})
-    posCounter.update({unk: 1})
-    printVocabReport(tokenCounter, posCounter)
-    return {w: i for i, w in enumerate(tokenCounter.keys())}, {w: i for i, w in enumerate(posCounter.keys())}
-
-
-def printVocabReport(tokenCounter, posCounter):
-    res = seperator + tabs + 'Vocabulary' + doubleSep
-    res += tabs + 'Tokens := {0} * POS : {1}'.format(len(tokenCounter), len(posCounter)) \
-        if not configuration['xp']['compo'] else ''
-    res += seperator
-    return res
 
 
 def getFocusedElems(config):
@@ -351,7 +402,8 @@ def getSentLoss(sent, model, lossFunction, optimizer):
             loss.backward(retain_graph=retain_graph)
             optimizer.step()
             retain_graph = False
-        if configuration['kiperwasser']['sampling'] and trans.isImportantTrans() and transNum < 50:
+        if configuration['kiperwasser']['sampling'] and trans.isImportantTrans() \
+                and transNum < configuration['kiperwasser']['samplingTaux']:
             transNum += 1
         else:
             trans = trans.next

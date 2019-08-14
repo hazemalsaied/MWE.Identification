@@ -11,7 +11,6 @@ def runRSGSpontaneously(langs, dataset, xpMode, division,
     for i in range(xpNumByThread):
         generateConf(xpMode)
         configs.append(copy.deepcopy(configuration))
-
     for i in range(xpNumByThread):
         configuration.update(configs[i])
 
@@ -77,8 +76,7 @@ def createRSG(fileName, xpMode, xpNum=1000):
         generateConf(xpMode)
         resultDic[i] = [False, copy.deepcopy(configuration)]
         # resultDic[0] == resultDic[1]:
-    pickle.dump(resultDic, open(os.path.join(configuration['path']['projectPath'],
-                                             'ressources/RSG', fileName), 'wb'))
+    pickle.dump(resultDic, open(os.path.join(configuration['path']['projectPath'],'ressources/RSG', fileName), 'wb'))
 
 
 def getGrid(fileName):

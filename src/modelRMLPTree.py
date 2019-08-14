@@ -188,7 +188,7 @@ def trainValidationData(model, data, labels, history):
     labels, data = getValidationData(labels, data)
     history = model.fit(data, np.asarray(labels),
                         epochs=len(history.epoch),
-                        batch_size=configuration['rmlpTree']['batchSize'],
+                        batch_size=configuration['nn']['batchSize'],
                         verbose=0)
     return history
 

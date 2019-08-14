@@ -206,7 +206,7 @@ def evaluateRMLP(langs=allSharedtask2Lang, xpMode=XpMode.rmlp):
 
     division = Evaluation.trainVsDev
     BestConfig.rmlpClosed()
-    xp(langs, Dataset.sharedtask2, xpMode, division, title='RMLP.CPP.Closed')
+    xp(langs[16:], Dataset.sharedtask2, xpMode, division, title='RMLP.CPP.Closed')
     BestConfig.rmlpOpen()
     xp(langs, Dataset.sharedtask2, xpMode, division, title='RMLP.CPP.Open')
     TrendConfig.rmlp()
@@ -229,11 +229,11 @@ def evaluateRMLPTree(langs=allSharedtask2Lang, xpMode=XpMode.rmlpTree):
 
     division = Evaluation.trainVsDev
     BestConfig.rmlpClosed()
-    xp(langs, Dataset.sharedtask2, xpMode, division, title='RMLP.Tree.CPP.Closed')
+    #xp(langs, Dataset.sharedtask2, xpMode, division, title='RMLP.Tree.CPP.Closed')
     BestConfig.rmlpOpen()
-    xp(langs, Dataset.sharedtask2, xpMode, division, title='RMLP.Tree.CPP.Open')
+    #xp(langs, Dataset.sharedtask2, xpMode, division, title='RMLP.Tree.CPP.Open')
     TrendConfig.rmlp()
-    xp(langs, Dataset.sharedtask2, xpMode, division, title='RMLP.Tree.CT')
+    xp(langs[16:], Dataset.sharedtask2, xpMode, division, title='RMLP.Tree.CT')
 
     # CORPUS
     division = Evaluation.corpus
@@ -286,11 +286,15 @@ def evaluateMLPWideOnClosed():
     configuration['embedding']['pretrained'] = False
     xp(allSharedtask2Lang, Dataset.sharedtask2, XpMode.mlpWide, Evaluation.corpus, seeds=range(1))
 
-def analyzeResampling(langs=allSharedtask2Lang, xpMode=XpMode.linear, division=Evaluation.trainVsDev, xpNum=5):
+def analyzeResampling(langs=allSharedtask2Lang, xpMode=XpMode.linear,
+                      division=Evaluation.trainVsDev, linear=True, xpNum=5):
     
     # without any resampling
-    TrendConfig.mlp()
-    # LinearConf.setSVMConf()
+    if linear:
+        LinearConf.setSVMConf()
+    else:
+        TrendConfig.mlp()
+        xpMode= None
     configuration['sampling'].update({
         'sampleWeight': False,
         'favorisationCoeff': 1,
@@ -374,7 +378,6 @@ def analyzeResampling(langs=allSharedtask2Lang, xpMode=XpMode.linear, division=E
     })
     xp(langs, Dataset.sharedtask2, xpMode, division, xpNum=xpNum)
     
-    
     # overSampling  + importantSentences + sampleWeight
     configuration['sampling'].update({
         'sampleWeight': False,
@@ -392,18 +395,16 @@ def analyzeResampling(langs=allSharedtask2Lang, xpMode=XpMode.linear, division=E
 if __name__ == '__main__':
     reload(sys)
     sys.setdefaultencoding('utf8')
+    import rsg
+    rsg.runRSGSpontaneously(['FR'], Dataset.sharedtask2, XpMode.kiperwasser, Evaluation.fixedSize)
     # evaluateRMLP()
     # evaluateRMLPTree()
     # svm.resampling
-    # analyzeResampling(allSharedtask2Lang, division= Evaluation.trainVsDev, xpNum=1)
-    
+    # analyzeResampling(allSharedtask2Lang, division=Evaluation.trainVsDev, linear=True, xpNum=1)
     # mlp.resampling
-    analyzeResampling(allSharedtask2Lang, division=Evaluation.trainVsDev, xpNum=5)
-
-
+    # analyzeResampling(allSharedtask2Lang, division=Evaluation.trainVsDev, xpNum=5)
     # configuration['embedding']['pretrained'] = False
     # configuration['tmp']['trainJointly'] = True
     # configuration['nn']['jointLearningEpochs'] = 10
-    # xp(['FR'], Dataset.sharedtask2, XpMode.multitasking, None) # Evaluation.trainVsDev
 
 

@@ -93,7 +93,7 @@ class Network:
         history = self.model.fit([np.asarray(tokenIdxs), np.asarray(posIdxs)], lbls,
                                  validation_split=params['validationSplit'],
                                  epochs=params['epochs'],
-                                 batch_size=params['batchSize'],
+                                 batch_size=rnnConf['batchSize'],
                                  callbacks=callbacks,
                                  verbose=2,
                                  sample_weight=sampleWeights)

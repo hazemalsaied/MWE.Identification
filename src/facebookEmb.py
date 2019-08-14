@@ -30,7 +30,7 @@ def getEmbMatrix(lang, vocab, dimension=300,inverseVocab=False):
         if vocab[i] in wordEmbDic:
             embeddingMatrix[i] = np.asarray(wordEmbDic[vocab[i]], dtype=float)
         elif '_' not in vocab[i]:
-            embeddingMatrix[i] = np.random.uniform(low=-.5, high=.5, size=(1, configuration['mlp']['tokenEmb']))
+            embeddingMatrix[i] = np.random.uniform(low=-.5, high=.5, size=(1, dimension))
     for i in idxs:
         newWord = False
         if '_' in vocab[i]:
@@ -48,7 +48,7 @@ def getEmbMatrix(lang, vocab, dimension=300,inverseVocab=False):
                 else:
                     embeddingMatrix[i] = avVec
         if '_' not in vocab[i] or newWord:
-            embeddingMatrix[i] = np.random.uniform(low=-.5, high=.5, size=(1, configuration['mlp']['tokenEmb']))
+            embeddingMatrix[i] = np.random.uniform(low=-.5, high=.5, size=(1, dimension))
 
 
 

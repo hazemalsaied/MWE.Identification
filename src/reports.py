@@ -892,9 +892,9 @@ class OSTools:
         return allFiles
 
     @staticmethod
-    def cleanReports():
+    def cleanReports(path='Reports/Reports'):
         proPath = os.path.dirname(__file__)[:-len(os.path.basename(os.path.dirname(__file__)))]
-        directory = os.path.join(proPath, 'Reports/Reports')
+        directory = os.path.join(proPath, path)
         lab1 = 'WARNING'
         lab2 = 'INFO'
         files = OSTools.getListOfFiles(directory)
@@ -939,7 +939,7 @@ class OSTools:
             if ff.endswith('train.cupt'):
                 filename = ff.split('/')[-1]
                 filenameNumber = int(filename[2]) + 1
-                filename = filename[:2] + str(filenameNumber )+ filename[3:]
+                filename = filename[:2] + str(filenameNumber) + filename[3:]
                 copyfile(ff, os.path.join(destPath, filename))
 
     @staticmethod
@@ -949,10 +949,12 @@ class OSTools:
         for ff in files:
             if ff.endswith('train.txt.cupt'):
                 os.remove(ff)
+
+
 if __name__ == '__main__':
-    files = [f for f in os.listdir('../Reports/Reports/') if f.startswith('mlp')]
-    # OSTools.cleanReports()
+    files = [f for f in os.listdir('../Reports/Reports/') if f.startswith('rmlp.ev')]
+    OSTools.cleanReports()
     # mineSTScriptRes('baseline.cv')
-    # generateOarsub(xpNum=10, duration=72, tourNum=1, name='rmlpTree')
+    # generateOarsub(xpNum=10, duration=72, tourNum=3, name='kiper')
     # parseChenManningReports(files)
-    getNewScores(files, ['corpus', 'fixed', 'dev'][0])
+    # getNewScores(files, ['corpus', 'fixed', 'dev'][2])
