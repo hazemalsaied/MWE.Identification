@@ -1,0 +1,65 @@
+Evaluating dev:  BG
+Tagging from gold tokenization - forms: 39220, upostag: 98.84%, xpostag: 97.21%, feats: 97.75%, alltags: 97.05%, lemmas: 96.03%
+Evaluating test:  BG
+Tagging from gold tokenization - forms: 39220, upostag: 98.62%, xpostag: 97.10%, feats: 97.60%, alltags: 96.94%, lemmas: 96.19%
+Evaluating dev:  DE
+Tagging from gold tokenization - forms: 22092, upostag: 95.11%, xpostag: 95.51%, feats: 87.91%, alltags: 84.78%, lemmas: 95.49%
+Evaluating test:  DE
+Tagging from gold tokenization - forms: 20524, upostag: 94.36%, xpostag: 95.58%, feats: 87.10%, alltags: 83.89%, lemmas: 95.38%
+Evaluating dev:  EL
+Tagging from gold tokenization - forms: 64776, upostag: 93.26%, xpostag: 89.69%, feats: 86.73%, alltags: 84.80%, lemmas: 89.18%
+Evaluating test:  EL
+Tagging from gold tokenization - forms: 35860, upostag: 95.88%, xpostag: 94.63%, feats: 92.15%, alltags: 90.43%, lemmas: 92.77%
+Evaluating dev:  EN
+Tagging from gold tokenization - forms: 70998, upostag: 0%, xpostag: 0%, feats: 0%, alltags: 0%, lemmas: 0%
+Evaluating test:  EN
+Tagging from gold tokenization - forms: 70998, upostag: 90.95%, xpostag: 56.67%, feats: 71.36%, alltags: 55.52%, lemmas: 93.54%
+Evaluating dev:  ES
+Tagging from gold tokenization - forms: 26220, upostag: 96.94%, xpostag: 100.00%, feats: 97.28%, alltags: 95.63%, lemmas: 95.27%
+Evaluating test:  ES
+Tagging from gold tokenization - forms: 58861, upostag: 93.70%, xpostag: 100.00%, feats: 96.02%, alltags: 91.68%, lemmas: 92.57%
+Evaluating dev:  EU
+Tagging from gold tokenization - forms: 21604, upostag: 55.60%, xpostag: 53.97%, feats: 58.35%, alltags: 48.04%, lemmas: 88.68%
+Evaluating test:  EU
+Tagging from gold tokenization - forms: 19038, upostag: 65.59%, xpostag: 66.17%, feats: 66.66%, alltags: 58.33%, lemmas: 88.73%
+Evaluating dev:  FA
+Tagging from gold tokenization - forms: 8923, upostag: 95.11%, xpostag: 100.00%, feats: 100.00%, alltags: 95.11%, lemmas: 92.91%
+Evaluating test:  FA
+Tagging from gold tokenization - forms: 7492, upostag: 95.56%, xpostag: 100.00%, feats: 100.00%, alltags: 95.56%, lemmas: 93.47%
+Evaluating dev:  FR
+Tagging from gold tokenization - forms: 54685, upostag: 96.76%, xpostag: 83.78%, feats: 91.30%, alltags: 77.25%, lemmas: 96.98%
+Evaluating test:  FR
+Tagging from gold tokenization - forms: 38402, upostag: 94.84%, xpostag: 53.13%, feats: 78.33%, alltags: 45.42%, lemmas: 67.14%
+Evaluating dev:  HE
+Tagging from gold tokenization - forms: 65843, upostag: 90.25%, xpostag: 90.25%, feats: 87.45%, alltags: 86.02%, lemmas: 86.44%
+Evaluating test:  HE
+Tagging from gold tokenization - forms: 65698, upostag: 89.48%, xpostag: 89.48%, feats: 86.64%, alltags: 84.94%, lemmas: 85.40%
+Evaluating dev:  HI
+Tagging from gold tokenization - forms: 17580, upostag: 0%, xpostag: 0%, feats: 0%, alltags: 0%, lemmas: 0%
+Evaluating test:  HI
+Tagging from gold tokenization - forms: 17580, upostag: 90.29%, xpostag: 88.69%, feats: 84.63%, alltags: 81.30%, lemmas: 95.51%
+Evaluating dev:  HR
+Tagging from gold tokenization - forms: 19621, upostag: 95.88%, xpostag: 100.00%, feats: 79.86%, alltags: 79.18%, lemmas: 90.07%
+Evaluating test:  HR
+Tagging from gold tokenization - forms: 16429, upostag: 95.44%, xpostag: 100.00%, feats: 80.27%, alltags: 79.51%, lemmas: 90.63%
+Evaluating dev:  HU
+Tagging from gold tokenization - forms: 15564, upostag: 98.48%, xpostag: 100.00%, feats: 97.39%, alltags: 97.38%, lemmas: 98.44%
+Evaluating test:  HU
+Tagging from gold tokenization - forms: 20759, upostag: 98.12%, xpostag: 100.00%, feats: 96.79%, alltags: 96.79%, lemmas: 98.30%
+Evaluating dev:  IT
+Tagging from gold tokenization - forms: 31220, upostag: 96.61%, xpostag: 95.92%, feats: 96.97%, alltags: 95.18%, lemmas: 95.96%
+Evaluating test:  IT
+Tagging from gold tokenization - forms: 35558, upostag: 96.99%, xpostag: 96.29%, feats: 97.38%, alltags: 95.71%, lemmas: 95.97%
+Evaluating dev:  PL
+Tagging from gold tokenization - forms: 26014, upostag: 96.18%, xpostag: 87.04%, feats: 84.42%, alltags: 83.41%, lemmas: 93.65%
+Evaluating test:  PL
+Tagging from gold tokenization - forms: 27661, upostag: 80.76%, xpostag: 79.42%, feats: 36.20%, alltags: 27.88%, lemmas: 93.34%
+Evaluating dev:  PT
+Tagging from gold tokenization - forms: 64078, upostag: 96.00%, xpostag: 63.89%, feats: 95.26%, alltags: 60.23%, lemmas: 97.23%
+Evaluating test:  PT
+Tagging from gold tokenization - forms: 58604, upostag: 95.84%, xpostag: 59.16%, feats: 95.01%, alltags: 55.47%, lemmas: 96.96%
+Evaluating dev:  RO
+Tagging from gold tokenization - forms: 118658, upostag: 98.81%, xpostag: 98.43%, feats: 98.51%, alltags: 98.41%, lemmas: 96.40%
+Evaluating test:  RO
+Tagging from gold tokenization - forms: 114997, upostag: 98.88%, xpostag: 98.55%, feats: 98.61%, alltags: 98.52%, lemmas: 96.50%
+

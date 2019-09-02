@@ -79,7 +79,7 @@ class ReportMiner:
         results, pl = [], ''
         with open(path, 'r') as log:
             for l in log.readlines():
-                if l.startswith(line) and pl == previousLine:
+                if l.startswith(line) and pl.startswith(previousLine):
                     results.append(l[len(line):-1])
                 if usePreviousLine:
                     pl = l
@@ -99,6 +99,32 @@ class ReportMiner:
                                                 params[i].split(',')[0] + '.' + params[i].split(',')[1][0],
                                                 configs[i],
                                                 str(ff)])
+
+    @staticmethod
+    def parseUdPIPE(files):
+        for ff in files:
+            path = os.path.join('../Reports/Reports/', ff)
+            langs = ReportMiner.mineReport(path, 'Evaluating dev:')
+            devResults = ReportMiner.mineReport(path, 'Parsing from gold tokenization with gold tags - forms:',
+                                                usePreviousLine=True,
+                                                previousLine='Evaluating dev:')
+            tstResults = ReportMiner.mineReport(path, 'Parsing from gold tokenization with gold tags - forms:',
+                                                usePreviousLine=True,
+                                                previousLine='Evaluating test:')
+            for i in range(len(langs)):
+                print ','.join(str(x) for x in [langs[i],
+                                                devResults[i] if i < len(devResults) else '-',
+                                                tstResults[i] if i < len(tstResults) else '-'])
+
+    @staticmethod
+    def parsePOSUdPIPE(files):
+        for ff in files:
+            path = os.path.join('../Reports/Reports/', ff)
+            langs = ReportMiner.mineReport(path, 'Evaluating')
+            results = ReportMiner.mineReport(path, 'Tagging from gold tokenization - forms: ')
+            for i in range(len(langs)):
+                print ','.join(str(x) for x in [langs[i],
+                                                results[i] if i < len(results) else '-'])
 
     @staticmethod
     def analyzeCatReport():
@@ -318,7 +344,7 @@ class OSTools:
         files = OSTools.getListOfFiles('/Users/halsaied/PycharmProjects/MWE.Identification/Reports/Reports')
         for ff in files:
             if 'kiper' in ff:
-              res += 'Reports/' + ff.split('/')[-1] + ' '
+                res += 'Reports/' + ff.split('/')[-1] + ' '
         print res
 
     @staticmethod
@@ -392,13 +418,49 @@ class OSTools:
                     idx += 1
 
 
+def mad(numberList):
+    m = float(sum(numberList)) / len(numberList)
+    devs = []
+    for n in numberList:
+        devs.append(n - m if n > m else m - n)
+    return round(float(sum(devs)) / len(devs), 1)
+
+
+def readResamplingReport():
+    with open('/Users/halsaied/PycharmProjects/MWE.Identification/Reports/tmp.csv', 'r') as ff:
+        content = ff.readlines()
+        results = []
+        for line1 in content:
+            lineParts = line1.split(',')
+            results.append([lineParts[0], float(lineParts[1]), float(lineParts[2]), float(lineParts[3])])
+        for i in range(len(results) / 5):
+            f = round(float(
+                float(results[i * 5][1]) + float(results[i * 5 + 1][1]) + float(results[i * 5 + 2][1]) + float(
+                    results[i * 5 + 3][1]) + float(results[i * 5 + 4][1])) / 5, 1)
+            p = round(float(results[i * 5][2] + results[i * 5 + 1][2] + results[i * 5 + 2][2] + results[i * 5 + 3][2] +
+                            results[i * 5 + 4][2]) / 5, 1)
+            r = round(float(results[i * 5][3] + results[i * 5 + 1][3] + results[i * 5 + 2][3] + results[i * 5 + 3][3] +
+                            results[i * 5 + 4][3]) / 5, 1)
+            m = mad([results[i * 5][1], results[i * 5 + 1][1], results[i * 5 + 2][1], results[i * 5 + 3][1],
+                     +results[i * 5 + 4][1]])
+            print results[i * 5][0], f, p, r, m
 
 
 if __name__ == '__main__':
-    files = [f for f in os.listdir('../Reports/Reports/') if f.startswith('kiper')]
+    files = [f for f in os.listdir('../Reports/Reports/') if f.startswith('jointModel1')]
     # OSTools.cleanReports()
     # mineSTScriptRes('baseline.cv')
-    # STDOutTools.generateOarsub(xpNum=10, duration=72, tourNum=3, name='kiper')
-    # STDOutTools.generateKiperOarsub(xpNum=10, duration=72, tourNum=3, name='kiper')
-    # parseChenManningReports(files)
-    ReportMiner.getNewScores(files, ['corpus', 'fixed', 'dev'][1])
+    STDOutTools.generateOarsub(xpNum=10, duration=72, tourNum=1, name='jointModel1')
+    # STDOutTools.generateKiperOarsub(xpNum=5, duration=5, tourNum=1, name='k.debug')
+
+    # with open(os.path.join(os.path.dirname(__file__)[:-len(os.path.basename(os.path.dirname(__file__)))],
+    # 'Reports/train.conll'), 'r') as ff:
+    #     for l in ff.readlines():
+    #         if len(l.split('\t')) == 10:
+    #             # print l.split('\t')[0]
+    #             if '-' in l.split('\t')[3]:
+    #                 print l
+
+    # ReportMiner.parseUdPIPE(files)
+    # readResamplingReport()
+    # ReportMiner.getNewScores(files, ['corpus', 'fixed', 'dev'][1])

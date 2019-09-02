@@ -101,13 +101,13 @@ def evaluateDiMSUM():
 
 
 def evaluateDiMSUMAfterTunning():
-    BestConfig.mlpDimsum()
+    BestConfig.mlpDimsumClosed()
     xp(['EN'], Dataset.dimsum, None, Evaluation.corpus, seeds=range(2))
     # xp(['EN'], Dataset.dimsum, None, Evaluation.dev, seeds=range(2))
     TrendConfig.mlpDimsum()
     xp(['EN'], Dataset.dimsum, None, Evaluation.corpus, seeds=range(2))
     # xp(['EN'], Dataset.dimsum, None, Evaluation.dev, seeds=range(2))
-    BestConfig.mlpDimsum()
+    BestConfig.mlpDimsumClosed()
     configuration['mlp']['tokenEmb'] = 300
     configuration['embedding']['pretrained'] = True
     xp(['EN'], Dataset.dimsum, None, Evaluation.corpus, seeds=range(2))
@@ -394,18 +394,67 @@ def analyzeResampling(langs=allSharedtask2Lang, xpMode=XpMode.linear,
 if __name__ == '__main__':
     reload(sys)
     sys.setdefaultencoding('utf8')
-    # configuration['kiperwasser']['useBatches'] = True
-    #configuration['kiperwasser']['batch'] = 16
-    xp(['FR'], Dataset.sharedtask2, XpMode.kiperwasser, None)
-
-    # import rsg
-    # rsg.runRSGSpontaneously(['FR'], Dataset.sharedtask2, XpMode.kiperwasser, None)
-    # evaluateRMLP()
-    # evaluateRMLPTree()
-    # svm.resampling
-    # analyzeResampling(allSharedtask2Lang, division=Evaluation.trainVsDev, linear=True, xpNum=1)
-    # mlp.resampling
-    # analyzeResampling(allSharedtask2Lang, division=Evaluation.trainVsDev, xpNum=5)
-    # configuration['embedding']['pretrained'] = False
+    # jointModel1
+    # configuration['tmp']['createDepGraphs'] = True
+    # configuration['others']['analyzePerformance'] = False
     # configuration['tmp']['trainJointly'] = True
-    # configuration['nn']['jointLearningEpochs'] = 10
+    # import rsg
+    # rsg.runRSGSpontaneously(pilotLangs,
+    #                         dataset=Dataset.sharedtask2,
+    #                         xpMode=XpMode.multitasking,
+    #                         division=Evaluation.fixedSize,
+    #                         xpNumByThread=200)
+
+    # depParsing.eval
+    # configuration['tmp']['trainDepParser'] = True  # trainJointly
+    # TrendConfig.mtDepParsing()
+    # xp(allSynSharedtask2Lang[12:], dataset=Dataset.sharedtask2, xpMode=XpMode.multitasking,
+    #    division=Evaluation.trainVsDev)
+    # BestConfig.mtDepParsing()
+    # xp(allSynSharedtask2Lang[12:], dataset=Dataset.sharedtask2, xpMode=XpMode.multitasking,
+    #    division=Evaluation.trainVsDev)
+
+    configuration['others']['analyzePerformance'] = False
+    configuration['nn']['epochs'] = 15
+    # configuration['kiperwasser']['useBatches'] = True
+    # configuration['kiperwasser']['batch'] = 96
+    # xp(['FR'], Dataset.sharedtask2, XpMode.kiperwasser,None)
+    import rsg
+    from config import Generator
+    for i in range(5):
+        configuration['kiperwasser'].update({
+            'wordDim': 50, #int(Generator.generateValue([50, 350], True)),
+            'posDim': 5, #int(Generator.generateValue([5, 75], True)),
+            'optimizer': 'adagrad',
+            'lr': .01, #round(Generator.generateValue([0.01, 0.2], True), 3),
+            'dropout': .1, #float(Generator.generateValue([.1, .2, .3, .4, .5, .6, .7], False)),
+            'batch': int(Generator.generateValue([96, 128, 256], False)),
+            'dense1': 50, #int(Generator.generateValue([50, 250], True)),
+            'denseActivation': 'tanh', #str(Generator.generateValue(['tanh', 'relu'], False)),
+            'denseDropout': .1, #float(Generator.generateValue([0, .1, .2, .3, .4], False)),
+            'rnnUnitNum': 10, #int(Generator.generateValue([50, 150], True)),
+            'rnnDropout': .1, #float(Generator.generateValue([.1, .2, .3, .4, .5, .6, .7], False)),
+            'rnnLayerNum': 1,  # int(Generator.generateValue([1, 2], False)),
+            'focusedElemNum': 8,
+            'file': 'kiper.p',
+            'earlyStop': True,
+            'verbose': True,
+            'eager': False,# Generator.generateValue([True, False], False),
+            'gru': False  # Generator.generateValue([True, False], False)
+            # 'trainValidationSet': Generator.generateValue([True, False], False),
+            # 'sampling': Generator.generateValue([True, False], False),
+            # 'samplingTaux':  int(Generator.generateValue([5, 50], True)),
+            # 'pretrained': Generator.generateValue([True, False], False)
+        })
+        if configuration['kiperwasser']['pretrained']:
+            configuration['kiperwasser']['wordDim'] = 300
+        # configuration['sampling']['importantSentences'] = Generator.generateValue([True, False], False)
+        # configuration['embedding']['compactVocab'] = Generator.generateValue([True, False], False)
+        configuration['embedding']['lemma'] = True # Generator.generateValue([True, False], False)
+        configuration['nn'].update({
+            'epochs': 15,
+            'minDelta': 0.001, # round(Generator.generateValue([0.001, 0.1], True), 3),
+            'patience': 4,
+        })
+
+        xp(['FR'], Dataset.sharedtask2, XpMode.kiperwasser, None)

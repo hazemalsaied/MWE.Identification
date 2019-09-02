@@ -42,7 +42,6 @@ configuration = {
         'testOnToken': True,
         'useB1': True,
         'useBx': True,
-
         'sytacticLabelDim': 25,
         'depParsingDenseUnits': 200
     },
@@ -149,7 +148,7 @@ configuration = {
         'cvFolds': 5,
         'currentIter': -1,
         'shuffleTrain': False,
-        'debugTrainNum': 10,
+        'debugTrainNum': 100,
         'test': 0.2,
         'tokenAvg': 270000,
         'testTokenAvg': 43000,
@@ -174,7 +173,6 @@ configuration = {
         'analyzePerformance': True
     },
     'kiperwasser': {
-        'useBatches': False,
         'wordDim': 50,
         'posDim': 5,
         'optimizer': 'adagrad',
@@ -233,11 +231,11 @@ configuration = {
         'predictVerbose': False,
         'depParserBatchSize': 32,
         'identBatchSize': 32,
-        'idenLR': .02,
+        'idenLR': .01,
         'taggingLR': .02,
-        'depParsingLR': .02,
+        'depParsingLR': .03,
         'taggingBatchSize': 32,
-        'jointLearningEpochs': 50,
+        'jointLearningEpochs': 20,
         'initialEpochs': 1,
         'batchSize': 32
     },
@@ -506,6 +504,34 @@ class TrendConfig:
         configuration['embedding']['lemma'] = True
         configuration['sampling']['importantSentences'] = True
         configuration['sampling']['overSampling'] = True
+
+    @staticmethod
+    def mtDepParsing():
+        configuration['embedding']['lemma'] = True
+
+        configuration['multitasking'].update({
+            'idenDenseUnits':	84,
+            'affixeDim': 12,
+            'capitalDim': 3,
+            'depParsingDenseUnits': 108,
+            'symbolDim': 9,
+            'sytacticLabelDim': 19,
+            'taggingDenseUnits': 80,
+            'tokenDim': 80,
+            'useB1': True,
+            'useBx': True,
+            'useCapitalization':True,
+            'useSymbols': True
+        })
+
+        configuration['nn'].update({
+            'depParserBatchSize': 83,
+            'depParsingLR': .022,
+            'earlyStop': True,
+            'minDelta': .02,
+            'monitor': 'val_loss'
+        })
+
 
     @staticmethod
     def mtJoint():
@@ -1173,6 +1199,31 @@ class BestConfig:
         configuration['sampling']['importantSentences'] = True
         configuration['sampling']['overSampling'] = True
 
+    @staticmethod
+    def mtDepParsing():
+        configuration['embedding']['lemma'] = True
+        configuration['multitasking'].update({
+            'idenDenseUnits': 44,
+            'affixeDim': 10,
+            'capitalDim': 1,
+            'depParsingDenseUnits': 92,
+            'symbolDim': 11,
+            'sytacticLabelDim': 17,
+            'taggingDenseUnits': 74,
+            'tokenDim': 142,
+            'useB1': False,
+            'useBx': True,
+            'useCapitalization': True,
+            'useSymbols': True
+        })
+        configuration['nn'].update({
+            'depParserBatchSize': 32,
+            'depParsingLR': .033,
+            'earlyStop': True,
+            'minDelta': .008,
+            'monitor': 'val_loss'
+        })
+
 
 class LinearConf:
     @staticmethod
@@ -1581,9 +1632,9 @@ class Generator:
             'optimizer': 'adagrad',
             'lr': round(Generator.generateValue([0.01, 0.2], True), 3),
             'dropout': float(Generator.generateValue([.1, .2, .3, .4, .5, .6, .7], False)),
-            'batch': 1,
+            'batch': int(Generator.generateValue([96, 128, 256], False)),
             'dense1': int(Generator.generateValue([50, 250], True)),
-            'denseActivation': 'tanh',
+            'denseActivation': 'tanh', #str(Generator.generateValue(['tanh', 'relu'], False)),
             'denseDropout': float(Generator.generateValue([.1, .2, .3, .4, .5, .6, .7], False)),
             'rnnUnitNum': int(Generator.generateValue([50, 150], True)),
             'rnnDropout': float(Generator.generateValue([.1, .2, .3, .4, .5, .6, .7], False)),
@@ -1593,17 +1644,22 @@ class Generator:
             'earlyStop': True,
             'verbose': True,
             'eager': Generator.generateValue([True, False], False),
-            'gru': Generator.generateValue([True, False], False),
-            'trainValidationSet': Generator.generateValue([True, False], False),
-            'sampling': Generator.generateValue([True, False], False),
-            'samplingTaux':  int(Generator.generateValue([5, 50], True)),
-            'pretrained': Generator.generateValue([True, False], False)
+            'gru': False#Generator.generateValue([True, False], False)
+            # 'trainValidationSet': Generator.generateValue([True, False], False),
+            # 'sampling': Generator.generateValue([True, False], False),
+            # 'samplingTaux':  int(Generator.generateValue([5, 50], True)),
+            # 'pretrained': Generator.generateValue([True, False], False)
         })
         if configuration['kiperwasser']['pretrained']:
             configuration['kiperwasser']['wordDim'] = 300
-        configuration['sampling']['importantSentences'] = Generator.generateValue([True, False], False)
-        configuration['embedding']['compactVocab'] = Generator.generateValue([True, False], False)
+        # configuration['sampling']['importantSentences'] = Generator.generateValue([True, False], False)
+        # configuration['embedding']['compactVocab'] = Generator.generateValue([True, False], False)
         configuration['embedding']['lemma'] = Generator.generateValue([True, False], False)
+        configuration['nn'].update({
+            'epochs': 15,
+            'minDelta': round(Generator.generateValue([0.001, 0.1], True), 3),
+            'patience': 4,
+        })
         # kiperConf = configuration['kiperwasser']
         # kiperConf['wordDim'] = int(Generator.generateValue([50, 500], True))
         # kiperConf['posDim'] = int(Generator.generateValue([15, 150], True))
@@ -1702,7 +1758,6 @@ class Generator:
             'taggingLR': round(Generator.generateValue([0.01, 0.2], True), 3),
             'depParsingLR': round(Generator.generateValue([0.01, 0.2], True), 3),
             'initialEpochs': int(Generator.generateValue([1, 5], True)),
-
         })
         configuration['embedding']['lemma'] = Generator.generateValue([True, False], False)
         configuration['sampling']['importantSentences'] = True

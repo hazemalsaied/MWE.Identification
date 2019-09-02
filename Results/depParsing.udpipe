@@ -1,0 +1,520 @@
+Training:  BG
+Loading training data: done.
+Training the UDPipe model.
+Parser transition options: system=projective, oracle=dynamic, structured_interval=8, single_root=1
+Parser uses lemmas/upos/xpos/feats: from gold data
+Parser embeddings options: upostag=20, feats=20, xpostag=0, form=50, lemma=0, deprel=20
+  form mincount=2, precomputed form embeddings=none
+  lemma mincount=2, precomputed lemma embeddings=none
+Parser network options: iterations=10, hidden_layer=200, batch_size=10,
+  learning_rate=0.0200, learning_rate_final=0.0010, l2=0.5000, early_stopping=1
+Initialized 'universal_tag' embedding with 0,17 words and 0.0%,100.0% coverage.
+Initialized 'feats' embedding with 0,296 words and 0.0%,100.0% coverage.
+Initialized 'form' embedding with 0,14983 words and 0.0%,96.8% coverage.
+Initialized 'deprel' embedding with 0,32 words and 0.0%,100.0% coverage.
+Iteration 1: training logprob -4.3532e+05, heldout UAS 82.07%, LAS 78.54%
+Iteration 2: training logprob -6.9713e+05, heldout UAS 75.97%, LAS 70.67%
+Iteration 3: training logprob -5.1807e+05, heldout UAS 75.99%, LAS 72.56%
+Iteration 4: training logprob -4.2406e+05, heldout UAS 77.81%, LAS 74.61%
+Iteration 5: training logprob -3.6010e+05, heldout UAS 84.91%, LAS 82.41%
+Iteration 6: training logprob -3.1879e+05, heldout UAS 87.16%, LAS 84.74%
+Iteration 7: training logprob -2.8834e+05, heldout UAS 87.43%, LAS 84.93%
+Iteration 8: training logprob -2.6730e+05, heldout UAS 87.05%, LAS 84.62%
+Iteration 9: training logprob -2.5159e+05, heldout UAS 87.80%, LAS 85.55%
+Iteration 10: training logprob -2.4028e+05, heldout UAS 88.28%, LAS 86.19%
+Using early stopping -- choosing network from iteration 10
+The trained UDPipe model was saved.
+Evaluating dev:  BG
+Parsing from gold tokenization with gold tags - forms: 42020, UAS: 89.08%, LAS: 86.98%
+Evaluating test:  BG
+Parsing from gold tokenization with gold tags - forms: 39220, UAS: 89.94%, LAS: 87.83%
+Training:  EL
+Loading training data: done.
+Training the UDPipe model.
+Parser transition options: system=projective, oracle=dynamic, structured_interval=8, single_root=1
+Parser uses lemmas/upos/xpos/feats: from gold data
+Parser embeddings options: upostag=20, feats=20, xpostag=0, form=50, lemma=0, deprel=20
+  form mincount=2, precomputed form embeddings=none
+  lemma mincount=2, precomputed lemma embeddings=none
+Parser network options: iterations=10, hidden_layer=200, batch_size=10,
+  learning_rate=0.0200, learning_rate_final=0.0010, l2=0.5000, early_stopping=1
+Initialized 'universal_tag' embedding with 0,17 words and 0.0%,100.0% coverage.
+Initialized 'feats' embedding with 0,380 words and 0.0%,100.0% coverage.
+Initialized 'form' embedding with 0,9105 words and 0.0%,89.8% coverage.
+Initialized 'deprel' embedding with 0,33 words and 0.0%,100.0% coverage.
+Iteration 1: training logprob -1.5432e+05, heldout UAS 76.30%, LAS 71.87%
+Iteration 2: training logprob -2.3784e+05, heldout UAS 71.77%, LAS 66.87%
+Iteration 3: training logprob -1.8822e+05, heldout UAS 76.91%, LAS 72.43%
+Iteration 4: training logprob -1.5359e+05, heldout UAS 79.96%, LAS 75.74%
+Iteration 5: training logprob -1.3416e+05, heldout UAS 81.50%, LAS 77.38%
+Iteration 6: training logprob -1.1685e+05, heldout UAS 82.80%, LAS 78.80%
+Iteration 7: training logprob -1.0387e+05, heldout UAS 83.03%, LAS 79.20%
+Iteration 8: training logprob -9.4313e+04, heldout UAS 84.00%, LAS 80.12%
+Iteration 9: training logprob -8.8847e+04, heldout UAS 84.65%, LAS 80.95%
+Iteration 10: training logprob -8.3704e+04, heldout UAS 85.22%, LAS 81.52%
+Using early stopping -- choosing network from iteration 10
+The trained UDPipe model was saved.
+Evaluating dev:  EL
+Parsing from gold tokenization with gold tags - forms: 64776, UAS: 86.27%, LAS: 82.72%
+Evaluating test:  EL
+Parsing from gold tokenization with gold tags - forms: 35860, UAS: 86.50%, LAS: 84.50%
+Training:  FA
+Loading training data: done.
+Training the UDPipe model.
+Parser transition options: system=projective, oracle=dynamic, structured_interval=8, single_root=1
+Parser uses lemmas/upos/xpos/feats: from gold data
+Parser embeddings options: upostag=20, feats=20, xpostag=0, form=50, lemma=0, deprel=20
+  form mincount=2, precomputed form embeddings=none
+  lemma mincount=2, precomputed lemma embeddings=none
+Parser network options: iterations=10, hidden_layer=200, batch_size=10,
+  learning_rate=0.0200, learning_rate_final=0.0010, l2=0.5000, early_stopping=1
+Initialized 'universal_tag' embedding with 0,14 words and 0.0%,100.0% coverage.
+Initialized 'feats' embedding with 0,1 words and 0.0%,100.0% coverage.
+Initialized 'form' embedding with 0,2932 words and 0.0%,93.2% coverage.
+Initialized 'deprel' embedding with 0,37 words and 0.0%,100.0% coverage.
+Iteration 1: training logprob -7.9417e+04, heldout UAS 62.31%, LAS 50.88%
+Iteration 2: training logprob -1.0830e+05, heldout UAS 53.27%, LAS 43.25%
+Iteration 3: training logprob -8.5166e+04, heldout UAS 66.36%, LAS 56.02%
+Iteration 4: training logprob -6.9755e+04, heldout UAS 66.24%, LAS 57.01%
+Iteration 5: training logprob -5.7810e+04, heldout UAS 69.07%, LAS 60.29%
+Iteration 6: training logprob -4.9833e+04, heldout UAS 69.21%, LAS 60.73%
+Iteration 7: training logprob -4.5447e+04, heldout UAS 69.63%, LAS 60.56%
+Iteration 8: training logprob -4.1071e+04, heldout UAS 69.36%, LAS 60.98%
+Iteration 9: training logprob -3.9516e+04, heldout UAS 70.28%, LAS 62.06%
+Iteration 10: training logprob -3.8984e+04, heldout UAS 70.50%, LAS 62.37%
+Using early stopping -- choosing network from iteration 10
+The trained UDPipe model was saved.
+Evaluating dev:  FA
+Parsing from gold tokenization with gold tags - forms: 8923, UAS: 71.44%, LAS: 63.60%
+Evaluating test:  FA
+Parsing from gold tokenization with gold tags - forms: 7492, UAS: 70.21%, LAS: 61.81%
+Training:  FR
+Loading training data: done.
+Training the UDPipe model.
+Parser transition options: system=projective, oracle=dynamic, structured_interval=8, single_root=1
+Parser uses lemmas/upos/xpos/feats: from gold data
+Parser embeddings options: upostag=20, feats=20, xpostag=0, form=50, lemma=0, deprel=20
+  form mincount=2, precomputed form embeddings=none
+  lemma mincount=2, precomputed lemma embeddings=none
+Parser network options: iterations=10, hidden_layer=200, batch_size=10,
+  learning_rate=0.0200, learning_rate_final=0.0010, l2=0.5000, early_stopping=1
+Initialized 'universal_tag' embedding with 0,17 words and 0.0%,100.0% coverage.
+Initialized 'feats' embedding with 0,222 words and 0.0%,100.0% coverage.
+Initialized 'form' embedding with 0,18701 words and 0.0%,94.2% coverage.
+Initialized 'deprel' embedding with 0,49 words and 0.0%,100.0% coverage.
+Iteration 1: training logprob -5.2871e+05, heldout UAS 75.20%, LAS 70.96%
+Iteration 2: training logprob -8.4954e+05, heldout UAS 64.60%, LAS 59.14%
+Iteration 3: training logprob -6.6877e+05, heldout UAS 79.65%, LAS 75.22%
+Iteration 4: training logprob -5.5951e+05, heldout UAS 78.28%, LAS 74.92%
+Iteration 5: training logprob -4.9226e+05, heldout UAS 80.52%, LAS 76.97%
+Iteration 6: training logprob -4.4179e+05, heldout UAS 84.52%, LAS 81.06%
+Iteration 7: training logprob -4.0676e+05, heldout UAS 84.59%, LAS 81.31%
+Iteration 8: training logprob -3.8462e+05, heldout UAS 85.74%, LAS 82.68%
+Iteration 9: training logprob -3.6597e+05, heldout UAS 84.68%, LAS 81.55%
+Iteration 10: training logprob -3.5117e+05, heldout UAS 85.41%, LAS 82.38%
+Using early stopping -- choosing network from iteration 8
+The trained UDPipe model was saved.
+Evaluating dev:  FR
+Parsing from gold tokenization with gold tags - forms: 54685, UAS: 87.02%, LAS: 84.55%
+Evaluating test:  FR
+Parsing from gold tokenization with gold tags - forms: 38402, UAS: 80.63%, LAS: 77.09%
+Training:  HE
+Loading training data: done.
+Training the UDPipe model.
+Parser transition options: system=projective, oracle=dynamic, structured_interval=8, single_root=1
+Parser uses lemmas/upos/xpos/feats: from gold data
+Parser embeddings options: upostag=20, feats=20, xpostag=0, form=50, lemma=0, deprel=20
+  form mincount=2, precomputed form embeddings=none
+  lemma mincount=2, precomputed lemma embeddings=none
+Parser network options: iterations=10, hidden_layer=200, batch_size=10,
+  learning_rate=0.0200, learning_rate_final=0.0010, l2=0.5000, early_stopping=1
+Initialized 'universal_tag' embedding with 0,16 words and 0.0%,100.0% coverage.
+Initialized 'feats' embedding with 0,329 words and 0.0%,100.0% coverage.
+Initialized 'form' embedding with 0,19831 words and 0.0%,90.3% coverage.
+Initialized 'deprel' embedding with 0,40 words and 0.0%,100.0% coverage.
+Iteration 1: training logprob -4.9450e+05, heldout UAS 63.84%, LAS 54.75%
+Iteration 2: training logprob -7.1018e+05, heldout UAS 62.52%, LAS 54.23%
+Iteration 3: training logprob -5.8421e+05, heldout UAS 64.03%, LAS 56.27%
+Iteration 4: training logprob -5.1122e+05, heldout UAS 70.01%, LAS 61.63%
+Iteration 5: training logprob -4.5725e+05, heldout UAS 70.11%, LAS 62.79%
+Iteration 6: training logprob -4.2079e+05, heldout UAS 72.26%, LAS 65.46%
+Iteration 7: training logprob -3.8964e+05, heldout UAS 73.24%, LAS 66.43%
+Iteration 8: training logprob -3.6863e+05, heldout UAS 74.55%, LAS 68.16%
+Iteration 9: training logprob -3.4879e+05, heldout UAS 75.42%, LAS 69.05%
+Iteration 10: training logprob -3.3532e+05, heldout UAS 75.58%, LAS 69.33%
+Using early stopping -- choosing network from iteration 10
+The trained UDPipe model was saved.
+Evaluating dev:  HE
+Parsing from gold tokenization with gold tags - forms: 65843, UAS: 76.99%, LAS: 71.05%
+Evaluating test:  HE
+Parsing from gold tokenization with gold tags - forms: 65698, UAS: 77.55%, LAS: 71.10%
+Training:  HR
+Loading training data: done.
+Training the UDPipe model.
+Parser transition options: system=projective, oracle=dynamic, structured_interval=8, single_root=1
+Parser uses lemmas/upos/xpos/feats: from gold data
+Parser embeddings options: upostag=20, feats=20, xpostag=0, form=50, lemma=0, deprel=20
+  form mincount=2, precomputed form embeddings=none
+  lemma mincount=2, precomputed lemma embeddings=none
+Parser network options: iterations=10, hidden_layer=200, batch_size=10,
+  learning_rate=0.0200, learning_rate_final=0.0010, l2=0.5000, early_stopping=1
+Initialized 'universal_tag' embedding with 0,17 words and 0.0%,100.0% coverage.
+Initialized 'feats' embedding with 0,755 words and 0.0%,100.0% coverage.
+Initialized 'form' embedding with 0,5146 words and 0.0%,79.8% coverage.
+Initialized 'deprel' embedding with 0,40 words and 0.0%,100.0% coverage.
+Iteration 1: training logprob -9.7276e+04, heldout UAS 71.59%, LAS 64.80%
+Iteration 2: training logprob -1.3784e+05, heldout UAS 66.25%, LAS 57.41%
+Iteration 3: training logprob -1.1016e+05, heldout UAS 67.22%, LAS 60.37%
+Iteration 4: training logprob -8.9942e+04, heldout UAS 73.62%, LAS 67.58%
+Iteration 5: training logprob -7.6658e+04, heldout UAS 77.74%, LAS 71.51%
+Iteration 6: training logprob -6.6837e+04, heldout UAS 78.59%, LAS 72.58%
+Iteration 7: training logprob -5.8130e+04, heldout UAS 79.17%, LAS 73.38%
+Iteration 8: training logprob -5.2471e+04, heldout UAS 80.85%, LAS 74.99%
+Iteration 9: training logprob -5.0182e+04, heldout UAS 81.01%, LAS 75.49%
+Iteration 10: training logprob -4.8168e+04, heldout UAS 81.00%, LAS 75.59%
+Using early stopping -- choosing network from iteration 10
+The trained UDPipe model was saved.
+Evaluating dev:  HR
+Parsing from gold tokenization with gold tags - forms: 19621, UAS: 83.34%, LAS: 78.19%
+Evaluating test:  HR
+Parsing from gold tokenization with gold tags - forms: 16429, UAS: 82.82%, LAS: 77.80%
+Training:  EN
+Loading training data: done.
+Training the UDPipe model.
+Parser transition options: system=projective, oracle=dynamic, structured_interval=8, single_root=1
+Parser uses lemmas/upos/xpos/feats: from gold data
+Parser embeddings options: upostag=20, feats=20, xpostag=0, form=50, lemma=0, deprel=20
+  form mincount=2, precomputed form embeddings=none
+  lemma mincount=2, precomputed lemma embeddings=none
+Parser network options: iterations=10, hidden_layer=200, batch_size=10,
+  learning_rate=0.0200, learning_rate_final=0.0010, l2=0.5000, early_stopping=0
+Initialized 'universal_tag' embedding with 0,17 words and 0.0%,100.0% coverage.
+Initialized 'feats' embedding with 0,61 words and 0.0%,100.0% coverage.
+Initialized 'form' embedding with 0,3851 words and 0.0%,91.3% coverage.
+Initialized 'deprel' embedding with 0,49 words and 0.0%,100.0% coverage.
+Iteration 1: training logprob -8.0114e+04
+Iteration 2: training logprob -1.1376e+05
+Iteration 3: training logprob -8.8061e+04
+Iteration 4: training logprob -7.0648e+04
+Iteration 5: training logprob -6.0621e+04
+Iteration 6: training logprob -5.0738e+04
+Iteration 7: training logprob -4.4178e+04
+Iteration 8: training logprob -4.1757e+04
+Iteration 9: training logprob -3.9186e+04
+Iteration 10: training logprob -3.8074e+04
+The trained UDPipe model was saved.
+Evaluating dev:  EN
+Parsing from gold tokenization with gold tags - forms: 70998, UAS: 0%, LAS: 0%
+Evaluating test:  EN
+Parsing from gold tokenization with gold tags - forms: 70998, UAS: 80.15%, LAS: 77.06%
+Training:  HI
+Loading training data: done.
+Training the UDPipe model.
+Parser transition options: system=projective, oracle=dynamic, structured_interval=8, single_root=1
+Parser uses lemmas/upos/xpos/feats: from gold data
+Parser embeddings options: upostag=20, feats=20, xpostag=0, form=50, lemma=0, deprel=20
+  form mincount=2, precomputed form embeddings=none
+  lemma mincount=2, precomputed lemma embeddings=none
+Parser network options: iterations=10, hidden_layer=200, batch_size=10,
+  learning_rate=0.0200, learning_rate_final=0.0010, l2=0.5000, early_stopping=0
+Initialized 'universal_tag' embedding with 0,15 words and 0.0%,100.0% coverage.
+Initialized 'feats' embedding with 0,266 words and 0.0%,100.0% coverage.
+Initialized 'form' embedding with 0,1676 words and 0.0%,89.8% coverage.
+Initialized 'deprel' embedding with 0,26 words and 0.0%,100.0% coverage.
+Iteration 1: training logprob -2.5382e+04
+Iteration 2: training logprob -2.5044e+04
+Iteration 3: training logprob -1.6438e+04
+Iteration 4: training logprob -1.1323e+04
+Iteration 5: training logprob -8.3694e+03
+Iteration 6: training logprob -6.1481e+03
+Iteration 7: training logprob -5.6138e+03
+Iteration 8: training logprob -5.1836e+03
+Iteration 9: training logprob -5.2920e+03
+Iteration 10: training logprob -5.6438e+03
+The trained UDPipe model was saved.
+Evaluating dev:  HI
+Parsing from gold tokenization with gold tags - forms: 17580, UAS: 0%, LAS: 0%
+Evaluating test:  HI
+Parsing from gold tokenization with gold tags - forms: 17580, UAS: 89.93%, LAS: 84.62%
+Training:  PT
+Loading training data: done.
+Training the UDPipe model.
+Parser transition options: system=projective, oracle=dynamic, structured_interval=8, single_root=1
+Parser uses lemmas/upos/xpos/feats: from gold data
+Parser embeddings options: upostag=20, feats=20, xpostag=0, form=50, lemma=0, deprel=20
+  form mincount=2, precomputed form embeddings=none
+  lemma mincount=2, precomputed lemma embeddings=none
+Parser network options: iterations=10, hidden_layer=200, batch_size=10,
+  learning_rate=0.0200, learning_rate_final=0.0010, l2=0.5000, early_stopping=0
+Initialized 'universal_tag' embedding with 0,17 words and 0.0%,100.0% coverage.
+Initialized 'feats' embedding with 0,186 words and 0.0%,100.0% coverage.
+Initialized 'form' embedding with 0,18547 words and 0.0%,96.2% coverage.
+Initialized 'deprel' embedding with 0,43 words and 0.0%,100.0% coverage.
+Iteration 1: training logprob -6.2651e+05
+Iteration 2: training logprob -9.5435e+05
+Iteration 3: training logprob -7.5483e+05
+Iteration 4: training logprob -6.3075e+05
+Iteration 5: training logprob -5.5759e+05
+Iteration 6: training logprob -5.0566e+05
+Iteration 7: training logprob -4.6529e+05
+Iteration 8: training logprob -4.3847e+05
+Iteration 9: training logprob -4.1226e+05
+Iteration 10: training logprob -3.9775e+05
+The trained UDPipe model was saved.
+Evaluating dev:  PT
+Parsing from gold tokenization with gold tags - forms: 64078, UAS: 89.68%, LAS: 85.97%
+Evaluating test:  PT
+Parsing from gold tokenization with gold tags - forms: 58604, UAS: 88.82%, LAS: 85.03%
+Training:  RO
+Loading training data: done.
+Training the UDPipe model.
+Parser transition options: system=projective, oracle=dynamic, structured_interval=8, single_root=1
+Parser uses lemmas/upos/xpos/feats: from gold data
+Parser embeddings options: upostag=20, feats=20, xpostag=0, form=50, lemma=0, deprel=20
+  form mincount=2, precomputed form embeddings=none
+  lemma mincount=2, precomputed lemma embeddings=none
+Parser network options: iterations=10, hidden_layer=200, batch_size=10,
+  learning_rate=0.0200, learning_rate_final=0.0010, l2=0.5000, early_stopping=0
+Initialized 'universal_tag' embedding with 0,17 words and 0.0%,100.0% coverage.
+Initialized 'feats' embedding with 0,318 words and 0.0%,100.0% coverage.
+Initialized 'form' embedding with 0,29969 words and 0.0%,98.2% coverage.
+Initialized 'deprel' embedding with 0,47 words and 0.0%,100.0% coverage.
+Iteration 1: training logprob -1.1476e+06
+Iteration 2: training logprob -1.7806e+06
+Iteration 3: training logprob -1.3798e+06
+Iteration 4: training logprob -1.1627e+06
+Iteration 5: training logprob -1.0229e+06
+Iteration 6: training logprob -9.1762e+05
+Iteration 7: training logprob -8.5407e+05
+Iteration 8: training logprob -7.9866e+05
+Iteration 9: training logprob -7.6298e+05
+Iteration 10: training logprob -7.3587e+05
+The trained UDPipe model was saved.
+Evaluating dev:  RO
+Parsing from gold tokenization with gold tags - forms: 118658, UAS: 85.50%, LAS: 82.54%
+Evaluating test:  RO
+Parsing from gold tokenization with gold tags - forms: 114997, UAS: 85.99%, LAS: 83.02%
+NNIdenSys/Scripts/training-udpipe.sh: 3: NNIdenSys/Scripts/training-udpipe.sh: source: not found
+OAR_NODE_FILE=/var/lib/oar/2053884
+OAR_STDOUT=Reports/dep.udpipe
+USER=halsaied
+LANGUAGE=en_US:en
+OAR_ARRAYID=2053884
+OAR_O_WORKDIR=/home/halsaied
+OAR_ARRAYINDEX=1
+OAR_JOB_NAME=dep.udpipe
+OARCONFFILE=/etc/oar/oar.conf
+SHLVL=1
+OAR_FILE_NODES=/var/lib/oar/2053884
+HOME=/home/halsaied
+OLDPWD=/home/halsaied
+OARDO_UID=112
+OAR_JOB_WALLTIME_SECONDS=72000
+OAR_PROJECT_NAME=default
+OAR_JOB_WALLTIME=20:0:0
+OAR_RESOURCE_FILE=/var/lib/oar/2053884
+OAR_JOB_ID=2053884
+LOGNAME=halsaied
+OARUSER=oar
+_=NNIdenSys/Scripts/training-udpipe.sh
+XDG_SESSION_ID=16
+TERM=unknown
+OAR_ARRAY_ID=2053884
+PATH=/home/halsaied/miniconda2/bin:/home/halsaied/miniconda2/bin:/usr/lib/oar/oardodo:/usr/lib/oar/oardodo:/usr/local/bin:/usr/bin:/bin:/usr/games:/home/halsaied/bin
+OAR_ARRAY_INDEX=1
+OAR_NODEFILE=/var/lib/oar/2053884
+PERL5LIB=/usr/lib/oar
+XDG_RUNTIME_DIR=/run/user/112
+OARDO_USER=oar
+LANG=en_US.UTF-8
+OAR_KEY=1
+OAR_STDERR=Reports/dep.udpipe
+OAR_WORKDIR=/home/halsaied
+OAR_CPUSET=/oar/halsaied_2053884
+SUDO_COMMAND=OAR
+SHELL=/bin/bash
+OAR_RESOURCE_PROPERTIES_FILE=/var/lib/oar/2053884_resources
+OARXAUTHLOCATION=/usr/bin/xauth
+OAR_WORKING_DIRECTORY=/home/halsaied
+BASH_ENV=~oar/.batch_job_bashrc
+OAR_USER=halsaied
+LC_ALL=en_US.UTF-8
+PWD=/home/halsaied/udpipe-1.2.0-bin
+SSH_CONNECTION=172.16.79.114 34398 172.16.74.2 6667
+OAR_JOBID=2053884
+OARDIR=/usr/lib/oar
+MKL_THREADING_LAYER=GNU
+Training:  DE
+Loading training data: done.
+Training the UDPipe model.
+Parser transition options: system=projective, oracle=dynamic, structured_interval=8, single_root=0
+Parser uses lemmas/upos/xpos/feats: from gold data
+Parser embeddings options: upostag=20, feats=20, xpostag=0, form=50, lemma=0, deprel=20
+  form mincount=2, precomputed form embeddings=none
+  lemma mincount=2, precomputed lemma embeddings=none
+Parser network options: iterations=10, hidden_layer=200, batch_size=10,
+  learning_rate=0.0200, learning_rate_final=0.0010, l2=0.5000, early_stopping=0
+Initialized 'universal_tag' embedding with 0,17 words and 0.0%,100.0% coverage.
+Initialized 'feats' embedding with 0,421 words and 0.0%,100.0% coverage.
+Initialized 'form' embedding with 0,8386 words and 0.0%,84.8% coverage.
+Initialized 'deprel' embedding with 0,42 words and 0.0%,100.0% coverage.
+Iteration 1: training logprob -2.0692e+05
+Iteration 2: training logprob -2.8407e+05
+Iteration 3: training logprob -2.2302e+05
+Iteration 4: training logprob -1.8530e+05
+Iteration 5: training logprob -1.6085e+05
+Iteration 6: training logprob -1.4112e+05
+Iteration 7: training logprob -1.2544e+05
+Iteration 8: training logprob -1.1559e+05
+Iteration 9: training logprob -1.0831e+05
+Iteration 10: training logprob -1.0346e+05
+The trained UDPipe model was saved.
+Evaluating dev:  DE
+Parsing from gold tokenization with gold tags - forms: 22092, UAS: 82.79%, LAS: 78.67%
+Evaluating test:  DE
+Parsing from gold tokenization with gold tags - forms: 20524, UAS: 82.63%, LAS: 78.45%
+Training:  ES
+Loading training data: done.
+Training the UDPipe model.
+Parser transition options: system=projective, oracle=dynamic, structured_interval=8, single_root=0
+Parser uses lemmas/upos/xpos/feats: from gold data
+Parser embeddings options: upostag=20, feats=20, xpostag=0, form=50, lemma=0, deprel=20
+  form mincount=2, precomputed form embeddings=none
+  lemma mincount=2, precomputed lemma embeddings=none
+Parser network options: iterations=10, hidden_layer=200, batch_size=10,
+  learning_rate=0.0200, learning_rate_final=0.0010, l2=0.5000, early_stopping=0
+Initialized 'universal_tag' embedding with 0,16 words and 0.0%,100.0% coverage.
+Initialized 'feats' embedding with 0,170 words and 0.0%,100.0% coverage.
+Initialized 'form' embedding with 0,6348 words and 0.0%,91.0% coverage.
+Initialized 'deprel' embedding with 0,31 words and 0.0%,100.0% coverage.
+Iteration 1: training logprob -1.2080e+05
+Iteration 2: training logprob -2.0937e+05
+Iteration 3: training logprob -1.5991e+05
+Iteration 4: training logprob -1.3305e+05
+Iteration 5: training logprob -1.1121e+05
+Iteration 6: training logprob -9.5595e+04
+Iteration 7: training logprob -8.4946e+04
+Iteration 8: training logprob -7.5923e+04
+Iteration 9: training logprob -7.0810e+04
+Iteration 10: training logprob -6.6515e+04
+The trained UDPipe model was saved.
+Evaluating dev:  ES
+Parsing from gold tokenization with gold tags - forms: 26220, UAS: 86.06%, LAS: 83.68%
+Evaluating test:  ES
+Parsing from gold tokenization with gold tags - forms: 58861, UAS: 81.40%, LAS: 71.53%
+Training:  EU
+Loading training data: done.
+Training the UDPipe model.
+Parser transition options: system=projective, oracle=dynamic, structured_interval=8, single_root=0
+Parser uses lemmas/upos/xpos/feats: from gold data
+Parser embeddings options: upostag=20, feats=20, xpostag=0, form=50, lemma=0, deprel=20
+  form mincount=2, precomputed form embeddings=none
+  lemma mincount=2, precomputed lemma embeddings=none
+Parser network options: iterations=10, hidden_layer=200, batch_size=10,
+  learning_rate=0.0200, learning_rate_final=0.0010, l2=0.5000, early_stopping=0
+Initialized 'universal_tag' embedding with 0,31 words and 0.0%,100.0% coverage.
+Initialized 'feats' embedding with 0,1107 words and 0.0%,100.0% coverage.
+Initialized 'form' embedding with 0,9990 words and 0.0%,86.8% coverage.
+Initialized 'deprel' embedding with 0,58 words and 0.0%,100.0% coverage.
+Iteration 1: training logprob -2.2672e+05
+Iteration 2: training logprob -3.2299e+05
+Iteration 3: training logprob -2.5756e+05
+Iteration 4: training logprob -2.1640e+05
+Iteration 5: training logprob -1.8721e+05
+Iteration 6: training logprob -1.6641e+05
+Iteration 7: training logprob -1.5108e+05
+Iteration 8: training logprob -1.3980e+05
+Iteration 9: training logprob -1.3409e+05
+Iteration 10: training logprob -1.2833e+05
+The trained UDPipe model was saved.
+Evaluating dev:  EU
+Parsing from gold tokenization with gold tags - forms: 21604, UAS: 77.99%, LAS: 72.03%
+Evaluating test:  EU
+Parsing from gold tokenization with gold tags - forms: 19038, UAS: 77.12%, LAS: 72.01%
+Training:  HU
+Loading training data: done.
+Training the UDPipe model.
+Parser transition options: system=projective, oracle=dynamic, structured_interval=8, single_root=0
+Parser uses lemmas/upos/xpos/feats: from gold data
+Parser embeddings options: upostag=20, feats=20, xpostag=0, form=50, lemma=0, deprel=20
+  form mincount=2, precomputed form embeddings=none
+  lemma mincount=2, precomputed lemma embeddings=none
+Parser network options: iterations=10, hidden_layer=200, batch_size=10,
+  learning_rate=0.0200, learning_rate_final=0.0010, l2=0.5000, early_stopping=0
+Initialized 'universal_tag' embedding with 0,30 words and 0.0%,100.0% coverage.
+Initialized 'feats' embedding with 0,398 words and 0.0%,100.0% coverage.
+Initialized 'form' embedding with 0,7331 words and 0.0%,93.7% coverage.
+Initialized 'deprel' embedding with 0,28 words and 0.0%,100.0% coverage.
+Iteration 1: training logprob -1.4226e+05
+Iteration 2: training logprob -2.0416e+05
+Iteration 3: training logprob -1.4569e+05
+Iteration 4: training logprob -1.1450e+05
+Iteration 5: training logprob -9.3983e+04
+Iteration 6: training logprob -7.6712e+04
+Iteration 7: training logprob -6.6766e+04
+Iteration 8: training logprob -5.9585e+04
+Iteration 9: training logprob -5.5131e+04
+Iteration 10: training logprob -5.2520e+04
+The trained UDPipe model was saved.
+Evaluating dev:  HU
+Parsing from gold tokenization with gold tags - forms: 15564, UAS: 88.63%, LAS: 87.41%
+Evaluating test:  HU
+Parsing from gold tokenization with gold tags - forms: 20759, UAS: 88.10%, LAS: 86.63%
+Training:  IT
+Loading training data: done.
+Training the UDPipe model.
+Parser transition options: system=projective, oracle=dynamic, structured_interval=8, single_root=0
+Parser uses lemmas/upos/xpos/feats: from gold data
+Parser embeddings options: upostag=20, feats=20, xpostag=0, form=50, lemma=0, deprel=20
+  form mincount=2, precomputed form embeddings=none
+  lemma mincount=2, precomputed lemma embeddings=none
+Parser network options: iterations=10, hidden_layer=200, batch_size=10,
+  learning_rate=0.0200, learning_rate_final=0.0010, l2=0.5000, early_stopping=0
+Initialized 'universal_tag' embedding with 0,14 words and 0.0%,100.0% coverage.
+Initialized 'feats' embedding with 0,69 words and 0.0%,100.0% coverage.
+Initialized 'form' embedding with 0,16653 words and 0.0%,94.7% coverage.
+Initialized 'deprel' embedding with 0,28 words and 0.0%,100.0% coverage.
+Iteration 1: training logprob -5.7070e+05
+Iteration 2: training logprob -8.5256e+05
+Iteration 3: training logprob -6.7979e+05
+Iteration 4: training logprob -5.8447e+05
+Iteration 5: training logprob -5.2845e+05
+Iteration 6: training logprob -4.8549e+05
+Iteration 7: training logprob -4.6074e+05
+Iteration 8: training logprob -4.3641e+05
+Iteration 9: training logprob -4.2487e+05
+Iteration 10: training logprob -4.0980e+05
+The trained UDPipe model was saved.
+Evaluating dev:  IT
+Parsing from gold tokenization with gold tags - forms: 31220, UAS: 76.73%, LAS: 73.11%
+Evaluating test:  IT
+Parsing from gold tokenization with gold tags - forms: 35558, UAS: 78.59%, LAS: 75.21%
+Training:  PL
+Loading training data: done.
+Training the UDPipe model.
+Parser transition options: system=projective, oracle=dynamic, structured_interval=8, single_root=0
+Parser uses lemmas/upos/xpos/feats: from gold data
+Parser embeddings options: upostag=20, feats=20, xpostag=0, form=50, lemma=0, deprel=20
+  form mincount=2, precomputed form embeddings=none
+  lemma mincount=2, precomputed lemma embeddings=none
+Parser network options: iterations=10, hidden_layer=200, batch_size=10,
+  learning_rate=0.0200, learning_rate_final=0.0010, l2=0.5000, early_stopping=0
+Initialized 'universal_tag' embedding with 0,18 words and 0.0%,100.0% coverage.
+Initialized 'feats' embedding with 0,1128 words and 0.0%,100.0% coverage.
+Initialized 'form' embedding with 0,17696 words and 0.0%,87.1% coverage.
+Initialized 'deprel' embedding with 0,54 words and 0.0%,100.0% coverage.
+Iteration 1: training logprob -3.9278e+05
+Iteration 2: training logprob -5.6568e+05
+Iteration 3: training logprob -4.3732e+05
+Iteration 4: training logprob -3.6483e+05
+Iteration 5: training logprob -3.1710e+05
+Iteration 6: training logprob -2.8790e+05
+Iteration 7: training logprob -2.6345e+05
+Iteration 8: training logprob -2.4544e+05
+Iteration 9: training logprob -2.3015e+05
+Iteration 10: training logprob -2.2263e+05
+The trained UDPipe model was saved.
+Evaluating dev:  PL
+Parsing from gold tokenization with gold tags - forms: 26014, UAS: 80.80%, LAS: 77.24%
+Evaluating test:  PL
+Parsing from gold tokenization with gold tags - forms: 27661, UAS: 67.14%, LAS: 60.10%

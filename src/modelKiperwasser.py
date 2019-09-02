@@ -67,17 +67,11 @@ class TransitionClassifier(nn.Module):
         # init hidden and cell states h0 c0
         self.hiddenRnn = initHiddenRnn()
         # * 2 because bidirectional
-        if configuration['kiperwasser']['useBatches']:
-            self.linear1 = nn.Linear(
-                configuration['kiperwasser']['focusedElemNum'] * configuration['kiperwasser']['rnnUnitNum'] * 2,
-                # configuration['kiperwasser']['batch']),
-                configuration['kiperwasser']['dense1'])
-        else:
-            self.linear1 = nn.Linear(
-                configuration['kiperwasser']['focusedElemNum'] * configuration['kiperwasser']['rnnUnitNum'] * 2,
-                configuration['kiperwasser']['dense1'])
+        self.linear1 = nn.Linear(
+            configuration['kiperwasser']['focusedElemNum'] * configuration['kiperwasser']['rnnUnitNum'] * 2,
+            configuration['kiperwasser']['dense1'])
         # dropout here is very detrimental
-        self.dropout1 = nn.Dropout(p=0.3)
+        self.dropout1 = nn.Dropout(p=configuration['kiperwasser']['denseDropout'])
         self.linear2 = nn.Linear(configuration['kiperwasser']['dense1'], 8 if enableCategorization else 4)
 
     def forward(self, sentEmbs, activeElemIdxs):

@@ -18,13 +18,13 @@ def parse(sents, model, vectorizer=None, linearModels=None, linearVecs=None, mlp
         if initialize:
             sent.identifiedVMWEs = []
         sent.initialTransition, sentEmbs, tokens = None, None, None
-        if configuration['xp']['kiperwasser']:
-            tokenIdxs, posIdxs = model.getIdxs(sent)
-            sentEmbs = model.getContextualizedEmbs(tokenIdxs, posIdxs)
-        elif configuration['xp']['kiperComp']:
-            tokens = sent.tokens[:5]
-            tokenIdxs, posIdxs = model.getIdxs(tokens)
-            sentEmbs = model.getContextualizedEmbs(tokenIdxs, posIdxs)
+        # if configuration['xp']['kiperwasser']:
+            # tokenIdxs, posIdxs = model.getIdxs(sent)
+            # sentEmbs = model.getContextualizedEmbs(tokenIdxs, posIdxs)
+        # elif configuration['xp']['kiperComp']:
+        #     tokens = sent.tokens[:5]
+        #     tokenIdxs, posIdxs = model.getIdxs(tokens)
+        #     sentEmbs = model.getContextualizedEmbs(tokenIdxs, posIdxs)
         sent.initialTransition = Transition(None, isInitial=True, sent=sent)
         t = sent.initialTransition
         while not t.isTerminal():
@@ -89,7 +89,8 @@ def nextTrans(t, sent, model, vectorizer, sentEmbs=None, tokens=None, linearMode
     if len(legalTansDic) == 1:
         return initialize(legalTansDic.keys()[0], sent)
     if configuration['xp']['kiperwasser']:
-        predictedTrans = model.predict(t, sentEmbs)
+        # predictedTrans = model.predict(t, sentEmbs)
+        predictedTrans = model.predict(t, sent)[0]
     elif configuration['xp']['kiperComp']:
         predictedTrans = model.predict(t, sentEmbs, tokens)
     elif configuration['xp']['rnn'] or configuration['xp']['rnnNonCompo']:

@@ -75,8 +75,14 @@ def parseAndTrain(corpus):
         return network, None
     if configuration['xp']['kiperwasser']:
         #network = modelKiperwasser.train2(corpus)
-        network = modelKiperwasser.train(corpus, configuration)
+        #network = modelKiperwasser.train(corpus, configuration)
+        # import modelKiperKeras
+        # network = modelKiperKeras.Network(corpus)
+        import modelK
+        network = modelK.run(corpus)
+        # configuration['tmp']['dontParse'] = False
         return network, None
+
     if configuration['xp']['kiperComp']:
         network = modelCompactKiper.train(corpus, configuration)
         return network, None

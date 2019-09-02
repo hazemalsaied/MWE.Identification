@@ -21,11 +21,11 @@ from corpus import Token
 from corpus import getRelevantModelAndNormalizer
 from corpus import getTokens, getLemmaString
 from modelLinear import getFeatures
+from parser import parse
 from reports import *
 from transitions import TransitionType
 from wordEmbLoader import empty
 from wordEmbLoader import unk, number
-from parser import parse
 
 enableCategorization = False
 
@@ -47,7 +47,8 @@ class Network:
         idenInputArrNum = taggingInputArray * (3 + mtParams['useB1'] + mtParams['useBx'])
         depParserInuptArrNum = taggingInputArray * 18 + 1
         self.vocabulary = Vocabulary(corpus)
-        if configuration['tmp']['trainDepParser'] or configuration['tmp']['trainJointly'] or configuration['tmp']['trainInTransfert']:
+        if configuration['tmp']['trainDepParser'] or configuration['tmp']['trainJointly'] or configuration['tmp'][
+            'trainInTransfert']:
             self.depParserData, self.depParserLabels, self.depLabelDic = SynDataFactory.getData(corpus, self.vocabulary)
 
         self.taggingModel, self.idenModel, self.depParsingModel = Builder.build(self.vocabulary, len(self.depLabelDic))
@@ -58,17 +59,23 @@ class Network:
         idenData, idenLbls = self.getIdenData(corpus)
         idenData, idenLbls = DataFactory.overSample(idenData, idenLbls)
         sys.stdout.write('POS Tagging data = {0}\n'.format(len(taggingLbls)))
-        sys.stdout.write('Identication data = {0}\n'.format(len(idenLbls)))
+        sys.stdout.write('Iden data = {0}\n'.format(len(idenLbls)))
         sys.stdout.write('Dependency parsing = {0}\n'.format(len(self.depParserLabels)))
         idenLbls = to_categorical(idenLbls, num_classes=4)
         depParserLabels = to_categorical(self.depParserLabels, num_classes=len(self.depLabelDic))
-        historyList = []
+        historyList, depIdx = [], 1
+        sys.stdout.write('Dependency Parsing: {0}\n'.format(depIdx))
+        self.depParsingModel.fit(self.depParserData, depParserLabels,
+                                 validation_split=trainParams['validationSplit'],
+                                 batch_size=trainParams['depParserBatchSize'],
+                                 verbose=2)
         for x in range(trainParams['initialEpochs']):
             sys.stdout.write('POS tagging: {0}\n'.format(x + 1))
             self.taggingModel.fit(taggingData, taggingLbls,
                                   batch_size=trainParams['taggingBatchSize'],
                                   verbose=2)
-        posIdx, idenIdx, depIdx = trainParams['initialEpochs'] + 1, 1, 1
+
+        posIdx, idenIdx = trainParams['initialEpochs'] + 1, 1
         for x in range(trainParams['jointLearningEpochs']):
             alpha = random.uniform(0, 1)
             if alpha < .33:
@@ -79,17 +86,18 @@ class Network:
                                       batch_size=trainParams['taggingBatchSize'])
                 posIdx += 1
             elif .66 > alpha >= .33:
+                depIdx += 1
                 sys.stdout.write('Dependency Parsing: {0}\n'.format(depIdx))
                 self.depParsingModel.fit(self.depParserData, depParserLabels,
-                                               validation_split=trainParams['validationSplit'],
-                                               batch_size=trainParams['depParserBatchSize'],
-                                               verbose=2)
-                depIdx += 1
+                                         validation_split=trainParams['validationSplit'],
+                                         batch_size=trainParams['depParserBatchSize'],
+                                         verbose=2)
+
             else:
                 sys.stdout.write('MWE identification: {0}\n'.format(idenIdx))
                 his = self.idenModel.fit(idenData, idenLbls,
-                                   verbose=2,
-                                   batch_size=trainParams['identBatchSize'])
+                                         verbose=2,
+                                         batch_size=trainParams['identBatchSize'])
                 historyList.append(his)
                 if Network.shouldStopLearning(historyList):
                     break
@@ -107,7 +115,6 @@ class Network:
         parse(corpus.testingSents, self, None)
         self.trainDepParser()
         self.evaluateDepParsing(corpus)
-
 
     def train(self, corpus):
         epochNumber = 100
@@ -198,7 +205,7 @@ class Network:
         idenData, idenLbls = self.getIdenData(corpus)
         idenData, idenLbls = DataFactory.overSample(idenData, idenLbls)
         idenLbls = to_categorical(idenLbls, num_classes=4)
-        sys.stdout.write('Identication data = {0}\n'.format(len(idenLbls)))
+        sys.stdout.write('Iden data = {0}\n'.format(len(idenLbls)))
         self.idenModel.fit(idenData, idenLbls, validation_split=trainParams['validationSplit'],
                            epochs=trainParams['epochs'],
                            batch_size=trainParams['identBatchSize'],
@@ -222,7 +229,7 @@ class Network:
         idenData, idenLbls = self.getIdenData(corpus)
         if configuration['sampling']['overSampling']:
             idenData, idenLbls = DataFactory.overSample(idenData, idenLbls)
-        sys.stdout.write('Identication data = {0}\n'.format(len(idenLbls)))
+        sys.stdout.write('Iden data = {0}\n'.format(len(idenLbls)))
         sys.stdout.write('POS Tagging data = {0}\n'.format(len(taggingLbls)))
         idenLbls = to_categorical(idenLbls, num_classes=4)
         historyList = []
@@ -404,9 +411,10 @@ class Network:
                            minDelta=configuration['nn']['minDelta']):
         if len(historyList) <= patience:
             return False
+        key = 'loss' if configuration['nn']['monitor'] == 'val_loss' else 'acc'
         for i in range(patience):
-            if historyList[len(historyList) - i - 1].history[configuration['nn']['monitor']][0] - \
-                    historyList[len(historyList) - i - 2].history[configuration['nn']['monitor']][0] <= minDelta:
+            if historyList[len(historyList) - i - 1].history[key][0] - \
+                    historyList[len(historyList) - i - 2].history[key][0] <= minDelta:
                 continue
             else:
                 return False
@@ -732,11 +740,13 @@ class Builder:
     @staticmethod
     def build(vocab, depParserClassNum):
         taggingModel, sharedLayers = Builder.buildTaggingModel(vocab)
-        if configuration['tmp']['trainIden'] or configuration['tmp']['trainJointly'] or configuration['tmp']['trainInTransfert']:
+        if configuration['tmp']['trainIden'] or configuration['tmp']['trainJointly'] or configuration['tmp'][
+            'trainInTransfert']:
             idenModel = Builder.buildIdenModel(sharedLayers)
         else:
             idenModel = None
-        if configuration['tmp']['trainDepParser'] or configuration['tmp']['trainJointly'] or configuration['tmp']['trainInTransfert']:
+        if configuration['tmp']['trainDepParser'] or configuration['tmp']['trainJointly'] or configuration['tmp'][
+            'trainInTransfert']:
             depParsingModel = Builder.buildDepParsingModel(sharedLayers, depParserClassNum, vocab)
         else:
             depParsingModel = None
@@ -767,7 +777,7 @@ class Builder:
         taggingModel.compile(loss=configuration['nn']['loss'],
                              optimizer=Network.getOptimizer('taggingLR'),
                              metrics=['accuracy'])
-        if configuration['others']['verbose']:
+        if False and configuration['others']['verbose'] :
             sys.stdout.write(str(taggingModel.summary()) + doubleSep)
         return taggingModel, sharedLayers
 
@@ -827,7 +837,7 @@ class Builder:
                           optimizer=Network.getOptimizer('idenLR'),
                           metrics=['accuracy'])
 
-        if configuration['others']['verbose']:
+        if False and configuration['others']['verbose']:
             sys.stdout.write(str(idenModel.summary()) + doubleSep)
         return idenModel
 
@@ -1219,7 +1229,7 @@ class SynDataFactory(object):
         for i in range(3):
             if i < len(conf.buffer):
                 bi = conf.buffer[i] - 1
-                if bi >= 0:
+                if bi >= 0 and bi < len(sent.tokens):
                     biToken = sent.tokens[bi]
                     DataFactory.addTokenTaggingEntries(biToken, sent, dataEntry, vocab)
                 else:

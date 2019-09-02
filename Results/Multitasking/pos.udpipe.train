@@ -1,0 +1,574 @@
+NNIdenSys/Scripts/pos-udpipe.sh: 3: NNIdenSys/Scripts/pos-udpipe.sh: source: not found
+OAR_NODE_FILE=/var/lib/oar/2051751
+OAR_STDOUT=Reports/pos.udpipe.1
+USER=halsaied
+LANGUAGE=en_US:en
+OAR_ARRAYID=2051751
+OAR_O_WORKDIR=/home/halsaied
+OAR_ARRAYINDEX=1
+OAR_JOB_NAME=pos.udpipe.1
+OARCONFFILE=/etc/oar/oar.conf
+SHLVL=1
+OAR_FILE_NODES=/var/lib/oar/2051751
+HOME=/home/halsaied
+OLDPWD=/home/halsaied
+OARDO_UID=112
+OAR_JOB_WALLTIME_SECONDS=90000
+OAR_PROJECT_NAME=default
+OAR_JOB_WALLTIME=25:0:0
+OAR_RESOURCE_FILE=/var/lib/oar/2051751
+OAR_JOB_ID=2051751
+LOGNAME=halsaied
+OARUSER=oar
+_=NNIdenSys/Scripts/pos-udpipe.sh
+XDG_SESSION_ID=14
+TERM=unknown
+OAR_ARRAY_ID=2051751
+PATH=/home/halsaied/miniconda2/bin:/home/halsaied/miniconda2/bin:/usr/lib/oar/oardodo:/usr/lib/oar/oardodo:/usr/local/bin:/usr/bin:/bin:/usr/games:/home/halsaied/bin
+OAR_ARRAY_INDEX=1
+OAR_NODEFILE=/var/lib/oar/2051751
+PERL5LIB=/usr/lib/oar
+XDG_RUNTIME_DIR=/run/user/112
+OARDO_USER=oar
+LANG=en_US.UTF-8
+OAR_KEY=1
+OAR_STDERR=Reports/pos.udpipe.1
+OAR_WORKDIR=/home/halsaied
+OAR_CPUSET=/oar/halsaied_2051751
+SUDO_COMMAND=OAR
+SHELL=/bin/bash
+OAR_RESOURCE_PROPERTIES_FILE=/var/lib/oar/2051751_resources
+OARXAUTHLOCATION=/usr/bin/xauth
+OAR_WORKING_DIRECTORY=/home/halsaied
+BASH_ENV=~oar/.batch_job_bashrc
+OAR_USER=halsaied
+LC_ALL=en_US.UTF-8
+PWD=/home/halsaied/udpipe-1.2.0-bin
+SSH_CONNECTION=172.16.79.114 60088 172.16.75.42 6667
+OAR_JOBID=2051751
+OARDIR=/usr/lib/oar
+MKL_THREADING_LAYER=GNU
+Training:  BG
+Loading training data: done.
+Training the UDPipe model.
+Tagger model 1 columns: lemma use=1/provide=1, xpostag use=1/provide=1, feats use=1/provide=1
+Creating morphological dictionary for tagger model 1.
+Tagger model 1 dictionary options: max_form_analyses=0, custom dictionary_file=none
+Tagger model 1 guesser options: suffix_rules=8, prefixes_max=4, prefix_min_count=10, enrich_dictionary=6
+Tagger model 1 options: iterations=20, early_stopping=0, templates=tagger
+Training tagger model 1.
+Iteration 1: done, accuracy 90.85%
+Iteration 2: done, accuracy 96.60%
+Iteration 3: done, accuracy 97.65%
+Iteration 4: done, accuracy 98.14%
+Iteration 5: done, accuracy 98.43%
+Iteration 6: done, accuracy 98.60%
+Iteration 7: done, accuracy 98.71%
+Iteration 8: done, accuracy 98.79%
+Iteration 9: done, accuracy 98.90%
+Iteration 10: done, accuracy 98.97%
+Iteration 11: done, accuracy 99.02%
+Iteration 12: done, accuracy 99.03%
+Iteration 13: done, accuracy 99.05%
+Iteration 14: done, accuracy 99.11%
+Iteration 15: done, accuracy 99.13%
+Iteration 16: done, accuracy 99.16%
+Iteration 17: done, accuracy 99.17%
+Iteration 18: done, accuracy 99.19%
+Iteration 19: done, accuracy 99.20%
+Iteration 20: done, accuracy 99.20%
+The trained UDPipe model was saved.
+BG
+BG
+BG
+BG
+Training:  DE
+Loading training data: done.
+Training the UDPipe model.
+Tagger model 1 columns: lemma use=1/provide=1, xpostag use=1/provide=1, feats use=1/provide=1
+Creating morphological dictionary for tagger model 1.
+Tagger model 1 dictionary options: max_form_analyses=0, custom dictionary_file=none
+Tagger model 1 guesser options: suffix_rules=8, prefixes_max=4, prefix_min_count=10, enrich_dictionary=6
+Tagger model 1 options: iterations=20, early_stopping=0, templates=tagger
+Training tagger model 1.
+Iteration 1: done, accuracy 75.20%
+Iteration 2: done, accuracy 89.17%
+Iteration 3: done, accuracy 93.50%
+Iteration 4: done, accuracy 95.73%
+Iteration 5: done, accuracy 96.92%
+Iteration 6: done, accuracy 97.71%
+Iteration 7: done, accuracy 98.28%
+Iteration 8: done, accuracy 98.62%
+Iteration 9: done, accuracy 98.87%
+Iteration 10: done, accuracy 99.07%
+Iteration 11: done, accuracy 99.16%
+Iteration 12: done, accuracy 99.34%
+Iteration 13: done, accuracy 99.43%
+Iteration 14: done, accuracy 99.50%
+Iteration 15: done, accuracy 99.60%
+Iteration 16: done, accuracy 99.56%
+Iteration 17: done, accuracy 99.62%
+Iteration 18: done, accuracy 99.65%
+Iteration 19: done, accuracy 99.71%
+Iteration 20: done, accuracy 99.67%
+The trained UDPipe model was saved.
+DE
+DE
+DE
+DE
+Training:  EL
+Loading training data: done.
+Training the UDPipe model.
+Tagger model 1 columns: lemma use=1/provide=1, xpostag use=1/provide=1, feats use=1/provide=1
+Creating morphological dictionary for tagger model 1.
+Tagger model 1 dictionary options: max_form_analyses=0, custom dictionary_file=none
+Tagger model 1 guesser options: suffix_rules=8, prefixes_max=4, prefix_min_count=10, enrich_dictionary=6
+Tagger model 1 options: iterations=20, early_stopping=0, templates=tagger
+Training tagger model 1.
+Iteration 1: done, accuracy 81.44%
+Iteration 2: done, accuracy 92.46%
+Iteration 3: done, accuracy 95.23%
+Iteration 4: done, accuracy 96.49%
+Iteration 5: done, accuracy 97.18%
+Iteration 6: done, accuracy 97.65%
+Iteration 7: done, accuracy 98.02%
+Iteration 8: done, accuracy 98.29%
+Iteration 9: done, accuracy 98.46%
+Iteration 10: done, accuracy 98.63%
+Iteration 11: done, accuracy 98.73%
+Iteration 12: done, accuracy 98.77%
+Iteration 13: done, accuracy 98.83%
+Iteration 14: done, accuracy 98.86%
+Iteration 15: done, accuracy 98.96%
+Iteration 16: done, accuracy 99.00%
+Iteration 17: done, accuracy 98.99%
+Iteration 18: done, accuracy 99.12%
+Iteration 19: done, accuracy 99.12%
+Iteration 20: done, accuracy 99.07%
+The trained UDPipe model was saved.
+EL
+EL
+EL
+EL
+Training:  EN
+Loading training data: done.
+Training the UDPipe model.
+Tagger model 1 columns: lemma use=1/provide=1, xpostag use=1/provide=1, feats use=1/provide=1
+Creating morphological dictionary for tagger model 1.
+Tagger model 1 dictionary options: max_form_analyses=0, custom dictionary_file=none
+Tagger model 1 guesser options: suffix_rules=8, prefixes_max=4, prefix_min_count=10, enrich_dictionary=6
+Tagger model 1 options: iterations=20, early_stopping=0, templates=tagger
+Training tagger model 1.
+Iteration 1: done, accuracy 81.81%
+Iteration 2: done, accuracy 92.48%
+Iteration 3: done, accuracy 94.86%
+Iteration 4: done, accuracy 96.23%
+Iteration 5: done, accuracy 96.95%
+Iteration 6: done, accuracy 97.69%
+Iteration 7: done, accuracy 98.05%
+Iteration 8: done, accuracy 98.30%
+Iteration 9: done, accuracy 98.48%
+Iteration 10: done, accuracy 98.67%
+Iteration 11: done, accuracy 98.76%
+Iteration 12: done, accuracy 98.75%
+Iteration 13: done, accuracy 98.96%
+Iteration 14: done, accuracy 99.09%
+Iteration 15: done, accuracy 99.05%
+Iteration 16: done, accuracy 99.15%
+Iteration 17: done, accuracy 99.17%
+Iteration 18: done, accuracy 99.21%
+Iteration 19: done, accuracy 99.24%
+Iteration 20: done, accuracy 99.28%
+The trained UDPipe model was saved.
+EN
+EN
+EN
+EN
+Training:  ES
+Loading training data: done.
+Training the UDPipe model.
+Tagger model 1 columns: lemma use=1/provide=1, xpostag use=1/provide=1, feats use=1/provide=1
+Creating morphological dictionary for tagger model 1.
+Tagger model 1 dictionary options: max_form_analyses=0, custom dictionary_file=none
+Tagger model 1 guesser options: suffix_rules=8, prefixes_max=4, prefix_min_count=10, enrich_dictionary=6
+Tagger model 1 options: iterations=20, early_stopping=0, templates=tagger
+Training tagger model 1.
+Iteration 1: done, accuracy 86.28%
+Iteration 2: done, accuracy 96.09%
+Iteration 3: done, accuracy 97.70%
+Iteration 4: done, accuracy 98.37%
+Iteration 5: done, accuracy 98.77%
+Iteration 6: done, accuracy 99.03%
+Iteration 7: done, accuracy 99.23%
+Iteration 8: done, accuracy 99.41%
+Iteration 9: done, accuracy 99.40%
+Iteration 10: done, accuracy 99.53%
+Iteration 11: done, accuracy 99.55%
+Iteration 12: done, accuracy 99.58%
+Iteration 13: done, accuracy 99.65%
+Iteration 14: done, accuracy 99.68%
+Iteration 15: done, accuracy 99.65%
+Iteration 16: done, accuracy 99.66%
+Iteration 17: done, accuracy 99.67%
+Iteration 18: done, accuracy 99.64%
+Iteration 19: done, accuracy 99.66%
+Iteration 20: done, accuracy 99.74%
+The trained UDPipe model was saved.
+ES
+ES
+ES
+ES
+Training:  EU
+Loading training data: done.
+Training the UDPipe model.
+Tagger model 1 columns: lemma use=1/provide=1, xpostag use=1/provide=1, feats use=1/provide=1
+Creating morphological dictionary for tagger model 1.
+Tagger model 1 dictionary options: max_form_analyses=0, custom dictionary_file=none
+Tagger model 1 guesser options: suffix_rules=8, prefixes_max=4, prefix_min_count=10, enrich_dictionary=6
+Tagger model 1 options: iterations=20, early_stopping=0, templates=tagger
+Training tagger model 1.
+Iteration 1: done, accuracy 78.60%
+Iteration 2: done, accuracy 92.57%
+Iteration 3: done, accuracy 95.81%
+Iteration 4: done, accuracy 97.18%
+Iteration 5: done, accuracy 98.08%
+Iteration 6: done, accuracy 98.55%
+Iteration 7: done, accuracy 98.86%
+Iteration 8: done, accuracy 99.08%
+Iteration 9: done, accuracy 99.27%
+Iteration 10: done, accuracy 99.32%
+Iteration 11: done, accuracy 99.42%
+Iteration 12: done, accuracy 99.48%
+Iteration 13: done, accuracy 99.51%
+Iteration 14: done, accuracy 99.47%
+Iteration 15: done, accuracy 99.55%
+Iteration 16: done, accuracy 99.60%
+Iteration 17: done, accuracy 99.62%
+Iteration 18: done, accuracy 99.63%
+Iteration 19: done, accuracy 99.63%
+Iteration 20: done, accuracy 99.67%
+The trained UDPipe model was saved.
+EU
+EU
+EU
+EU
+Training:  FA
+Loading training data: done.
+Training the UDPipe model.
+Tagger model 1 columns: lemma use=1/provide=1, xpostag use=1/provide=1, feats use=1/provide=1
+Creating morphological dictionary for tagger model 1.
+Tagger model 1 dictionary options: max_form_analyses=0, custom dictionary_file=none
+Tagger model 1 guesser options: suffix_rules=8, prefixes_max=4, prefix_min_count=10, enrich_dictionary=6
+Tagger model 1 options: iterations=20, early_stopping=0, templates=tagger
+Training tagger model 1.
+Iteration 1: done, accuracy 84.16%
+Iteration 2: done, accuracy 94.32%
+Iteration 3: done, accuracy 95.82%
+Iteration 4: done, accuracy 96.54%
+Iteration 5: done, accuracy 96.97%
+Iteration 6: done, accuracy 97.37%
+Iteration 7: done, accuracy 97.70%
+Iteration 8: done, accuracy 97.91%
+Iteration 9: done, accuracy 98.02%
+Iteration 10: done, accuracy 98.24%
+Iteration 11: done, accuracy 98.24%
+Iteration 12: done, accuracy 98.37%
+Iteration 13: done, accuracy 98.49%
+Iteration 14: done, accuracy 98.60%
+Iteration 15: done, accuracy 98.64%
+Iteration 16: done, accuracy 98.64%
+Iteration 17: done, accuracy 98.67%
+Iteration 18: done, accuracy 98.75%
+Iteration 19: done, accuracy 98.84%
+Iteration 20: done, accuracy 98.80%
+The trained UDPipe model was saved.
+FA
+FA
+FA
+FA
+Training:  FR
+Loading training data: done.
+Training the UDPipe model.
+Tagger model 1 columns: lemma use=1/provide=1, xpostag use=1/provide=1, feats use=1/provide=1
+Creating morphological dictionary for tagger model 1.
+Tagger model 1 dictionary options: max_form_analyses=0, custom dictionary_file=none
+Tagger model 1 guesser options: suffix_rules=8, prefixes_max=4, prefix_min_count=10, enrich_dictionary=6
+Tagger model 1 options: iterations=20, early_stopping=0, templates=tagger
+Training tagger model 1.
+Iteration 1: done, accuracy 90.90%
+Iteration 2: done, accuracy 95.18%
+Iteration 3: done, accuracy 96.40%
+Iteration 4: done, accuracy 97.13%
+Iteration 5: done, accuracy 97.57%
+Iteration 6: done, accuracy 97.85%
+Iteration 7: done, accuracy 98.13%
+Iteration 8: done, accuracy 98.34%
+Iteration 9: done, accuracy 98.50%
+Iteration 10: done, accuracy 98.62%
+Iteration 11: done, accuracy 98.71%
+Iteration 12: done, accuracy 98.80%
+Iteration 13: done, accuracy 98.93%
+Iteration 14: done, accuracy 98.94%
+Iteration 15: done, accuracy 99.01%
+Iteration 16: done, accuracy 99.09%
+Iteration 17: done, accuracy 99.14%
+Iteration 18: done, accuracy 99.16%
+Iteration 19: done, accuracy 99.18%
+Iteration 20: done, accuracy 99.25%
+The trained UDPipe model was saved.
+FR
+FR
+FR
+FR
+Training:  HE
+Loading training data: done.
+Training the UDPipe model.
+Tagger model 1 columns: lemma use=1/provide=1, xpostag use=1/provide=1, feats use=1/provide=1
+Creating morphological dictionary for tagger model 1.
+Tagger model 1 dictionary options: max_form_analyses=0, custom dictionary_file=none
+Tagger model 1 guesser options: suffix_rules=8, prefixes_max=4, prefix_min_count=10, enrich_dictionary=6
+Tagger model 1 options: iterations=20, early_stopping=0, templates=tagger
+Training tagger model 1.
+Iteration 1: done, accuracy 67.12%
+Iteration 2: done, accuracy 86.11%
+Iteration 3: done, accuracy 91.40%
+Iteration 4: done, accuracy 93.94%
+Iteration 5: done, accuracy 95.49%
+Iteration 6: done, accuracy 96.26%
+Iteration 7: done, accuracy 96.98%
+Iteration 8: done, accuracy 97.33%
+Iteration 9: done, accuracy 97.63%
+Iteration 10: done, accuracy 97.92%
+Iteration 11: done, accuracy 98.04%
+Iteration 12: done, accuracy 98.18%
+Iteration 13: done, accuracy 98.24%
+Iteration 14: done, accuracy 98.38%
+Iteration 15: done, accuracy 98.45%
+Iteration 16: done, accuracy 98.52%
+Iteration 17: done, accuracy 98.60%
+Iteration 18: done, accuracy 98.63%
+Iteration 19: done, accuracy 98.64%
+Iteration 20: done, accuracy 98.71%
+The trained UDPipe model was saved.
+HE
+HE
+HE
+HE
+Training:  HI
+Loading training data: done.
+Training the UDPipe model.
+Tagger model 1 columns: lemma use=1/provide=1, xpostag use=1/provide=1, feats use=1/provide=1
+Creating morphological dictionary for tagger model 1.
+Tagger model 1 dictionary options: max_form_analyses=0, custom dictionary_file=none
+Tagger model 1 guesser options: suffix_rules=8, prefixes_max=4, prefix_min_count=10, enrich_dictionary=6
+Tagger model 1 options: iterations=20, early_stopping=0, templates=tagger
+Training tagger model 1.
+Iteration 1: done, accuracy 70.31%
+Iteration 2: done, accuracy 89.60%
+Iteration 3: done, accuracy 94.01%
+Iteration 4: done, accuracy 95.94%
+Iteration 5: done, accuracy 97.00%
+Iteration 6: done, accuracy 97.54%
+Iteration 7: done, accuracy 97.90%
+Iteration 8: done, accuracy 97.96%
+Iteration 9: done, accuracy 98.28%
+Iteration 10: done, accuracy 98.52%
+Iteration 11: done, accuracy 98.59%
+Iteration 12: done, accuracy 98.39%
+Iteration 13: done, accuracy 98.59%
+Iteration 14: done, accuracy 98.68%
+Iteration 15: done, accuracy 98.73%
+Iteration 16: done, accuracy 98.89%
+Iteration 17: done, accuracy 98.76%
+Iteration 18: done, accuracy 98.87%
+Iteration 19: done, accuracy 98.91%
+Iteration 20: done, accuracy 98.96%
+The trained UDPipe model was saved.
+HI
+HI
+HI
+HI
+Training:  HR
+Loading training data: done.
+Training the UDPipe model.
+Tagger model 1 columns: lemma use=1/provide=1, xpostag use=1/provide=1, feats use=1/provide=1
+Creating morphological dictionary for tagger model 1.
+Tagger model 1 dictionary options: max_form_analyses=0, custom dictionary_file=none
+Tagger model 1 guesser options: suffix_rules=8, prefixes_max=4, prefix_min_count=10, enrich_dictionary=6
+Tagger model 1 options: iterations=20, early_stopping=0, templates=tagger
+Training tagger model 1.
+Iteration 1: done, accuracy 73.45%
+Iteration 2: done, accuracy 91.14%
+Iteration 3: done, accuracy 95.01%
+Iteration 4: done, accuracy 96.62%
+Iteration 5: done, accuracy 97.72%
+Iteration 6: done, accuracy 98.34%
+Iteration 7: done, accuracy 98.65%
+Iteration 8: done, accuracy 98.92%
+Iteration 9: done, accuracy 99.18%
+Iteration 10: done, accuracy 99.21%
+Iteration 11: done, accuracy 99.41%
+Iteration 12: done, accuracy 99.44%
+Iteration 13: done, accuracy 99.60%
+Iteration 14: done, accuracy 99.61%
+Iteration 15: done, accuracy 99.67%
+Iteration 16: done, accuracy 99.69%
+Iteration 17: done, accuracy 99.68%
+Iteration 18: done, accuracy 99.65%
+Iteration 19: done, accuracy 99.65%
+Iteration 20: done, accuracy 99.71%
+The trained UDPipe model was saved.
+HR
+HR
+HR
+HR
+Training:  HU
+Loading training data: done.
+Training the UDPipe model.
+Tagger model 1 columns: lemma use=1/provide=1, xpostag use=1/provide=1, feats use=1/provide=1
+Creating morphological dictionary for tagger model 1.
+Tagger model 1 dictionary options: max_form_analyses=0, custom dictionary_file=none
+Tagger model 1 guesser options: suffix_rules=8, prefixes_max=4, prefix_min_count=10, enrich_dictionary=6
+Tagger model 1 options: iterations=20, early_stopping=0, templates=tagger
+Training tagger model 1.
+Iteration 1: done, accuracy 93.24%
+Iteration 2: done, accuracy 97.73%
+Iteration 3: done, accuracy 98.57%
+Iteration 4: done, accuracy 98.99%
+Iteration 5: done, accuracy 99.30%
+Iteration 6: done, accuracy 99.41%
+Iteration 7: done, accuracy 99.46%
+Iteration 8: done, accuracy 99.58%
+Iteration 9: done, accuracy 99.67%
+Iteration 10: done, accuracy 99.69%
+Iteration 11: done, accuracy 99.73%
+Iteration 12: done, accuracy 99.77%
+Iteration 13: done, accuracy 99.77%
+Iteration 14: done, accuracy 99.79%
+Iteration 15: done, accuracy 99.80%
+Iteration 16: done, accuracy 99.82%
+Iteration 17: done, accuracy 99.85%
+Iteration 18: done, accuracy 99.85%
+Iteration 19: done, accuracy 99.84%
+Iteration 20: done, accuracy 99.89%
+The trained UDPipe model was saved.
+Training:  IT
+Loading training data: done.
+Training the UDPipe model.
+Tagger model 1 columns: lemma use=1/provide=1, xpostag use=1/provide=1, feats use=1/provide=1
+Creating morphological dictionary for tagger model 1.
+Tagger model 1 dictionary options: max_form_analyses=0, custom dictionary_file=none
+Tagger model 1 guesser options: suffix_rules=8, prefixes_max=4, prefix_min_count=10, enrich_dictionary=6
+Tagger model 1 options: iterations=20, early_stopping=0, templates=tagger
+Training tagger model 1.
+Iteration 1: done, accuracy 91.29%
+Iteration 2: done, accuracy 96.46%
+Iteration 3: done, accuracy 97.71%
+Iteration 4: done, accuracy 98.39%
+Iteration 5: done, accuracy 98.73%
+Iteration 6: done, accuracy 99.03%
+Iteration 7: done, accuracy 99.20%
+Iteration 8: done, accuracy 99.33%
+Iteration 9: done, accuracy 99.46%
+Iteration 10: done, accuracy 99.53%
+Iteration 11: done, accuracy 99.57%
+Iteration 12: done, accuracy 99.64%
+Iteration 13: done, accuracy 99.69%
+Iteration 14: done, accuracy 99.72%
+Iteration 15: done, accuracy 99.76%
+Iteration 16: done, accuracy 99.79%
+Iteration 17: done, accuracy 99.79%
+Iteration 18: done, accuracy 99.81%
+Iteration 19: done, accuracy 99.83%
+Iteration 20: done, accuracy 99.86%
+The trained UDPipe model was saved.
+Training:  PL
+Loading training data: done.
+Training the UDPipe model.
+Tagger model 1 columns: lemma use=1/provide=1, xpostag use=1/provide=1, feats use=1/provide=1
+Creating morphological dictionary for tagger model 1.
+Tagger model 1 dictionary options: max_form_analyses=0, custom dictionary_file=none
+Tagger model 1 guesser options: suffix_rules=8, prefixes_max=4, prefix_min_count=10, enrich_dictionary=6
+Tagger model 1 options: iterations=20, early_stopping=0, templates=tagger
+Training tagger model 1.
+Iteration 1: done, accuracy 77.10%
+Iteration 2: done, accuracy 91.09%
+Iteration 3: done, accuracy 94.64%
+Iteration 4: done, accuracy 96.43%
+Iteration 5: done, accuracy 97.29%
+Iteration 6: done, accuracy 97.92%
+Iteration 7: done, accuracy 98.31%
+Iteration 8: done, accuracy 98.62%
+Iteration 9: done, accuracy 98.82%
+Iteration 10: done, accuracy 99.00%
+Iteration 11: done, accuracy 99.07%
+Iteration 12: done, accuracy 99.11%
+Iteration 13: done, accuracy 99.25%
+Iteration 14: done, accuracy 99.32%
+Iteration 15: done, accuracy 99.37%
+Iteration 16: done, accuracy 99.38%
+Iteration 17: done, accuracy 99.43%
+Iteration 18: done, accuracy 99.51%
+Iteration 19: done, accuracy 99.50%
+Iteration 20: done, accuracy 99.53%
+The trained UDPipe model was saved.
+Training:  PT
+Loading training data: done.
+Training the UDPipe model.
+Tagger model 1 columns: lemma use=1/provide=1, xpostag use=1/provide=1, feats use=1/provide=1
+Creating morphological dictionary for tagger model 1.
+Tagger model 1 dictionary options: max_form_analyses=0, custom dictionary_file=none
+Tagger model 1 guesser options: suffix_rules=8, prefixes_max=4, prefix_min_count=10, enrich_dictionary=6
+Tagger model 1 options: iterations=20, early_stopping=0, templates=tagger
+Training tagger model 1.
+Iteration 1: done, accuracy 88.17%
+Iteration 2: done, accuracy 92.86%
+Iteration 3: done, accuracy 94.67%
+Iteration 4: done, accuracy 95.70%
+Iteration 5: done, accuracy 96.45%
+Iteration 6: done, accuracy 96.98%
+Iteration 7: done, accuracy 97.33%
+Iteration 8: done, accuracy 97.65%
+Iteration 9: done, accuracy 97.86%
+Iteration 10: done, accuracy 98.06%
+Iteration 11: done, accuracy 98.18%
+Iteration 12: done, accuracy 98.31%
+Iteration 13: done, accuracy 98.45%
+Iteration 14: done, accuracy 98.54%
+Iteration 15: done, accuracy 98.57%
+Iteration 16: done, accuracy 98.64%
+Iteration 17: done, accuracy 98.70%
+Iteration 18: done, accuracy 98.77%
+Iteration 19: done, accuracy 98.76%
+Iteration 20: done, accuracy 98.80%
+The trained UDPipe model was saved.
+Training:  RO
+Loading training data: done.
+Training the UDPipe model.
+Tagger model 1 columns: lemma use=1/provide=1, xpostag use=1/provide=1, feats use=1/provide=1
+Creating morphological dictionary for tagger model 1.
+Tagger model 1 dictionary options: max_form_analyses=0, custom dictionary_file=none
+Tagger model 1 guesser options: suffix_rules=8, prefixes_max=4, prefix_min_count=10, enrich_dictionary=6
+Tagger model 1 options: iterations=20, early_stopping=0, templates=tagger
+Training tagger model 1.
+Iteration 1: done, accuracy 91.88%
+Iteration 2: done, accuracy 96.93%
+Iteration 3: done, accuracy 97.83%
+Iteration 4: done, accuracy 98.22%
+Iteration 5: done, accuracy 98.39%
+Iteration 6: done, accuracy 98.56%
+Iteration 7: done, accuracy 98.68%
+Iteration 8: done, accuracy 98.75%
+Iteration 9: done, accuracy 98.77%
+Iteration 10: done, accuracy 98.83%
+Iteration 11: done, accuracy 98.86%
+Iteration 12: done, accuracy 98.90%
+Iteration 13: done, accuracy 98.92%
+Iteration 14: done, accuracy 98.94%
+Iteration 15: done, accuracy 98.98%
+Iteration 16: done, accuracy 98.98%
+Iteration 17: done, accuracy 99.01%
+Iteration 18: done, accuracy 99.01%
+Iteration 19: done, accuracy 99.02%
+Iteration 20: done, accuracy 99.03%
+The trained UDPipe model was saved.
