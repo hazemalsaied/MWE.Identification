@@ -415,46 +415,7 @@ if __name__ == '__main__':
     #    division=Evaluation.trainVsDev)
 
     configuration['others']['analyzePerformance'] = False
-    configuration['nn']['epochs'] = 15
-    # configuration['kiperwasser']['useBatches'] = True
-    # configuration['kiperwasser']['batch'] = 96
-    # xp(['FR'], Dataset.sharedtask2, XpMode.kiperwasser,None)
     import rsg
-    from config import Generator
-    for i in range(5):
-        configuration['kiperwasser'].update({
-            'wordDim': 50, #int(Generator.generateValue([50, 350], True)),
-            'posDim': 5, #int(Generator.generateValue([5, 75], True)),
-            'optimizer': 'adagrad',
-            'lr': .01, #round(Generator.generateValue([0.01, 0.2], True), 3),
-            'dropout': .1, #float(Generator.generateValue([.1, .2, .3, .4, .5, .6, .7], False)),
-            'batch': int(Generator.generateValue([96, 128, 256], False)),
-            'dense1': 50, #int(Generator.generateValue([50, 250], True)),
-            'denseActivation': 'tanh', #str(Generator.generateValue(['tanh', 'relu'], False)),
-            'denseDropout': .1, #float(Generator.generateValue([0, .1, .2, .3, .4], False)),
-            'rnnUnitNum': 10, #int(Generator.generateValue([50, 150], True)),
-            'rnnDropout': .1, #float(Generator.generateValue([.1, .2, .3, .4, .5, .6, .7], False)),
-            'rnnLayerNum': 1,  # int(Generator.generateValue([1, 2], False)),
-            'focusedElemNum': 8,
-            'file': 'kiper.p',
-            'earlyStop': True,
-            'verbose': True,
-            'eager': False,# Generator.generateValue([True, False], False),
-            'gru': False  # Generator.generateValue([True, False], False)
-            # 'trainValidationSet': Generator.generateValue([True, False], False),
-            # 'sampling': Generator.generateValue([True, False], False),
-            # 'samplingTaux':  int(Generator.generateValue([5, 50], True)),
-            # 'pretrained': Generator.generateValue([True, False], False)
-        })
-        if configuration['kiperwasser']['pretrained']:
-            configuration['kiperwasser']['wordDim'] = 300
-        # configuration['sampling']['importantSentences'] = Generator.generateValue([True, False], False)
-        # configuration['embedding']['compactVocab'] = Generator.generateValue([True, False], False)
-        configuration['embedding']['lemma'] = True # Generator.generateValue([True, False], False)
-        configuration['nn'].update({
-            'epochs': 15,
-            'minDelta': 0.001, # round(Generator.generateValue([0.001, 0.1], True), 3),
-            'patience': 4,
-        })
-
-        xp(['FR'], Dataset.sharedtask2, XpMode.kiperwasser, None)
+    rsg.runRSGSpontaneously(['FR'], Dataset.sharedtask2, XpMode.kiperwasser, None,
+                            dontParse=True,
+                            xpNumByThread=10)

@@ -450,7 +450,7 @@ if __name__ == '__main__':
     files = [f for f in os.listdir('../Reports/Reports/') if f.startswith('jointModel1')]
     # OSTools.cleanReports()
     # mineSTScriptRes('baseline.cv')
-    STDOutTools.generateOarsub(xpNum=10, duration=72, tourNum=1, name='jointModel1')
+    STDOutTools.generateOarsub(xpNum=10, duration=72, tourNum=1, name='jointModel2')
     # STDOutTools.generateKiperOarsub(xpNum=5, duration=5, tourNum=1, name='k.debug')
 
     # with open(os.path.join(os.path.dirname(__file__)[:-len(os.path.basename(os.path.dirname(__file__)))],

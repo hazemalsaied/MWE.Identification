@@ -1626,25 +1626,70 @@ class Generator:
     @staticmethod
     def kiper():
 
+        # configuration['kiperwasser'].update({
+        #     'wordDim': int(Generator.generateValue([50, 350], True)),
+        #     'posDim': int(Generator.generateValue([5, 75], True)),
+        #     'optimizer': 'adagrad',
+        #     'lr': round(Generator.generateValue([0.01, 0.2], True), 3),
+        #     'dropout': float(Generator.generateValue([.1, .2, .3, .4, .5, .6, .7], False)),
+        #     'batch': int(Generator.generateValue([96, 128, 256], False)),
+        #     'dense1': int(Generator.generateValue([50, 250], True)),
+        #     'denseActivation': 'tanh', #str(Generator.generateValue(['tanh', 'relu'], False)),
+        #     'denseDropout': float(Generator.generateValue([.1, .2, .3, .4, .5, .6, .7], False)),
+        #     'rnnUnitNum': int(Generator.generateValue([50, 150], True)),
+        #     'rnnDropout': float(Generator.generateValue([.1, .2, .3, .4, .5, .6, .7], False)),
+        #     'rnnLayerNum': 1, #int(Generator.generateValue([1, 2], False)),
+        #     'focusedElemNum': 8,
+        #     'file': 'kiper.p',
+        #     'earlyStop': True,
+        #     'verbose': True,
+        #     'eager': Generator.generateValue([True, False], False),
+        #     'gru': False#Generator.generateValue([True, False], False)
+        #     # 'trainValidationSet': Generator.generateValue([True, False], False),
+        #     # 'sampling': Generator.generateValue([True, False], False),
+        #     # 'samplingTaux':  int(Generator.generateValue([5, 50], True)),
+        #     # 'pretrained': Generator.generateValue([True, False], False)
+        # })
+        # if configuration['kiperwasser']['pretrained']:
+        #     configuration['kiperwasser']['wordDim'] = 300
+        # # configuration['sampling']['importantSentences'] = Generator.generateValue([True, False], False)
+        # # configuration['embedding']['compactVocab'] = Generator.generateValue([True, False], False)
+        # configuration['embedding']['lemma'] = Generator.generateValue([True, False], False)
+        # configuration['nn'].update({
+        #     'epochs': 15,
+        #     'minDelta': round(Generator.generateValue([0.001, 0.1], True), 3),
+        #     'patience': 4,
+        # })
+        # # kiperConf = configuration['kiperwasser']
+        # # kiperConf['wordDim'] = int(Generator.generateValue([50, 500], True))
+        # # kiperConf['posDim'] = int(Generator.generateValue([15, 150], True))
+        # # kiperConf['denseActivation'] = 'tanh'  # str(Generator.generateValue(['tanh', 'relu'], False))
+        # # configuration['nn']['optimizer'] = 'adagrad'  # str(Generator.generateValue(['adam', 'adagrad'], False))
+        # # kiperConf['lr'] = 0.07
+        # # kiperConf['dense1'] = int(Generator.generateValue([10, 350], True))
+        # # kiperConf['rnnDropout'] = round(Generator.generateValue([.1, .4], True), 2)
+        # # kiperConf['rnnUnitNum'] = int(Generator.generateValue([20, 250], True))
+        # # kiperConf['rnnLayerNum'] =int(Generator.generateValue([1, 2], False))
+
         configuration['kiperwasser'].update({
-            'wordDim': int(Generator.generateValue([50, 350], True)),
+            'wordDim':  50,# int(Generator.generateValue([50, 200], True)),
             'posDim': int(Generator.generateValue([5, 75], True)),
             'optimizer': 'adagrad',
             'lr': round(Generator.generateValue([0.01, 0.2], True), 3),
-            'dropout': float(Generator.generateValue([.1, .2, .3, .4, .5, .6, .7], False)),
+            'dropout': .1,  # float(Generator.generateValue([.1, .2, .3, .4, .5, .6, .7], False)),
             'batch': int(Generator.generateValue([96, 128, 256], False)),
-            'dense1': int(Generator.generateValue([50, 250], True)),
-            'denseActivation': 'tanh', #str(Generator.generateValue(['tanh', 'relu'], False)),
-            'denseDropout': float(Generator.generateValue([.1, .2, .3, .4, .5, .6, .7], False)),
-            'rnnUnitNum': int(Generator.generateValue([50, 150], True)),
-            'rnnDropout': float(Generator.generateValue([.1, .2, .3, .4, .5, .6, .7], False)),
-            'rnnLayerNum': 1, #int(Generator.generateValue([1, 2], False)),
+            'dense1': 50,  # int(Generator.generateValue([50, 250], True)),
+            'denseActivation': 'tanh',  # str(Generator.generateValue(['tanh', 'relu'], False)),
+            'denseDropout':  .1,# float(Generator.generateValue([0, .1, .2, .3, .4], False)),
+            'rnnUnitNum': 50,  # int(Generator.generateValue([50, 150], True)),
+            'rnnDropout': .1,#float(Generator.generateValue([.1, .2, .3, .4, .5], False)),
+            'rnnLayerNum': 1,  # int(Generator.generateValue([1, 2], False)),
             'focusedElemNum': 8,
             'file': 'kiper.p',
             'earlyStop': True,
             'verbose': True,
-            'eager': Generator.generateValue([True, False], False),
-            'gru': False#Generator.generateValue([True, False], False)
+            'eager': False,  # Generator.generateValue([True, False], False),
+            'gru': False  # Generator.generateValue([True, False], False)
             # 'trainValidationSet': Generator.generateValue([True, False], False),
             # 'sampling': Generator.generateValue([True, False], False),
             # 'samplingTaux':  int(Generator.generateValue([5, 50], True)),
@@ -1654,22 +1699,12 @@ class Generator:
             configuration['kiperwasser']['wordDim'] = 300
         # configuration['sampling']['importantSentences'] = Generator.generateValue([True, False], False)
         # configuration['embedding']['compactVocab'] = Generator.generateValue([True, False], False)
-        configuration['embedding']['lemma'] = Generator.generateValue([True, False], False)
+        configuration['embedding']['lemma'] = True  # Generator.generateValue([True, False], False)
         configuration['nn'].update({
             'epochs': 15,
             'minDelta': round(Generator.generateValue([0.001, 0.1], True), 3),
             'patience': 4,
         })
-        # kiperConf = configuration['kiperwasser']
-        # kiperConf['wordDim'] = int(Generator.generateValue([50, 500], True))
-        # kiperConf['posDim'] = int(Generator.generateValue([15, 150], True))
-        # kiperConf['denseActivation'] = 'tanh'  # str(Generator.generateValue(['tanh', 'relu'], False))
-        # configuration['nn']['optimizer'] = 'adagrad'  # str(Generator.generateValue(['adam', 'adagrad'], False))
-        # kiperConf['lr'] = 0.07
-        # kiperConf['dense1'] = int(Generator.generateValue([10, 350], True))
-        # kiperConf['rnnDropout'] = round(Generator.generateValue([.1, .4], True), 2)
-        # kiperConf['rnnUnitNum'] = int(Generator.generateValue([20, 250], True))
-        # kiperConf['rnnLayerNum'] =int(Generator.generateValue([1, 2], False))
 
     @staticmethod
     def mlpPhrase():
@@ -1748,16 +1783,16 @@ class Generator:
             'epochs': 20,
             'earlyStop': Generator.generateValue([True, False], False, False),
             'checkPoint': False,
-            'minDelta': round(Generator.generateValue([0.001, 0.1], True), 3),
+            'minDelta': round(Generator.generateValue([0.005, 0.1], True), 3),
             'patience': 4,
             'predictVerbose': False,
-            'depParserBatchSize': int(Generator.generateValue([16, 32, 48, 64, 96, 128, 256], False)),
-            'taggingBatchSize': int(Generator.generateValue([16, 32, 48, 64, 96, 128, 256], False)),
-            'identBatchSize': int(Generator.generateValue([16, 32, 48, 64, 96, 128, 256], False)),
-            'idenLR': round(Generator.generateValue([0.01, 0.2], True), 3),
-            'taggingLR': round(Generator.generateValue([0.01, 0.2], True), 3),
-            'depParsingLR': round(Generator.generateValue([0.01, 0.2], True), 3),
-            'initialEpochs': int(Generator.generateValue([1, 5], True)),
+            'depParserBatchSize': int(Generator.generateValue([64, 96, 128, 256], False)),
+            'taggingBatchSize': int(Generator.generateValue([64, 96, 128, 256], False)),
+            'identBatchSize': int(Generator.generateValue([64, 96, 128, 256], False)),
+            'idenLR': round(Generator.generateValue([0.05, 0.15], True), 3),
+            'taggingLR': round(Generator.generateValue([0.05, 0.15], True), 3),
+            'depParsingLR': round(Generator.generateValue([0.05, 0.15], True), 3),
+            'initialEpochs': int(Generator.generateValue([1, 3], True)),
         })
         configuration['embedding']['lemma'] = Generator.generateValue([True, False], False)
         configuration['sampling']['importantSentences'] = True

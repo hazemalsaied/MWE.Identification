@@ -157,7 +157,7 @@ def run(corpus):
             loss = lossFunction(predT.view(c['kiperwasser']['batch'], 4), batchLabels)
             valLosses += loss.item()
         epochLosses.append(valLosses/batchSize)
-        sys.stdout.write('\nEpoch {0}: Val loss:{1}\n'.format(epoch, round(valLosses / batchSize,4)))
+        sys.stdout.write('\nEpoch {0}: Val loss:{1}\n'.format(epoch, round(valLosses / batchSize, 6)))
         if shouldStopLearning(epochLosses):
             break
 

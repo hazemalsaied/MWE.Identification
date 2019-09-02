@@ -6,7 +6,8 @@ def runRSGSpontaneously(langs, dataset, xpMode, division,
                         seeds=[0], xpNumByThread=50, xpNum=1,
                         mlpInLinear=False,
                         linearInMlp=False,
-                        complentary=False):
+                        complentary=False,
+                        dontParse=False):
     configs = []
     for i in range(xpNumByThread):
         generateConf(xpMode)
@@ -20,7 +21,8 @@ def runRSGSpontaneously(langs, dataset, xpMode, division,
         #     'useB1': True,
         #     'useBx': True,
         # })
-
+        if dontParse:
+            configuration['tmp']['dontParse'] = True
         xp(langs, dataset, xpMode, division, xpNum=xpNum, seeds=seeds,
            mlpInLinear=mlpInLinear, linearInMlp=linearInMlp,
            complentary=complentary, outputCupt=False)
