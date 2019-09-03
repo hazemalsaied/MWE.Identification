@@ -450,4 +450,7 @@ if __name__ == '__main__':
     # OSTools.cleanReports()
     # STDOutTools.generateOarsub(xpNum=12, duration=72, tourNum=1, name='jointModel')
     # STDOutTools.generateKiperOarsub(xpNum=5, duration=5, tourNum=1, name='k.debug')
-    ReportMiner.getNewScores(files, ['corpus', 'fixed', 'dev'][1])
+    # ReportMiner.getNewScores(files, ['corpus', 'fixed', 'dev'][1])
+    lis = [97.7,81.9,82.1,81.8,36.4,81.4,81,81.8,61.3,77.8,78.6,77.1,2.3,2.1,9.9,1.2,2.2,2.8,10,1.6,2.3,2.1,9.9,1.2,74.4,69.9,83.1,60.3,25.6,49.7,74.8,37.2,49,91.6,90.1,93.1,48.7,73,73.8,72.2,3,26.9,57.9,17.5,60.2,83.6,90.5,77.7,93.5,63.1,81,51.7,85,66,80.8,55.8,7.4,39.9,65.5,28.7,1.1,20.4,39.8,13.7]
+    for i in range(len(lis) /4):
+        print lis[i* 4 ], lis[i* 4 + 1], lis[i* 4 + 2], lis[i* 4 + 3]
