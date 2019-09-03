@@ -135,6 +135,11 @@ class Transition(object):
             idx += 1
         return False
 
+    def isMarkOrMerge(self):
+        if self is not None and self.type is not None and self.type.value is not None and self.type.value >= 2:
+            return True
+        return False
+
     def __str__(self):
         typeStr = '{0}'.format(self.type.name) if self.type else ''
         transSelectionType = 'C' if self.isClassified else 'L'
@@ -326,13 +331,11 @@ def initialize(transType, sent):
         transType = getType(transType)
     if transType == TransitionType.SHIFT:
         return Shift(sent=sent)
-    if transType == TransitionType.REDUCE:
-        return Reduce(sent=sent)
     if transType == TransitionType.MERGE:
         return Merge(sent=sent)
     if transType:
         return MarkAs(type=transType, sent=sent)
-    return None
+    return Reduce(sent=sent)
 
 
 def getType(idx):

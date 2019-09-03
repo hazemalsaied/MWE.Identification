@@ -63,7 +63,7 @@ def parseAndTrain(corpus):
             result = network.parse(corpus)
             configuration['tmp']['dontParse'] = True
             de = DependencyEvaluator(corpus.testDepGraphs, result)
-            print 'UAS = {0}\nLAS = {1}'.format(round(de.eval()[0] * 100, 1), round(de.eval()[1] * 100, 1))
+            sys.stdout.write('UAS = {0}\nLAS = {1}'.format(round(de.eval()[0] * 100, 1), round(de.eval()[1] * 100, 1)))
             return network, None
     if configuration['xp']['rmlpTree']:
         network = modelRMLPTree.Network(corpus)

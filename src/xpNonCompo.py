@@ -395,15 +395,15 @@ if __name__ == '__main__':
     reload(sys)
     sys.setdefaultencoding('utf8')
     # jointModel1
-    # configuration['tmp']['createDepGraphs'] = True
-    # configuration['others']['analyzePerformance'] = False
-    # configuration['tmp']['trainJointly'] = True
-    # import rsg
-    # rsg.runRSGSpontaneously(pilotLangs,
-    #                         dataset=Dataset.sharedtask2,
-    #                         xpMode=XpMode.multitasking,
-    #                         division=Evaluation.fixedSize,
-    #                         xpNumByThread=200)
+    configuration['tmp']['createDepGraphs'] = True
+    configuration['others']['analyzePerformance'] = False
+    configuration['tmp']['trainJointly'] = True
+    import rsg
+    rsg.runRSGSpontaneously(['BG', 'HE', 'RO'],
+                            dataset=Dataset.sharedtask2,
+                            xpMode=XpMode.multitasking,
+                            division=Evaluation.fixedSize,
+                            xpNumByThread=200)
 
     # depParsing.eval
     # configuration['tmp']['trainDepParser'] = True  # trainJointly
@@ -414,8 +414,8 @@ if __name__ == '__main__':
     # xp(allSynSharedtask2Lang[12:], dataset=Dataset.sharedtask2, xpMode=XpMode.multitasking,
     #    division=Evaluation.trainVsDev)
 
-    configuration['others']['analyzePerformance'] = False
-    import rsg
-    rsg.runRSGSpontaneously(['FR'], Dataset.sharedtask2, XpMode.kiperwasser, None,
-                            dontParse=True,
-                            xpNumByThread=10)
+    # configuration['others']['analyzePerformance'] = False
+    # import rsg
+    # rsg.runRSGSpontaneously(['FR'], Dataset.sharedtask2, XpMode.kiperwasser, None,
+    #                         dontParse=True,
+    #                         xpNumByThread=10)

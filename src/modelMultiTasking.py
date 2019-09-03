@@ -96,6 +96,7 @@ class Network:
             else:
                 sys.stdout.write('MWE identification: {0}\n'.format(idenIdx))
                 his = self.idenModel.fit(idenData, idenLbls,
+                                         validation_split=trainParams['validationSplit'],
                                          verbose=2,
                                          batch_size=trainParams['identBatchSize'])
                 historyList.append(his)
@@ -157,7 +158,7 @@ class Network:
     def evaluateDepParsing(self, corpus):
         result = self.parse(corpus)
         de = DependencyEvaluator(result, corpus.testDepGraphs)
-        print 'UAS = {0}\nLAS = {1}'.format(round(de.eval()[0] * 100, 1), round(de.eval()[1] * 100, 1))
+        sys.stdout.write('UAS = {0}\nLAS = {1}'.format(round(de.eval()[0] * 100, 1), round(de.eval()[1] * 100, 1)))
 
     def predictDepParsing(self, conf, sent):
         inputs = SynDataFactory.getDataEntry(conf, sent, self.vocabulary)
@@ -254,8 +255,8 @@ class Network:
                 if Network.shouldStopLearning(historyList):
                     break
 
-    def predictIdent(self, trans, sent):
-        inputs = self.getPredData(trans, sent)
+    def predict(self, trans):
+        inputs = self.getPredData(trans, trans.sent)
         oneHotRep = self.idenModel.predict(inputs, batch_size=1,
                                            verbose=configuration['nn']['predictVerbose'])
         return oneHotRep[0]

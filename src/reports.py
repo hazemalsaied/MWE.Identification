@@ -38,7 +38,6 @@ class ReportMiner:
     @staticmethod
     def getNewScores(files, division):
         for ff in files:
-            print ff
             configs, scores, langs, stats, precisions, recalls, misidentified, nonidentified, trainTimes = \
                 ReportMiner.mineNewFile(str(ff))
             if division == 'fixed':
@@ -443,24 +442,12 @@ def readResamplingReport():
                             results[i * 5 + 4][3]) / 5, 1)
             m = mad([results[i * 5][1], results[i * 5 + 1][1], results[i * 5 + 2][1], results[i * 5 + 3][1],
                      +results[i * 5 + 4][1]])
-            print results[i * 5][0], f, p, r, m
+            sys.stdout.write(results[i * 5][0], f, p, r, m)
 
 
 if __name__ == '__main__':
-    files = [f for f in os.listdir('../Reports/Reports/') if f.startswith('jointModel1')]
+    files = [f for f in os.listdir('../Reports/Reports/') if f.startswith('jointModel')]
     # OSTools.cleanReports()
-    # mineSTScriptRes('baseline.cv')
-    STDOutTools.generateOarsub(xpNum=10, duration=72, tourNum=1, name='jointModel2')
+    # STDOutTools.generateOarsub(xpNum=12, duration=72, tourNum=1, name='jointModel')
     # STDOutTools.generateKiperOarsub(xpNum=5, duration=5, tourNum=1, name='k.debug')
-
-    # with open(os.path.join(os.path.dirname(__file__)[:-len(os.path.basename(os.path.dirname(__file__)))],
-    # 'Reports/train.conll'), 'r') as ff:
-    #     for l in ff.readlines():
-    #         if len(l.split('\t')) == 10:
-    #             # print l.split('\t')[0]
-    #             if '-' in l.split('\t')[3]:
-    #                 print l
-
-    # ReportMiner.parseUdPIPE(files)
-    # readResamplingReport()
-    # ReportMiner.getNewScores(files, ['corpus', 'fixed', 'dev'][1])
+    ReportMiner.getNewScores(files, ['corpus', 'fixed', 'dev'][1])
