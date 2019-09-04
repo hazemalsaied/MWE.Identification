@@ -17,9 +17,7 @@ import reports
 from reports import *
 from wordEmbLoader import empty
 from wordEmbLoader import unk
-from operator import itemgetter
 from scipy import sparse
-from os import remove
 from numpy import array
 params = configuration['chenParams']
 consts = configuration['chenConstant']

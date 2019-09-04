@@ -1,11 +1,9 @@
-import datetime
 import logging
 
 from nltk.parse import DependencyEvaluator
 
 import modelChenManning
 import modelCompactKiper
-import modelKiperwasser
 import modelLinear
 import modelMLP
 import modelMlpPhrase
@@ -94,13 +92,21 @@ def parseAndTrain(corpus):
             configuration['tmp']['dontParse'] = True
             return network, None
         elif configuration['tmp']['trainJointly']:
+            t = datetime.datetime.now()
             network.trainAll(corpus)
+            STDOutTools.getExcutionTime('trainAll passed', t)
+            t = datetime.datetime.now()
             configuration['multitasking']['testOnToken'] = True
             network.testTagging(corpus)
+            STDOutTools.getExcutionTime('testTagging passed', t)
+            t = datetime.datetime.now()
             configuration['multitasking']['testOnToken'] = False
             network.testTagging(corpus, title='POS tagging accuracy (MWEs)')
+            STDOutTools.getExcutionTime('testTagging 2 passed', t)
+            t = datetime.datetime.now()
             configuration['multitasking']['testOnToken'] = True
             network.evaluateDepParsing(corpus)
+            STDOutTools.getExcutionTime('evaluateDepParsing 2 passed', t)
             return network, None
         elif configuration['tmp']['trainTaggerAndIdentifier']:
             network.trainTaggerAndIdentifier(corpus)
