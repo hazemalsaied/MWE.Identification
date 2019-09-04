@@ -448,6 +448,6 @@ def readResamplingReport():
 if __name__ == '__main__':
     files = [f for f in os.listdir('../Reports/Reports/') if f.startswith('jointModel')]
     # OSTools.cleanReports()
-    # STDOutTools.generateOarsub(xpNum=12, duration=72, tourNum=1, name='jointModel')
+    # STDOutTools.generateOarsub(xpNum=12, duration=72, tourNum=2, name='jointModel')
     # STDOutTools.generateKiperOarsub(xpNum=5, duration=5, tourNum=1, name='k.debug')
     ReportMiner.getNewScores(files, ['corpus', 'fixed', 'dev'][1])

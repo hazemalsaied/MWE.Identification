@@ -1,9 +1,7 @@
-# unk = configuration['constants']['unk']
-# empty = configuration['constants']['empty']
 import copy
 import random
 from random import uniform
-
+import datetime
 import keras
 import numpy as np
 from imblearn.over_sampling import RandomOverSampler
@@ -76,7 +74,9 @@ class Network:
                                   verbose=2)
 
         posIdx, idenIdx = trainParams['initialEpochs'] + 1, 1
+        sys.stdout.write('Train start {0}'.format(datetime.datetime.now()))
         for x in range(trainParams['jointLearningEpochs']):
+            t = datetime.datetime.now()
             alpha = random.uniform(0, 1)
             if alpha < .33:
                 sys.stdout.write(
@@ -97,13 +97,13 @@ class Network:
                 sys.stdout.write('MWE identification: {0}\n'.format(idenIdx))
                 his = self.idenModel.fit(idenData, idenLbls,
                                          validation_split=trainParams['validationSplit'],
-                                         verbose=2,
+                                         verbose=1,
                                          batch_size=trainParams['identBatchSize'])
                 historyList.append(his)
                 if Network.shouldStopLearning(historyList):
                     break
                 idenIdx += 1
-
+            STDOutTools.getExcutionTime('Training time', t)
     def trainInTransfert(self, corpus):
         self.trainTagging(corpus)
         configuration['multitasking']['testOnToken'] = True
@@ -413,8 +413,9 @@ class Network:
         if len(historyList) <= patience:
             return False
         key = 'loss' if configuration['nn']['monitor'] == 'val_loss' else 'acc'
+        sys.stdout.write('Should stop early?\n')
         for i in range(patience):
-            if historyList[len(historyList) - i - 1].history[key][0] - \
+            if len(historyList) - i - 1 > 0 and historyList[len(historyList) - i - 1].history[key][0] - \
                     historyList[len(historyList) - i - 2].history[key][0] <= minDelta:
                 continue
             else:
