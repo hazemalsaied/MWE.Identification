@@ -395,6 +395,7 @@ if __name__ == '__main__':
     reload(sys)
     sys.setdefaultencoding('utf8')
     TrendConfig.mlp()
+    configuration['embedding']['pretrained'] = False
     xp(['BG'], dataset=Dataset.sharedtask2, xpMode=None, division=None)
     # jointModel1
     # configuration['tmp']['createDepGraphs'] = True

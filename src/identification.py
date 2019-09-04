@@ -1,9 +1,11 @@
+import datetime
 import logging
 
 from nltk.parse import DependencyEvaluator
 
 import modelChenManning
-import modelCompactKiper
+#
+#import modelKiperwasser
 import modelLinear
 import modelMLP
 import modelMlpPhrase
@@ -82,6 +84,7 @@ def parseAndTrain(corpus):
         return network, None
 
     if configuration['xp']['kiperComp']:
+        import modelCompactKiper
         network = modelCompactKiper.train(corpus, configuration)
         return network, None
 
