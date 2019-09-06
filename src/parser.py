@@ -1,26 +1,20 @@
-
-
 import sys
 
 from corpus import getRelevantModelAndNormalizer
 from modelLinear import getFeatures
 from transitions import *
 
-sequencialMarkAsNum = 0
+markNum = 0
 
 
 def parse(sents, model, vectorizer=None, linearModels=None, linearVecs=None, mlpModels=None, initialize=True):
-    global sequencialMarkAsNum
+    global markNum
     for sent in sents:
-        if configuration['tmp']['transOut'] and sent.vMWEs:
-            sys.stdout.write('## ' + sent.text + '\n')
-            sys.stdout.write('### Annotated:\n')
-            for w in sent.vMWEs:
-                sys.stdout.write(w.getLemmaString()+'\n')
+        sys.stdout.write(str(sent) + '\n')
         if initialize:
             sent.identifiedVMWEs = []
         sent.initialTransition, sentEmbs, tokens = None, None, None
-        if configuration['xp']['kiperwasser']:
+        if False and configuration['xp']['kiperwasser']:
             tokenIdxs, posIdxs = model.getIdxs(sent)
             sentEmbs = model.getContextualizedEmbs(tokenIdxs, posIdxs)
         elif configuration['xp']['kiperComp']:
@@ -30,21 +24,17 @@ def parse(sents, model, vectorizer=None, linearModels=None, linearVecs=None, mlp
         sent.initialTransition = Transition(None, isInitial=True, sent=sent)
         t = sent.initialTransition
         while not t.isTerminal():
-            newT = nextTrans(t, sent, model, vectorizer, sentEmbs, tokens, linearModels=linearModels,
-                             linearVecs=linearVecs, mlpModels=mlpModels)
-            sequencialMarkAsNum = 1 + sequencialMarkAsNum if newT and newT.type and newT.type.value and newT.type.value > 2 else 0
+            newT = nextTrans(t, sent, model, vectorizer, sentEmbs, tokens,
+                             linearModels=linearModels,
+                             linearVecs=linearVecs,
+                             mlpModels=mlpModels)
+            markNum = 1 + markNum if newT and newT.type and newT.type.value and newT.type.value > 2 else 0
             newT.apply(t, sent, parse=True, isClassified=newT.isClassified, secondParse=not initialize)
-            if configuration['tmp']['transOut'] and newT and newT.type and newT.type.value >= 2:
-                sys.stdout.write(str(newT.type) +  str(t.configuration) + '\n')
             t = newT
             if configuration['xp']['kiperComp']:
                 sentEmbs, tokens = refreshSentEmb(t, tokens, model, sentEmbs)
-
+            sys.stdout.write(str(t))
             sys.stdout.flush()
-        if configuration['tmp']['transOut'] and sent.identifiedVMWEs:
-            sys.stdout.write('### Identified: \n')
-            for w in sent.identifiedVMWEs:
-                sys.stdout.write(w.getLemmaString()+'\n')
         sent.recognizeEmbedded(annotated=False)
 
 
@@ -53,13 +43,14 @@ serieWithoutReduceIdx = 0
 
 def nextTrans(t, sent, model, vectorizer, sentEmbs=None, tokens=None, linearModels=None, linearVecs=None,
               mlpModels=None):
-    global sequencialMarkAsNum
+    global markNum
     legalTansDic, predictedTrans = t.getLegalTransDic(), []
-    serieWithoutReduceLength, tTmp = 0, t
+    reduceNum, tTmp = 0, t
     while tTmp and tTmp.type and tTmp.type != TransitionType.REDUCE:
-        serieWithoutReduceLength += 1
+        sys.stdout.write('Obligatory reduce\n')
+        reduceNum += 1
         tTmp = tTmp.previous
-    if serieWithoutReduceLength >= 25 or sequencialMarkAsNum > 4:
+    if reduceNum >= 10 or markNum > 4:
         if TransitionType.REDUCE in legalTansDic:
             trans = legalTansDic[TransitionType.REDUCE]
             trans.isClassified = False
@@ -68,28 +59,10 @@ def nextTrans(t, sent, model, vectorizer, sentEmbs=None, tokens=None, linearMode
             sys.stderr.write('Reduce application is not possible for a long loop!\n')
             sys.stderr.write(str(t.configuration))
 
-    if configuration['tmp']['markObligatory']:
-        if len(t.configuration.buffer) == 0:
-            if t.configuration.stack[-1] and not str(t.configuration.stack[-1].__class__).endswith('corpus.Token'):
-                if TransitionType.REDUCE in legalTansDic and \
-                        configuration['tmp']['addTokens'] and sent.identifiedVMWEs:
-                    if configuration['tmp']['transOut']:
-                        sys.stdout.write('Obligatory mark (token extension):\n')
-                    for t in getTokens(t.configuration.stack[-1])[:2]:
-                        sent.identifiedVMWEs[-1].tokens.append(t)
-                    trans = legalTansDic[TransitionType.REDUCE]
-                    trans.isClassified = False
-                    return trans
-                if not configuration['tmp']['addTokens'] and TransitionType.MARK_AS_OTH in legalTansDic:
-                    if configuration['tmp']['transOut']:
-                        sys.stdout.write('Obligatory mark\n')
-                    trans = legalTansDic[TransitionType.MARK_AS_OTH]
-                    trans.isClassified = False
-                    return trans
-
-
     if len(legalTansDic) == 1:
+        sys.stdout.write('One legal transition\n')
         return initialize(legalTansDic.keys()[0], sent)
+    sys.stdout.write('Selected by classifier\n')
     if configuration['xp']['kiperwasser']:
         predictedTrans = model.predict(t, sentEmbs)
     elif configuration['xp']['kiperComp']:
@@ -132,6 +105,7 @@ def nextTrans(t, sent, model, vectorizer, sentEmbs=None, tokens=None, linearMode
         predictedTrans = sorted(range(len(probVector)), key=lambda k: probVector[k], reverse=True)
     elif configuration['xp']['multitasking']:
         probVector = model.predictIdent(t, sent)
+        sys.stdout.write(str(probVector) + '\n')
         predictedTrans = sorted(range(len(probVector)), key=lambda k: probVector[k], reverse=True)
     elif configuration['xp']['mlpPhrase'] or configuration['xp']['mlpWide']:
         probVector = model.predict(t)
@@ -145,6 +119,8 @@ def nextTrans(t, sent, model, vectorizer, sentEmbs=None, tokens=None, linearMode
             trans = legalTansDic[transType]
             trans.isClassified = True
             return trans
+    sys.stdout.write('The first legal transition\n')
+    return initialize(legalTansDic.keys()[0], sent)
 
 
 def refreshSentEmb(t, tokens, model, sentEmbs):

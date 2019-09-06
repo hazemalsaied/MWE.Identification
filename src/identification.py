@@ -1,19 +1,7 @@
-import datetime
 import logging
 
 from nltk.parse import DependencyEvaluator
 
-import modelChenManning
-#
-#import modelKiperwasser
-import modelLinear
-import modelMLP
-import modelMlpPhrase
-import modelMlpWide
-import modelMultiTasking
-import modelRMLP
-import modelRMLPTree
-import modelRnnNonCompo
 import oracle
 from corpus import *
 from evaluation import evaluate, analyzePerformance
@@ -40,19 +28,24 @@ def identify(lang):
 
 def parseAndTrain(corpus):
     if configuration['xp']['linear']:
+        import modelLinear
         return modelLinear.train(corpus)
     if configuration['xp']['rnn']:
+        import modelRMLP
         network = modelRMLP.Network(corpus)
         network.train(corpus)
         return network, None
     if configuration['xp']['mlpWide']:
+        import modelMlpWide
         network = modelMlpWide.Network(corpus)
         network.train(corpus)
         return network, None
     if configuration['xp']['mlpPhrase']:
+        import modelMlpPhrase
         network = modelMlpPhrase.train(corpus)
         return network, None
     if configuration['xp']['chenManning']:
+        import modelChenManning
         if configuration['tmp']['nltk']:
             modelChenManning.NLTKParser.evaluate(corpus)
             configuration['tmp']['dontParse'] = True
@@ -66,16 +59,18 @@ def parseAndTrain(corpus):
             sys.stdout.write('UAS = {0}\nLAS = {1}'.format(round(de.eval()[0] * 100, 1), round(de.eval()[1] * 100, 1)))
             return network, None
     if configuration['xp']['rmlpTree']:
+        import modelRMLPTree
         network = modelRMLPTree.Network(corpus)
         modelRMLPTree.train(network, corpus)
         return network, None
     if configuration['xp']['rnnNonCompo']:
+        import modelRnnNonCompo
         network = modelRnnNonCompo.Network(corpus)
         modelRnnNonCompo.train(network, corpus)
         return network, None
     if configuration['xp']['kiperwasser']:
-        #network = modelKiperwasser.train2(corpus)
-        #network = modelKiperwasser.train(corpus, configuration)
+        # network = modelKiperwasser.train2(corpus)
+        # network = modelKiperwasser.train(corpus, configuration)
         # import modelKiperKeras
         # network = modelKiperKeras.Network(corpus)
         import modelK
@@ -89,6 +84,7 @@ def parseAndTrain(corpus):
         return network, None
 
     if configuration['xp']['multitasking']:
+        import modelMultiTasking
         network = modelMultiTasking.Network(corpus)
         if configuration['tmp']['trainInTransfert']:
             network.trainInTransfert(corpus)
@@ -97,19 +93,19 @@ def parseAndTrain(corpus):
         elif configuration['tmp']['trainJointly']:
             t = datetime.datetime.now()
             network.trainAll(corpus)
-            STDOutTools.getExcutionTime('trainAll passed', t)
+            STDOutTools.getExcutionTime('\ntrainAll passed', t)
             t = datetime.datetime.now()
             configuration['multitasking']['testOnToken'] = True
             network.testTagging(corpus)
-            STDOutTools.getExcutionTime('testTagging passed', t)
+            STDOutTools.getExcutionTime('\ntestTagging passed', t)
             t = datetime.datetime.now()
             configuration['multitasking']['testOnToken'] = False
             network.testTagging(corpus, title='POS tagging accuracy (MWEs)')
-            STDOutTools.getExcutionTime('testTagging 2 passed', t)
+            STDOutTools.getExcutionTime('\ntestTagging 2 passed', t)
             t = datetime.datetime.now()
             configuration['multitasking']['testOnToken'] = True
             network.evaluateDepParsing(corpus)
-            STDOutTools.getExcutionTime('evaluateDepParsing 2 passed', t)
+            STDOutTools.getExcutionTime('\nevaluateDepParsing 2 passed', t)
             return network, None
         elif configuration['tmp']['trainTaggerAndIdentifier']:
             network.trainTaggerAndIdentifier(corpus)
@@ -139,6 +135,7 @@ def parseAndTrain(corpus):
             configuration['multitasking']['testOnToken'] = True
             configuration['tmp']['dontParse'] = True
         return network, None
+    import modelMLP
     network = modelMLP.Network(corpus)
     network.train(corpus)
     return network, None

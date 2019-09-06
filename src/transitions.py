@@ -48,7 +48,7 @@ class Transition(object):
             return config.legalTrans
         transitions = {}
         if configuration['others']['minimal']:
-            if len(config.stack) >= 1 :
+            if len(config.stack) >= 1:
                 transitions[TransitionType.MARK_AS_ID] = MarkAs(type=TransitionType.MARK_AS_ID,
                                                                 sent=self.sent)
                 transitions[TransitionType.MARK_AS_VPC] = MarkAs(type=TransitionType.MARK_AS_VPC,
@@ -78,7 +78,7 @@ class Transition(object):
                     transitions[TransitionType.MARK_AS_OTH] = MarkAs(type=TransitionType.MARK_AS_OTH,
                                                                      sent=self.sent)
                 if len(config.stack) > 1:
-                    transitions[TransitionType.MERGE] =  Merge(sent=self.sent)
+                    transitions[TransitionType.MERGE] = Merge(sent=self.sent)
                 transitions[TransitionType.REDUCE] = Reduce(sent=self.sent)
 
         # if config.stack:
@@ -144,8 +144,7 @@ class Transition(object):
         typeStr = '{0}'.format(self.type.name) if self.type else ''
         transSelectionType = 'C' if self.isClassified else 'L'
         typeStr += ': ' + transSelectionType + ' ' * (15 - len(typeStr))
-
-        return '\n{0} \n{1}'.format(typeStr, str(self.configuration), )
+        return '\n{0} \n{1}'.format(typeStr, str(self.configuration))
 
 
 class Shift(Transition):
@@ -260,8 +259,8 @@ class MarkAs(Transition):
     def applyMinimal(self, parent, sent, parse=False, isClassified=False, secondParse=False):
         config = parent.configuration
         newBuffer = list(config.buffer)
-        newStack = list(config.stack)[:-2] if len(config.stack)>1 else  list(config.stack)[:-1]
-        newStack.append([config.stack[-2], config.stack[-1]] if len(config.stack)>1 else [config.stack[-1]])
+        newStack = list(config.stack)[:-2] if len(config.stack) > 1 else list(config.stack)[:-1]
+        newStack.append([config.stack[-2], config.stack[-1]] if len(config.stack) > 1 else [config.stack[-1]])
         newTokens = list(config.tokens)
         vMWETokens = getTokens(newStack[-1])
         if parse:
@@ -298,7 +297,7 @@ class MarkAs(Transition):
 
 
 class Configuration:
-    def __init__(self, stack, buffer, tokens, sent, transition, reduced = None, isInitial=False, ):
+    def __init__(self, stack, buffer, tokens, sent, transition, reduced=None, isInitial=False, ):
 
         self.buffer = buffer
         self.stack = stack
@@ -333,7 +332,9 @@ def initialize(transType, sent):
         return Shift(sent=sent)
     if transType == TransitionType.MERGE:
         return Merge(sent=sent)
-    if transType:
+    if transType in [TransitionType.MARK_AS_OTH, TransitionType.MARK_AS_IREFLV,
+                     TransitionType.MARK_AS_LVC, TransitionType.MARK_AS_VPC,
+                     TransitionType.MARK_AS_ID]:
         return MarkAs(type=transType, sent=sent)
     return Reduce(sent=sent)
 

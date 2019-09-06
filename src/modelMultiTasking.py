@@ -97,7 +97,7 @@ class Network:
                 sys.stdout.write('MWE identification: {0}\n'.format(idenIdx))
                 his = self.idenModel.fit(idenData, idenLbls,
                                          validation_split=trainParams['validationSplit'],
-                                         verbose=1,
+                                         verbose=2 ,
                                          batch_size=trainParams['identBatchSize'])
                 historyList.append(his)
                 if Network.shouldStopLearning(historyList):
@@ -255,8 +255,8 @@ class Network:
                 if Network.shouldStopLearning(historyList):
                     break
 
-    def predict(self, trans):
-        inputs = self.getPredData(trans, trans.sent)
+    def predictIdent(self, trans, sent):
+        inputs = self.getPredData(trans, sent)
         oneHotRep = self.idenModel.predict(inputs, batch_size=1,
                                            verbose=configuration['nn']['predictVerbose'])
         return oneHotRep[0]

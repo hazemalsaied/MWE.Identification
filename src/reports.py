@@ -74,16 +74,45 @@ class ReportMiner:
                     sys.stdout.write(line + '\n')
 
     @staticmethod
-    def mineReport(path, line, usePreviousLine=False, previousLine=''):
+    def mineReport(path, line, usePreviousLine=False, previousLine='', cut=0):
         results, pl = [], ''
         with open(path, 'r') as log:
             for l in log.readlines():
                 if l.startswith(line) and pl.startswith(previousLine):
-                    results.append(l[len(line):-1])
+                    pointer = -1
+                    if cut and len(line) + cut < len(l):
+                        pointer = len(line) + cut
+                    results.append(l[len(line):pointer])
                 if usePreviousLine:
                     pl = l
         return results
 
+    @staticmethod
+    def mineMTReports(files):
+        for ff in files:
+            path = os.path.join('../Reports/Reports/', ff)
+            configs = ReportMiner.mineReport(path, '# Configs:')
+            lass = ReportMiner.mineReport(path, 'LAS = ', cut=4)
+            uass = ReportMiner.mineReport(path, 'UAS = ', cut=4)
+            ident = ReportMiner.mineReport(path, '	Identification : ', cut=4)
+            pos = ReportMiner.mineReport(path, 'POS tagging accuracy = ', cut=4)
+            mwePpos = ReportMiner.mineReport(path, 'POS tagging accuracy (MWEs) = ', cut=4)
+
+            for i in range(len(configs)):
+                print ','.join(str(x) for x in [lass[i * 3] if i*3< len(lass) else 0, lass[i * 3 + 1] if i*3 + 1< len(lass) else 0, lass[i * 3+ 2 ] if i*3 + 2< len(lass) else 0,
+                                                uass[i * 3] if i*3< len(uass) else 0, uass[i * 3 + 1] if i*3 + 1< len(uass) else 0, uass[i * 3+ 2 ] if i*3 + 2< len(uass) else 0,
+                                                pos[i * 3] if i * 3 < len(pos) else 0,
+                                                pos[i * 3 + 1] if i * 3 + 1 < len(pos) else 0,
+                                                pos[i * 3 + 2] if i * 3 + 2 < len(pos) else 0,
+                                                mwePpos[i * 3] if i * 3 < len(mwePpos) else 0,
+                                                mwePpos[i * 3 + 1] if i * 3 + 1 < len(mwePpos) else 0,
+                                                mwePpos[i * 3 + 2] if i * 3 + 2 < len(mwePpos) else 0,
+                                                ident[i * 3] if i * 3 < len(ident) else 0,
+                                                ident[i * 3 + 1] if i * 3 + 1 < len(ident) else 0,
+                                                ident[i * 3 + 2] if i * 3 + 2 < len(ident) else 0,
+                                                # params[i].split(',')[0] + '.' + params[i].split(',')[1][0],
+                                                configs[i],
+                                                str(ff)])
     @staticmethod
     def parseChenManningReports(files):
         for ff in files:
@@ -92,6 +121,7 @@ class ReportMiner:
             params = ReportMiner.mineReport(path, 'Total params: ')
             lass = ReportMiner.mineReport(path, 'LAS = ')
             uass = ReportMiner.mineReport(path, 'UAS = ')
+            
             for i in range(len(lass)):
                 print ','.join(str(x) for x in [lass[i],
                                                 uass[i],
@@ -448,6 +478,7 @@ def readResamplingReport():
 if __name__ == '__main__':
     files = [f for f in os.listdir('../Reports/Reports/') if f.startswith('jointModel')]
     # OSTools.cleanReports()
-    # STDOutTools.generateOarsub(xpNum=12, duration=72, tourNum=2, name='jointModel')
+    STDOutTools.generateOarsub(xpNum=12, duration=72, tourNum=1, name='jointModel')
     # STDOutTools.generateKiperOarsub(xpNum=5, duration=5, tourNum=1, name='k.debug')
-    ReportMiner.getNewScores(files, ['corpus', 'fixed', 'dev'][1])
+    # ReportMiner.getNewScores(files, ['corpus', 'fixed', 'dev'][1])
+    # ReportMiner.mineMTReports(files)
