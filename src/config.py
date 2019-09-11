@@ -148,7 +148,7 @@ configuration = {
         'cvFolds': 5,
         'currentIter': -1,
         'shuffleTrain': False,
-        'debugTrainNum': 100,
+        'debugTrainNum': 10,
         'test': 0.2,
         'tokenAvg': 270000,
         'testTokenAvg': 43000,
@@ -1789,9 +1789,9 @@ class Generator:
             'depParserBatchSize': int(Generator.generateValue([64, 96, 128, 256], False)),
             'taggingBatchSize': int(Generator.generateValue([64, 96, 128, 256], False)),
             'identBatchSize': int(Generator.generateValue([64, 96, 128, 256], False)),
-            'idenLR': round(Generator.generateValue([0.05, 0.15], True), 3),
-            'taggingLR': round(Generator.generateValue([0.05, 0.15], True), 3),
-            'depParsingLR': round(Generator.generateValue([0.05, 0.15], True), 3),
+            'idenLR': round(Generator.generateValue([0.005, 0.09], True), 3),
+            'taggingLR': round(Generator.generateValue([0.005, 0.09], True), 3),
+            'depParsingLR': round(Generator.generateValue([0.005, 0.05], True), 3),
             'initialEpochs': int(Generator.generateValue([1, 3], True)),
         })
         configuration['embedding']['lemma'] = Generator.generateValue([True, False], False)

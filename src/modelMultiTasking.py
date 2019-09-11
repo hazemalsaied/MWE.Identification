@@ -1,7 +1,7 @@
 import copy
 import random
 from random import uniform
-import datetime
+
 import keras
 import numpy as np
 from imblearn.over_sampling import RandomOverSampler
@@ -28,8 +28,6 @@ from wordEmbLoader import unk, number
 enableCategorization = False
 
 importantFrequentWordDic = dict()
-
-# global idenInputArrNum
 
 global idenInputArrNum, taggingInputArray, depParserInuptArrNum
 
@@ -97,13 +95,14 @@ class Network:
                 sys.stdout.write('MWE identification: {0}\n'.format(idenIdx))
                 his = self.idenModel.fit(idenData, idenLbls,
                                          validation_split=trainParams['validationSplit'],
-                                         verbose=2 ,
+                                         verbose=2,
                                          batch_size=trainParams['identBatchSize'])
                 historyList.append(his)
                 if Network.shouldStopLearning(historyList):
                     break
                 idenIdx += 1
             STDOutTools.getExcutionTime('Training time', t)
+
     def trainInTransfert(self, corpus):
         self.trainTagging(corpus)
         configuration['multitasking']['testOnToken'] = True
@@ -779,7 +778,7 @@ class Builder:
         taggingModel.compile(loss=configuration['nn']['loss'],
                              optimizer=Network.getOptimizer('taggingLR'),
                              metrics=['accuracy'])
-        if False and configuration['others']['verbose'] :
+        if False and configuration['others']['verbose']:
             sys.stdout.write(str(taggingModel.summary()) + doubleSep)
         return taggingModel, sharedLayers
 
@@ -895,7 +894,6 @@ class Builder:
 
 
 class DataFactory:
-
     @staticmethod
     def getIdenTransData(trans):
         focusedElems = [[trans.configuration.reduced]] if mtParams['useBx'] else []
@@ -1032,7 +1030,6 @@ class DataFactory:
 
 
 class SynDataFactory(object):
-
     @staticmethod
     def getData(corpus, vocabulary, train=True):
         """

@@ -391,42 +391,40 @@ def analyzeResampling(langs=allSharedtask2Lang, xpMode=XpMode.linear,
     xp(langs, Dataset.sharedtask2, xpMode, division, xpNum=xpNum)
 
 
+def evaluateDepParsing():
+    # depParsing.eval
+    configuration['tmp']['trainDepParser'] = True
+    configuration['tmp']['trainJointly'] = False
+    configuration['tmp']['createDepGraphs'] = True
+    configuration['others']['analyzePerformance'] = True
+    TrendConfig.mtDepParsing()
+    xp(allSynSharedtask2Lang[12:], dataset=Dataset.sharedtask2, xpMode=XpMode.multitasking,
+       division=Evaluation.trainVsDev)
+    BestConfig.mtDepParsing()
+    xp(allSynSharedtask2Lang[12:], dataset=Dataset.sharedtask2, xpMode=XpMode.multitasking,
+       division=Evaluation.trainVsDev)
+
+
 if __name__ == '__main__':
     reload(sys)
     sys.setdefaultencoding('utf8')
-    # xp(['BG'], dataset=Dataset.sharedtask2, xpMode=XpMode.multitasking, division=None)
-    # jointModel1
-    configuration['tmp']['createDepGraphs'] = True
-    configuration['others']['analyzePerformance'] = False
-    configuration['tmp']['trainJointly'] = True
-    # xp(['BG'], dataset=Dataset.sharedtask2, xpMode=XpMode.multitasking, division=None)
-    # TrendConfig.mtPos()
-    # TrendConfig.mtDepParsing()
-    # TrendConfig.mtIden()
-    # configuration['others']['tokenAvg'] = 100000
-    # configuration['nn']['patience'] = 1
-    # xp(['FR'],#, 'ES', 'HE'
-    #    dataset=Dataset.sharedtask2,
-    #    xpMode=XpMode.multitasking,
-    #    division=Evaluation.fixedSize)
-    import rsg
-    rsg.runRSGSpontaneously(['BG', 'ES', 'HE'],
-                            dataset=Dataset.sharedtask2,
-                            xpMode=XpMode.multitasking,
-                            division=Evaluation.fixedSize,
-                            xpNumByThread=200)
+    # joint
+    # configuration['tmp']['createDepGraphs'] = True
+    # configuration['others']['analyzePerformance'] = False
+    # configuration['tmp']['trainJointly'] = True
+    # import rsg
+    #
+    # rsg.runRSGSpontaneously(['BG', 'ES', 'HE'],
+    #                         dataset=Dataset.sharedtask2,
+    #                         xpMode=XpMode.multitasking,
+    #                         division=Evaluation.fixedSize,
+    #                         xpNumByThread=200)
 
     # depParsing.eval
-    # configuration['tmp']['trainDepParser'] = True  # trainJointly
-    # TrendConfig.mtDepParsing()
-    # xp(allSynSharedtask2Lang[12:], dataset=Dataset.sharedtask2, xpMode=XpMode.multitasking,
-    #    division=Evaluation.trainVsDev)
-    # BestConfig.mtDepParsing()
-    # xp(allSynSharedtask2Lang[12:], dataset=Dataset.sharedtask2, xpMode=XpMode.multitasking,
-    #    division=Evaluation.trainVsDev)
-
-    # configuration['others']['analyzePerformance'] = False
-    # import rsg
-    # rsg.runRSGSpontaneously(['FR'], Dataset.sharedtask2, XpMode.kiperwasser, None,
-    #                         dontParse=True,
-    #                         xpNumByThread=10)
+    # evaluateDepParsing()
+    xp(['SL'], Dataset.sharedtask2, None, Evaluation.trainVsDev)
+    configuration['others']['analyzePerformance'] = False
+    import rsg
+    rsg.runRSGSpontaneously(['FR'], Dataset.sharedtask2, XpMode.kiperwasser, None,
+                            dontParse=False,
+                            xpNumByThread=10)

@@ -10,7 +10,6 @@ markNum = 0
 def parse(sents, model, vectorizer=None, linearModels=None, linearVecs=None, mlpModels=None, initialize=True):
     global markNum
     for sent in sents:
-        sys.stdout.write(str(sent) + '\n')
         if initialize:
             sent.identifiedVMWEs = []
         sent.initialTransition, sentEmbs, tokens = None, None, None
@@ -33,21 +32,18 @@ def parse(sents, model, vectorizer=None, linearModels=None, linearVecs=None, mlp
             t = newT
             if configuration['xp']['kiperComp']:
                 sentEmbs, tokens = refreshSentEmb(t, tokens, model, sentEmbs)
-            sys.stdout.write(str(t))
-            sys.stdout.flush()
         sent.recognizeEmbedded(annotated=False)
-
-
-serieWithoutReduceIdx = 0
 
 
 def nextTrans(t, sent, model, vectorizer, sentEmbs=None, tokens=None, linearModels=None, linearVecs=None,
               mlpModels=None):
-    global markNum
     legalTansDic, predictedTrans = t.getLegalTransDic(), []
+    if len(legalTansDic) == 1:
+        return initialize(legalTansDic.keys()[0], sent)
+
+    global markNum
     reduceNum, tTmp = 0, t
     while tTmp and tTmp.type and tTmp.type != TransitionType.REDUCE:
-        sys.stdout.write('Obligatory reduce\n')
         reduceNum += 1
         tTmp = tTmp.previous
     if reduceNum >= 10 or markNum > 4:
@@ -59,12 +55,10 @@ def nextTrans(t, sent, model, vectorizer, sentEmbs=None, tokens=None, linearMode
             sys.stderr.write('Reduce application is not possible for a long loop!\n')
             sys.stderr.write(str(t.configuration))
 
-    if len(legalTansDic) == 1:
-        sys.stdout.write('One legal transition\n')
-        return initialize(legalTansDic.keys()[0], sent)
-    sys.stdout.write('Selected by classifier\n')
     if configuration['xp']['kiperwasser']:
-        predictedTrans = model.predict(t, sentEmbs)
+        # predictedTrans = model.predict(t, sentEmbs)
+        predictedTrans = model.predict(t, sent)[0]
+        # predictedTrans = sorted(range(len(probVector)), key=lambda k: probVector[k], reverse=True)
     elif configuration['xp']['kiperComp']:
         predictedTrans = model.predict(t, sentEmbs, tokens)
     elif configuration['xp']['rnn'] or configuration['xp']['rnnNonCompo']:
@@ -105,7 +99,6 @@ def nextTrans(t, sent, model, vectorizer, sentEmbs=None, tokens=None, linearMode
         predictedTrans = sorted(range(len(probVector)), key=lambda k: probVector[k], reverse=True)
     elif configuration['xp']['multitasking']:
         probVector = model.predictIdent(t, sent)
-        sys.stdout.write(str(probVector) + '\n')
         predictedTrans = sorted(range(len(probVector)), key=lambda k: probVector[k], reverse=True)
     elif configuration['xp']['mlpPhrase'] or configuration['xp']['mlpWide']:
         probVector = model.predict(t)
@@ -119,7 +112,6 @@ def nextTrans(t, sent, model, vectorizer, sentEmbs=None, tokens=None, linearMode
             trans = legalTansDic[transType]
             trans.isClassified = True
             return trans
-    sys.stdout.write('The first legal transition\n')
     return initialize(legalTansDic.keys()[0], sent)
 
 
