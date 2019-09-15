@@ -15,7 +15,7 @@ allSharedtask2Lang = ['BG', 'DE', 'EL', 'EN', 'ES', 'EU', 'FA', 'FR', 'HE', 'HI'
                       'HR', 'HU', 'IT', 'LT', 'PL', 'PT', 'RO', 'SL', 'TR']
 
 allSynSharedtask2Lang = ['BG', 'DE', 'EL', 'ES', 'EU', 'FA', 'FR', 'HE', 'HI',
-                      'HR', 'HU', 'IT', 'PT', 'RO',  'TR']
+                      'HR', 'HU', 'IT', 'PT', 'RO', 'TR']
 
 pilotLangs = ['BG', 'PT', 'TR']
 

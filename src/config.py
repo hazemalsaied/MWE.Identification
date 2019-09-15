@@ -339,6 +339,67 @@ configuration['path']['projectPath'] = os.path.dirname(__file__)[:-len(os.path.b
 
 
 class TrendConfig:
+    @staticmethod
+    def identAvgJoint():
+        configuration['multitasking'].update({
+            'affixeDim': 12,
+            'capitalDim': 4,
+            'depParsingDenseUnits': 101,
+            'idenDenseUnits': 79,
+            'symbolDim': 9,
+            'sytacticLabelDim': 19,
+            'taggingDenseUnits': 82,
+            'tokenDim': 86,
+            'useB1': True,
+            'useBx': True,
+            'useCapitalization': True,
+            'useSymbols': True
+        })
+
+        configuration['embedding']['lemma'] = True
+
+        configuration['nn'].update({
+            'depParserBatchSize': 134,
+            'depParsingLR': .017,
+            'earlyStop': True,
+            'idenLR': .015,
+            'identBatchSize': 137,
+            'initialEpochs': 1,
+            'minDelta': 0.033,
+            'monitor': 'val_loss',
+            'taggingBatchSize': 141,
+            'taggingLR': .029
+        })
+
+    @staticmethod
+    def jointAvgJoint():
+        configuration['multitasking'].update({
+            'affixeDim': 12,
+            'capitalDim': 4,
+            'depParsingDenseUnits': 106,
+            'idenDenseUnits': 78,
+            'symbolDim': 9,
+            'sytacticLabelDim': 20,
+            'taggingDenseUnits': 79,
+            'tokenDim': 84,
+            'useB1': True,
+            'useBx': True,
+            'useCapitalization': True,
+            'useSymbols': True})
+
+        configuration['embedding']['lemma'] = True
+        configuration['nn'].update({
+            'depParserBatchSize': 128,
+            'depParsingLR': 0.012,
+            'earlyStop': True,
+            'idenLR': 0.015,
+            'identBatchSize': 140,
+            'initialEpochs': 1,
+            'minDelta': 0.036,
+            'monitor': 'val_loss',
+            'taggingBatchSize': 138,
+            'taggingLR': 0.03
+        })
 
     @staticmethod
     def rmlp():
@@ -510,7 +571,7 @@ class TrendConfig:
         configuration['embedding']['lemma'] = True
 
         configuration['multitasking'].update({
-            'idenDenseUnits':	84,
+            'idenDenseUnits': 84,
             'affixeDim': 12,
             'capitalDim': 3,
             'depParsingDenseUnits': 108,
@@ -520,7 +581,7 @@ class TrendConfig:
             'tokenDim': 80,
             'useB1': True,
             'useBx': True,
-            'useCapitalization':True,
+            'useCapitalization': True,
             'useSymbols': True
         })
 
@@ -531,7 +592,6 @@ class TrendConfig:
             'minDelta': .02,
             'monitor': 'val_loss'
         })
-
 
     @staticmethod
     def mtJoint():
@@ -690,6 +750,67 @@ class Standard:
 
 
 class BestConfig:
+    @staticmethod
+    def identAvgJoint():
+        configuration['multitasking'].update({
+            'affixeDim': 20,
+            'capitalDim': 1,
+            'depParsingDenseUnits': 255,
+            'idenDenseUnits': 120,
+            'symbolDim': 10,
+            'sytacticLabelDim': 34,
+            'taggingDenseUnits': 108,
+            'tokenDim': 39,
+            'useB1': False,
+            'useBx': True,
+            'useCapitalization': True,
+            'useSymbols': True})
+
+        configuration['embedding']['lemma'] = True
+
+        configuration['nn'].update({
+            'depParserBatchSize': 128,
+            'depParsingLR': 0.01,
+            'earlyStop': True,
+            'idenLR': 0.029,
+            'identBatchSize': 256,
+            'initialEpochs': 1,
+            'minDelta': 0.016,
+            'monitor': 'val_loss',
+            'taggingBatchSize': 96,
+            'taggingLR': 0.043})
+
+    @staticmethod
+    def jointAvgJoint():
+        configuration['multitasking'].update({
+            'affixeDim': 11,
+            'capitalDim': 3,
+            'depParsingDenseUnits': 127,
+            'idenDenseUnits': 40,
+            'symbolDim': 9,
+            'sytacticLabelDim': 12,
+            'taggingDenseUnits': 133,
+            'tokenDim': 64,
+            'useB1': True,
+            'useBx': False,
+            'useCapitalization': True,
+            'useSymbols': True
+        })
+
+        configuration['embedding']['lemma'] = True
+
+        configuration['nn'].update({
+            'depParserBatchSize': 128,
+            'depParsingLR': 0.012,
+            'earlyStop': True,
+            'idenLR': 0.01,
+            'identBatchSize': 256,
+            'initialEpochs': 2,
+            'minDelta': 0.085,
+            'monitor': 'val_loss',
+            'taggingBatchSize': 96,
+            'taggingLR': 0.013
+        })
 
     @staticmethod
     def rmlpClosed():
@@ -1672,7 +1793,7 @@ class Generator:
         # # kiperConf['rnnLayerNum'] =int(Generator.generateValue([1, 2], False))
 
         configuration['kiperwasser'].update({
-            'wordDim':  50,# int(Generator.generateValue([50, 200], True)),
+            'wordDim': 50,  # int(Generator.generateValue([50, 200], True)),
             'posDim': int(Generator.generateValue([5, 75], True)),
             'optimizer': 'adagrad',
             'lr': round(Generator.generateValue([0.01, 0.2], True), 3),
@@ -1680,9 +1801,9 @@ class Generator:
             'batch': int(Generator.generateValue([96, 128, 256], False)),
             'dense1': 50,  # int(Generator.generateValue([50, 250], True)),
             'denseActivation': 'tanh',  # str(Generator.generateValue(['tanh', 'relu'], False)),
-            'denseDropout':  .1,# float(Generator.generateValue([0, .1, .2, .3, .4], False)),
+            'denseDropout': .1,  # float(Generator.generateValue([0, .1, .2, .3, .4], False)),
             'rnnUnitNum': 50,  # int(Generator.generateValue([50, 150], True)),
-            'rnnDropout': .1,#float(Generator.generateValue([.1, .2, .3, .4, .5], False)),
+            'rnnDropout': .1,  # float(Generator.generateValue([.1, .2, .3, .4, .5], False)),
             'rnnLayerNum': 1,  # int(Generator.generateValue([1, 2], False)),
             'focusedElemNum': 8,
             'file': 'kiper.p',

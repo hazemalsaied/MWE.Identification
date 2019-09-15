@@ -398,33 +398,58 @@ def evaluateDepParsing():
     configuration['tmp']['createDepGraphs'] = True
     configuration['others']['analyzePerformance'] = True
     TrendConfig.mtDepParsing()
-    xp(allSynSharedtask2Lang[12:], dataset=Dataset.sharedtask2, xpMode=XpMode.multitasking,
+    xp(allSynSharedtask2Lang, dataset=Dataset.sharedtask2, xpMode=XpMode.multitasking,
        division=Evaluation.trainVsDev)
     BestConfig.mtDepParsing()
-    xp(allSynSharedtask2Lang[12:], dataset=Dataset.sharedtask2, xpMode=XpMode.multitasking,
+    xp(allSynSharedtask2Lang, dataset=Dataset.sharedtask2, xpMode=XpMode.multitasking,
+       division=Evaluation.trainVsDev)
+
+def evaluateJointAvgJoint():
+    # jointAvgJoint.eval
+    configuration['tmp']['trainDepParser'] = False
+    configuration['tmp']['trainJointly'] = True
+    configuration['tmp']['createDepGraphs'] = True
+    configuration['others']['analyzePerformance'] = True
+    TrendConfig.jointAvgJoint()
+    xp(allSynSharedtask2Lang, dataset=Dataset.sharedtask2, xpMode=XpMode.multitasking,
+       division=Evaluation.trainVsDev)
+    BestConfig.jointAvgJoint()
+    xp(allSynSharedtask2Lang, dataset=Dataset.sharedtask2, xpMode=XpMode.multitasking,
+       division=Evaluation.trainVsDev)
+
+def evaluateIdentAvgJoint():
+    # identAvgJoint.eval
+    configuration['tmp']['trainDepParser'] = False
+    configuration['tmp']['trainJointly'] = True
+    configuration['tmp']['createDepGraphs'] = True
+    configuration['others']['analyzePerformance'] = True
+    TrendConfig.identAvgJoint()
+    xp(allSynSharedtask2Lang, dataset=Dataset.sharedtask2, xpMode=XpMode.multitasking,
+       division=Evaluation.trainVsDev)
+    BestConfig.identAvgJoint()
+    xp(allSynSharedtask2Lang, dataset=Dataset.sharedtask2, xpMode=XpMode.multitasking,
        division=Evaluation.trainVsDev)
 
 
 if __name__ == '__main__':
     reload(sys)
     sys.setdefaultencoding('utf8')
-    # joint
-    # configuration['tmp']['createDepGraphs'] = True
-    # configuration['others']['analyzePerformance'] = False
-    # configuration['tmp']['trainJointly'] = True
-    # import rsg
-    #
-    # rsg.runRSGSpontaneously(['BG', 'ES', 'HE'],
-    #                         dataset=Dataset.sharedtask2,
-    #                         xpMode=XpMode.multitasking,
-    #                         division=Evaluation.fixedSize,
-    #                         xpNumByThread=200)
+
+    # jointAvgJoint.eval
+    # evaluateJointAvgJoint()
+
+    # identAvgJoint.eval
+    evaluateIdentAvgJoint()
+
 
     # depParsing.eval
     # evaluateDepParsing()
-    xp(['SL'], Dataset.sharedtask2, None, Evaluation.trainVsDev)
-    configuration['others']['analyzePerformance'] = False
-    import rsg
-    rsg.runRSGSpontaneously(['FR'], Dataset.sharedtask2, XpMode.kiperwasser, None,
-                            dontParse=False,
-                            xpNumByThread=10)
+
+
+
+    # xp(['SL'], Dataset.sharedtask2, None, Evaluation.trainVsDev)
+    # configuration['others']['analyzePerformance'] = False
+    # import rsg
+    # rsg.runRSGSpontaneously(['FR'], Dataset.sharedtask2, XpMode.kiperwasser, None,
+    #                         dontParse=False,
+    #                         xpNumByThread=10)

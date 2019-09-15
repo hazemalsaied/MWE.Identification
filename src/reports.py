@@ -23,15 +23,15 @@ LOADED_MODEL_PATH = ''
 featureNumLine = 'Trainable params: '
 linearParamLine = '# Feature number = '
 paramLine = 'Trainable params: '
-scoreLine = '	Identification : 0'
+scoreLine = ',Identification : 0'
 linearTitleLine = '# Language = '
 titleLine = '# XP = '
 
-langLine1 = '	Language : '
-langLine = '	GPU Enabled	Language : '
-goldLine = '	Gold:'
-predictedLine = '	Predicted:'
-fLine = '	F :'
+langLine1 = ',Language : '
+langLine = ',GPU Enabled,Language : '
+goldLine = ',Gold:'
+predictedLine = ',Predicted:'
+fLine = ',F :'
 
 
 class ReportMiner:
@@ -69,40 +69,40 @@ class ReportMiner:
                 for i, v in enumerate(scores):
                     line = ','.join(str(x) for x in [langs[i], v, precisions[i], recalls[i]] +
                                     stats[i * 96:(i + 1) * 96] +
-                                    misidentified[i * 9: (i + 1) * 9] +
-                                    nonidentified[i * 13: (i + 1) * 13])
+                                    (misidentified[i * 10: (i + 1) * 10]  if (i + 1) * 10 < len(misidentified) else [])+
+                                    (nonidentified[i * 14: (i + 1) * 14] if  (i + 1) * 14 <len(nonidentified) else []) )
                     sys.stdout.write(line + '\n')
 
     @staticmethod
     def getMisIdentified(files):
         # idx = 0
         for ff in files:
-        #     path = os.path.join('../Reports/Reports/', ff)
-        #     txt = ''
-        #     with open(path, 'r') as log:
-        #         for l in log.readlines():
-        #             if l.startswith('	Mode: '):
-        #                 if idx == 1:
-        #                     break
-        #                 else:
-        #                     idx +=1
-        #             # if idx ==1:
-        #             txt += l
-        #     with open(path+'1', 'w') as log:
-        #         log.write(txt)
+            #     path = os.path.join('../Reports/Reports/', ff)
+            #     txt = ''
+            #     with open(path, 'r') as log:
+            #         for l in log.readlines():
+            #             if l.startswith(',Mode: '):
+            #                 if idx == 1:
+            #                     break
+            #                 else:
+            #                     idx +=1
+            #             # if idx ==1:
+            #             txt += l
+            #     with open(path+'1', 'w') as log:
+            #         log.write(txt)
             langs, misidentified, nonIdentified, titles = ReportMiner.mineForMisiidentified(str(ff))
             print ff
             print str(titles)
             for i, v in enumerate(langs):
-                line = ','.join(str(x) for x in [langs[i]]+ misidentified[i * 10: (i + 1) * 10])
+                line = ','.join(str(x) for x in [langs[i]] + misidentified[i * 10: (i + 1) * 10])
                 sys.stdout.write(line + '\n')
 
     @staticmethod
     def mineForMisiidentified(newFile):
         path = os.path.join('../Reports/Reports/', newFile)
         langs, misidentified, nonIdentified, titles = [], [], [], []
-        tit1Line = '	Mode: '
-        tit2Line = '	Division: '
+        tit1Line = ',Mode: '
+        tit2Line = ',Division: '
         with open(path, 'r') as log:
             isMisidentified, isNonidentified = False, False
             for line in log.readlines():
@@ -115,14 +115,14 @@ class ReportMiner:
                     continue
                 if isMisidentified and not line.startswith('='):
                     misidentified.append(line[:-1].split(':')[1])
-                if isMisidentified and line.startswith('	MWTs:'):
+                if isMisidentified and line.startswith(',MWTs:'):
                     isMisidentified = False
                 if line.startswith('Non-identified:'):
                     isNonidentified = True  # False
                     continue
                 if isNonidentified and not line.startswith('='):
                     nonIdentified.append(line[:-1].split(':')[1])
-                if isNonidentified and line.startswith('	VPC Full:'):
+                if isNonidentified and line.startswith(',VPC Full:'):
                     isNonidentified = False
                     if len(nonIdentified) / 13 != len(misidentified) / 9:
                         for i in range(9 * (len(nonIdentified) / 13 - len(misidentified) / 9)):
@@ -135,6 +135,15 @@ class ReportMiner:
                     else:
                         langs.append(line[len(langLine1):len(langLine1) + 2])
         return langs, misidentified, nonIdentified, titles
+
+    @staticmethod
+    def getLangs(path):
+        results = []
+        with open(path, 'r') as log:
+            for l in log.readlines():
+                if l.__contains__(' Train ('):
+                    results.append(l.strip()[:2])
+        return results
 
     @staticmethod
     def mineReport(path, line, usePreviousLine=False, previousLine='', cut=0):
@@ -153,11 +162,12 @@ class ReportMiner:
     @staticmethod
     def mineMTReports(files):
         for ff in files:
+            print ff
             path = os.path.join('../Reports/Reports/', ff)
             configs = ReportMiner.mineReport(path, '# Configs:')
             lass = ReportMiner.mineReport(path, 'LAS = ', cut=4)
             uass = ReportMiner.mineReport(path, 'UAS = ', cut=4)
-            ident = ReportMiner.mineReport(path, '	Identification : ', cut=5)
+            ident = ReportMiner.mineReport(path, ',Identification : ', cut=5)
             pos = ReportMiner.mineReport(path, 'POS tagging accuracy = ', cut=4)
             mwePpos = ReportMiner.mineReport(path, 'POS tagging accuracy (MWEs) = ', cut=4)
             ident = [float(i) * 100 for i in ident]
@@ -181,20 +191,45 @@ class ReportMiner:
                     str(ff)])
 
     @staticmethod
+    def mineMTResult(files):
+        for ff in files:
+            print ff
+            path = os.path.join('../Reports/Reports/', ff)
+            lass = ReportMiner.mineReport(path, 'LAS = ', cut=4)
+            uass = ReportMiner.mineReport(path, 'UAS = ', cut=4)
+            ident = ReportMiner.mineReport(path, ',Identification : ', cut=5)
+            pos = ReportMiner.mineReport(path, 'POS tagging accuracy = ', cut=4)
+            mwePpos = ReportMiner.mineReport(path, 'POS tagging accuracy (MWEs) = ', cut=4)
+            ident = [float(i) * 100 for i in ident]
+            langs = ReportMiner.getLangs(path)
+            for i in range(len(ident)):
+                print ','.join(str(x) for x in [
+                    lass[i ],
+                    uass[i],
+                    pos[i ],
+                    mwePpos[i],
+                    ident[i],
+                    langs[i]]
+                    # params[i].split(',')[0] + '.' + params[i].split(',')[1][0],
+                    )
+
+    @staticmethod
     def parseChenManningReports(files):
         for ff in files:
             path = os.path.join('../Reports/Reports/', ff)
-            configs = ReportMiner.mineReport(path, '# Configs:')
-            params = ReportMiner.mineReport(path, 'Total params: ')
+            # configs = ReportMiner.mineReport(path, '# Configs:')
+            # params = ReportMiner.mineReport(path, 'Total params: ')
             lass = ReportMiner.mineReport(path, 'LAS = ')
             uass = ReportMiner.mineReport(path, 'UAS = ')
+            langs = ReportMiner.getLangs(path)
 
             for i in range(len(lass)):
-                print ','.join(str(x) for x in [lass[i],
-                                                uass[i],
-                                                params[i].split(',')[0] + '.' + params[i].split(',')[1][0],
-                                                configs[i],
-                                                str(ff)])
+                print ','.join(str(x) for x in [langs[i],
+                                                lass[i],
+                                                uass[i]])  # ,
+                # params[i].split(',')[0] + '.' + params[i].split(',')[1][0],
+                # configs[i],
+                # str(ff)])
 
     @staticmethod
     def parseUdPIPE(files):
@@ -228,13 +263,13 @@ class ReportMiner:
         with open(path, 'r') as ff:
             res = ''
             for l in ff:
-                if l.startswith('	HE Train '):
+                if l.startswith(',HE Train '):
                     pass
                 if l[1:4] in ['VID', 'LVC', 'IRV', 'VPC', 'IAV', 'MVC', 'LC:']:
                     res += l[-5:-1] if not l.endswith('-\n') else '-'
                     res += ','
 
-                if l.startswith('	Mode'):
+                if l.startswith(',Mode'):
                     res += '\n'
         print res
 
@@ -324,7 +359,7 @@ class ReportMiner:
         configs, scores, precisions, recalls, langs, stats, misidentified, nonIdentified, trainTime = \
             [], [], [], [], [], [], [], [], []
         previousLine = ''
-        trainTimeLine = '	TRAINING TIME:'
+        trainTimeLine = ',TRAINING TIME:'
         with open(path, 'r') as log:
             isMisidentified, isNonidentified = False, False
             for line in log.readlines():
@@ -335,21 +370,21 @@ class ReportMiner:
                     continue
                 if isMisidentified and not line.startswith('='):
                     misidentified.append(line[:-1].split(':')[1])
-                if isMisidentified and line.startswith('	MWTs:'):
+                if isMisidentified and line.startswith(',MWTs:'):
                     isMisidentified = False
                 if line.startswith('Non-identified:'):
                     isNonidentified = True  # False
                     continue
                 if isNonidentified and not line.startswith('='):
                     nonIdentified.append(line[:-1].split(':')[1])
-                if isNonidentified and line.startswith('	VPC Full:'):
+                if isNonidentified and line.startswith(',VPC Full:'):
                     isNonidentified = False
                     if len(nonIdentified) / 13 != len(misidentified) / 9:
                         for i in range(9 * (len(nonIdentified) / 13 - len(misidentified) / 9)):
                             misidentified.append(0)
-                # if ftb and line.startswith('	MWTs:'):
+                # if ftb and line.startswith(',MWTs:'):
                 #     isNonidentified = False
-                if line.startswith('	P, R  :') and previousLine.startswith('	Identification :'):
+                if line.startswith(',P, R  :') and previousLine.startswith(',Identification :'):
                     precisions.append(float(line[:-1].split(':')[1].split(',')[0]) * 100)
                     recalls.append(float(line[:-1].split(':')[1].split(',')[1]) * 100)
                 if line.startswith('# Configs:'):
@@ -370,7 +405,7 @@ class ReportMiner:
                     stats.append(float(line[:-1].split(':')[1].split()[0]))
                 if line.startswith(fLine):
                     stats.append(float(line[:-1].split(':')[1].split()[0]) * 100)
-                if line.startswith('	P, R  : ') and not previousLine.startswith('	Identification : '):
+                if line.startswith(',P, R  : ') and not previousLine.startswith(',Identification : '):
                     stats.append(float(line.split(':')[1].split(',')[0]))
                     stats.append(float(line.split(':')[1].split(',')[1]))
 
@@ -548,17 +583,17 @@ def readResamplingReport():
 
 
 if __name__ == '__main__':
-    files = [f for f in os.listdir('../Reports/Reports/') if f.startswith('train')]
+    files = [f for f in os.listdir('../Reports/Reports/') if f.startswith('jointAvgJoint')]
     # OSTools.cleanReports()
     # STDOutTools.generateOarsub(xpNum=12, duration=72, tourNum=3, name='joint')
     # STDOutTools.generateKiperOarsub(xpNum=5, duration=5, tourNum=1, name='k.debug')
     # ReportMiner.getNewScores(files, ['corpus', 'fixed', 'dev'][2])
-    # ReportMiner.mineMTReports(files)
-    res = [63.3,89.7,81.3,82.7,80.0,81.3,25.8,34.0,81.1,81.4,80.9,81.1,37.5,55.7,77.2,79.3,75.2,77.2,32.9,10.3,6.6,18.1,4.0,6.6,24.5,9.6,8.7,16.3,5.9,8.7,36.7,10.3,6.4,18.1,3.9,6.4,67.3,74.4,68.1,78.6,60.1,68.1,32.7,25.6,49.1,70.8,37.6,49.1,32.5,46.0,90.8,90.9,90.7,90.8,30.8,43.7,71.6,73.9,69.5,71.6,1.6,0.5,5.9,18.9,3.5,5.9,5.7,6.7,13.8,14.2,13.4,13.8,94.3,93.3,61.6,76.5,51.5,61.6,77.9,85.0,64.6,76.6,55.8,64.6,12.6,7.4,38.1,60.2,27.9,38.1,3.8,0.9,17.7,36.9,11.6,17.7]
-    for i in range(len(res)/6):
-        print res[i*6 +1], res[i*6 +2], res[i*6 +3], res[i*6 +4]
-    # x = 2074512
-    # res = ''
-    # for i in range(12):
-    #     res += ' ' +str(x+i)
-    # print res
+    # ReportMiner.mineMTResult(files)
+    res = [97.1,84.2,84.7,83.7,40.6,91.2,90.5,92.0,56.5,79.7,81.0,78.5,2.9,2.7,12.6,1.5,2.8,3.6,12.7,2.1,2.9,2.7,12.6,1.5,76.3,71.7,84.7,62.1,23.7,51.7,78.4,38.6,52.3,92.7,91.1,94.3,44.9,74.8,76.2,73.4,0.8,26.9,57.9,17.5,8.0,83.6,90.5,77.7,91.8,65.0,83.4,53.2,81.8,67.6,83.2,56.9,8.6,44.2,71.2,32.0,1.4,25.9,50.4,17.4]
+    for i in range(len(res)/4):
+        print res[i*4 ], res[i*4 +1], res[i*4 +2], res[i*4 +3]
+    # # x = 2074512
+    # # res = ''
+    # # for i in range(12):
+    # #     res += ' ' +str(x+i)
+    # # print res
