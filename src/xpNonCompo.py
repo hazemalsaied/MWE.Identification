@@ -439,17 +439,18 @@ if __name__ == '__main__':
     # evaluateJointAvgJoint()
 
     # identAvgJoint.eval
-    evaluateIdentAvgJoint()
+    # evaluateIdentAvgJoint()
 
 
     # depParsing.eval
     # evaluateDepParsing()
 
-
+    configuration['tmp']['trainTaggerAndIdentifier'] = True
+    configuration['others']['analyzePerformance'] = False
 
     # xp(['SL'], Dataset.sharedtask2, None, Evaluation.trainVsDev)
     # configuration['others']['analyzePerformance'] = False
-    # import rsg
-    # rsg.runRSGSpontaneously(['FR'], Dataset.sharedtask2, XpMode.kiperwasser, None,
-    #                         dontParse=False,
-    #                         xpNumByThread=10)
+    import rsg
+    rsg.runRSGSpontaneously(pilotLangs, Dataset.sharedtask2, XpMode.multitasking, Evaluation.fixedSize,
+                            dontParse=False,
+                            xpNumByThread=200)

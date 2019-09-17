@@ -585,13 +585,13 @@ def readResamplingReport():
 if __name__ == '__main__':
     files = [f for f in os.listdir('../Reports/Reports/') if f.startswith('jointAvgJoint')]
     # OSTools.cleanReports()
-    # STDOutTools.generateOarsub(xpNum=12, duration=72, tourNum=3, name='joint')
+    STDOutTools.generateOarsub(xpNum=12, duration=72, tourNum=1, name='posIden')
     # STDOutTools.generateKiperOarsub(xpNum=5, duration=5, tourNum=1, name='k.debug')
     # ReportMiner.getNewScores(files, ['corpus', 'fixed', 'dev'][2])
     # ReportMiner.mineMTResult(files)
-    res = [97.1,84.2,84.7,83.7,40.6,91.2,90.5,92.0,56.5,79.7,81.0,78.5,2.9,2.7,12.6,1.5,2.8,3.6,12.7,2.1,2.9,2.7,12.6,1.5,76.3,71.7,84.7,62.1,23.7,51.7,78.4,38.6,52.3,92.7,91.1,94.3,44.9,74.8,76.2,73.4,0.8,26.9,57.9,17.5,8.0,83.6,90.5,77.7,91.8,65.0,83.4,53.2,81.8,67.6,83.2,56.9,8.6,44.2,71.2,32.0,1.4,25.9,50.4,17.4]
-    for i in range(len(res)/4):
-        print res[i*4 ], res[i*4 +1], res[i*4 +2], res[i*4 +3]
+    # res = [30.1,26.9,80.9,84.5,77.6,80.9,35.6,29.7,68.4,76.3,61.9,68.4,31.0,31.7,18.6,16.2,21.7,18.6,20.0,17.5,20.0,17.7,22.9,20.0,34.4,35.7,17.6,14.5,22.4,17.6,68.5,68.7,59.5,59.3,59.6,59.5,31.5,23.6,40.5,44.1,37.5,40.5,36.0,32.8,81.8,86.5,77.5,81.8,29.6,23.8,64.6,71.6,58.8,64.6,2.2,1.8,7.4,13.8,5.0,7.4,8.3,10.8,13.4,10.5,18.7,13.4,91.7,81.5,54.4,56.8,52.2,54.4,73.4,66.8,57.9,60.5,55.4,57.9,14.5,12.2,34.0,33.7,34.2,34.0,3.8,2.6,18.3,23.6,15.0,18.3]
+    # for i in range(len(res)/6):
+    #     print  res[i*6 +1], res[i*6 +2], res[i*6 +3],res[i*6 +4]
     # # x = 2074512
     # # res = ''
     # # for i in range(12):

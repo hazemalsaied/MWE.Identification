@@ -605,6 +605,11 @@ class Corpus:
         nonRecognizableNum, distributedEmbeddedNum, interleavingNum = 0, 0, 0
         # interleavingReport, embeddingReport = '', ''
         for sent in self.trainDataSet:
+            if sent.vMWEs:
+
+
+
+        for sent in self.trainDataSet:
             if len(sent.vMWEs) > 1:
                 for vmwe in sent.vMWEs:
                     nonRecognizableNum += 1 if not vmwe.isRecognizable else 0

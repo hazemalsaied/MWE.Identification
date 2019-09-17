@@ -233,15 +233,15 @@ class Network:
         sys.stdout.write('POS Tagging data = {0}\n'.format(len(taggingLbls)))
         idenLbls = to_categorical(idenLbls, num_classes=4)
         historyList = []
-        for x in range(mtParams['initialEpochs']):
+        for x in range(trainParams['initialEpochs']):
             sys.stdout.write('POS tagging: {0}\n'.format(x + 1))
             self.taggingModel.fit(taggingData, taggingLbls,
-                                  batch_size=configuration['nn']['taggingBatchSize'],
+                                  batch_size=trainParams['taggingBatchSize'],
                                   verbose=2)
         for x in range(configuration['nn']['jointLearningEpochs']):
             if x % 2 == 0:
                 sys.stdout.write(
-                    'POS tagging: {0}\n'.format(int(x / 2) + 1 + mtParams['initialEpochs']))
+                    'POS tagging: {0}\n'.format(int(x / 2) + 1 + trainParams['initialEpochs']))
                 self.taggingModel.fit(taggingData, taggingLbls,
                                       verbose=2,
                                       batch_size=configuration['nn']['taggingBatchSize'])
@@ -249,7 +249,7 @@ class Network:
                 sys.stdout.write('MWE identification: {0}\n'.format(int(x / 2) + 1))
                 his = self.idenModel.fit(idenData, idenLbls,
                                          verbose=2,
-                                         batch_size=mtParams['identBatchSize'])
+                                         batch_size=configuration['nn']['identBatchSize'])
                 historyList.append(his)
                 if Network.shouldStopLearning(historyList):
                     break
@@ -741,7 +741,7 @@ class Builder:
     @staticmethod
     def build(vocab, depParserClassNum):
         taggingModel, sharedLayers = Builder.buildTaggingModel(vocab)
-        if configuration['tmp']['trainIden'] or configuration['tmp']['trainJointly'] or configuration['tmp'][
+        if configuration['tmp']['trainIden'] or configuration['tmp']['trainTaggerAndIdentifier'] or configuration['tmp']['trainJointly'] or configuration['tmp'][
             'trainInTransfert']:
             idenModel = Builder.buildIdenModel(sharedLayers)
         else:

@@ -115,7 +115,7 @@ def parseAndTrain(corpus):
             configuration['multitasking']['testOnToken'] = False
             network.testTagging(corpus, title='POS tagging accuracy (MWEs)')
             configuration['multitasking']['testOnToken'] = True
-            network.evaluateDepParsing(corpus)
+            # network.evaluateDepParsing(corpus)
             return network, None
         elif configuration['tmp']['trainIden']:
             network.trainIden(corpus)
