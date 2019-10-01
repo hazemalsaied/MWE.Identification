@@ -254,7 +254,7 @@ def train(corpus, conf, trainedModel=None, trainValidation=False):
     lossFunction = nn.NLLLoss()
     if not trainValidation:
         fileNum = randint(0, 500)
-        filePath = os.path.join(configuration['path']['projectPath'], 'Reports',
+        filePath = os.path.join(configuration['path']['projectPath'], 'Reports-old',
                                 str(fileNum) + '.' + configuration['kiperwasser']['file'])
         sys.stdout.write('\n' + tabs + 'Best model path: ' + '/'.join(filePath.split('/')[-2:]) + seperator)
     # losses of validation set for each epoch

@@ -389,6 +389,17 @@ class Network:
         return np.asarray(tokenIdxs), np.asarray(posIdxs)
 
     @staticmethod
+    def getDepOptimizer(key):
+        if configuration['others']['verbose']:
+            sys.stdout.write(reports.seperator + reports.tabs +
+                             'Optimizer : Adagrad,  learning rate = {0}'.format(configuration['nn'][key])
+                             + reports.seperator)
+        op = optimizers.Adagrad(lr=configuration['nn'][key], epsilon=None, decay=0.0)
+        if configuration['nn']['optim'] == 'adam':
+            op = optimizers.Adam(lr=configuration['nn'][key])
+        return op
+
+    @staticmethod
     def getOptimizer(key):
         if configuration['others']['verbose']:
             sys.stdout.write(reports.seperator + reports.tabs +
@@ -809,7 +820,7 @@ class Builder:
         depParsingSoftmax = Dense(classNum, activation='softmax', name='depParsingSoftMax')(depParsingDense)
         depParsingModel = Model(inputs=depParsingLayers, outputs=depParsingSoftmax)
         depParsingModel.compile(loss=configuration['nn']['loss'],
-                                optimizer=Network.getOptimizer('depParsingLR'),
+                                optimizer=Network.getDepOptimizer('depParsingLR'),
                                 metrics=['accuracy'])
 
         if configuration['others']['verbose']:

@@ -76,29 +76,87 @@ def evaluateST2EnFixed():
     xp(allSharedtask2Lang, Dataset.sharedtask2, None, Evaluation.fixedSize, seeds=range(2))
 
 
-def evaluateFTB():
-    BestConfig.mlp()
-    xp(['FR'], Dataset.ftb, None, Evaluation.corpus, seeds=range(2))
-    xp(['FR'], Dataset.ftb, None, Evaluation.fixedSize, seeds=range(2))
-    TrendConfig.mlp()
-    xp(['FR'], Dataset.ftb, None, Evaluation.corpus, seeds=range(2))
-    xp(['FR'], Dataset.ftb, None, Evaluation.fixedSize, seeds=range(2))
-    BestConfig.mlpOpen()
-    xp(['FR'], Dataset.ftb, None, Evaluation.corpus, seeds=range(2))
-    xp(['FR'], Dataset.ftb, None, Evaluation.fixedSize, seeds=range(2))
+def evaluateFTBAndDimSumInLinear():
+    configuration['others']['analyzePerformance'] = True
+    # GPP closed Svm
+    LinearConf.svm()
+    xp(['FR'], Dataset.ftb, XpMode.linear, Evaluation.corpus)
+    LinearConf.svmFtb()
+    xp(['FR'], Dataset.ftb, XpMode.linear, Evaluation.corpus)
+    LinearConf.svm()
+    xp(['EN'], Dataset.dimsum, XpMode.linear, Evaluation.corpus)
+    LinearConf.svmDiMSUM()
+    xp(['EN'], Dataset.dimsum, XpMode.linear, Evaluation.corpus)
 
+def evaluateFTB():
+    configuration['others']['analyzePerformance'] = True
+    # Before
+    # GPP closed Svm
+    LinearConf.svm()
+    xp(['FR'], Dataset.ftb, None, Evaluation.corpus)
+    # GPP closed
+    BestConfig.mlp()
+    xp(['FR'], Dataset.ftb, None, Evaluation.corpus)
+    BestConfig.mlpOpen()
+    # GPP Open
+    xp(['FR'], Dataset.ftb, None, Evaluation.corpus)
+    # GT Open
+    TrendConfig.mlp()
+    xp(['FR'], Dataset.ftb, None, Evaluation.corpus)
+    # GT Closed
+    TrendConfig.mlp()
+    configuration['embedding']['pretrained'] = False
+    xp(['FR'], Dataset.ftb, None, Evaluation.corpus)
+    
+    # after
+    # GPP closed Svm
+    LinearConf.svmFtb()
+    xp(['FR'], Dataset.ftb, None, Evaluation.corpus)
+    # GPP closed
+    BestConfig.mlpFtbClosed()
+    xp(['FR'], Dataset.ftb, None, Evaluation.corpus)
+    BestConfig.mlpFtbOpen()
+    xp(['FR'], Dataset.ftb, None, Evaluation.corpus)
+    TrendConfig.mlpFtb()
+    xp(['FR'], Dataset.ftb, None, Evaluation.corpus)
+    TrendConfig.mlpFtb()
+    configuration['embedding']['pretrained'] = False
+    xp(['FR'], Dataset.ftb, None, Evaluation.corpus)
 
 def evaluateDiMSUM():
+    configuration['others']['analyzePerformance'] = True
+    # Before
+    # GPP closed Svm
+    LinearConf.svm()
+    xp(['EN'], Dataset.dimsum, None, Evaluation.corpus)
+    # GPP closed
     BestConfig.mlp()
-    xp(['EN'], Dataset.dimsum, None, Evaluation.corpus, seeds=range(2))
-    # xp(['EN'], Dataset.dimsum, None, Evaluation.dev, seeds=range(2))
-    TrendConfig.mlp()
-    xp(['EN'], Dataset.dimsum, None, Evaluation.corpus, seeds=range(2))
-    # xp(['EN'], Dataset.dimsum, None, Evaluation.dev, seeds=range(2))
+    xp(['EN'], Dataset.dimsum, None, Evaluation.corpus)
     BestConfig.mlpOpen()
-    xp(['EN'], Dataset.dimsum, None, Evaluation.corpus, seeds=range(2))
-    # xp(['EN'], Dataset.dimsum, None, Evaluation.dev, seeds=range(2))
+    # GPP Open
+    xp(['EN'], Dataset.dimsum, None, Evaluation.corpus)
+    # GT Open
+    TrendConfig.mlp()
+    xp(['EN'], Dataset.dimsum, None, Evaluation.corpus)
+    # GT Closed
+    TrendConfig.mlp()
+    configuration['embedding']['pretrained'] = False
+    xp(['EN'], Dataset.dimsum, None, Evaluation.corpus)
 
+    # after
+    # GPP closed Svm
+    LinearConf.svmDiMSUM()
+    xp(['EN'], Dataset.dimsum, None, Evaluation.corpus)
+    # GPP closed
+    BestConfig.mlpDimsumClosed()
+    xp(['EN'], Dataset.dimsum, None, Evaluation.corpus)
+    BestConfig.mlpDimsumClosed()
+    xp(['EN'], Dataset.dimsum, None, Evaluation.corpus)
+    TrendConfig.mlpDimsum()
+    xp(['EN'], Dataset.dimsum, None, Evaluation.corpus)
+    TrendConfig.mlpDimsum()
+    configuration['embedding']['pretrained'] = False
+    xp(['EN'], Dataset.dimsum, None, Evaluation.corpus)
 
 def evaluateDiMSUMAfterTunning():
     BestConfig.mlpDimsumClosed()
@@ -177,11 +235,26 @@ def evaluateJointIdent(langs=allSharedtask2Lang, division=Evaluation.trainVsDev)
     configuration['tmp']['trainIden'] = False
     configuration['tmp']['trainJointly'] = True
 
-    BestConfig.mtJoint()
+    BestConfig.mtPOSIdenOld()
     xp(langs, Dataset.sharedtask2,
        XpMode.multitasking, division, seeds=[0])
 
     TrendConfig.mtJoint()
+    xp(langs, Dataset.sharedtask2,
+       XpMode.multitasking, division, seeds=[0])
+
+
+def evaluatePOSIden(langs=allSharedtask2Lang, division=Evaluation.trainVsDev):
+    configuration['tmp']['createDepGraphs'] = False
+    configuration['others']['analyzePerformance'] = True
+    configuration['tmp']['trainIden'] = False
+    configuration['tmp']['trainTaggerAndIdentifier'] = True
+
+    BestConfig.mtPOSIden()
+    xp(langs, Dataset.sharedtask2,
+       XpMode.multitasking, division, seeds=[0])
+
+    TrendConfig.mtPOSIden()
     xp(langs, Dataset.sharedtask2,
        XpMode.multitasking, division, seeds=[0])
 
@@ -268,6 +341,14 @@ def evaluateMLPWide():
     xp(allSharedtask2Lang, Dataset.sharedtask2, XpMode.mlpWide, Evaluation.corpus, seeds=range(1))
     TrendConfig.mlpWide()
     xp(allSharedtask2Lang, Dataset.sharedtask2, XpMode.mlpWide, Evaluation.corpus, seeds=range(1))
+
+
+def evaluateMLPOpen():
+    configuration['others']['analyzePerformance'] = True
+    configuration['tmp']['createDepGraphs'] = False
+    TrendConfig.mlpOpen()
+    # xp(allSharedtask2Lang, Dataset.sharedtask2, None, Evaluation.trainVsDev, seeds=range(1))
+    xp(allSharedtask2Lang, Dataset.sharedtask2, None, Evaluation.corpus, seeds=range(1))
 
 
 def evaluateMLPWideOnClosed():
@@ -404,6 +485,7 @@ def evaluateDepParsing():
     xp(allSynSharedtask2Lang, dataset=Dataset.sharedtask2, xpMode=XpMode.multitasking,
        division=Evaluation.trainVsDev)
 
+
 def evaluateJointAvgJoint():
     # jointAvgJoint.eval
     configuration['tmp']['trainDepParser'] = False
@@ -416,6 +498,7 @@ def evaluateJointAvgJoint():
     BestConfig.jointAvgJoint()
     xp(allSynSharedtask2Lang, dataset=Dataset.sharedtask2, xpMode=XpMode.multitasking,
        division=Evaluation.trainVsDev)
+
 
 def evaluateIdentAvgJoint():
     # identAvgJoint.eval
@@ -435,22 +518,23 @@ if __name__ == '__main__':
     reload(sys)
     sys.setdefaultencoding('utf8')
 
-    # jointAvgJoint.eval
-    # evaluateJointAvgJoint()
+    evaluatePOSIden(division=Evaluation.trainVsDev)
+    evaluatePOSIden(division=Evaluation.corpus)
+    # evaluateMLPOpen()
 
-    # identAvgJoint.eval
-    # evaluateIdentAvgJoint()
+    # evaluateFTBAndDimSumInLinear()
 
-
-    # depParsing.eval
-    # evaluateDepParsing()
-
-    configuration['tmp']['trainTaggerAndIdentifier'] = True
-    configuration['others']['analyzePerformance'] = False
-
+    # evaluateDiMSUM()
+    #
+    # configuration['tmp']['trainDepParser'] = True
+    # configuration['tmp']['createDepGraphs'] = True
+    # configuration['others']['analyzePerformance'] = False
+    # xp(allSharedtask2Lang, Dataset.sharedtask2, None, None)
     # xp(['SL'], Dataset.sharedtask2, None, Evaluation.trainVsDev)
     # configuration['others']['analyzePerformance'] = False
-    import rsg
-    rsg.runRSGSpontaneously(pilotLangs, Dataset.sharedtask2, XpMode.multitasking, Evaluation.fixedSize,
-                            dontParse=False,
-                            xpNumByThread=200)
+
+    #
+    # import rsg
+    # rsg.runRSGSpontaneously(['BG', 'ES', 'HE'], Dataset.sharedtask2, XpMode.multitasking, Evaluation.fixedSize,
+    #                         dontParse=False,
+    #                         xpNumByThread=200)

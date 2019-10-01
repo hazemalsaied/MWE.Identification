@@ -5,12 +5,13 @@ import itertools
 import pickle
 import random
 import re
+from collections import Counter
 from random import uniform
 
 from nltk.parse import DependencyGraph
-from collections import Counter
+
 from reports import *
-from config import configuration
+
 
 class Corpus:
     """
@@ -604,11 +605,16 @@ class Corpus:
         embeddedNum, leftEmbeddedNum, rightEmbeddedNum, middleEmbeddedNum = 0, 0, 0, 0
         nonRecognizableNum, distributedEmbeddedNum, interleavingNum = 0, 0, 0
         # interleavingReport, embeddingReport = '', ''
+        wNum, wLens, mwtNum = 0, 0, 0
         for sent in self.trainDataSet:
             if sent.vMWEs:
-
-
-
+                wNum += len(sent.vMWEs)
+                for w in sent.vMWEs:
+                    if len(w.tokens) == 1:
+                        mwtNum += 1
+                    wLens += len(w.tokens)
+        wlen = float(wLens) / wNum
+        density = float(wNum) / len(self.trainDataSet)
         for sent in self.trainDataSet:
             if len(sent.vMWEs) > 1:
                 for vmwe in sent.vMWEs:
@@ -621,9 +627,11 @@ class Corpus:
                     leftEmbeddedNum += 1 if vmwe.isLeftEmbedded else 0
                     rightEmbeddedNum += 1 if vmwe.isRightEmbedded else 0
                     middleEmbeddedNum += 1 if vmwe.isMiddleEmbedded else 0
-        res = '{0},{1},{2},{3},{4},{5},{6}'.format(nonRecognizableNum, interleavingNum,
-                                                   embeddedNum, distributedEmbeddedNum, leftEmbeddedNum,
-                                                   rightEmbeddedNum, middleEmbeddedNum)
+        res = '{0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11},{12}'.format(self.langName, len(self.trainDataSet), wNum, density, mwtNum, wlen, nonRecognizableNum,
+                                                               interleavingNum,
+                                                               embeddedNum, distributedEmbeddedNum, leftEmbeddedNum,
+                                                               rightEmbeddedNum, middleEmbeddedNum)
+        print '==',  res
         return res
 
     def getRangs(self):

@@ -237,7 +237,8 @@ configuration = {
         'taggingBatchSize': 32,
         'jointLearningEpochs': 20,
         'initialEpochs': 1,
-        'batchSize': 32
+        'batchSize': 32,
+        'optim': 'adagrad'
     },
     'mlp2': {
         'features': False,
@@ -730,6 +731,71 @@ class TrendConfig:
             'batchSize': 64,
         })
 
+    @staticmethod
+    def mlpOpen():
+        configuration['sampling'].update({
+            'importantSentences': True,
+            'overSampling': True,
+            'sampleWeight': False,
+            'favorisationCoeff': 16,
+            'focused': False})
+        configuration['embedding'].update({
+            'useB1': 1,
+            'useB-1': 1,
+            'manual': False,
+            'keras': False,
+            'pretrained': True,
+            'average': True,
+            'compactVocab': True,
+            'lemma': True,
+            'dynamicVocab': False
+        })
+        configuration['mlp'].update({
+            'posEmb': 57,
+            'tokenEmb': 300,
+            'dense1UnitNumber': 157,
+            'dense1Dropout': 0.4,
+            'lr': 0.04,
+            'trainable': True,
+            'batchSize': 56,
+        })
+
+    @staticmethod
+    def mtPOSIden():
+        configuration['multitasking'].update({
+            'affixeDim': 12,
+            'capitalDim': 3,
+            'depParsingDenseUnits': 102,
+            'idenDenseUnits': 89,
+            'symbolDim': 9,
+            'sytacticLabelDim': 20,
+            'taggingDenseUnits': 82,
+            'tokenDim': 83,
+            'useB1': 1,
+            'useBx': 1,
+            'useCapitalization': 1,
+            'useSymbols': 1,
+        })
+        configuration['embedding']['lemma'] = True
+        configuration['embedding']['average'] = True
+
+        configuration['nn'].update({
+            'depParserBatchSize': 134,
+            'depParsingLR': 0.02,
+            'earlyStop': 1,
+            'idenLR': 0.027,
+            'identBatchSize': 126,
+            'initialEpochs': 1,
+            'minDelta': 0.034,
+            'monitor': -1,
+            'taggingBatchSize': 138,
+            'taggingLR': 0.028
+        })
+        
+        
+
+
+
 
 class Standard:
     @staticmethod
@@ -750,67 +816,8 @@ class Standard:
 
 
 class BestConfig:
-    @staticmethod
-    def identAvgJoint():
-        configuration['multitasking'].update({
-            'affixeDim': 20,
-            'capitalDim': 1,
-            'depParsingDenseUnits': 255,
-            'idenDenseUnits': 120,
-            'symbolDim': 10,
-            'sytacticLabelDim': 34,
-            'taggingDenseUnits': 108,
-            'tokenDim': 39,
-            'useB1': False,
-            'useBx': True,
-            'useCapitalization': True,
-            'useSymbols': True})
 
-        configuration['embedding']['lemma'] = True
 
-        configuration['nn'].update({
-            'depParserBatchSize': 128,
-            'depParsingLR': 0.01,
-            'earlyStop': True,
-            'idenLR': 0.029,
-            'identBatchSize': 256,
-            'initialEpochs': 1,
-            'minDelta': 0.016,
-            'monitor': 'val_loss',
-            'taggingBatchSize': 96,
-            'taggingLR': 0.043})
-
-    @staticmethod
-    def jointAvgJoint():
-        configuration['multitasking'].update({
-            'affixeDim': 11,
-            'capitalDim': 3,
-            'depParsingDenseUnits': 127,
-            'idenDenseUnits': 40,
-            'symbolDim': 9,
-            'sytacticLabelDim': 12,
-            'taggingDenseUnits': 133,
-            'tokenDim': 64,
-            'useB1': True,
-            'useBx': False,
-            'useCapitalization': True,
-            'useSymbols': True
-        })
-
-        configuration['embedding']['lemma'] = True
-
-        configuration['nn'].update({
-            'depParserBatchSize': 128,
-            'depParsingLR': 0.012,
-            'earlyStop': True,
-            'idenLR': 0.01,
-            'identBatchSize': 256,
-            'initialEpochs': 2,
-            'minDelta': 0.085,
-            'monitor': 'val_loss',
-            'taggingBatchSize': 96,
-            'taggingLR': 0.013
-        })
 
     @staticmethod
     def rmlpClosed():
@@ -1008,28 +1015,7 @@ class BestConfig:
         configuration['sampling']['importantSentences'] = True
         configuration['sampling']['overSampling'] = True
 
-    @staticmethod
-    def mtJoint():
-        configuration['multitasking'].update({
-            'tokenDim': 140,
-            'affixeDim': 14,
-            'capitalDim': 1,
-            'symbolDim': 5,
-            'taggingDenseUnits': 78,
-            'idenDenseUnits': 30,
-            'useCapitalization': False,
-            'useSymbols': True,
-            'testOnToken': True,
-            'useB1': True,
-            'useBx': True,
-            'identBatchSize': 37,
-            'taggingBatchSize': 21,
-            'lr': 0.05
-        })
-        configuration['nn']['initialEpochs'] = 3
-        configuration['embedding']['lemma'] = True
-        configuration['sampling']['importantSentences'] = True
-        configuration['sampling']['overSampling'] = True
+
 
     # @staticmethod
     # def mlpFtb():
@@ -1279,6 +1265,29 @@ class BestConfig:
         })
 
     @staticmethod
+    def mtPOSIdenOld():
+        configuration['multitasking'].update({
+            'tokenDim': 140,
+            'affixeDim': 14,
+            'capitalDim': 1,
+            'symbolDim': 5,
+            'taggingDenseUnits': 78,
+            'idenDenseUnits': 30,
+            'useCapitalization': False,
+            'useSymbols': True,
+            'testOnToken': True,
+            'useB1': True,
+            'useBx': True,
+            'identBatchSize': 37,
+            'taggingBatchSize': 21,
+            'lr': 0.05
+        })
+        configuration['nn']['initialEpochs'] = 3
+        configuration['embedding']['lemma'] = True
+        configuration['sampling']['importantSentences'] = True
+        configuration['sampling']['overSampling'] = True
+
+    @staticmethod
     def mtPos():
         configuration['multitasking'].update({
             'tokenDim': 190,
@@ -1345,6 +1354,99 @@ class BestConfig:
             'monitor': 'val_loss'
         })
 
+    @staticmethod
+    def identAvgJoint():
+        configuration['multitasking'].update({
+            'affixeDim': 20,
+            'capitalDim': 1,
+            'depParsingDenseUnits': 255,
+            'idenDenseUnits': 120,
+            'symbolDim': 10,
+            'sytacticLabelDim': 34,
+            'taggingDenseUnits': 108,
+            'tokenDim': 39,
+            'useB1': False,
+            'useBx': True,
+            'useCapitalization': True,
+            'useSymbols': True})
+
+        configuration['embedding']['lemma'] = True
+
+        configuration['nn'].update({
+            'depParserBatchSize': 128,
+            'depParsingLR': 0.01,
+            'earlyStop': True,
+            'idenLR': 0.029,
+            'identBatchSize': 256,
+            'initialEpochs': 1,
+            'minDelta': 0.016,
+            'monitor': 'val_loss',
+            'taggingBatchSize': 96,
+            'taggingLR': 0.043})
+
+    @staticmethod
+    def jointAvgJoint():
+        configuration['multitasking'].update({
+            'affixeDim': 11,
+            'capitalDim': 3,
+            'depParsingDenseUnits': 127,
+            'idenDenseUnits': 40,
+            'symbolDim': 9,
+            'sytacticLabelDim': 12,
+            'taggingDenseUnits': 133,
+            'tokenDim': 64,
+            'useB1': True,
+            'useBx': False,
+            'useCapitalization': True,
+            'useSymbols': True
+        })
+
+        configuration['embedding']['lemma'] = True
+
+        configuration['nn'].update({
+            'depParserBatchSize': 128,
+            'depParsingLR': 0.012,
+            'earlyStop': True,
+            'idenLR': 0.01,
+            'identBatchSize': 256,
+            'initialEpochs': 2,
+            'minDelta': 0.085,
+            'monitor': 'val_loss',
+            'taggingBatchSize': 96,
+            'taggingLR': 0.013
+        })
+
+    @staticmethod
+    def mtPOSIden():
+        configuration['multitasking'].update({
+            'affixeDim': 6,
+            'capitalDim': 3,
+            'depParsingDenseUnits': 41,
+            'idenDenseUnits': 76,
+            'symbolDim': 13,
+            'sytacticLabelDim': 42,
+            'taggingDenseUnits': 27,
+            'tokenDim': 132,
+            'useB1': True,
+            'useBx': True,
+            'useCapitalization': False,
+            'useSymbols': True,
+            'average': True,
+        })
+        configuration['embedding']['lemma'] = True
+
+        configuration['nn'].update({
+            'depParserBatchSize': 128,
+            'depParsingLR': 0.015,
+            'earlyStop': True,
+            'idenLR': 0.037,
+            'identBatchSize': 96,
+            'initialEpochs': 1,
+            'minDelta': 0.009,
+            'monitor': 'loss',
+            'taggingBatchSize': 256,
+            'taggingLR': 0.037
+        })
 
 class LinearConf:
     @staticmethod
@@ -1472,7 +1574,7 @@ class LinearConf:
         configuration['features'].update(conf)
 
     @staticmethod
-    def setSVMConf():
+    def svm():
         configuration['features'].update({
             'lemma': True,
             'token': True,
@@ -1496,7 +1598,7 @@ class LinearConf:
         })
 
     @staticmethod
-    def setSvmDiMSUMConf():
+    def svmDiMSUM():
         conf = {
             'lemma': True,
             'token': False,
@@ -1521,7 +1623,7 @@ class LinearConf:
         configuration['features'].update(conf)
 
     @staticmethod
-    def setSvmFtbConf():
+    def svmFtb():
         conf = {
             'lemma': True,
             'token': True,
@@ -1899,6 +2001,7 @@ class Generator:
         configuration['nn'].update({
             'validationSplit': .2,
             'monitor': Generator.generateValue(['val_loss', 'val_acc'], False, False),
+            'optim': Generator.generateValue(['adam', 'adagrad'], False, False),
             'loss': 'categorical_crossentropy',
             'optimizer': 'adagrad',
             'epochs': 20,

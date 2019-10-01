@@ -73,11 +73,11 @@ def modifyConf(linear=False, tuning=False):
             config.Generator.svm()
         else:
             if configuration['dataset']['ftb']:
-                config.LinearConf.setSvmFtbConf()
+                config.LinearConf.svmFtb()
             elif configuration['dataset']['dimsum']:
-                config.LinearConf.setSvmDiMSUMConf()
+                config.LinearConf.svmDiMSUM()
             else:
-                config.LinearConf.setSVMConf()
+                config.LinearConf.svm()
         configuration['sampling'].update({
             'overSampling': False,
             'importantSentences': False,

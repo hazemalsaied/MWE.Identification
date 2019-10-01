@@ -243,7 +243,7 @@ class Network:
                                  sample_weight=sampleWeights)
         if configuration['nn']['checkPoint']:
             self.model = load_model(
-                os.path.join(configuration['path']['projectPath'], 'Reports', configuration['path']['checkPointPath']))
+                os.path.join(configuration['path']['projectPath'], 'Reports-old', configuration['path']['checkPointPath']))
         # if configuration['others']['verbose']:
         #    sys.stdout.write('Epoch Losses = ' + str(history.history['loss']))
         self.trainValidationData(data, labels, history)
