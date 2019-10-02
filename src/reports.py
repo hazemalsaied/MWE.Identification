@@ -200,19 +200,19 @@ class ReportMiner:
             ident = [float(i) * 100 for i in ident]
             for i in range(len(configs)):
                 print ','.join(str(x) for x in [
-                    # lass[i * 3] if i * 3 < len(lass) else '-', lass[i * 3 + 1] if i * 3 + 1 < len(lass) else '-',
-                    # lass[i * 3 + 2] if i * 3 + 2 < len(lass) else '-',
-                    # uass[i * 3] if i * 3 < len(uass) else '-', uass[i * 3 + 1] if i * 3 + 1 < len(uass) else '-',
-                    # uass[i * 3 + 2] if i * 3 + 2 < len(uass) else '-',
-                    pos[i * 3] if i * 3 < len(pos) else '-',
-                    pos[i * 3 + 1] if i * 3 + 1 < len(pos) else '-',
-                    pos[i * 3 + 2] if i * 3 + 2 < len(pos) else '-',
-                    mwePpos[i * 3] if i * 3 < len(mwePpos) else '-',
-                    mwePpos[i * 3 + 1] if i * 3 + 1 < len(mwePpos) else '-',
-                    mwePpos[i * 3 + 2] if i * 3 + 2 < len(mwePpos) else '-',
-                    (ident[i * 3]) if i * 3 < len(ident) else '-',
-                    (ident[i * 3 + 1]) if i * 3 + 1 < len(ident) else '-',
-                    (ident[i * 3 + 2]) if i * 3 + 2 < len(ident) else '-',
+                    lass[i * 3] if i * 3 < len(lass) else '-', lass[i * 3 + 1] if i * 3 + 1 < len(lass) else '-',
+                    lass[i * 3 + 2] if i * 3 + 2 < len(lass) else '-',
+                    uass[i * 3] if i * 3 < len(uass) else '-', uass[i * 3 + 1] if i * 3 + 1 < len(uass) else '-',
+                    uass[i * 3 + 2] if i * 3 + 2 < len(uass) else '-',
+                    # pos[i * 3] if i * 3 < len(pos) else '-',
+                    # pos[i * 3 + 1] if i * 3 + 1 < len(pos) else '-',
+                    # pos[i * 3 + 2] if i * 3 + 2 < len(pos) else '-',
+                    # mwePpos[i * 3] if i * 3 < len(mwePpos) else '-',
+                    # mwePpos[i * 3 + 1] if i * 3 + 1 < len(mwePpos) else '-',
+                    # mwePpos[i * 3 + 2] if i * 3 + 2 < len(mwePpos) else '-',
+                    # (ident[i * 3]) if i * 3 < len(ident) else '-',
+                    # (ident[i * 3 + 1]) if i * 3 + 1 < len(ident) else '-',
+                    # (ident[i * 3 + 2]) if i * 3 + 2 < len(ident) else '-',
                     # params[i].split(',')[0] + '.' + params[i].split(',')[1][0],
                     configs[i],
                     str(ff)])
@@ -681,7 +681,7 @@ def readStats(newFile):
     return res
 
 if __name__ == '__main__':
-    files = [f for f in os.listdir('../Reports/Reports/')if f.startswith('posIden')]
+    files = [f for f in os.listdir('../Reports/Reports/')if f.startswith('dep')]
     # OSTools.cleanReports()
     # readStats('r')
     # STDOutTools.generateOarsub(xpNum=12, duration=72, tourNum=1, name='depParsing')

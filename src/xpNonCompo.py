@@ -247,7 +247,6 @@ def evaluateJointIdent(langs=allSharedtask2Lang, division=Evaluation.trainVsDev)
 def evaluatePOSIden(langs=allSharedtask2Lang, division=Evaluation.trainVsDev):
     configuration['tmp']['createDepGraphs'] = False
     configuration['others']['analyzePerformance'] = True
-    configuration['tmp']['trainIden'] = False
     configuration['tmp']['trainTaggerAndIdentifier'] = True
 
     BestConfig.mtPOSIden()
