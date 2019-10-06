@@ -129,7 +129,7 @@ def run(corpus):
     data, labels = DataFactory.getData(corpus, model.tokenVocab, model.posVocab)
     data, labels = DataFactory.overSample(data, labels)
     valData, valLabels = DataFactory.getData(corpus, model.tokenVocab, model.posVocab, validation=True)
-    batchNum = int(len(data[0]) / c['kiperwasser']['batch']) - 1
+    batchNum = int(float(len(data[0])) / c['kiperwasser']['batch']) - 1
     valBatchNum = int(len(valData[0]) / c['kiperwasser']['batch']) - 1
     batchSize, epochLosses, batchId = c['kiperwasser']['batch'], [], 0
     sys.stdout.write('Learning started: epochs:{0}, batch num = {1}, \n'.format(c['nn']['epochs'], batchNum))
