@@ -517,13 +517,12 @@ if __name__ == '__main__':
     reload(sys)
     sys.setdefaultencoding('utf8')
 
-    evaluatePOSIden(division=Evaluation.trainVsDev)
-    evaluatePOSIden(division=Evaluation.corpus)
+    # evaluatePOSIden(division=Evaluation.trainVsDev)
+    # evaluatePOSIden(division=Evaluation.corpus)
     # evaluateMLPOpen()
 
     # evaluateFTBAndDimSumInLinear()
 
-    # evaluateDiMSUM()
     #
     # configuration['tmp']['trainDepParser'] = True
     # configuration['tmp']['createDepGraphs'] = True
@@ -533,7 +532,9 @@ if __name__ == '__main__':
     # configuration['others']['analyzePerformance'] = False
 
     #
-    # import rsg
-    # rsg.runRSGSpontaneously(['BG', 'ES', 'HE'], Dataset.sharedtask2, XpMode.multitasking, Evaluation.fixedSize,
-    #                         dontParse=False,
-    #                         xpNumByThread=200)
+    import rsg
+
+    rsg.runRSGSpontaneously(['BG'], Dataset.sharedtask2,
+                            XpMode.kiperwasser, Evaluation.fixedSize,
+                            dontParse=False,
+                            xpNumByThread=200)

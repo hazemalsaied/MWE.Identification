@@ -685,11 +685,11 @@ if __name__ == '__main__':
     # OSTools.cleanReports()
     # readStats('r')
     # STDOutTools.generateOarsub(xpNum=12, duration=72, tourNum=1, name='depParsing')
-    # STDOutTools.generateKiperOarsub(xpNum=5, duration=5, tourNum=1, name='k.debug')
+    STDOutTools.generateKiperOarsub(xpNum=12, duration=72, tourNum=1, name='k.cup')
     # ReportMiner.getNewScores(files, ['corpus', 'fixed', 'dev'][1])
     # ReportMiner.getDimsumSCore(files, ['corpus', 'fixed', 'dev'][2])
     # ReportMiner.getMisIdentified(files)
-    ReportMiner.mineMTReports(files)
+    # ReportMiner.mineMTReports(files)
     # str = ''
     # str =str.replace(',', '.')
     # str = str.replace('	', ',')
@@ -700,8 +700,8 @@ if __name__ == '__main__':
     # k = 3
     # for i in range(len(nums)/k):
     #     print nums[i*k], nums[i*k +1], nums[i*k +2]#, nums[i*k +3]
-    # # x = 2074512
-    # # res = ''
-    # # for i in range(12):
-    # #     res += ' ' +str(x+i)
-    # # print res
+    # x = 2130260
+    # res = ''
+    # for i in range(12):
+    #     res += ' ' +str(x+i)
+    # print res

@@ -791,10 +791,6 @@ class TrendConfig:
             'taggingBatchSize': 138,
             'taggingLR': 0.028
         })
-        
-        
-
-
 
 
 class Standard:
@@ -1448,6 +1444,7 @@ class BestConfig:
             'taggingLR': 0.037
         })
 
+
 class LinearConf:
     @staticmethod
     def resetFRStandardFeatures():
@@ -1895,36 +1892,36 @@ class Generator:
         # # kiperConf['rnnLayerNum'] =int(Generator.generateValue([1, 2], False))
 
         configuration['kiperwasser'].update({
-            'wordDim': 50,  # int(Generator.generateValue([50, 200], True)),
-            'posDim': int(Generator.generateValue([5, 75], True)),
+            'wordDim': int(Generator.generateValue([50, 200], True)),
+            'posDim': int(Generator.generateValue([15, 75], True)),
             'optimizer': 'adagrad',
-            'lr': round(Generator.generateValue([0.01, 0.2], True), 3),
-            'dropout': .1,  # float(Generator.generateValue([.1, .2, .3, .4, .5, .6, .7], False)),
-            'batch': int(Generator.generateValue([96, 128, 256], False)),
-            'dense1': 50,  # int(Generator.generateValue([50, 250], True)),
-            'denseActivation': 'tanh',  # str(Generator.generateValue(['tanh', 'relu'], False)),
-            'denseDropout': .1,  # float(Generator.generateValue([0, .1, .2, .3, .4], False)),
-            'rnnUnitNum': 50,  # int(Generator.generateValue([50, 150], True)),
-            'rnnDropout': .1,  # float(Generator.generateValue([.1, .2, .3, .4, .5], False)),
-            'rnnLayerNum': 1,  # int(Generator.generateValue([1, 2], False)),
+            'lr': round(Generator.generateValue([0.01, 0.1], True), 3),
+            'dropout': float(Generator.generateValue([.1, .2, .3, .4, .5, .6, .7], False)),
+            'batch': int(Generator.generateValue([128, 192, 256], False)),
+            'dense1':  int(Generator.generateValue([50, 250], True)),
+            'denseActivation': str(Generator.generateValue(['tanh', 'relu'], False)),
+            'denseDropout': float(Generator.generateValue([0, .1, .2, .3, .4], False)),
+            'rnnUnitNum': int(Generator.generateValue([50, 150], True)),
+            'rnnDropout': float(Generator.generateValue([.1, .2, .3, .4, .5], False)),
+            'rnnLayerNum': int(Generator.generateValue([1, 2], False)),
             'focusedElemNum': 8,
             'file': 'kiper.p',
-            'earlyStop': True,
+            'earlyStop': Generator.generateValue([True, False], False),
             'verbose': True,
             'eager': False,  # Generator.generateValue([True, False], False),
-            'gru': False  # Generator.generateValue([True, False], False)
+            'gru':  Generator.generateValue([True, False], False),
             # 'trainValidationSet': Generator.generateValue([True, False], False),
             # 'sampling': Generator.generateValue([True, False], False),
             # 'samplingTaux':  int(Generator.generateValue([5, 50], True)),
-            # 'pretrained': Generator.generateValue([True, False], False)
+            'pretrained': Generator.generateValue([True, False], False)
         })
         if configuration['kiperwasser']['pretrained']:
             configuration['kiperwasser']['wordDim'] = 300
         # configuration['sampling']['importantSentences'] = Generator.generateValue([True, False], False)
-        # configuration['embedding']['compactVocab'] = Generator.generateValue([True, False], False)
+        configuration['embedding']['compactVocab'] = Generator.generateValue([True, False], False)
         configuration['embedding']['lemma'] = True  # Generator.generateValue([True, False], False)
         configuration['nn'].update({
-            'epochs': 15,
+            'epochs': 12,
             'minDelta': round(Generator.generateValue([0.001, 0.1], True), 3),
             'patience': 4,
         })
