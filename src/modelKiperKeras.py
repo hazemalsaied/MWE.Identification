@@ -2,11 +2,11 @@ from random import shuffle
 
 import numpy as np
 from keras.callbacks import EarlyStopping
-from keras.layers import Input, Dense, Embedding, GRU
+from keras.layers import Input, Dense, Embedding, GRU, Flatten
 from keras.models import Model
 from keras.preprocessing.sequence import pad_sequences
 from keras.utils import to_categorical
-
+from keras.backend import gather
 from corpus import getTokens
 from reports import *
 from wordEmbLoader import empty
@@ -63,18 +63,19 @@ class DynamicSelection(Layer):
         super(DynamicSelection, self).__init__(**kwargs)
 
     def call(self, inputs, **kwargs):
+        return gather(Flatten(inputs[0]), list(inputs[0]))
         # return inputs[0]
-        results = []
-        for idx in range(focusedElems):
-            if inputs[1][idx] != -1:
-                results.append(np.zeros(wordRnnUnitNum))
-                # results = results + inputs[0][idx]
-            else:
-                # results = results + ([0] * wordRnnUnitNum)
-                results.append(np.zeros(wordRnnUnitNum))
-                # results.append(inputs[0][idx])
-        results = K.variable(value=np.asarray(results), dtype='float64')
-        return results  # K.concatenate(results) # results
+        # results = []
+        # for idx in range(focusedElems):
+        #     if inputs[1][idx] != -1:
+        #         results.append(np.zeros(wordRnnUnitNum))
+        #         # results = results + inputs[0][idx]
+        #     else:
+        #         # results = results + ([0] * wordRnnUnitNum)
+        #         results.append(np.zeros(wordRnnUnitNum))
+        #         # results.append(inputs[0][idx])
+        # results = K.variable(value=np.asarray(results), dtype='float64')
+        # return results  # K.concatenate(results) # results
 
     def compute_output_shape(self, input_shape):
         # return (None,wordRnnUnitNum)
@@ -99,9 +100,11 @@ class Network:
         embToken = Embedding(vocabSize, tokenDim, trainable=trainable)(inputToken)
         rnnLayer = GRU(wordRnnUnitNum, return_sequences=True, name='phraseRnn')(embToken)
         inputIdxs = Input((focusedElems,))
+        # gatherLayer = gather(rnnLayer, inputIdxs)
         dynamicSelector = DynamicSelection()([rnnLayer, inputIdxs])
         # dynamicSelector = Flatten()(dynamicSelector)
         denseLayer = Dense(dense1UnitNumber, activation='relu')(dynamicSelector)
+        # denseLayer = Dense(dense1UnitNumber, activation='relu')(gatherLayer)
         softmaxLayer = Dense(4, activation='softmax')(denseLayer)
         model = Model(inputs=[inputToken, inputIdxs], outputs=softmaxLayer)
         model.compile(loss=configuration['nn']['loss'], optimizer='adagrad', metrics=['accuracy'])

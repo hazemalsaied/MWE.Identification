@@ -56,7 +56,10 @@ def generateConf(xpMode):
     elif xpMode == XpMode.linear:
         Generator.svm()
     elif xpMode == XpMode.kiperwasser:
-        Generator.kiper()
+        if configuration['tmp']['minimizedKiper']:
+            Generator.minimizedKiper()
+        else:
+            Generator.kiper()
     elif xpMode == XpMode.rmlpTree:
         Generator.rmlpTree()
     elif xpMode == XpMode.multitasking:

@@ -679,13 +679,18 @@ def readStats(newFile):
                 res += line
     # print res
     return res
+def deleteJobs(jobId):
+    res = 'oardel '
+    for i in range(12):
+        res += ' ' + str(jobId+i)
+    print res
 
 if __name__ == '__main__':
-    files = [f for f in os.listdir('../Reports/Reports/')if f.startswith('dep')]
+    files = [f for f in os.listdir('../Reports/Reports/')if f.startswith('k.cpu2')]
     # OSTools.cleanReports()
     # readStats('r')
-    # STDOutTools.generateOarsub(xpNum=12, duration=72, tourNum=1, name='depParsing')
-    STDOutTools.generateKiperOarsub(xpNum=12, duration=72, tourNum=1, name='k.cup')
+    STDOutTools.generateOarsub(xpNum=6, duration=72, tourNum=1, name='kiper.minimized.gpu')
+    # STDOutTools.generateKiperOarsub(xpNum=12, duration=20, tourNum=2, name='k.gpu')
     # ReportMiner.getNewScores(files, ['corpus', 'fixed', 'dev'][1])
     # ReportMiner.getDimsumSCore(files, ['corpus', 'fixed', 'dev'][2])
     # ReportMiner.getMisIdentified(files)
@@ -700,8 +705,4 @@ if __name__ == '__main__':
     # k = 3
     # for i in range(len(nums)/k):
     #     print nums[i*k], nums[i*k +1], nums[i*k +2]#, nums[i*k +3]
-    # x = 2130260
-    # res = ''
-    # for i in range(12):
-    #     res += ' ' +str(x+i)
-    # print res
+    print deleteJobs(2131081)

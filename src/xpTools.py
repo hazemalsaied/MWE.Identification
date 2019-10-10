@@ -2,7 +2,7 @@ import datetime
 import numpy
 #import torch
 from enum import Enum
-from theano import function, config, shared, tensor
+
 
 from corpus import *
 from identification import identify
@@ -250,6 +250,7 @@ def setDataSet(v):
 
 
 def verifyGPU():
+    from theano import function, config, shared, tensor
     vlen = 10 * 30 * 768
     rng = numpy.random.RandomState(22)
     x = shared(numpy.asarray(rng.rand(vlen), config.floatX))

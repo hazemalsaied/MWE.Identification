@@ -88,6 +88,7 @@ def evaluateFTBAndDimSumInLinear():
     LinearConf.svmDiMSUM()
     xp(['EN'], Dataset.dimsum, XpMode.linear, Evaluation.corpus)
 
+
 def evaluateFTB():
     configuration['others']['analyzePerformance'] = True
     # Before
@@ -107,7 +108,7 @@ def evaluateFTB():
     TrendConfig.mlp()
     configuration['embedding']['pretrained'] = False
     xp(['FR'], Dataset.ftb, None, Evaluation.corpus)
-    
+
     # after
     # GPP closed Svm
     LinearConf.svmFtb()
@@ -122,6 +123,7 @@ def evaluateFTB():
     TrendConfig.mlpFtb()
     configuration['embedding']['pretrained'] = False
     xp(['FR'], Dataset.ftb, None, Evaluation.corpus)
+
 
 def evaluateDiMSUM():
     configuration['others']['analyzePerformance'] = True
@@ -157,6 +159,7 @@ def evaluateDiMSUM():
     TrendConfig.mlpDimsum()
     configuration['embedding']['pretrained'] = False
     xp(['EN'], Dataset.dimsum, None, Evaluation.corpus)
+
 
 def evaluateDiMSUMAfterTunning():
     BestConfig.mlpDimsumClosed()
@@ -531,10 +534,13 @@ if __name__ == '__main__':
     # xp(['SL'], Dataset.sharedtask2, None, Evaluation.trainVsDev)
     # configuration['others']['analyzePerformance'] = False
 
-    #
     import rsg
 
+    configuration['tmp']['useCpu'] = False
+    configuration['others']['debugTrainNum'] = 100
+    # configuration['tmp']['useKerasKiper'] = True
+    configuration['tmp']['minimizedKiper'] = True
     rsg.runRSGSpontaneously(['BG'], Dataset.sharedtask2,
-                            XpMode.kiperwasser, Evaluation.fixedSize,
+                            XpMode.kiperwasser, None, #Evaluation.fixedSize,
                             dontParse=False,
                             xpNumByThread=200)

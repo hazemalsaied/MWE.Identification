@@ -120,6 +120,8 @@ configuration = {
         'shuffle': True
     },
     'tmp': {
+        'minimizedKiper': False,
+        'useKerasKiper': False,
         'createDepGraphs': False,
         'dontParse': False,
         'trainIden': False,
@@ -140,8 +142,8 @@ configuration = {
         'nltk': False,
         'trainTaggerAndIdentifier': False,
         'trainInTransfert': False,
-        'shuffleOrRedistribute': True
-
+        'shuffleOrRedistribute': True,
+        'useCpu': False
     },
     'others': {
         'tuneCoop': False,
@@ -184,17 +186,18 @@ configuration = {
         'denseDropout': 0,
         'rnnUnitNum': 5,
         'rnnDropout': 0.3,
-        'rnnLayerNum': 2,
+        'rnnLayerNum': 1,
         'focusedElemNum': 8,
         'file': 'kiper.p',
-        'earlyStop': False,
+        'earlyStop': True,
         'verbose': True,
-        'eager': True,
+        'eager': False,
         'pretrained': False,
         'gru': True,
         'trainValidationSet': True,
-        'sampling': True,
-        'samplingTaux': 15
+        'sampling': False,
+        'samplingTaux': 15,
+        'bidirectional': False
     },
     'rnn': {
         'focusedElements': 7,
@@ -1890,7 +1893,7 @@ class Generator:
         # # kiperConf['rnnDropout'] = round(Generator.generateValue([.1, .4], True), 2)
         # # kiperConf['rnnUnitNum'] = int(Generator.generateValue([20, 250], True))
         # # kiperConf['rnnLayerNum'] =int(Generator.generateValue([1, 2], False))
-
+        configuration['sampling']['importantSentences'] = True
         configuration['kiperwasser'].update({
             'wordDim': int(Generator.generateValue([50, 200], True)),
             'posDim': int(Generator.generateValue([15, 75], True)),
@@ -1924,6 +1927,40 @@ class Generator:
             'epochs': 12,
             'minDelta': round(Generator.generateValue([0.001, 0.1], True), 3),
             'patience': 4,
+        })
+
+    @staticmethod
+    def minimizedKiper():
+        configuration['sampling']['importantSentences'] = True
+        configuration['kiperwasser'].update({
+            'wordDim': int(Generator.generateValue([50, 150], True)),
+            'posDim': int(Generator.generateValue([15, 65], True)),
+            'optimizer': 'adagrad',
+            'lr': round(Generator.generateValue([0.01, 0.2], True), 3),
+            'dropout': float(Generator.generateValue([.1, .2, .3, .4, .5, .6, .7], False)),
+            'batch':  16,
+            'dense1': int(Generator.generateValue([50, 150], True)),
+            'denseActivation': str(Generator.generateValue(['tanh', 'relu'], False)),
+            'denseDropout': float(Generator.generateValue([0, .1, .2, .3, .4], False)),
+            'rnnUnitNum': int(Generator.generateValue([50, 100], True)),
+            'rnnDropout': float(Generator.generateValue([.1, .2, .3, .4, .5], False)),
+            'rnnLayerNum': 1, # int(Generator.generateValue([1, 2], False)),
+            'file': 'kiper.p',
+            'earlyStop': True,# Generator.generateValue([True, False], False),
+            'verbose': True,
+            'gru': Generator.generateValue([True, False], False),
+            # 'sampling': Generator.generateValue([True, False], False),
+            # 'samplingTaux':  int(Generator.generateValue([5, 50], True)),
+            'pretrained': False# Generator.generateValue([True, False], False)
+        })
+        # if configuration['kiperwasser']['pretrained']:
+        #     configuration['kiperwasser']['wordDim'] = 300
+        # configuration['sampling']['importantSentences'] = Generator.generateValue([True, False], False)
+        configuration['embedding']['compactVocab'] = Generator.generateValue([True, False], False)
+        configuration['embedding']['lemma'] = True  # Generator.generateValue([True, False], False)
+        configuration['nn'].update({
+            'epochs': 7,
+            'minDelta': round(Generator.generateValue([0.001, 0.5], True), 3)
         })
 
     @staticmethod

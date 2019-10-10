@@ -27,7 +27,7 @@ enableCategorization = False
 unk = c['constants']['unk']
 empty = c['constants']['empty']
 number = c['constants']['number']
-maxPhraseLen = 50
+maxPhraseLen = 100
 
 
 class Network(nn.Module):
@@ -40,26 +40,31 @@ class Network(nn.Module):
         """
         if use_pretrained_w_emb, the indices.w_embeddings_matrix will be used
         """
+        c['kiperwasser']['batch'] = 5
+        global device
+        device = getDevice()
         super(Network, self).__init__()
         self.tokenVocab, self.posVocab = corpus.toVocabulary()
         self.p_embeddings = nn.Embedding(len(self.posVocab), c['kiperwasser']['posDim'])
         self.w_embeddings = nn.Embedding(len(self.tokenVocab), c['kiperwasser']['wordDim'])
-        # if c['kiperwasser']['pretrained']:
-        #     self.tokenVocab, embeddingMatrix = facebookEmb.getEmbMatrix(corpus.langName, self.tokenVocab.keys())
-        #     self.w_embeddings.load_state_dict({'weight': torch.FloatTensor(embeddingMatrix)})
+        if c['kiperwasser']['pretrained']:
+            self.tokenVocab, embeddingMatrix = facebookEmb.getEmbMatrix(corpus.langName, self.tokenVocab.keys())
+            self.w_embeddings.load_state_dict({'weight': torch.FloatTensor(embeddingMatrix)})
         embeddingDim = c['kiperwasser']['wordDim'] + c['kiperwasser']['posDim']
         if c['kiperwasser']['gru']:
             self.rnn = nn.GRU(embeddingDim,
-                              c['kiperwasser']['rnnUnitNum'],
-                              bidirectional=c['kiperwasser']['bidirectional'],
-                              num_layers=c['kiperwasser']['rnnLayerNum'],
-                              dropout=c['kiperwasser']['rnnDropout'] if c['kiperwasser']['rnnLayerNum'] > 1 else 0)
+                              c['kiperwasser']['rnnUnitNum'])#,
+                              #bidirectional=True,
+                              #num_layers=c['kiperwasser']['rnnLayerNum'],
+                              #dropout=c['kiperwasser']['rnnDropout'] if c['kiperwasser'][
+                              #                                              'rnnLayerNum'] > 1 else 0)
         else:
             self.rnn = nn.LSTM(embeddingDim,
-                               c['kiperwasser']['rnnUnitNum'],
-                               bidirectional=c['kiperwasser']['bidirectional'],
-                               num_layers=c['kiperwasser']['rnnLayerNum'],
-                               dropout=c['kiperwasser']['rnnDropout'] if c['kiperwasser']['rnnLayerNum'] > 1 else 0)
+                               c['kiperwasser']['rnnUnitNum'])#,
+                               #bidirectional=True,
+                               #num_layers=c['kiperwasser']['rnnLayerNum'],
+                               #dropout=c['kiperwasser']['rnnDropout'] if c['kiperwasser'][
+                               #                                              'rnnLayerNum'] > 1 else 0)
         # init hidden and cell states h0 c0
         # self.inithiddenRnn = initHiddenRnn()
         # self.inithiddenRnnForParsing = initHiddenRnn(parsing=True)
@@ -71,30 +76,34 @@ class Network(nn.Module):
         #         # c['kiperwasser']['batch']),
         #         c['kiperwasser']['dense1'])
         # else:
+
         self.linear1 = nn.Linear(
-            maxPhraseLen * c['kiperwasser']['rnnUnitNum'] * (1 + int(c['kiperwasser']['bidirectional'])),
-            # c['kiperwasser']['focusedElemNum'] * c['kiperwasser']['rnnUnitNum'] * (1+ int(c['kiperwasser']['bidirectional'])),
+            c['kiperwasser']['focusedElemNum'] * c['kiperwasser']['rnnUnitNum'] * 2,
             c['kiperwasser']['dense1'])
         # dropout here is very detrimental
         self.dropout1 = nn.Dropout(p=c['kiperwasser']['denseDropout'])
         self.linear2 = nn.Linear(c['kiperwasser']['dense1'], 4)
 
-
-
     def forward(self, batchTokens, batchPoss, batchActiveTokens, parsing=False):
         batchSize = 1 if parsing else c['kiperwasser']['batch']
-        tokenEmbed = self.w_embeddings(batchTokens)
-        posEmbed = self.p_embeddings(batchPoss)
-        sentEmbeds = torch.cat([tokenEmbed, posEmbed], 2)
-        # self.hiddenRnn = initHiddenRnn(parsing=parsing)
-        rnnOutput, self.hiddenRnn = self.rnn(sentEmbeds.view(len(batchTokens[0]), batchSize, -1))#, self.hiddenRnn)
-        # activeElems = selectRowsFromTensors(rnnOutput, batchActiveTokens, parsing=parsing).view(1, batchSize, -1)
-        # out = f.relu(self.linear1(activeElems)) if c['kiperwasser']['denseActivation'] == 'relu' else \
-        #     torch.tanh(self.linear1(activeElems))
-        out = f.relu(self.linear1(rnnOutput))
+        batchTokens = torch.LongTensor(batchTokens).to(device)
+        batchPoss = torch.LongTensor(batchPoss).to(device)
+        batchActiveTokens = torch.LongTensor(batchActiveTokens).to(device)
+        tokenEmbed = self.w_embeddings(batchTokens).to(device)
+        posEmbed = self.p_embeddings(batchPoss).to(device)
+        sentEmbeds = torch.cat([tokenEmbed, posEmbed], 2).to(device)
+        self.hiddenRnn = initHiddenRnn(parsing=parsing)
+        rnnOutput, self.hiddenRnn = self.rnn(sentEmbeds.view(len(batchTokens[0]), batchSize, -1), self.hiddenRnn)
+                                                 # self.inithiddenRnnForParsing if parsing else self.inithiddenRnn)
+        rnnOutput = rnnOutput.to(device)
+        activeElems = selectRowsFromTensors(rnnOutput, batchActiveTokens, parsing=parsing).view(1, batchSize, -1).to(
+            device)
+        # out = f.tanh(self.linear1(activeElems)).to(device)
+        out = f.relu(self.linear1(activeElems)).to(device) if c['kiperwasser']['denseActivation'] == 'relu' else \
+            f.tanh(self.linear1(activeElems)).to(device)
         if c['kiperwasser']['denseDropout']:
-            out = self.dropout1(out)
-        out = self.linear2(out)
+            out = self.dropout1(out).to(device)
+        out = self.linear2(out).to(device)
         return out
 
     def predict(self, trans, sent):
@@ -102,12 +111,9 @@ class Network(nn.Module):
         prediction of score vector (for each transition)
         Returns sorted score list / corresponding class id list
         """
-        device = getDevice()
         tokens, poss, idxs = DataFactory.getTransData(trans, sent, self.tokenVocab, self.posVocab)
         # cet appel comprend l'appel de self.forward
-        scores = self.forward(torch.LongTensor([tokens]).to(device),
-                              torch.LongTensor([poss]).to(device),
-                              torch.LongTensor([idxs]).to(device), parsing=True)
+        scores = self.forward([tokens], [poss], [idxs], parsing=True)
         # on obtient par ex, si 3 transitions: tensor([[-1.3893, -1.6119, -0.5956]])
         # (cf. minibatch de 1)
         _, sortedIndices = torch.sort(scores[0], descending=True)
@@ -121,19 +127,14 @@ def run(corpus):
     """
     global device
     device = getDevice()
-    sys.stdout.write('DEVICE : {0}\n'.format(device))
-    model = Network(corpus)
-    pytorchTotalParams = sum(p.numel() for p in model.parameters())
-    sys.stdout.write('Total Params : {0}\n'.format(pytorchTotalParams))
-    model.to(device)
-
-
+    model = Network(corpus).to(device)
     # nb of sentence positions taken to build input vector representing a parse configuration
     optimizer = optim.Adagrad(model.parameters(), lr=c['kiperwasser']['lr'])
     sys.stdout.write('Learning rate = {0}\n'.format(c['kiperwasser']['lr']))
     lossFunction = nn.NLLLoss()
     data, labels = DataFactory.getData(corpus, model.tokenVocab, model.posVocab)
     data, labels = DataFactory.overSample(data, labels)
+    # labels = to_categorical(labels, num_classes=4)
     valData, valLabels = DataFactory.getData(corpus, model.tokenVocab, model.posVocab, validation=True)
     batchNum = int(float(len(data[0])) / c['kiperwasser']['batch']) - 1
     valBatchNum = int(len(valData[0]) / c['kiperwasser']['batch']) - 1
@@ -142,14 +143,17 @@ def run(corpus):
     for epoch in range(c['nn']['epochs']):
         sys.stdout.write('\nEpoch {0}:\n'.format(epoch))
         for i in range(batchNum):
+            # sys.stdout.write('\nBatch {0}:\n'.format(i))
+            batchId += 1
+            # sys.stdout.write('{0}.'.format(batchId))
             # Local batches and labels
-            batchTokens = torch.LongTensor(data[0][i * batchSize:(i + 1) * batchSize]).to(device)
-            batchPoss = torch.LongTensor(data[1][i * batchSize:(i + 1) * batchSize]).to(device)
-            batchActiveTokens = torch.LongTensor(data[2][i * batchSize:(i + 1) * batchSize]).to(device)
+            batchTokens = data[0][i * batchSize:(i + 1) * batchSize]
+            batchPoss = data[1][i * batchSize:(i + 1) * batchSize]
+            batchActiveTokens = data[2][i * batchSize:(i + 1) * batchSize]
+            batchLabels = labels[i * batchSize:(i + 1) * batchSize]
+            batchLabels = torch.LongTensor([batchLabels]).to(device).view(c['kiperwasser']['batch'])#,4)
             out = model(batchTokens, batchPoss, batchActiveTokens)
             predT = f.log_softmax(out, dim=1)
-            batchLabels = labels[i * batchSize:(i + 1) * batchSize]
-            batchLabels = torch.LongTensor(batchLabels).view(c['kiperwasser']['batch']).to(device)  # ,4)
             loss = lossFunction(predT.view(c['kiperwasser']['batch'], 4), batchLabels)
             loss.backward()
             optimizer.step()
@@ -158,13 +162,13 @@ def run(corpus):
         valLosses = 0
         for i in range(valBatchNum):
             # Local batches and labels
-            batchTokens =  torch.LongTensor(valData[0][i * batchSize:(i + 1) * batchSize]).to(device)
-            batchPoss = torch.LongTensor(valData[1][i * batchSize:(i + 1) * batchSize]).to(device)
-            batchActiveTokens = torch.LongTensor(valData[2][i * batchSize:(i + 1) * batchSize]).to(device)
+            batchTokens = valData[0][i * batchSize:(i + 1) * batchSize]
+            batchPoss = valData[1][i * batchSize:(i + 1) * batchSize]
+            batchActiveTokens = valData[2][i * batchSize:(i + 1) * batchSize]
+            batchLabels = valLabels[i * batchSize:(i + 1) * batchSize]
+            batchLabels = torch.LongTensor([batchLabels]).to(device).view(c['kiperwasser']['batch'])
             out = model(batchTokens, batchPoss, batchActiveTokens)
             predT = f.log_softmax(out, dim=1)
-            batchLabels = valLabels[i * batchSize:(i + 1) * batchSize]
-            batchLabels = torch.LongTensor(batchLabels).view(c['kiperwasser']['batch']).to(device)
             loss = lossFunction(predT.view(c['kiperwasser']['batch'], 4), batchLabels)
             valLosses += loss.item()
         epochLosses.append(valLosses / batchSize)
@@ -176,7 +180,7 @@ def run(corpus):
 
 
 def shouldStopLearning(epochLosses,
-                       patience=c['nn']['patience'],
+                       patience=c['nn']['patience'] + 1,
                        minDelta=c['nn']['minDelta']):
     if not c['kiperwasser']['earlyStop'] or len(epochLosses) <= patience:
         return False
@@ -194,6 +198,30 @@ def evaluate(sents, model):
     return evaluation.evaluate(sents, loggingg=False)[1]
 
 
+def initHiddenRnnNew(parsing=False):
+    """
+    Before we've done anything, we dont have any hidden state.
+    The axes semantics are (num_layers, minibatch_size, hidden_dim)
+    h_0 is of shape (num_layers * num_directions, batch, hidden_size):
+                    tensor containing the initial hidden state for each element in the batch
+    same for c_0 = initial cell state
+    here num_directions = 2 (bidirectional), batch = 1
+    :return:
+    """
+    batchSize = 1 if parsing else c['kiperwasser']['batch']
+    c['kiperwasser']['rnnLayerNum'] = 1
+    if c['kiperwasser']['gru']:
+        return torch.zeros(c['kiperwasser']['rnnLayerNum'] * 2,
+                           batchSize,
+                           c['kiperwasser']['rnnUnitNum'])
+    else:
+        return (torch.zeros(c['kiperwasser']['rnnLayerNum'] * 2,
+                            batchSize,
+                            c['kiperwasser']['rnnUnitNum']), \
+                torch.zeros(c['kiperwasser']['rnnLayerNum'] * 2,
+                            batchSize,
+                            c['kiperwasser']['rnnUnitNum']))
+
 def initHiddenRnn(parsing=False):
     """
     Before we've done anything, we dont have any hidden state.
@@ -205,32 +233,32 @@ def initHiddenRnn(parsing=False):
     :return:
     """
     batchSize = 1 if parsing else c['kiperwasser']['batch']
-    bidirectionalCoeff =  (1+ int(c['kiperwasser']['bidirectional']))
     if c['kiperwasser']['gru']:
-        return torch.zeros(c['kiperwasser']['rnnLayerNum'] * bidirectionalCoeff, batchSize,
-                           c['kiperwasser']['rnnUnitNum'])
+        return torch.zeros(c['kiperwasser']['rnnLayerNum'] * 2,
+                           batchSize,
+                           c['kiperwasser']['rnnUnitNum']).to(device)
     else:
-        return (torch.zeros(c['kiperwasser']['rnnLayerNum'] * bidirectionalCoeff, batchSize,
-                            c['kiperwasser']['rnnUnitNum']), \
-                torch.zeros(c['kiperwasser']['rnnLayerNum'] * bidirectionalCoeff, batchSize,
-                            c['kiperwasser']['rnnUnitNum']))
+        return (torch.zeros(c['kiperwasser']['rnnLayerNum'] * 2,
+                            batchSize,
+                            c['kiperwasser']['rnnUnitNum']).to(device), \
+                torch.zeros(c['kiperwasser']['rnnLayerNum'] * 2,
+                            batchSize,
+                            c['kiperwasser']['rnnUnitNum']).to(device))
 
 
 def selectRowsFromTensors(sentEmbeds, idxss, parsing=False):
     """
     extract given rows (= axis 0) from a given 2 dim tensor
     """
-
-    bidirectionalCoeff = (1 + int(c['kiperwasser']['bidirectional']))
     batchSize = 1 if parsing else c['kiperwasser']['batch']
     results = torch.zeros((c['kiperwasser']['focusedElemNum'],
                            batchSize,
-                           bidirectionalCoeff * c['kiperwasser']['rnnUnitNum']), device=getDevice())
+                           2 * c['kiperwasser']['rnnUnitNum']), dtype=dtype)
 
     for batchIdx in range(batchSize):
         idx = 0
         for selectedIdx in idxss[batchIdx]:
-            if selectedIdx != -1 and selectedIdx < maxPhraseLen:
+            if selectedIdx != -1 and selectedIdx < 100:
                 results[idx][batchIdx] = sentEmbeds[selectedIdx - 1][batchIdx]
             idx += 1
     return results
@@ -341,6 +369,7 @@ class DataFactory:
         return [tokens, poss, idxs], labels
 
 def getDevice():
+    device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
     if c['tmp']['useCpu']:
         return 'cpu'
-    return torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
+    return device
