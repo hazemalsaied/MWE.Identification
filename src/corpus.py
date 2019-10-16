@@ -27,6 +27,7 @@ class Corpus:
         """
         self.langName = langName
         self.readDataSets(langName)
+        # self.getVMWEReport()
         self.analyzeSents()
         self.orderParentVMWEs()
         self.getTrainAndTest()

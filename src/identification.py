@@ -11,6 +11,7 @@ from reports import STDOutTools
 
 def identify(lang):
     corpus = Corpus(lang)
+    # corpus.getVMWEReport()
     oracle.parse(corpus)
     t = datetime.datetime.now()
     network, vectorizer = parseAndTrain(corpus)

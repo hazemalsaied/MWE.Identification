@@ -686,12 +686,12 @@ def deleteJobs(jobId):
     print res
 
 if __name__ == '__main__':
-    files = [f for f in os.listdir('../Reports/Reports/')if f.startswith('k.cpu2')]
+    files = [f for f in os.listdir('../Reports/Reports/')if f.startswith('ftbDimDev')]
     # OSTools.cleanReports()
     # readStats('r')
-    STDOutTools.generateOarsub(xpNum=6, duration=72, tourNum=1, name='kiper.minimized.gpu')
+    # STDOutTools.generateOarsub(xpNum=6, duration=72, tourNum=1, name='kiper.minimized.gpu')
     # STDOutTools.generateKiperOarsub(xpNum=12, duration=20, tourNum=2, name='k.gpu')
-    # ReportMiner.getNewScores(files, ['corpus', 'fixed', 'dev'][1])
+    ReportMiner.getNewScores(files, ['corpus', 'fixed', 'dev'][0])
     # ReportMiner.getDimsumSCore(files, ['corpus', 'fixed', 'dev'][2])
     # ReportMiner.getMisIdentified(files)
     # ReportMiner.mineMTReports(files)
@@ -705,4 +705,4 @@ if __name__ == '__main__':
     # k = 3
     # for i in range(len(nums)/k):
     #     print nums[i*k], nums[i*k +1], nums[i*k +2]#, nums[i*k +3]
-    print deleteJobs(2131081)
+    # print deleteJobs(2131081)

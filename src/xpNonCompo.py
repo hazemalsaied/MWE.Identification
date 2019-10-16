@@ -80,85 +80,85 @@ def evaluateFTBAndDimSumInLinear():
     configuration['others']['analyzePerformance'] = True
     # GPP closed Svm
     LinearConf.svm()
-    xp(['FR'], Dataset.ftb, XpMode.linear, Evaluation.corpus)
+    xp(['FR'], Dataset.ftb, XpMode.linear, Evaluation.trainVsDev)
     LinearConf.svmFtb()
-    xp(['FR'], Dataset.ftb, XpMode.linear, Evaluation.corpus)
+    xp(['FR'], Dataset.ftb, XpMode.linear, Evaluation.trainVsDev)
     LinearConf.svm()
-    xp(['EN'], Dataset.dimsum, XpMode.linear, Evaluation.corpus)
+    xp(['EN'], Dataset.dimsum, XpMode.linear, Evaluation.trainVsDev)
     LinearConf.svmDiMSUM()
-    xp(['EN'], Dataset.dimsum, XpMode.linear, Evaluation.corpus)
+    xp(['EN'], Dataset.dimsum, XpMode.linear, Evaluation.trainVsDev)
 
 
 def evaluateFTB():
     configuration['others']['analyzePerformance'] = True
     # Before
     # GPP closed Svm
-    LinearConf.svm()
-    xp(['FR'], Dataset.ftb, None, Evaluation.corpus)
-    # GPP closed
-    BestConfig.mlp()
-    xp(['FR'], Dataset.ftb, None, Evaluation.corpus)
-    BestConfig.mlpOpen()
-    # GPP Open
-    xp(['FR'], Dataset.ftb, None, Evaluation.corpus)
-    # GT Open
-    TrendConfig.mlp()
-    xp(['FR'], Dataset.ftb, None, Evaluation.corpus)
-    # GT Closed
-    TrendConfig.mlp()
-    configuration['embedding']['pretrained'] = False
-    xp(['FR'], Dataset.ftb, None, Evaluation.corpus)
+    # LinearConf.svm()
+    # xp(['FR'], Dataset.ftb, XpMode.linear, Evaluation.corpus)
+    # # GPP closed
+    # BestConfig.mlp()
+    # xp(['FR'], Dataset.ftb, None, Evaluation.corpus)
+    # BestConfig.mlpOpen()
+    # # GPP Open
+    # xp(['FR'], Dataset.ftb, None, Evaluation.corpus)
+    # # GT Open
+    # TrendConfig.mlp()
+    # xp(['FR'], Dataset.ftb, None, Evaluation.corpus)
+    # # GT Closed
+    # TrendConfig.mlp()
+    # configuration['embedding']['pretrained'] = False
+    # xp(['FR'], Dataset.ftb, None, Evaluation.corpus)
 
     # after
     # GPP closed Svm
     LinearConf.svmFtb()
-    xp(['FR'], Dataset.ftb, None, Evaluation.corpus)
+    xp(['FR'], Dataset.ftb, XpMode.linear, Evaluation.trainVsDev)
     # GPP closed
     BestConfig.mlpFtbClosed()
-    xp(['FR'], Dataset.ftb, None, Evaluation.corpus)
+    xp(['FR'], Dataset.ftb, None, Evaluation.trainVsDev)
     BestConfig.mlpFtbOpen()
-    xp(['FR'], Dataset.ftb, None, Evaluation.corpus)
+    xp(['FR'], Dataset.ftb, None, Evaluation.trainVsDev)
     TrendConfig.mlpFtb()
-    xp(['FR'], Dataset.ftb, None, Evaluation.corpus)
-    TrendConfig.mlpFtb()
-    configuration['embedding']['pretrained'] = False
-    xp(['FR'], Dataset.ftb, None, Evaluation.corpus)
+    xp(['FR'], Dataset.ftb, None, Evaluation.trainVsDev)
+    # TrendConfig.mlpFtb()
+    # configuration['embedding']['pretrained'] = False
+    # xp(['FR'], Dataset.ftb, None, Evaluation.trainVsDev)
 
 
 def evaluateDiMSUM():
     configuration['others']['analyzePerformance'] = True
     # Before
     # GPP closed Svm
-    LinearConf.svm()
-    xp(['EN'], Dataset.dimsum, None, Evaluation.corpus)
-    # GPP closed
-    BestConfig.mlp()
-    xp(['EN'], Dataset.dimsum, None, Evaluation.corpus)
-    BestConfig.mlpOpen()
-    # GPP Open
-    xp(['EN'], Dataset.dimsum, None, Evaluation.corpus)
-    # GT Open
-    TrendConfig.mlp()
-    xp(['EN'], Dataset.dimsum, None, Evaluation.corpus)
-    # GT Closed
-    TrendConfig.mlp()
-    configuration['embedding']['pretrained'] = False
-    xp(['EN'], Dataset.dimsum, None, Evaluation.corpus)
+    # LinearConf.svm()
+    # xp(['EN'], Dataset.dimsum, None, Evaluation.corpus)
+    # # GPP closed
+    # BestConfig.mlp()
+    # xp(['EN'], Dataset.dimsum, None, Evaluation.corpus)
+    # BestConfig.mlpOpen()
+    # # GPP Open
+    # xp(['EN'], Dataset.dimsum, None, Evaluation.corpus)
+    # # GT Open
+    # TrendConfig.mlp()
+    # xp(['EN'], Dataset.dimsum, None, Evaluation.corpus)
+    # # GT Closed
+    # TrendConfig.mlp()
+    # configuration['embedding']['pretrained'] = False
+    # xp(['EN'], Dataset.dimsum, None, Evaluation.corpus)
 
     # after
     # GPP closed Svm
     LinearConf.svmDiMSUM()
-    xp(['EN'], Dataset.dimsum, None, Evaluation.corpus)
+    xp(['EN'], Dataset.dimsum, XpMode.linear, Evaluation.trainVsDev)
     # GPP closed
     BestConfig.mlpDimsumClosed()
-    xp(['EN'], Dataset.dimsum, None, Evaluation.corpus)
+    xp(['EN'], Dataset.dimsum, None, Evaluation.trainVsDev)
     BestConfig.mlpDimsumClosed()
-    xp(['EN'], Dataset.dimsum, None, Evaluation.corpus)
+    xp(['EN'], Dataset.dimsum, None, Evaluation.trainVsDev)
     TrendConfig.mlpDimsum()
-    xp(['EN'], Dataset.dimsum, None, Evaluation.corpus)
-    TrendConfig.mlpDimsum()
-    configuration['embedding']['pretrained'] = False
-    xp(['EN'], Dataset.dimsum, None, Evaluation.corpus)
+    xp(['EN'], Dataset.dimsum, None, Evaluation.trainVsDev)
+    # TrendConfig.mlpDimsum()
+    # configuration['embedding']['pretrained'] = False
+    # xp(['EN'], Dataset.dimsum, None, Evaluation.trainVsDev)
 
 
 def evaluateDiMSUMAfterTunning():
@@ -520,6 +520,11 @@ if __name__ == '__main__':
     reload(sys)
     sys.setdefaultencoding('utf8')
 
+
+    TrendConfig.mlp()
+    configuration['embedding']['pretrained'] = False
+    xp(['HU'], None, None, None)
+
     # evaluatePOSIden(division=Evaluation.trainVsDev)
     # evaluatePOSIden(division=Evaluation.corpus)
     # evaluateMLPOpen()
@@ -533,14 +538,15 @@ if __name__ == '__main__':
     # xp(allSharedtask2Lang, Dataset.sharedtask2, None, None)
     # xp(['SL'], Dataset.sharedtask2, None, Evaluation.trainVsDev)
     # configuration['others']['analyzePerformance'] = False
-
-    import rsg
-
-    configuration['tmp']['useCpu'] = False
-    configuration['others']['debugTrainNum'] = 100
-    # configuration['tmp']['useKerasKiper'] = True
-    configuration['tmp']['minimizedKiper'] = True
-    rsg.runRSGSpontaneously(['BG'], Dataset.sharedtask2,
-                            XpMode.kiperwasser, None, #Evaluation.fixedSize,
-                            dontParse=False,
-                            xpNumByThread=200)
+    # evaluateFTB()
+    # evaluateDiMSUM()
+    # import rsg
+    #
+    # configuration['tmp']['useCpu'] = False
+    # configuration['others']['debugTrainNum'] = 100
+    # # configuration['tmp']['useKerasKiper'] = True
+    # configuration['tmp']['minimizedKiper'] = True
+    # rsg.runRSGSpontaneously(['BG'], Dataset.sharedtask2,
+    #                         XpMode.kiperwasser, None, #Evaluation.fixedSize,
+    #                         dontParse=False,
+    #                         xpNumByThread=200)
