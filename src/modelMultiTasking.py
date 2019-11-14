@@ -22,8 +22,8 @@ from modelLinear import getFeatures
 from parser import parse
 from reports import *
 from transitions import TransitionType
-from wordEmbLoader import empty
-from wordEmbLoader import unk, number
+from vocabTools import empty
+from vocabTools import unk, number
 
 enableCategorization = False
 

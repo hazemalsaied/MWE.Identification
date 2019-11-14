@@ -1,6 +1,4 @@
-import math
 import os
-import random
 
 configuration = {
     'chenParams': {
@@ -816,8 +814,6 @@ class Standard:
 
 class BestConfig:
 
-
-
     @staticmethod
     def rmlpClosed():
         configuration['embedding'].update({
@@ -1013,8 +1009,6 @@ class BestConfig:
         configuration['embedding']['lemma'] = True
         configuration['sampling']['importantSentences'] = True
         configuration['sampling']['overSampling'] = True
-
-
 
     # @staticmethod
     # def mlpFtb():
@@ -1646,5 +1640,3 @@ class LinearConf:
             'distanceS0b0': True
         }
         configuration['features'].update(conf)
-
-

@@ -1,5 +1,4 @@
 import gensim
-import numpy as np
 
 from config import configuration
 
@@ -8,23 +7,12 @@ empty = configuration['constants']['empty']
 number = configuration['constants']['number']
 
 
-def initialisePOS(corpus, indices):
-    embeddings, idx = dict(), 0
-    traindEmb = trainPosEmbWithWordToVec(corpus)
-    for elem in indices:
-        if elem.lower() in traindEmb.wv.vocab:
-            embeddings[elem.lower()] = traindEmb.wv[elem]
-        else:
-            embeddings[elem.lower()] = getRandomVector(configuration['mlp']['posEmb'])
-    # for elem in traindEmb.wv.vocab:
-    #     if elem.lower() in indices and indices[elem] > 1:
-    #         embeddings[elem.lower()] = traindEmb.wv[elem]
-    embeddings[unk] = getRandomVector(configuration['mlp']['posEmb'])
-    embeddings[empty] = getRandomVector(configuration['mlp']['posEmb'])
-    return embeddings
-
-
 def trainPosEmbWithWordToVec(corpus):
+    """
+    Returns a Word2Vec representing POSs
+    :param corpus:
+    :return:
+    """
     initConf = configuration['initialisation']
     normailsedSents = []
     for sent in corpus.trainingSents + corpus.testingSents:
@@ -38,6 +26,12 @@ def trainPosEmbWithWordToVec(corpus):
 
 
 def getFreqDic(corpus, posTag=False):
+    """
+    return a dictionary of tokens (lemma, word, POS) with theirs frequencies in a given corpus
+    :param corpus:
+    :param posTag:
+    :return:
+    """
     freqDic = dict()
     for sent in corpus.trainingSents:
         for token in sent.tokens:
@@ -47,7 +41,3 @@ def getFreqDic(corpus, posTag=False):
             else:
                 freqDic[key] += 1
     return freqDic
-
-
-def getRandomVector(length):
-    return np.asarray([float(val) for val in np.random.uniform(low=-0.01, high=0.01, size=int(length))])

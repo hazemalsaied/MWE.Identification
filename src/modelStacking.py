@@ -8,16 +8,15 @@ from parser import parse
 from reports import STDOutTools
 
 
-def identifyWithLinearInMlp(lang, tuning=False):
+def identifyWithLinearInMlp(lang):
     """
     A function for training and evaluating MLP model, feed by the predictions of a SVM model (trained with jackkniffing)
     :param lang:
-    :param tuning:
     :return:
     """
     linearModels, linearVecs = jackknifing(lang, True)
     configuration['xp']['linear'] = False
-    modifyConf(linear=False, tuning=tuning)
+    modifyConf(linear=False)
     corpus = Corpus(lang)
     oracle.parse(corpus)
     startTime = datetime.datetime.now()
@@ -36,7 +35,6 @@ def modifyConf(linear=False):
     """
     a fucntion for renversing the configurations and adapting them for training a SVM or a MLP model
     :param linear:
-    :param tuning:
     :return:
     """
     if linear:
@@ -60,15 +58,14 @@ def modifyConf(linear=False):
             configuration['embedding']['pretrained'] = False
 
 
-def identifyWithMlpInLinear(lang, tuning=False):
+def identifyWithMlpInLinear(lang):
     """
     A function for training and evaluating SVM model, feed by the predictions of a MLP model (trained with jackkniffing)
     :param lang:
-    :param tuning:
     :return:
     """
     mlpModels, mlpNormalizers = jackknifing(lang, False)
-    modifyConf(linear=True, tuning=tuning)
+    modifyConf(linear=True)
     corpus = Corpus(lang)
     oracle.parse(corpus)
     startTime = datetime.datetime.now()
@@ -93,7 +90,7 @@ def jackknifing(lang, linear=True):
     sys.stdout.write('Jacknfing:' + doubleSep)
     configuration['others']['verbose'] = False
     configuration['xp']['linear'] = linear
-    modifyConf(linear=linear, tuning=False)
+    modifyConf(linear=linear)
     models, normalizers = dict(), dict()
     for i in range(5):
         models[i], normalizers[i] = jackknifingAFold(lang, i, linear=linear)

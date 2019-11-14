@@ -10,7 +10,7 @@ from keras.utils import to_categorical
 from corpus import getTokens
 from modelMLP import attachTokens, cleanTokenVocab
 from reports import seperator, doubleSep, tabs
-from wordEmbLoader import unk, number, empty
+from vocabTools import unk, number, empty
 from config import configuration
 enableCategorization = False
 

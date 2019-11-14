@@ -9,8 +9,8 @@ from keras.utils import to_categorical
 from keras.backend import gather
 from corpus import getTokens
 from reports import *
-from wordEmbLoader import empty
-from wordEmbLoader import unk, number
+from vocabTools import empty
+from vocabTools import unk, number
 
 tokenNum = 100
 vocabSize = 1000

@@ -6,7 +6,7 @@ from numpy import zeros
 from config import configuration
 
 
-def getEmbMatrix(lang, vocab, dimension=300,inverseVocab=False):
+def getEmbMatrix(lang, vocab, dimension=300, inverseVocab=False):
     """
     create a pretrained embedding matrix by loading the pretrained embeddings of simple words
     of the vocabulary that exist in FastText, initializing random embeddings for new words,
@@ -23,7 +23,7 @@ def getEmbMatrix(lang, vocab, dimension=300,inverseVocab=False):
     if inverseVocab:
         newVocabDic = dict()
 
-        for k,v in vocab.items():
+        for k, v in vocab.items():
             newVocabDic[v] = k
         vocab = newVocabDic
     for i in idxs:
@@ -34,8 +34,8 @@ def getEmbMatrix(lang, vocab, dimension=300,inverseVocab=False):
     for i in idxs:
         newWord = False
         if '_' in vocab[i]:
-            words= vocab[i].split('_')
-            avVec =  np.zeros((1, 300))
+            words = vocab[i].split('_')
+            avVec = np.zeros((1, 300))
             for w in words:
                 if w in wordEmbDic:
                     avVec += np.asarray(wordEmbDic[w], dtype=float)
@@ -50,8 +50,6 @@ def getEmbMatrix(lang, vocab, dimension=300,inverseVocab=False):
         if '_' not in vocab[i] or newWord:
             embeddingMatrix[i] = np.random.uniform(low=-.5, high=.5, size=(1, dimension))
 
-
-
     # embeddingMatrix[-1] = np.random.rand(1, configuration['mlp']['tokenEmb'])
     # embeddingMatrix[-2] = np.random.rand(1, configuration['mlp']['tokenEmb'])
     # embeddingMatrix[-3] = np.random.rand(1, configuration['mlp']['tokenEmb'])
@@ -64,8 +62,12 @@ def getEmbMatrix(lang, vocab, dimension=300,inverseVocab=False):
     return vocabIdx, embeddingMatrix
 
 
-
 def getCorpusTokens(lang):
+    """
+    Returns a set of lexical form and lemma of corpus tokens
+    :param lang:
+    :return:
+    """
     tokenDic = set()
     from corpus import Corpus
     corpus = Corpus(lang)
@@ -77,6 +79,14 @@ def getCorpusTokens(lang):
 
 
 def createLightEmbs(fbFolder, filePath, lang):
+    """
+    A function that produce a light version of pretrained dictionary
+    by ignoring the keys that don't belong to training corpus
+    :param fbFolder:
+    :param filePath:
+    :param lang:
+    :return:
+    """
     lightEmbstr = ''
     tokenDic = getCorpusTokens(lang)
     with open(os.path.join(fbFolder, filePath), 'r') as f:
@@ -112,7 +122,7 @@ if __name__ == '__main__':
     # from corpus import *
     from xpTools import setXPMode, setDataSet, setTrainAndTest, Dataset, XpMode, Evaluation
 
-    folder = os.path.join(configuration['path']['projectPath'] , '/ressources/FacebookEmbs')
+    folder = os.path.join(configuration['path']['projectPath'], '/ressources/FacebookEmbs')
     setXPMode(XpMode.linear)
     setTrainAndTest(Evaluation.corpus)
     setDataSet(Dataset.sharedtask2)

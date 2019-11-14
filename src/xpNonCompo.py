@@ -2,7 +2,9 @@
 from config import TrendConfig, BestConfig, LinearConf
 from xpTools import *
 
-
+"""
+Scrip used for running tuning and evaluation 
+"""
 def debug():
     configuration['embedding'].update({
         'manual': True,
@@ -520,36 +522,6 @@ if __name__ == '__main__':
     reload(sys)
     sys.setdefaultencoding('utf8')
 
-    # configuration['tmp']['shuffleOrRedistribute'] = False
-    #
-    # configuration['tmp']['createDepGraphs'] = True
-    # xp(['RO'], Dataset.sharedtask2, None, None)
-
-    # evaluatePOSIden(division=Evaluation.trainVsDev)
-    # evaluatePOSIden(division=Evaluation.corpus)
-    # evaluateMLPOpen()
-
-    # evaluateFTBAndDimSumInLinear()
-
-    #
-    # configuration['tmp']['trainDepParser'] = True
-    # configuration['tmp']['createDepGraphs'] = True
-    # configuration['others']['analyzePerformance'] = False
-    # xp(allSharedtask2Lang, Dataset.sharedtask2, None, None)
-    # xp(['SL'], Dataset.sharedtask2, None, Evaluation.trainVsDev)
-    # configuration['others']['analyzePerformance'] = False
-    # evaluateFTB()
-    # evaluateDiMSUM()
-    # import rsg
-    #
-    # configuration['tmp']['useCpu'] = False
-    # configuration['others']['debugTrainNum'] = 100
-    # # configuration['tmp']['useKerasKiper'] = True
-    # configuration['tmp']['minimizedKiper'] = True
-    # rsg.runRSGSpontaneously(['BG'], Dataset.sharedtask2,
-    #                         XpMode.kiperwasser, None, #Evaluation.fixedSize,
-    #                         dontParse=False,
-    #                         xpNumByThread=200)
     configuration['tmp']['createDepGraphs'] = False
     configuration['tmp']['trainTaggerAndIdentifier'] = True
     TrendConfig.mtJoint()

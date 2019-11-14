@@ -10,16 +10,6 @@ mweKey, mwtKey, partSeenKey, seenKey, barelySeenKey = 'mwe', '0.3 mwt', '2.1 See
 interleavingKey, embeddedKey, newKey, freqSeenKey = '0.1 Interleaving', '0.2 Embedded', \
                                                     '1.1 New', '2.3 Seen : frequently'
 
-def analyzeST1Corpus(langs, xpMode, dataset, division, testFileName):
-    for l in langs:
-        finalTestFileName = testFileName + l + '.cupt'
-        setXPMode(xpMode)
-        corpus = readIdentifiedCorpus(l, None, division, finalTestFileName)
-        evaluate(corpus.testingSents)
-        # analyzePerformance(corpus)
-        # catAnalysis = getCatAnalysis(corpus)
-        # analysis = getErrorAnalysis(corpus)
-        # report(analysis, catAnalysis, l)
 
 def analyzeCorpus(langs, xpMode, dataset, division, testFileName):
     for l in langs:
@@ -404,7 +394,7 @@ def renameFolders():
                 os.rename(os.path.join(folder, filename), os.path.join(folder, filename[3:]))
 
 
-def getMecNamers(division, tokenBased=False, ):
+def getMcNamers(division, tokenBased=False, ):
     divMaj = 'FixedSize' if division == Evaluation.fixedSize else 'Corpus'
     divMin = 'fixedsize' if division == Evaluation.fixedSize else 'corpus'
     outPutFolder = '/Users/halsaied/PycharmProjects/MWE.Identification/Results/Evaluation/Data/'
@@ -448,7 +438,7 @@ if __name__ == '__main__':
 
     analyzeCorpus(['FR'], XpMode.linear, Dataset.sharedtask2, Evaluation.trainVsDev, svmTestFileName)
 
-    # getMecNamers(Evaluation.corpus)
+    # getMcNamers(Evaluation.corpus)
     # errorAnalysis('FR', XpMode.linear, '../Results/ST2/MLP/FR.txt')
     # analyzeCorpus('FR', XpMode.linear, '../Results/ST2/MLP/FR.txt')
     # csvFile = ''

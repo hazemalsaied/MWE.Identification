@@ -43,6 +43,11 @@ class Transition(object):
         pass
 
     def getLegalTransDic(self, categorisation=False):
+        """
+        returns a list of legal transitions, that can be applied on the current configuration
+        :param categorisation:
+        :return:
+        """
         config = self.configuration
         if config and config.legalTrans:
             return config.legalTrans
@@ -106,11 +111,19 @@ class Transition(object):
         return transitions
 
     def isTerminal(self):
+        """
+        determines wheteher the transition (its configuration) is terminal or not
+        :return:
+        """
         if self.configuration.stack or self.configuration.buffer:
             return False
         return True
 
     def isImportantTrans(self):
+        """
+        Determine whether the transition is possibly involved in the process of identifiening a MWE
+        :return:
+        """
         if self.next:
             if self.next.type == TransitionType.SHIFT and self.configuration.stack:
                 return True
@@ -136,6 +149,10 @@ class Transition(object):
         return False
 
     def isMarkOrMerge(self):
+        """
+        determine whethter it's a mark or a merge or not
+        :return:
+        """
         if self is not None and self.type is not None and self.type.value is not None and self.type.value >= 2:
             return True
         return False
@@ -162,6 +179,10 @@ class Shift(Transition):
         super(Shift, self).__init__(config=newConfig, previous=parent, sent=sent, isClassified=isClassified)
 
     def isLegal(self):
+        """
+        Determine whether the shift transition is applicable on the current configuration
+        :return:
+        """
         if self.configuration.buffer:
             return True
         return False
@@ -189,6 +210,10 @@ class Reduce(Transition):
         super(Reduce, self).__init__(config=newConfig, previous=parent, sent=sent, isClassified=isClassified)
 
     def isLegal(self):
+        """
+        Determine whether the Reduce transition is applicable on the current configuration
+        :return:
+        """
         if self.configuration.stack:
             return True
         return False
@@ -210,6 +235,10 @@ class Merge(Transition):
         super(Merge, self).__init__(config=newConfig, previous=parent, sent=sent, isClassified=isClassified)
 
     def isLegal(self):
+        """
+        Determine whether the Merge transition is applicable on the current configuration
+        :return:
+        """
         if self.configuration.stack and len(self.configuration.stack) > 1:
             return True
         return False
@@ -220,6 +249,15 @@ class MarkAs(Transition):
         super(MarkAs, self).__init__(type, config, previous, next, isInitial, sent)
 
     def apply(self, parent, sent, parse=False, isClassified=False, secondParse=False):
+        """
+        modify the current configuration, by applying the transition
+        :param parent:
+        :param sent:
+        :param parse:
+        :param isClassified:
+        :param secondParse: used with complementary training (SVM + MLP)
+        :return:
+        """
         if configuration['others']['minimal']:
             self.applyMinimal(parent, sent, parse, isClassified, secondParse)
         else:
@@ -233,6 +271,7 @@ class MarkAs(Transition):
                 vMWEIdx = len(sent.identifiedVMWEs) + 1
                 vMWE = VMWE(vMWEIdx, tokens=vMWETokens, type=getStrFromTransType(self.type))
                 if secondParse:
+                    # used with complementary training (SVM + MLP)
                     poss = [v.getTokenPositionString() for v in sent.identifiedVMWEs]
                     if vMWE.getTokenPositionString() not in poss:
                         sent.identifiedVMWEs.append(vMWE)
@@ -245,12 +284,6 @@ class MarkAs(Transition):
                 else:
                     vMWE.predictingModel = 'linear' if configuration['xp']['linear'] else 'mlp'
                     sent.identifiedVMWEs.append(vMWE)
-            # else:
-            #     vmwe = getVMWEByTokens(vMWETokens)
-            #     if vmwe:
-            #         vmwe.parsedByOracle = True
-            #     else:
-            #         raise
             newTokens.append(vMWETokens)
             reduced = parent.configuration.reduced
             newConfig = Configuration(newStack, newBuffer, newTokens, sent, self, reduced=reduced)
@@ -267,6 +300,7 @@ class MarkAs(Transition):
             vMWEIdx = len(sent.identifiedVMWEs) + 1
             vMWE = VMWE(vMWEIdx, tokens=vMWETokens, type=getStrFromTransType(self.type))
             if secondParse:
+                # used with complementary training (SVM + MLP)
                 poss = [v.getTokenPositionString() for v in sent.identifiedVMWEs]
                 if vMWE.getTokenPositionString() not in poss:
                     sent.identifiedVMWEs.append(vMWE)
@@ -291,6 +325,10 @@ class MarkAs(Transition):
         super(MarkAs, self).__init__(config=newConfig, previous=parent, sent=sent, isClassified=isClassified)
 
     def isLegal(self):
+        """
+        Determine whether the MarkAs transition is applicable on the current configuration
+        :return:
+        """
         if self.configuration.stack:
             return True
         return False
@@ -310,6 +348,11 @@ class Configuration:
         self.reduced = reduced
 
     def isTerminal(self):
+        """
+        Determine whether the configuration is terminal or not
+        :return:
+        """
+
         if not self.buffer and not self.stack:
             return True
         return False
@@ -326,6 +369,12 @@ class Configuration:
 
 
 def initialize(transType, sent):
+    """
+    Returns an instance of the given transition type
+    :param transType:
+    :param sent:
+    :return:
+    """
     if isinstance(transType, int):
         transType = getType(transType)
     if transType == TransitionType.SHIFT:
@@ -340,6 +389,11 @@ def initialize(transType, sent):
 
 
 def getType(idx):
+    """
+    Returns the transition type using its index (value)
+    :param idx:
+    :return:
+    """
     for type in TransitionType:
         if type.value == idx:
             return type
@@ -347,6 +401,11 @@ def getType(idx):
 
 
 def getMWTTypeFromStr(type):
+    """
+    Returns the TransitionTypz given the acronym of MWE category
+    :param type:
+    :return:
+    """
     if type:
         if type.lower() == 'vpc':
             return TransitionType.MARK_AS_VPC
@@ -360,6 +419,11 @@ def getMWTTypeFromStr(type):
 
 
 def getStrFromTransType(transType):
+    """
+    Return the category of a MWE given its Mark transition
+    :param transType:
+    :return:
+    """
     if transType is TransitionType.MARK_AS_VPC:
         return 'vpc'
     if transType is TransitionType.MARK_AS_IREFLV:
@@ -372,6 +436,11 @@ def getStrFromTransType(transType):
 
 
 def printStack(elemlist):
+    """
+    Produce a string representing the stack
+    :param elemlist:
+    :return:
+    """
     stackStr = ''
     elemlistStrs = getStackElems(elemlist)
     for r in elemlistStrs:
@@ -385,6 +454,11 @@ def printStack(elemlist):
 
 
 def getStackElems(elemlist):
+    """
+    return a list representing the textual elements of the stack
+    :param elemlist:
+    :return:
+    """
     elemlistStrs = ['[']
     for elem in elemlist:
         if str(elem.__class__).endswith('corpus.Token'):

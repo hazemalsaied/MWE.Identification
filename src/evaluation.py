@@ -8,6 +8,13 @@ from config import configuration
 
 
 def evaluate(sents, categorization=False, loggingg=True):
+    """
+    Returns the scores F, P, R of identified or categorized MWEs
+    :param sents:
+    :param categorization:
+    :param loggingg:
+    :return:
+    """
     tp, p, t, tpCat, pCat, tCat = getStatistics(sents)
     scores = calculateScores(tp, p, t, 'Identification', loggingg=loggingg)
     if categorization:
@@ -31,6 +38,11 @@ def evaluate(sents, categorization=False, loggingg=True):
 
 
 def getDiMSUMStatistics(sents):
+    """
+    Returns the scores used for calculating F, P and R
+    :param sents:
+    :return:
+    """
     ig, gold, identified = 0, 0, 0
     for sent in sents:
         gList, iList = [], []
@@ -68,11 +80,15 @@ def getDiMSUMStatistics(sents):
 
 
 def analyzePerformance(corpus):
+    """
+    Produce an exhaustive report of identification on the different classes of MWE occurrences
+    :param corpus:
+    :return:
+    """
     if not configuration['others']['analyzePerformance']:
         return
-    # reportTokenFrequency(corpus.testingSents, corpus.lemmaText)
     for c in ['vid', 'lvc.full', 'lvc.cause', 'irv', 'vpc.full', 'vpc.semi', 'iav', 'mvc', 'lc']:
-       reportCategory(corpus.testingSents, c)
+        reportCategory(corpus.testingSents, c)
 
     reportSeen(corpus.testingSents, corpus.mweDictionary)
     reportSeen(corpus.testingSents, corpus.mweDictionary, frequently=True)
@@ -96,28 +112,16 @@ def analyzePerformance(corpus):
     reportNonIdentified(corpus.testingSents, corpus.mweDictionary, corpus.mweTokenDictionary, corpus.lemmaText)
 
 
-def reportTokenFrequency(sents, corpusLemmaText):
-    wordcount = Counter(corpusLemmaText.split())
-    tokenVisScoreMax, tokenVisScoreMin, tokenVisScores = 0, 0, []
-    for s in sents:
-        for w in s.vMWEs:
-            tFrequencies = []
-            for t in w.tokens:
-                if t.getLemma() in wordcount:
-                    tFrequencies.append(wordcount[t.getLemma()])
-                else:
-                    tFrequencies.append(0)
-            w.tokenVisScore = round(reports.getMeanAbsoluteDeviation(tFrequencies), 1)
-            tokenVisScores.append(w.tokenVisScore)
-            if w.tokenVisScore > tokenVisScoreMax:
-                tokenVisScoreMax = w.tokenVisScore
-            if w.tokenVisScore < tokenVisScoreMin:
-                tokenVisScoreMin = w.tokenVisScore
-    # plt.plot(range(len(tokenVisScores)), tokenVisScores, 'ro')
-    # plt.show()
-
-
 def reportMisIdentified(sents, mweDic, mweTokenDic, corpusLemmaText, threshold=100):
+    """
+    Returns a report calssifing the misidentified errors into multiple classes
+    :param sents:
+    :param mweDic:
+    :param mweTokenDic:
+    :param corpusLemmaText:
+    :param threshold:
+    :return:
+    """
     wordcount = Counter(corpusLemmaText.split())
     misIdentifiedNum, allIdentifiedNum = 0, 0
     for s in sents:
@@ -200,11 +204,17 @@ def reportMisIdentified(sents, mweDic, mweTokenDic, corpusLemmaText, threshold=1
 
 
 def reportCategory(sents, catName):
-    g, i, catG,  catIG = 0, 0, 0, 0
+    """
+    Reports multiple scores concerning the linguistic categories of identified MWEs
+    :param sents:
+    :param catName:
+    :return:
+    """
+    g, i, catG, catIG = 0, 0, 0, 0
     for s in sents:
         mweIdxs = set([mwe.getTokenPositionString() for mwe in s.identifiedVMWEs])
         g += len(s.vMWEs)
-        #i += len(s.identifiedVMWEs)
+        # i += len(s.identifiedVMWEs)
         for w in s.vMWEs:
             if w.getTokenPositionString() in mweIdxs:
                 i += 1
@@ -212,18 +222,27 @@ def reportCategory(sents, catName):
                 catG += 1
                 if w.getTokenPositionString() in mweIdxs:
                     catIG += 1
-    gProportionStr= '{0} : {1}\n'.format(catName.upper(),
-                    round(float(catG) * 100 / g, 1) if g else '-')
+    gProportionStr = '{0} : {1}\n'.format(catName.upper(),
+                                          round(float(catG) * 100 / g, 1) if g else '-')
     iProportionStr = '{0}: {1}\n'.format(catName.upper(),
-                                        round(float(catIG) * 100 / i, 1) if i else '-')
+                                         round(float(catIG) * 100 / i, 1) if i else '-')
     presicionStr = '{0}: {1}\n'.format(catName.upper(),
-                    round(float(catIG) * 100 / catG, 1) if catG else '-')
+                                       round(float(catIG) * 100 / catG, 1) if catG else '-')
     sys.stdout.write(reports.tabs + gProportionStr)
     sys.stdout.write(reports.tabs + iProportionStr)
     sys.stdout.write(reports.tabs + presicionStr)
 
 
 def reportNonIdentified(sents, mweDic, mweTokenDic, corpusLemmaText, threshold=100):
+    """
+    Returns a report calssifing the non identified errors into multiple classes
+    :param sents:
+    :param mweDic:
+    :param mweTokenDic:
+    :param corpusLemmaText:
+    :param threshold:
+    :return:
+    """
     wordcount = Counter(corpusLemmaText.split())
     nonIdentifiedNum, allGold = 0, 0
     for s in sents:
@@ -310,6 +329,13 @@ def reportNonIdentified(sents, mweDic, mweTokenDic, corpusLemmaText, threshold=1
 #     getProportion(sents, 'PartiallySeen')
 
 def reportLength(sents, minLength=1, maxLength=1):
+    """
+    Returns a report of the performance according to the length of the MWEs
+    :param sents:
+    :param minLength:
+    :param maxLength:
+    :return:
+    """
     for s in sents:
         for w in s.vMWEs + s.identifiedVMWEs:
             w.toDelete = False if maxLength >= len(w.tokens) >= minLength else True
@@ -323,6 +349,11 @@ def reportLength(sents, minLength=1, maxLength=1):
 
 
 def reportMultiTokens(sents):
+    """
+    Returns the scores of the performance of multi-token MWEs
+    :param sents:
+    :return:
+    """
     for s in sents:
         for w in s.vMWEs + s.identifiedVMWEs:
             w.toDelete = False if len(w.tokens) > 1 else True
@@ -330,6 +361,13 @@ def reportMultiTokens(sents):
 
 
 def reportIdentic(sents, mweOccurrenceDic, mweDic):
+    """
+    Returns the scores of the performance of MWEs seen in train and identically reproduced in test
+    :param sents:
+    :param mweOccurrenceDic:
+    :param mweDic:
+    :return:
+    """
     for s in sents:
         for w in s.vMWEs + s.identifiedVMWEs:
             w.toDelete = False if isSeen(w, mweDic) and w.getContext(s) in mweOccurrenceDic.keys() else True
@@ -337,6 +375,13 @@ def reportIdentic(sents, mweOccurrenceDic, mweDic):
 
 
 def reportVariant(sents, mweOccurrenceDic, mweDic):
+    """
+    Returns the scores of the performance of MWEs seen in train and reproduced in test in different way or context
+    :param sents:
+    :param mweOccurrenceDic:
+    :param mweDic:
+    :return:
+    """
     for s in sents:
         for w in s.vMWEs + s.identifiedVMWEs:
             w.toDelete = False if isSeen(w, mweDic) and w.getContext(s) not in mweOccurrenceDic.keys() else True
@@ -344,6 +389,11 @@ def reportVariant(sents, mweOccurrenceDic, mweDic):
 
 
 def reportEmbedded(sents):
+    """
+    Returns the scores of the performance on embedded MWEs
+    :param sents:
+    :return:
+    """
     for s in sents:
         for w in s.vMWEs + s.identifiedVMWEs:
             w.toDelete = False if w.isEmbedded else True
@@ -351,6 +401,14 @@ def reportEmbedded(sents):
 
 
 def reportSeen(sents, mweDic, frequently=False, barely=False):
+    """
+    Returns the scores of the performance of MWEs seen in train
+    :param sents:
+    :param mweDic:
+    :param frequently:
+    :param barely:
+    :return:
+    """
     for s in sents:
         for w in s.vMWEs + s.identifiedVMWEs:
             w.toDelete = False if isSeen(w, mweDic, frequently=frequently, barely=barely) else True
@@ -361,6 +419,13 @@ def reportSeen(sents, mweDic, frequently=False, barely=False):
 
 
 def reportPartiallySeen(sents, mweDic, mweTokenDic):
+    """
+    Returns the scores of the performance of MWEs partially seen in train
+    :param sents:
+    :param mweDic:
+    :param mweTokenDic:
+    :return:
+    """
     for s in sents:
         for w in s.vMWEs + s.identifiedVMWEs:
             isPartiallySeen = False
@@ -373,6 +438,15 @@ def reportPartiallySeen(sents, mweDic, mweTokenDic):
 
 
 def reportPartiallySeenWithoutNoise(sents, mweDic, mweTokenDic, corpusLemmaText, threshold=100):
+    """
+    Returns the scores of the performance of MWEs partially seen in train (without "stop words")
+    :param sents:
+    :param mweDic:
+    :param mweTokenDic:
+    :param corpusLemmaText:
+    :param threshold:
+    :return:
+    """
     wordcount = Counter(corpusLemmaText.split())
     for s in sents:
         for w in s.vMWEs + s.identifiedVMWEs:
@@ -387,6 +461,12 @@ def reportPartiallySeenWithoutNoise(sents, mweDic, mweTokenDic, corpusLemmaText,
 
 
 def reportNonSeen(sents, mweDic):
+    """
+    Returns the scores of the performance of MWEs non seen in train
+    :param sents:
+    :param mweDic:
+    :return:
+    """
     for s in sents:
         for w in s.vMWEs + s.identifiedVMWEs:
             w.toDelete = True if isSeen(w, mweDic) else False
@@ -445,6 +525,13 @@ def reportContinity(sents):
 
 
 def getScores(sents, label, label2=''):
+    """
+    An auxiliary function used to organize the output
+    :param sents:
+    :param label:
+    :param label2:
+    :return:
+    """
     sys.stdout.write(reports.doubleSep + label + reports.doubleSep)
     manipuleSents(sents, label, label2=label2)
     tp, p, t = getStats(sents)
@@ -453,16 +540,14 @@ def getScores(sents, label, label2=''):
     return scores
 
 
-def getProportion(sents, label):
-    allPredicted, nonDeletedPredicted, = 0, 0
-    for s in sents:
-        allPredicted += len(s.deletedIdentifiedVMWEs) + len(s.identifiedVMWEs)
-        nonDeletedPredicted += len(s.identifiedVMWEs)
-    sys.stdout.write('{0} proportion in Predicted: {1}{2}'.
-                     format(label, round((float(nonDeletedPredicted) / allPredicted) * 100, 1), reports.doubleSep))
-
-
 def manipuleSents(sents, label=None, label2=''):
+    """
+    Prepare the sentences for calculting scores of a given class by deleting MWEs that doesn't belong to the class
+    :param sents:
+    :param label:
+    :param label2:
+    :return:
+    """
     allGold, nonDeletedGold, allPredicted, nonDeletedPredicted, = 0, 0, 0, 0
     for s in sents:
         s.deletedVMWEs = [w for w in s.vMWEs if w.toDelete]
@@ -482,6 +567,11 @@ def manipuleSents(sents, label=None, label2=''):
 
 
 def restoreTestSents(sents):
+    """
+
+    :param sents:
+    :return:
+    """
     for s in sents:
         s.vMWEs += s.deletedVMWEs
         s.deletedVMWEs = []
@@ -492,6 +582,11 @@ def restoreTestSents(sents):
 
 
 def getStats(sents):
+    """
+    Returns the MWE-based scores of correctly identified, identified, gold,
+    :param sents:
+    :return:
+    """
     tp, p, t = 0, 0, 0
     for sent in sents:
         p += len(sent.vMWEs)
@@ -507,6 +602,11 @@ def getStats(sents):
 
 
 def getStatistics(sents):
+    """
+    Returns the MWE-based scores of correctly identified, identified, gold, correctly categorized, categorized and gold
+    :param sents:
+    :return:
+    """
     tp, p, t, tpCat, pCat, tCat = 0, 0, 0, 0, 0, 0
     for sent in sents:
         p += len(sent.vMWEs)
@@ -530,6 +630,11 @@ def getStatistics(sents):
 
 
 def getTokenBasedStatistics(sents):
+    """
+    Returns the MWE-based scores of correctly identified, identified and gold
+    :param sents:
+    :return:
+    """
     ig, g, i, tpCat, pCat, tCat = 0, 0, 0, 0, 0, 0
     for sent in sents:
         glabels = ['-'] * len(sent.tokens)
@@ -561,6 +666,12 @@ def getTokenBasedStatistics(sents):
 
 
 def getCategoryStatistics(sents, cat):
+    """
+    Returns the MWE-based scores of correctly categorized, categorized and gold
+    :param sents:
+    :param cat:
+    :return:
+    """
     tp, p, t = 0, 0, 0
     cat = cat.lower()
     for sent in sents:
@@ -582,29 +693,11 @@ def getCategoryStatistics(sents, cat):
     return tp, p, t
 
 
-def getMWTStatistics(corpus):
-    tp, p, t, tpCat, pCat, tCat = 0, 0, 0, 0, 0, 0
-
-    for sent in corpus.testingSents:
-        for vmw in sent.vMWEs:
-            if len(vmw.tokens) == 1:
-                p += 1
-        for vmw in sent.identifiedVMWEs:
-            if len(vmw.tokens) == 1:
-                t += 1
-        processedVmwe = []
-        for m in sent.identifiedVMWEs:
-            for vMWE in sent.vMWEs:
-                if len(m.tokens) == 1 and m == vMWE and vMWE not in processedVmwe:
-                    processedVmwe.append(vMWE)
-                    tp += 1
-                    if m.type.lower() == vMWE.type.lower():
-                        tpCat += 1
-    return tp, p, t, tpCat, p, t
 
 
 def calculateScores(ig, g, i, title, loggingg=True):
     """
+    Calculate F, P and R
     :param ig: golden identified
     :param g: golden
     :param i: identified

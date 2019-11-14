@@ -10,6 +10,13 @@ from config import configuration
 
 
 def overSample(labels, data, linearInMlp=False):
+    """
+    A function used for applying random oversampling
+    :param labels:
+    :param data:
+    :param linearInMlp: used for oversampling stacking models (MLP fed with SVM predictions)
+    :return:
+    """
     tokenData, posData, linearPred = [], [], []
     elementNumber = 3 + configuration['embedding']['useB1'] + configuration['embedding']['useB-1']
     if not configuration['sampling']['overSampling']:
@@ -35,7 +42,15 @@ def overSample(labels, data, linearInMlp=False):
     return np.asarray(labels), [np.asarray(tokenData), np.asarray(posData)]
 
 
-def overSampleImporTrans(data, labels, corpus, vocabulary):
+def focusedSampling(data, labels, corpus, vocabulary):
+    """
+    used  for applying the focused sampling of rarely seen MWEs
+    :param data:
+    :param labels:
+    :param corpus:
+    :param vocabulary:
+    :return:
+    """
     newData, newLabels = [], []
     traitedMWEs = set()
     oversamplingTaux = configuration['sampling']['mweRepeition']
@@ -57,7 +72,6 @@ def overSampleImporTrans(data, labels, corpus, vocabulary):
         if configuration['others']['verbose']:
             sys.stdout.write(reports.tabs + 'data size before focused sampling = {0}\n'.format(len(labels)))
         labels = np.concatenate((labels, newLabels))
-        print len(data[0]), len(newData[0])
         data = np.concatenate((data, newData))
         if configuration['others']['verbose']:
             sys.stdout.write(reports.tabs + 'data size after focused sampling = {0}\n'.format(len(labels)))
@@ -65,6 +79,11 @@ def overSampleImporTrans(data, labels, corpus, vocabulary):
 
 
 def getClassWeights(labels):
+    """
+    Estimate the desired class weights for unbalanced datasets
+    :param labels:
+    :return:
+    """
     if not configuration['sampling']['sampleWeight']:
         return {}
     classes = np.unique(labels)
@@ -82,6 +101,14 @@ def getClassWeights(labels):
 
 
 def shuffle(lists):
+    """
+    shuffle a list of lists (equal in length)
+    :param lists:
+    :return:
+    """
+    for l in lists:
+        if len(l) != len(lists[0]):
+            raise Exception('Suffling can not proceed on lists with different lengths')
     newLists = []
     for i in range(len(lists)):
         newLists.append([])
@@ -94,6 +121,12 @@ def shuffle(lists):
 
 
 def getSampleWeightArray(labels, classWeightDic):
+    """
+    produce a list of coefficients corresponding to the desired weigh of given labels
+    :param labels:
+    :param classWeightDic:
+    :return:
+    """
     if not configuration['sampling']['sampleWeight']:
         return None
     sampleWeights = []
@@ -103,6 +136,12 @@ def getSampleWeightArray(labels, classWeightDic):
 
 
 def getMWEDicAsIdxs(corpus, vocabulary):
+    """
+    give a dictionary: { index of the MWE in the token vocabulary: its lemmatized form}
+    :param corpus:
+    :param vocabulary:
+    :return:
+    """
     result = dict()
     for mwe in corpus.mweDictionary:
         idx = getIdxsStrForMWE(mwe, vocabulary)
@@ -112,6 +151,12 @@ def getMWEDicAsIdxs(corpus, vocabulary):
 
 
 def getIdxsStrForMWE(mwe, vocabulary):
+    """
+    returns the index of the MWE in the token vocabulary
+    :param mwe:
+    :param vocabulary:
+    :return:
+    """
     tokenLemmas = mwe.replace(' ', '_')
     if tokenLemmas not in vocabulary.tokenIndices:
         return None
@@ -119,6 +164,11 @@ def getIdxsStrForMWE(mwe, vocabulary):
 
 
 def shuffleArrayInParallel(arrays):
+    """
+    shuffle multiple array in the same way
+    :param arrays:
+    :return:
+    """
     rangee = range(len(arrays[0]))
     random.shuffle(rangee)
 
@@ -132,14 +182,3 @@ def shuffleArrayInParallel(arrays):
     for i in range(len(arrays)):
         newResult.append(np.asarray(results[i]))
     return newResult
-
-
-def test():
-    a = [1, 2, 3, 4, 5, 6]
-    b = [[1, 2, 3, 4, 5, 6], [1, 2, 3, 4, 5, 6]]
-    c = [np.asarray([1, 2, 3, 4, 5, 6]), np.asarray([1, 2, 3, 4, 5, 6]), np.asarray([1, 2, 3, 4, 5, 6])]
-    sys.stdout.write(str(shuffleArrayInParallel(c)) + '\n')
-
-
-if __name__ == '__main__':
-    test()

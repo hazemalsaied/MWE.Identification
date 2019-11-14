@@ -15,8 +15,8 @@ from nltk.parse import DependencyEvaluator
 import facebookEmb
 import reports
 from reports import *
-from wordEmbLoader import empty
-from wordEmbLoader import unk
+from vocabTools import empty
+from vocabTools import unk
 from scipy import sparse
 from numpy import array
 params = configuration['chenParams']

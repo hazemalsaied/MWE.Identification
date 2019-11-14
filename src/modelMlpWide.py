@@ -13,8 +13,8 @@ import reports
 import sampling
 from corpus import getTokens
 from reports import *
-from wordEmbLoader import empty
-from wordEmbLoader import unk, number
+from vocabTools import empty
+from vocabTools import unk, number
 
 enableCategorization = False
 

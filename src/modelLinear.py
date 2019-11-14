@@ -13,6 +13,12 @@ mweDictionary = {}
 
 
 def train(corpus, mlpModels=None):
+    """
+    Train a linear model and produce a vectorizer of features
+    :param corpus:
+    :param mlpModels:
+    :return:
+    """
     model = getModel()
     if configuration['others']['verbose']:
         sys.stdout.write(tabs + 'Linear classifier:' + doubleSep + tabs + str(model))
@@ -42,9 +48,15 @@ def getModel():
 
 
 def extract(corpus, mlpModels=None):
+    """
+    Extracts active features of training corpus configurations
+    :param corpus:
+    :param mlpModels:
+    :return:
+    """
     labels, featureDicss = [], []
-    global mweDictionary, mwtDictionary
-    mweDictionary, mwtDictionary = corpus.mweDictionary, corpus.mwtDictionary
+    global mweDictionary, mwtDictionary, mweTokenDictionary
+    mweDictionary, mwtDictionary, mweTokenDictionary = corpus.mweDictionary, corpus.mwtDictionary, corpus.mweTokenDictionary
     for sent in corpus.trainingSents:
         l, f = extractSent(sent, corpus.trainingSents, mlpModels=mlpModels)
         labels.extend(l)
@@ -53,6 +65,14 @@ def extract(corpus, mlpModels=None):
 
 
 def extractSent(sent, trainingSent=None, mlpModels=None, categorisation=False):
+    """
+    Extracts active features of a sentence configurations
+    :param sent:
+    :param trainingSent:
+    :param mlpModels:
+    :param categorisation:
+    :return:
+    """
     transition = sent.initialTransition
     labels, features = [], []
     while transition.next:
@@ -71,6 +91,12 @@ def extractSent(sent, trainingSent=None, mlpModels=None, categorisation=False):
 
 
 def getFeatures(transition, sent):
+    """
+    Extracts active features of a given configurations
+    :param transition:
+    :param sent:
+    :return:
+    """
     featureDictionary = {}
     conf = transition.configuration
     if conf.stack:
@@ -136,7 +162,7 @@ def getFeatures(transition, sent):
             if configuration['features']['reduced'] and conf.reduced:
                 generateBiGram(stackElements[-1], conf.reduced, 'S0Bx', featureDictionary)
         if stackElements and conf.buffer:
-            if configuration['features']['reduced']and conf.reduced:
+            if configuration['features']['reduced'] and conf.reduced:
                 generateBiGram(conf.buffer[0], conf.reduced, 'B0Bx', featureDictionary)
             generateBiGram(stackElements[-1], conf.buffer[0], 'S0B0', featureDictionary)
             if len(stackElements) > 1:
@@ -169,20 +195,53 @@ def getFeatures(transition, sent):
     addTransitionHistory(transition, featureDictionary)
     # Dictionary-based features
     if configuration['features']['dictionary'] and conf.buffer and conf.stack:
-        generateDisconinousFeatures(conf, sent, featureDictionary)
-        enhanceMerge(transition, featureDictionary)
+        generateDicFeatures(transition, featureDictionary)
+        # generateDisconinousFeatures(conf, sent, featureDictionary)
+        # enhanceMerge(transition, featureDictionary)
 
     return featureDictionary
 
 
 def isANumber(t):
+    """
+    Determine wheter a token has a digit
+    :param t:
+    :return:
+    """
     for c in t.text:
         if c.isdigit():
             return True
     return False
 
 
+def generateDicFeatures(transition, transDic):
+    """
+    Extracts active dictionary features of a given configurations
+    :param transition:
+    :param transDic:
+    :return:
+    """
+    config = transition.configuration
+    if config.stack and isinstance(config.stack[-1], Token) and config.stack[-1].lemma in mweTokenDictionary:
+        transDic['S0InMWEtokenLexicon'] = True
+    if config.stack and len(config.stack) > 1 and isinstance(config.stack[-2], Token) and config.stack[
+        -2].lemma in mweTokenDictionary:
+        transDic['S1InMWEtokenLexicon'] = True
+    if config.buffer and len(config.buffer) > 0 and config.buffer[0].lemma in mweTokenDictionary:
+        transDic['B0InMWEtokenLexicon'] = True
+    if config.buffer and len(config.buffer) > 1 and config.buffer[1].lemma in mweTokenDictionary:
+        transDic['B1InMWEtokenLexicon'] = True
+    if config.buffer and len(config.buffer) > 2 and config.buffer[2].lemma in mweTokenDictionary:
+        transDic['B2InMWEtokenLexicon'] = True
+
+
 def enhanceMerge(transition, transDic):
+    """
+    Extracts active hard-coded dictionary features of a given configurations
+    :param transition:
+    :param transDic:
+    :return:
+    """
     if not configuration['features']['dictionary']:
         return
     config = transition.configuration
@@ -201,17 +260,24 @@ def enhanceMerge(transition, transDic):
 
     if len(config.buffer) > 0 and len(config.stack) > 1 and areInLexic(
             [config.stack[-2], config.buffer[0]]) and not areInLexic(
-            [config.stack[-1], config.buffer[0]]):
+        [config.stack[-1], config.buffer[0]]):
         transDic['S1B0InLexicon'] = True
         transDic['S0B0tInLexicon'] = False
         if len(config.buffer) > 1 and areInLexic(
                 [config.stack[-2], config.buffer[1]]) and not areInLexic(
-                [config.stack[-1], config.buffer[1]]):
+            [config.stack[-1], config.buffer[1]]):
             transDic['S1B1InLexicon'] = True
             transDic['S0B1InLexicon'] = False
 
 
 def generateDisconinousFeatures(c, sent, transDic):
+    """
+    Extracts active hard-coded dictionary features of a given configurations
+    :param c:
+    :param sent:
+    :param transDic:
+    :return:
+    """
     tokens = getTokens([c.stack[-1]])
     tokenTxt = getTokenLemmas(tokens)
     for key in mweDictionary.keys():
@@ -228,6 +294,13 @@ def generateDisconinousFeatures(c, sent, transDic):
 
 
 def generateLinguisticFeatures(stackElem, label, featureDictionary):
+    """
+    Extracts active unigram features of a given configurations
+    :param stackElem:
+    :param label:
+    :param featureDictionary:
+    :return:
+    """
     if isinstance(stackElem, list):
         stackElemToken = concatenateTokens(stackElem)[0]
     else:
@@ -250,6 +323,13 @@ def generateLinguisticFeatures(stackElem, label, featureDictionary):
 
 
 def generateSyntaxicFeatures(stack, buffer, dic):
+    """
+    Extracts active suntaxic features of a given configurations
+    :param stack:
+    :param buffer:
+    :param dic:
+    :return:
+    """
     if stack:
         stack0 = stack[-1]
         if not isinstance(stack0, Token):
@@ -280,6 +360,13 @@ def generateSyntaxicFeatures(stack, buffer, dic):
 
 
 def generateAbstractSyntaxicFeatures(stack, buffer, dic):
+    """
+    Extracts active abstract syntaxic features of a given configurations
+    :param stack:
+    :param buffer:
+    :param dic:
+    :return:
+    """
     if stack:
         stack0 = stack[-1]
         if not isinstance(stack0, Token):
@@ -312,6 +399,15 @@ def generateAbstractSyntaxicFeatures(stack, buffer, dic):
 
 
 def generateTriGram(token0, token1, token2, label, transDic):
+    """
+    Extracts active trigram features of a given configurations
+    :param token0:
+    :param token1:
+    :param token2:
+    :param label:
+    :param transDic:
+    :return:
+    """
     tokens = concatenateTokens([token0, token1, token2])
     getFeatureInfo(transDic, label + 'Token', tokens, 'ttt')
     getFeatureInfo(transDic, label + 'Lemma', tokens, 'lll')
@@ -325,6 +421,14 @@ def generateTriGram(token0, token1, token2, label, transDic):
 
 
 def generateBiGram(token0, token1, label, transDic):
+    """
+    Extracts active biigram features of a given configurations
+    :param token0:
+    :param token1:
+    :param label:
+    :param transDic:
+    :return:
+    """
     tokens = concatenateTokens([token0, token1])
     getFeatureInfo(transDic, label + 'Token', tokens, 'tt')
     getFeatureInfo(transDic, label + 'Lemma', tokens, 'll')
@@ -334,6 +438,11 @@ def generateBiGram(token0, token1, label, transDic):
 
 
 def concatenateTokens(elements):
+    """
+
+    :param elements:
+    :return:
+    """
     tokenDic, tokens = {}, []
     for idx in range(len(elements)):
         tokenDic[idx] = Token(-1, '', lemma='', posTag='')
@@ -379,12 +488,23 @@ def getFeatureInfo(dic, label, tokens, features):
 
 
 def areInLexic(tokensList):
+    """
+    Determine whether a set of tokens is in train MWE lexicon
+    :param tokensList:
+    :return:
+    """
     if getTokenLemmas(tokensList) in mweDictionary.keys():
         return True
     return False
 
 
 def addTransitionHistory(transition, transDic):
+    """
+    Extracts active history features of a given configurations
+    :param transition:
+    :param transDic:
+    :return:
+    """
     if configuration['features']['history1']:
         getTransitionHistory(transition, 1, 'TransHistory1', transDic)
     if configuration['features']['history2']:
@@ -394,6 +514,14 @@ def addTransitionHistory(transition, transDic):
 
 
 def getTransitionHistory(transition, length, label, transDic):
+    """
+    Returns the history of transitions of a given configurations
+    :param transition:
+    :param length:
+    :param label:
+    :param transDic:
+    :return:
+    """
     idx, history = 0, ''
     transition = transition.previous
     while transition and idx < length:

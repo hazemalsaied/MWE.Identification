@@ -22,6 +22,21 @@ pilotLangs = ['BG', 'PT', 'TR']
 
 def xp(langs, dataset, xpMode, division, xpNum=1, seeds=[0], title='',
        mlpInLinear=False, linearInMlp=False, complentary=False, outputCupt=True):
+    """
+    Responsable of running the experiment
+    :param langs:
+    :param dataset:
+    :param xpMode:
+    :param division:
+    :param xpNum:
+    :param seeds:
+    :param title:
+    :param mlpInLinear:
+    :param linearInMlp:
+    :param complentary:
+    :param outputCupt:
+    :return:
+    """
     initXp(xpMode, dataset, division, title, outputCupt)
     for lang in langs:
         for s in seeds:
@@ -31,6 +46,16 @@ def xp(langs, dataset, xpMode, division, xpNum=1, seeds=[0], title='',
 
 
 def runXp(lang, mlpInLinear, linearInMlp, complentary, seed, cuptTitle=''):
+    """
+    Responsable of running an experiment one time on a given lang using a given seed
+    :param lang:
+    :param mlpInLinear:
+    :param linearInMlp:
+    :param complentary:
+    :param seed:
+    :param cuptTitle:
+    :return:
+    """
     now = datetime.datetime.now()
     sys.stdout.write('XP Starts: %d/%d (%dh:%d)' % (now.day, now.month, now.hour, now.minute) + doubleSep)
     if mlpInLinear:
@@ -53,12 +78,21 @@ def runXp(lang, mlpInLinear, linearInMlp, complentary, seed, cuptTitle=''):
 
 
 def initXp(xpMode, dataset, division, title, outputCupt):
+    """
+    Initialize the experiment with the selected parameters
+    :param xpMode:
+    :param dataset:
+    :param division:
+    :param title:
+    :param outputCupt:
+    :return:
+    """
     setXPMode(xpMode)
     setDataSet(dataset)
     setTrainAndTest(division)
     debug = True
     for k in configuration['evaluation']:
-        if configuration['evaluation'][k] == True:
+        if configuration['evaluation'][k]:
             debug = False
     configuration['tmp']['outputCupt'] = False if debug else outputCupt
     if xpMode != XpMode.linear:
@@ -68,6 +102,11 @@ def initXp(xpMode, dataset, division, title, outputCupt):
 
 
 def setSeed(s):
+    """
+    Set the seed used for initializing random values
+    :param s:
+    :return:
+    """
     numpy.random.seed(s)
     random.seed(s)
     # torch.manual_seed(s)
@@ -75,6 +114,12 @@ def setSeed(s):
 
 
 def getParameters(xpMode, printTilte=True):
+    """
+    Print the related parameters to the current experiment
+    :param xpMode:
+    :param printTilte:
+    :return:
+    """
     titles, values = [], []
     for k in sorted(configuration['xp'].keys()):
         if configuration['xp'][k] and type(True) == type(configuration['xp'][k]):
@@ -193,6 +238,11 @@ class XpMode(Enum):
 
 
 def setTrainAndTest(v):
+    """
+    Set the used division of dataset
+    :param v:
+    :return:
+    """
     configuration['evaluation'].update({
         'corpus': True if v == Evaluation.corpus else False,
         'fixedSize': True if v == Evaluation.fixedSize else False,
@@ -210,6 +260,11 @@ def setTrainAndTest(v):
 
 
 def setXPMode(v):
+    """
+    Set the used model in the current experiment
+    :param v:
+    :return:
+    """
     configuration['xp'].update({
         'linear': True if v == XpMode.linear else False,
         'compo': True if v == XpMode.compo else False,
@@ -223,7 +278,7 @@ def setXPMode(v):
         'mlpPhrase': True if v == XpMode.mlpPhrase else False,
         'chenManning': True if v == XpMode.chenManning else False,
     })
-    trues, mode = 0, 'NON.COMPO'
+    trues, mode = 0, 'MLP'
     for k in configuration['xp'].keys():
         if configuration['xp'][k] and type(True) == type(configuration['xp'][k]):
             mode = k.upper()
@@ -233,6 +288,11 @@ def setXPMode(v):
 
 
 def setDataSet(v):
+    """
+    Set the used Dataset in the current experiment
+    :param v:
+    :return:
+    """
     configuration['dataset'].update(
         {
             'sharedtask2': True if v == Dataset.sharedtask2 else False,
@@ -250,6 +310,10 @@ def setDataSet(v):
 
 
 def verifyGPU():
+    """
+    Makes sur that GPU are used in calculation
+    :return:
+    """
     from theano import function, config, shared, tensor
     vlen = 10 * 30 * 768
     rng = numpy.random.RandomState(22)
@@ -263,42 +327,5 @@ def verifyGPU():
         sys.stdout.write(tabs + 'GPU Enabled' + doubleSep)
 
 
-def getST1TrainFiles():
-    path = '/Users/halsaied/PycharmProjects/MWE.Identification/Results/SVM0-CV'
-    configuration['tmp']['shuffleOrRedistribute'] = False
-    for l in allSharedtask1Lang:
-        corpus = Corpus(l)
-        pointer = int(len(corpus.trainDataSet) * 2 / 10)
-        for i in range(5):
-            corpus.trainingSents = corpus.trainDataSet[0:i * pointer] + corpus.trainDataSet[(i + 1) * pointer:]
-            corpus.testingSents = corpus.trainDataSet[i * pointer: (i + 1) * pointer]
-            trainInConllU = corpus.toConllU(useCupt=True, train=True, gold=True)
-            # testInConllU = corpus.toConllU(useCupt=True, train=False, gold=True)
-            with open(os.path.join(path, l + str(i) + '.train.cupt'), 'w') as ff:
-                ff.write(trainInConllU)
-            #with open(os.path.join(path, l, l + str(i + 1) + '.gold.cupt'), 'w') as ff:
-            #    ff.write(testInConllU)
 
-
-def fromTSVtoCupt():
-    path = '/Users/halsaied/PycharmProjects/MWE.Identification/Results/baseline-cv'
-
-    for l in allSharedtask1Lang:
-        for i in range(5):
-            for fileTail in ['.gold.txt', '.txt']:#, '.train.txt']:
-                filename = l + str(i + 1) + fileTail
-                conll = '# global.columns = ID FORM LEMMA UPOS XPOS FEATS HEAD DEPREL DEPS MISC PARSEME:MWE\n'
-                filePath = os.path.join(path, filename)
-                with open(filePath, 'r') as ff:
-                    for line in ff:
-                        if len(line.split('\t')) != 4:
-                            conll += line
-                        else:
-                            lineParts = line.split('\t')
-                            x = lineParts[-1].replace(':', ':LVC.full')
-                            if lineParts[-1] == '_\n':
-                                x = '*\n'
-                            conll += '\t'.join([lineParts[0], lineParts[1]] + (['_'] * 8) + [x])
-                with open(os.path.join(path, filename + '.cupt'), 'w') as ff:
-                    ff.write(conll)
 

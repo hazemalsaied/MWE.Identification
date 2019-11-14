@@ -18,7 +18,7 @@ from config import configuration
 from corpus import getTokens
 from modelMLP import Vocabulary
 from reports import tabs
-from wordEmbLoader import empty, unk
+from vocabTools import empty, unk
 
 
 class Network:

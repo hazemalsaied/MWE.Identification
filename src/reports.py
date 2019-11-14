@@ -5,6 +5,9 @@ import sys
 
 from config import configuration
 
+"""
+Script for traiting output files, consoles, csv, ...
+"""
 tabs, seperator, doubleSep, finalLine = '\t', '\n' + '_' * 98 + '\n', '\n' + '=' * 98 + '\n', '\n' + '*|' * 49 + '\n'
 PATH_ROOT_REPORTS_DIR = os.path.join(configuration['path']['projectPath'], 'Reports')
 
@@ -69,8 +72,8 @@ class ReportMiner:
                 for i, v in enumerate(scores):
                     line = ','.join(str(x) for x in [langs[i], v, precisions[i], recalls[i]] +
                                     stats[i * 96:(i + 1) * 96] +
-                                    (misidentified[i * 10: (i + 1) * 10]  if (i + 1) * 10 < len(misidentified) else [])+
-                                    (nonidentified[i * 14: (i + 1) * 14] if  (i + 1) * 14 <len(nonidentified) else []) )
+                                    (misidentified[i * 10: (i + 1) * 10] if (i + 1) * 10 < len(misidentified) else []) +
+                                    (nonidentified[i * 14: (i + 1) * 14] if (i + 1) * 14 < len(nonidentified) else []))
                     sys.stdout.write(line + '\n')
 
     @staticmethod
@@ -232,14 +235,14 @@ class ReportMiner:
             langs = ReportMiner.getLangs(path)
             for i in range(len(ident)):
                 print ','.join(str(x) for x in [
-                    #lass[i ],
-                    #uass[i],
-                    pos[i ],
+                    # lass[i ],
+                    # uass[i],
+                    pos[i],
                     mwePpos[i],
                     ident[i],
                     # langs[i],
                     params[i].split(',')[0]]
-                    )
+                               )
 
     @staticmethod
     def parseChenManningReports(files):
@@ -433,7 +436,8 @@ class ReportMiner:
                     stats.append(float(line[:-1].split(':')[1].split()[0]))
                 if line.startswith(fLine):
                     stats.append(float(line[:-1].split(':')[1].split()[0]) * 100)
-                if line.startswith('\tP, R  : ') and (not previousLine.startswith('\tIdentification : ') and not previousLine.startswith('\tDiMSUM')) :
+                if line.startswith('\tP, R  : ') and (
+                        not previousLine.startswith('\tIdentification : ') and not previousLine.startswith('\tDiMSUM')):
                     stats.append(float(line.split(':')[1].split(',')[0]))
                     stats.append(float(line.split(':')[1].split(',')[1]))
 
@@ -457,14 +461,14 @@ class ReportMiner:
                 if line.startswith('Misidentified:'):
                     isMisidentified = True  # False
                     continue
-                if isMisidentified and line!= '\n' and not line.startswith('='):
+                if isMisidentified and line != '\n' and not line.startswith('='):
                     misidentified.append(line[:-1].split(':')[1])
                 if isMisidentified and line.startswith('\tMWTs:'):
                     isMisidentified = False
                 if line.startswith('Non-identified:'):
                     isNonidentified = True  # False
                     continue
-                if isNonidentified and line!= '\n' and not line.startswith('='):
+                if isNonidentified and line != '\n' and not line.startswith('='):
                     nonIdentified.append(line[:-1].split(':')[1])
                 if isNonidentified and line.startswith('\tVPC Full:'):
                     isNonidentified = False
@@ -643,6 +647,28 @@ class OSTools:
                     idx += 1
 
 
+def fromTSVtoCupt():
+    path = '/Users/halsaied/PycharmProjects/MWE.Identification/Results/baseline-cv'
+
+    for l in allSharedtask1Lang:
+        for i in range(5):
+            for fileTail in ['.gold.txt', '.txt']:#, '.train.txt']:
+                filename = l + str(i + 1) + fileTail
+                conll = '# global.columns = ID FORM LEMMA UPOS XPOS FEATS HEAD DEPREL DEPS MISC PARSEME:MWE\n'
+                filePath = os.path.join(path, filename)
+                with open(filePath, 'r') as ff:
+                    for line in ff:
+                        if len(line.split('\t')) != 4:
+                            conll += line
+                        else:
+                            lineParts = line.split('\t')
+                            x = lineParts[-1].replace(':', ':LVC.full')
+                            if lineParts[-1] == '_\n':
+                                x = '*\n'
+                            conll += '\t'.join([lineParts[0], lineParts[1]] + (['_'] * 8) + [x])
+                with open(os.path.join(path, filename + '.cupt'), 'w') as ff:
+                    ff.write(conll)
+
 def mad(numberList):
     m = float(sum(numberList)) / len(numberList)
     devs = []
@@ -670,6 +696,7 @@ def readResamplingReport():
                      +results[i * 5 + 4][1]])
             sys.stdout.write(results[i * 5][0], f, p, r, m)
 
+
 def readStats(newFile):
     path = os.path.join('../Reports/Reports/', newFile)
     res = ''
@@ -679,14 +706,17 @@ def readStats(newFile):
                 res += line
     # print res
     return res
+
+
 def deleteJobs(jobId):
     res = 'oardel '
     for i in range(12):
-        res += ' ' + str(jobId+i)
+        res += ' ' + str(jobId + i)
     print res
 
+
 if __name__ == '__main__':
-    files = [f for f in os.listdir('../Reports/Reports/')if f.startswith('multi.joint.dev')]
+    files = [f for f in os.listdir('../Reports/Reports/') if f.startswith('multi.joint.dev')]
     # OSTools.cleanReports()
     # readStats('r')
     # STDOutTools.generateOarsub(xpNum=6, duration=72, tourNum=1, name='kiper.minimized.gpu')

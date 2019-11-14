@@ -16,12 +16,12 @@ import reports
 import sampling
 from corpus import getRelevantModelAndNormalizer
 from corpus import getTokens
-from extraction import Extractor
+from extractionForMLP import Extractor
 from modelLinear import getFeatures
 from reports import *
 from transitions import TransitionType
-from wordEmbLoader import empty
-from wordEmbLoader import unk, number
+from vocabTools import empty
+from vocabTools import unk, number
 
 enableCategorization = False
 
@@ -216,7 +216,7 @@ class Network:
         if configuration['others']['verbose']:
             sys.stdout.write(reports.seperator + reports.tabs + 'Sampling' + reports.doubleSep)
         if configuration['sampling']['focused']:
-            data, labels = sampling.overSampleImporTrans(data, labels, corpus, self.vocabulary)
+            data, labels = sampling.focusedSampling(data, labels, corpus, self.vocabulary)
         labels, data = sampling.overSample(labels, data, linearInMlp=True)
         if configuration['nn']['earlyStop']:
             # To make sure that we will get a random validation dataset

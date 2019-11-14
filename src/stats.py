@@ -4,6 +4,11 @@ from transitions import TransitionType
 
 
 def getTransDistribution(corpus):
+    """
+    return the distribution of transitions in training set
+    :param corpus:
+    :return:
+    """
     shNum, rdNum, mgNum, mkNum = 0, 0, 0, 0
     importantSents = 0
     for s in corpus.trainingSents:
@@ -20,12 +25,17 @@ def getTransDistribution(corpus):
             else:
                 mkNum += 1
             t = t.next
-    print len(corpus.trainingSents), importantSents
-    print shNum, rdNum, mgNum, mkNum, (shNum + rdNum + mgNum + mkNum)
-    return
+    sys.stdout.write(len(corpus.trainingSents), importantSents)
+    sys.stdout.write(shNum, rdNum, mgNum, mkNum, (shNum + rdNum + mgNum + mkNum))
+    return shNum, rdNum, mgNum, mkNum, (shNum + rdNum + mgNum + mkNum)
 
 
 def getDimsumStats(corpus):
+    """
+    print the MWEs of train, seen and non seen tokens of test
+    :param corpus:
+    :return:
+    """
     if not configuration['tmp']['dimsulStats']:
         return
     sys.stdout.write('# MWEs\n')
@@ -47,12 +57,12 @@ def getDimsumStats(corpus):
         sys.stdout.write('{0}\n' % t)
 
 
-
-
-
-
-
 def analyzeCorporaAndOracle(langs):
+    """
+    test of oracle functioning
+    :param langs:
+    :return:
+    """
     header = 'Non recognizable,Interleaving,Embedded,Distributed Embedded,Left Embedded,Right Embedded,Middle Embedded'
     analysisReport = header + '\n'
     for lang in langs:

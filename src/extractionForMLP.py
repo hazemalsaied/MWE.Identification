@@ -15,6 +15,10 @@ featureSetting = None
 
 class Extractor:
     def __init__(self, corpus):
+        """
+        Produces dictionaries of active feautures for the configurations of training corpus
+        :param corpus:
+        """
         global featureSetting
         featureSetting = configuration['features']
         global mwtDictionary, mweDictionary, mweTokenDictionary
@@ -35,6 +39,11 @@ class Extractor:
         return report
 
     def vectorize(self, trans):
+        """
+        Transforms a dictionary of active features to a binary vector
+        :param trans:
+        :return:
+        """
         result = np.zeros(self.featureNum, dtype='int32')
         featSet = extractTrans(trans)
         for f in featSet:
@@ -45,6 +54,11 @@ class Extractor:
 
 
 def extractSent(sent):
+    """
+    Produces dictionaries of active feautures for the configurations of a given sentence
+    :param sent:
+    :return:
+    """
     featSet = set()
     trans = sent.initialTransition
     while trans:
@@ -54,6 +68,11 @@ def extractSent(sent):
 
 
 def extractTrans(trans):
+    """
+    Produces dictionaries of active feautures for a given configurations
+    :param trans:
+    :return:
+    """
     featSet = set()
     featSet.update(extractDicBased(trans.configuration))
     featSet.update(abstractSyntaxic(trans.configuration))
@@ -63,6 +82,11 @@ def extractTrans(trans):
 
 
 def abstractSyntaxic(config):
+    """
+    Produces dictionaries of active abstract syntaxic feautures of a given configuration
+    :param config:
+    :return:
+    """
     featSet = set()
     if not configuration['features']['syntax']:
         return featSet
@@ -128,6 +152,11 @@ def abstractSyntaxic(config):
 
 
 def extractDistance(trans):
+    """
+    Produces dictionaries of active distance feautures of a given configuration
+    :param trans:
+    :return:
+    """
     # Distance information
     config = trans.configuration
     sent = trans.sent
@@ -152,6 +181,11 @@ def extractDistance(trans):
 
 
 def extractHistory(trans):
+    """
+    Produces dictionaries of active history feautures of a given configuration
+    :param trans:
+    :return:
+    """
     idx, history, featSet = 0, '', set()
     transition = trans.previous
     while transition and idx < 3:
@@ -171,6 +205,11 @@ def extractHistory(trans):
 
 
 def extractDicBased(config):
+    """
+    Produces dictionaries of active dictionary feautures of a given configuration
+    :param config:
+    :return:
+    """
     featSet = set()
     if config.stack and isinstance(config.stack[-1], Token):
         if config.stack[-1].getLemma() in mwtDictionary :

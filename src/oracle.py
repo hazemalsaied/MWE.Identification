@@ -8,6 +8,12 @@ from transitions import *
 
 
 def parse(corpus, printReport=True):
+    """
+    analyze the training corpus for producing a sequence of pairs (configuration, transitions)
+    :param corpus:
+    :param printReport:
+    :return:
+    """
     printSentIdx, printSentNum = 0, 0
     report = ''
     for sent in corpus:
@@ -33,6 +39,11 @@ def parse(corpus, printReport=True):
 
 
 def Next(config):
+    """
+    Returns the correct transition given the current configuration
+    :param config: current configuration
+    :return:
+    """
     if configuration['others']['minimal']:
         newTransition = isMarkAsMinimal(config)
     else:
@@ -50,6 +61,11 @@ def Next(config):
 
 
 def isMarkAsMinimal(config):
+    """
+    Verify whether a mark must be applied
+    :param config: current configuration
+    :return:
+    """
     if config.stack and config.stack[-1] and str(config.stack[-1].__class__).endswith('corpus.Token'):
         s0Tokens = getTokens([config.stack[-2], config.stack[-1]]) if len(config.stack) > 1 else getTokens(config.stack[-1])
         selectedParents = getParents(s0Tokens)
@@ -66,6 +82,11 @@ def isMarkAsMinimal(config):
 
 
 def isMarkAs(config):
+    """
+    Verify whether a MARK must be applied
+    :param config: current configuration
+    :return:
+    """
     s0Tokens = getTokens(config.stack[-1]) if config.stack else []
     if config.stack and not isIdentifiedVMWE(config.stack[-1]):
         # if s0Tokens and ((len(s0Tokens) == 1 and s0Tokens[-1] in mwtDictionary) or not isIdentifiedVMWE(config.stack[-1])):
@@ -86,6 +107,11 @@ def isMarkAs(config):
 
 
 def isMerge(config):
+    """
+    Verify whether a MERGE must be applied
+    :param config: current configuration
+    :return:
+    """
     if len(config.stack) > 1:
         tokens = getTokens(config.stack[-1]) + getTokens(config.stack[-2])
         sharedParents = getParents(tokens, allChildren=False)
@@ -111,6 +137,11 @@ def isMerge(config):
 
 
 def isReduce(config):
+    """
+    Verify whether a REDUCE must be applied
+    :param config: current configuration
+    :return:
+    """
     reduce = Reduce(sent=config.sent)
     # Orphan Token on Stack
     if config.stack:
@@ -136,6 +167,11 @@ oracleReportPath = '../Results/Oracle'
 
 
 def validate(corpus):
+    """
+    Verify whether the corpus has analyzed all the recognizable MWEs
+    :param corpus:
+    :return:
+    """
     report = ''
     sentNum = 0
     for sent in corpus.trainingSents:

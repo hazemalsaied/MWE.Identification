@@ -10,6 +10,12 @@ from reports import STDOutTools
 
 
 def identify(lang):
+    """
+    The function that read the corpus, analyze it, train a model and evaluate it
+    In other words, the function of an experiment
+    :param lang:
+    :return:
+    """
     corpus = Corpus(lang)
     # corpus.getVMWEReport()
     # from modelChenManning import DataFactory
@@ -30,6 +36,11 @@ def identify(lang):
 
 
 def parseAndTrain(corpus):
+    """
+    Initialize and train a classification model according to the activated parameters
+    :param corpus:
+    :return:
+    """
     if configuration['xp']['linear']:
         import modelLinear
         return modelLinear.train(corpus)

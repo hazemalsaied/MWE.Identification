@@ -14,7 +14,7 @@ import reports
 import sampling
 from config import configuration
 from corpus import getTokens
-from wordEmbLoader import unk, number, empty
+from vocabTools import unk, number, empty
 
 enableCategorization = False
 
