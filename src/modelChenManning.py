@@ -359,9 +359,9 @@ class DataFactory(object):
         """
         transParser = TransitionParser(TransitionParser.ARC_STANDARD)
         projective = 0
-        sentNum = len(corpus.trainingSents if train else corpus.testingSents)
+        sentNum = len(corpus.trainDataSet if train else corpus.testDataSet)
         for i in range(sentNum):
-            depgraph = corpus.trainDepGraphs[i] if train else corpus.testDepGraphs[i]
+            depgraph = corpus.trainDataSetDepGraphs[i] if train else corpus.testDataSetDepGraphs[i]
             if transParser._is_projective(depgraph):
                 projective += 1
         print " Number of training examples : " + str(sentNum)

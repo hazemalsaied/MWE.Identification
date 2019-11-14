@@ -64,12 +64,12 @@ class Network:
         self.depParsingModel.fit(self.depParserData, depParserLabels,
                                  validation_split=trainParams['validationSplit'],
                                  batch_size=trainParams['depParserBatchSize'],
-                                 verbose=2)
+                                 verbose=1)
         for x in range(trainParams['initialEpochs']):
             sys.stdout.write('POS tagging: {0}\n'.format(x + 1))
             self.taggingModel.fit(taggingData, taggingLbls,
                                   batch_size=trainParams['taggingBatchSize'],
-                                  verbose=2)
+                                  verbose=1)
 
         posIdx, idenIdx = trainParams['initialEpochs'] + 1, 1
         sys.stdout.write('Train start {0}'.format(datetime.datetime.now()))
@@ -80,7 +80,7 @@ class Network:
                 sys.stdout.write(
                     'POS tagging: {0}\n'.format(posIdx))
                 self.taggingModel.fit(taggingData, taggingLbls,
-                                      verbose=2,
+                                      verbose=1,
                                       batch_size=trainParams['taggingBatchSize'])
                 posIdx += 1
             elif .66 > alpha >= .33:
@@ -89,13 +89,13 @@ class Network:
                 self.depParsingModel.fit(self.depParserData, depParserLabels,
                                          validation_split=trainParams['validationSplit'],
                                          batch_size=trainParams['depParserBatchSize'],
-                                         verbose=2)
+                                         verbose=1)
 
             else:
                 sys.stdout.write('MWE identification: {0}\n'.format(idenIdx))
                 his = self.idenModel.fit(idenData, idenLbls,
                                          validation_split=trainParams['validationSplit'],
-                                         verbose=2,
+                                         verbose=1,
                                          batch_size=trainParams['identBatchSize'])
                 historyList.append(his)
                 if Network.shouldStopLearning(historyList):
@@ -125,7 +125,7 @@ class Network:
                               validation_split=trainParams['validationSplit'],
                               epochs=1,
                               batch_size=trainParams['taggingBatchSize'],
-                              verbose=2)
+                              verbose=1)
         idenLoss, taggingLoss = [], []
         for i in range(epochNumber):
             if uniform(0, 1) > .5:
@@ -133,14 +133,14 @@ class Network:
                                                 validation_split=trainParams['validationSplit'],
                                                 epochs=1,
                                                 batch_size=trainParams['taggingBatchSize'],
-                                                verbose=2)
+                                                verbose=1)
                 taggingLoss.append(history.history['loss'])
             else:
                 history = self.idenModel.fit(idenData, idenLbls,
                                              validation_split=trainParams['validationSplit'],
                                              epochs=1,
                                              batch_size=trainParams['taggingBatchSize'],
-                                             verbose=2)
+                                             verbose=1)
                 idenLoss.append(history.history['loss'])
                 # TODO check the early stopping
 
@@ -151,7 +151,7 @@ class Network:
                                  validation_split=trainParams['validationSplit'],
                                  epochs=trainParams['epochs'],
                                  batch_size=trainParams['depParserBatchSize'],
-                                 verbose=2,
+                                 verbose=1,
                                  callbacks=Network.getCallBacks())
 
     def evaluateDepParsing(self, corpus):
@@ -209,7 +209,7 @@ class Network:
         self.idenModel.fit(idenData, idenLbls, validation_split=trainParams['validationSplit'],
                            epochs=trainParams['epochs'],
                            batch_size=trainParams['identBatchSize'],
-                           verbose=2,
+                           verbose=1,
                            callbacks=Network.getCallBacks())
 
     def trainTagging(self, corpus):
@@ -220,7 +220,7 @@ class Network:
                               validation_split=.2,
                               epochs=100,
                               batch_size=configuration['nn']['taggingBatchSize'],
-                              verbose=2,
+                              verbose=1,
                               callbacks=Network.getCallBacks())
 
     def trainTaggerAndIdentifier(self, corpus):
@@ -237,18 +237,18 @@ class Network:
             sys.stdout.write('POS tagging: {0}\n'.format(x + 1))
             self.taggingModel.fit(taggingData, taggingLbls,
                                   batch_size=trainParams['taggingBatchSize'],
-                                  verbose=2)
+                                  verbose=1)
         for x in range(configuration['nn']['jointLearningEpochs']):
             if x % 2 == 0:
                 sys.stdout.write(
                     'POS tagging: {0}\n'.format(int(x / 2) + 1 + trainParams['initialEpochs']))
                 self.taggingModel.fit(taggingData, taggingLbls,
-                                      verbose=2,
+                                      verbose=1,
                                       batch_size=configuration['nn']['taggingBatchSize'])
             else:
                 sys.stdout.write('MWE identification: {0}\n'.format(int(x / 2) + 1))
                 his = self.idenModel.fit(idenData, idenLbls,
-                                         verbose=2,
+                                         verbose=1,
                                          batch_size=configuration['nn']['identBatchSize'])
                 historyList.append(his)
                 if Network.shouldStopLearning(historyList):

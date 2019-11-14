@@ -50,16 +50,6 @@ def getDimsumStats(corpus):
 
 
 
-def getMWEsAccFrequency(corpus):
-    for s in corpus.testingSents:
-        nonCorrectMWEIdxs = []
-        for v in s.identifiedVMWEs:
-            partiallySeen = v.getLemmaString() not in corpus.mweDictionary
-            barelySeen = v.getLemmaString() in corpus.mweDictionary and corpus.mweDictionary[v.getLemmaString()] <= 5
-            if v.predictingModel in ['linear', 'mlp'] and (partiallySeen or barelySeen):
-                nonCorrectMWEIdxs.append(s.identifiedVMWEs.index(v))
-        for idx in sorted(nonCorrectMWEIdxs, reverse=True):
-            s.identifiedVMWEs.pop(idx)
 
 
 def analyzeCorporaAndOracle(langs):

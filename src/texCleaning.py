@@ -1,12 +1,25 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 import sys
+
 from reports import OSTools
+
+"""
+    A script with multiple functions for processing latex files
+    Used for cleaning latex files and for preparing latex files 
+    to be correctly transformed in text format (rtf) using Pandoc 
+"""
 
 texOutFile = '/Users/halsaied/PycharmProjects/MWE.Identification/Reports/out.tex'
 
 
-def mergeFiles(folderPath, excluded=['S_Store','ann.tex']):
+def mergeFiles(folderPath, excluded=['S_Store', 'ann.tex']):
+    """
+    Used to merge latex files of o given folder
+    :param folderPath:
+    :param excluded: files to exclude
+    :return:
+    """
     files = OSTools.getListOfFiles(folderPath)
     with open(texOutFile, 'w') as outfile:
         for fname in files:
@@ -15,7 +28,12 @@ def mergeFiles(folderPath, excluded=['S_Store','ann.tex']):
                     for line in infile:
                         outfile.write(line)
 
+
 def removeTextComments():
+    """
+    Remove comments (starting with % sign) from latex files
+    :return:
+    """
     outText = ''
     with open(texOutFile, 'r') as inFile:
         for line in inFile:
@@ -26,8 +44,8 @@ def removeTextComments():
                 lineAdded = False
                 for c in line:
                     if c == '%':
-                        if (idx > 0 and line[idx-1] != '\\') or \
-                                (idx > 1 and line[idx-1] == '\\' and line[idx-2] == '\\'):
+                        if (idx > 0 and line[idx - 1] != '\\') or \
+                                (idx > 1 and line[idx - 1] == '\\' and line[idx - 2] == '\\'):
                             outText += line[:idx] + '\n'
                             lineAdded = True
                             break
@@ -39,7 +57,13 @@ def removeTextComments():
     with open(texOutFile, 'w') as ff:
         ff.write(outText)
 
+
 def removeGivenLines(prefixes):
+    """
+    Remive lines starting with given prefixes from tex files
+    :param prefixes:
+    :return:
+    """
     outText = ''
     with open(texOutFile, 'r') as inFile:
         for line in inFile:
@@ -53,7 +77,13 @@ def removeGivenLines(prefixes):
     with open(texOutFile, 'w') as ff:
         ff.write(outText)
 
+
 def removeGivenWords(words):
+    """
+    Remove given words from latex files
+    :param words:
+    :return:
+    """
     outText = ''
     with open(texOutFile, 'r') as inFile:
         for line in inFile:
@@ -64,7 +94,14 @@ def removeGivenWords(words):
     with open(texOutFile, 'w') as ff:
         ff.write(outText)
 
+
 def removeBloc(startStr, endStr):
+    """
+    Remove an entire block from text file
+    :param startStr: block start tag
+    :param endStr: block end tag
+    :return:
+    """
     outText, addLines, nestedBlocks = '', True, 0
     with open(texOutFile, 'r') as inFile:
         for line in inFile:
@@ -80,7 +117,13 @@ def removeBloc(startStr, endStr):
     with open(texOutFile, 'w') as ff:
         ff.write(outText)
 
+
 def replace(replaceCouples):
+    """
+    Given a list of tuples (string1,string2), the function replace the first string be the second
+    :param replaceCouples:
+    :return:
+    """
     outText = ''
     with open(texOutFile, 'r') as ff:
         for line in ff:
@@ -90,8 +133,15 @@ def replace(replaceCouples):
     with open(texOutFile, 'w') as ff:
         ff.write(outText)
 
+
 def replaceCitations(replaceStr='\\cite'):
-    outText= ''
+    """
+    Replace citations by a constant string
+    used to clean latex files of citations that the automatic corrector Antidote has problem with
+    :param replaceStr:
+    :return:
+    """
+    outText = ''
     with open(texOutFile, 'r') as ff:
         for line in ff:
             tmpLine = line
@@ -111,33 +161,63 @@ def replaceCitations(replaceStr='\\cite'):
         ff.write(outText)
 
 
+def extractCitations(replaceStr='\\cite'):
+    """
+    Extract all the citations of latex file
+    :param replaceStr:
+    :return:
+    """
+    outText = ''
+    with open(texOutFile, 'r') as ff:
+        for line in ff:
+            tmpLine = line
+            while True:
+                if replaceStr in tmpLine:
+                    idx = tmpLine.index(replaceStr)
+                    endIdx = idx
+                    for c in tmpLine[idx:]:
+                        endIdx += 1
+                        if c == '}':
+                            break
+                    outText += tmpLine[idx:endIdx] + '\n'
+                    tmpLine = tmpLine[:idx] + tmpLine[endIdx:]
+                else:
+                    break
+    with open(texOutFile, 'w') as ff:
+        ff.write(outText)
+
+
 if __name__ == '__main__':
     reload(sys)
     sys.setdefaultencoding('utf8')
-    folderPath = '/Users/halsaied/PycharmProjects/MWE.Identification/Reports/La these'
-    mergeFiles(folderPath)
-    removeTextComments()
-    removeBloc('\\begin{comment}', '\\end{comment}')
-    removeBloc('\\begin{tabular}', '\\end{tabular}')
-    removeGivenLines(['\\label', '\\FrameThisInToc', '\\DontFrameThisInToc'])
-    removeGivenWords(['\\quad', '\\\\','\\noindent', '\\hazem', '\marie', '\\mathieu', '\\draftnote', '\\draftreplace', '\\draftremove'])
+    folderPath = '/Users/halsaied/PycharmProjects/MWE.Identification/Reports/T'
+    extractCitations()
+    # mergeFiles(folderPath)
+    # removeTextComments()
+    # removeBloc('\\begin{comment}', '\\end{comment}')
 
-    replaceCitations()
-    replace([('\\ep', 'EP'), 
-             ('\\mlp', 'MLP'),
-             ('\\stt', 'Parseme'),
-             ('\\st', 'Parseme'),
-             ('\\lstm', 'lstm'),
-             ('\\svm', 'SVM'),
-             ('\\lvc', 'LVC'),
-             ('\\irf', 'IRF'),
-             ('\\id', 'ID'),
-             ('\\vpc', 'VPC'),
-             ('\\ftb', 'FTB'),
-             ('\\dimsum', 'DiMSUM'),
-             ('\\gru', 'GRU'),
-             ('\\evaleps', 'evalEPs'),
-             ('\\evalcmpts', 'evalTokens'),
-              ('\\parsm', 'Parseme'),
-             ('\\ff', 'F')
-             ])
+    # removeBloc('\\begin{table}', '\\end{table}')
+    # removeGivenLines(['\\label', '\\FrameThisInToc', '\\DontFrameThisInToc'])
+    # removeGivenWords(['\\quad', '\\\\','\\noindent', '\\hazemm', '\marie',
+    # '\\mathieu', '\\draftnote', '\\draftreplace', '\\draftremove', '\\hazem'])
+    #
+    # replaceCitations()
+    # replace([('\\ep', 'EP'),
+    #          ('\\mlp', 'MLP'),
+    #          ('\\rmlp', 'RMLP'),
+    #          ('\\stt', 'Parseme'),
+    #          ('\\st', 'Parseme'),
+    #          ('\\lstm', 'lstm'),
+    #          ('\\svm', 'SVM'),
+    #          ('\\lvc', 'LVC'),
+    #          ('\\irf', 'IRF'),
+    #          ('\\id', 'ID'),
+    #          ('\\vpc', 'VPC'),
+    #          ('\\ftb', 'FTB'),
+    #          ('\\dimsum', 'DiMSUM'),
+    #          ('\\gru', 'GRU'),
+    #          ('\\evaleps', 'evalEPs'),
+    #          ('\\evalcmpts', 'evalTokens'),
+    #           ('\\parsm', 'Parseme'),
+    #          ('\\ff', 'F')
+    #          ])

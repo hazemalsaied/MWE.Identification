@@ -190,14 +190,14 @@ def tuneWithFB():
     import rsg
     configuration['mlp']['trainable'] = False
     configuration['tmp']['tunePretrained'] = True
-    rsg.runRSGSpontaneously(['BG'], Dataset.sharedtask2, None, Evaluation.fixedSize,
-                            seeds=range(2), xpNum=1, xpNumByThread=200)
+    rsg.runRSGAsynch(['BG'], Dataset.sharedtask2, None, Evaluation.fixedSize,
+                     seeds=range(2), xpNum=1, xpNumByThread=200)
 
 
 def tuneCompoRnn():
     import rsg
-    rsg.runRSGSpontaneously(['BG'], Dataset.sharedtask2, XpMode.rmlpTree, Evaluation.fixedSize,
-                            seeds=range(1), xpNum=1, xpNumByThread=50)
+    rsg.runRSGAsynch(['BG'], Dataset.sharedtask2, XpMode.rmlpTree, Evaluation.fixedSize,
+                     seeds=range(1), xpNum=1, xpNumByThread=50)
 
 
 def evaluateMultitasking(langs=allSharedtask2Lang, division=Evaluation.trainVsDev):
@@ -520,10 +520,10 @@ if __name__ == '__main__':
     reload(sys)
     sys.setdefaultencoding('utf8')
 
-
-    TrendConfig.mlp()
-    configuration['embedding']['pretrained'] = False
-    xp(['HU'], None, None, None)
+    # configuration['tmp']['shuffleOrRedistribute'] = False
+    #
+    # configuration['tmp']['createDepGraphs'] = True
+    # xp(['RO'], Dataset.sharedtask2, None, None)
 
     # evaluatePOSIden(division=Evaluation.trainVsDev)
     # evaluatePOSIden(division=Evaluation.corpus)
@@ -550,3 +550,7 @@ if __name__ == '__main__':
     #                         XpMode.kiperwasser, None, #Evaluation.fixedSize,
     #                         dontParse=False,
     #                         xpNumByThread=200)
+    configuration['tmp']['createDepGraphs'] = False
+    configuration['tmp']['trainTaggerAndIdentifier'] = True
+    TrendConfig.mtJoint()
+    xp(['BG', 'RO'], Dataset.sharedtask2, XpMode.multitasking, Evaluation.trainVsDev)

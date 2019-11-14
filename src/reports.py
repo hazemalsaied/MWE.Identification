@@ -686,7 +686,7 @@ def deleteJobs(jobId):
     print res
 
 if __name__ == '__main__':
-    files = [f for f in os.listdir('../Reports/Reports/')if f.startswith('ftbDimDev')]
+    files = [f for f in os.listdir('../Reports/Reports/')if f.startswith('multi.joint.dev')]
     # OSTools.cleanReports()
     # readStats('r')
     # STDOutTools.generateOarsub(xpNum=6, duration=72, tourNum=1, name='kiper.minimized.gpu')

@@ -2430,7 +2430,8 @@ Epoch 1/1
 POS tagging: 1
 Epoch 1/1
  - 3s - loss: 0.2584 - acc: 0.9293
-Train start 2019-09-12 23:23:02.972186MWE identification: 1
+Train start 2019-09-12 23:23:02.972186
+MWE identification: 1
 Train on 128096 samples, validate on 32024 samples
 Epoch 1/1
  - 6s - loss: 0.1103 - acc: 0.9681 - val_loss: 0.1717 - val_acc: 0.9949

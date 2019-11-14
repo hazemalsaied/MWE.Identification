@@ -12,6 +12,8 @@ from reports import STDOutTools
 def identify(lang):
     corpus = Corpus(lang)
     # corpus.getVMWEReport()
+    # from modelChenManning import DataFactory
+    # DataFactory.getProjectivityStats(corpus)
     oracle.parse(corpus)
     t = datetime.datetime.now()
     network, vectorizer = parseAndTrain(corpus)

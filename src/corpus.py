@@ -553,6 +553,12 @@ class Corpus:
                 self.trainDepGraphs.append(createDepGraph(s))
             for s in self.testingSents:
                 self.testDepGraphs.append(createDepGraph(s))
+        self.trainDataSetDepGraphs, self.testDataSetDepGraphs = [], []
+        if configuration['dataset']['sharedtask2'] and configuration['tmp']['createDepGraphs']:
+            for s in self.trainDataSet:
+                self.trainDataSetDepGraphs.append(createDepGraph(s))
+            for s in self.testingSents:
+                self.testDataSetDepGraphs.append(createDepGraph(s))
 
     def distributeSent(self, lang):
         if configuration['others']['shuffleTrain']:

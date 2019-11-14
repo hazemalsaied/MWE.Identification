@@ -1,55 +1,20 @@
 import config
 import modelLinear
 import modelMLP
-import modelRMLP
 import oracle
 from corpus import *
 from evaluation import evaluate
-from identification import parseAndTrain
 from parser import parse
 from reports import STDOutTools
-from stats import getMWEsAccFrequency
-
-
-def identifyWithBoth(lang):
-    from xpTools import setXPMode, XpMode
-    setXPMode(XpMode.linear)
-    corpus = Corpus(lang)
-    oracle.parse(corpus)
-    startTime = datetime.datetime.now()
-    modifyConf(linear=True, tuning=False)
-    linearModel, linearVectorizer = parseAndTrain(corpus)
-    STDOutTools.getExcutionTime('Training time', startTime)
-    setXPMode(None)
-    config.BestConfig.mlp()
-    startTime = datetime.datetime.now()
-    mlpModel, mlpVectorizer = parseAndTrain(corpus)
-    STDOutTools.getExcutionTime('Training time', startTime)
-    startTime = datetime.datetime.now()
-    setXPMode(XpMode.linear)
-    parse(corpus.testingSents, linearModel, linearVectorizer)
-    setXPMode(None)
-    parse(corpus.testingSents, mlpModel, mlpVectorizer, initialize=False)
-    STDOutTools.getExcutionTime('Parsing time', startTime)
-    if configuration['others']['complInter']:
-        getIntersectedMWEs(corpus)
-    elif configuration['others']['complFreq']:
-        getMWEsAccFrequency(corpus)
-    evaluate(corpus.testingSents)
-    return corpus
-
-
-def getIntersectedMWEs(corpus):
-    for s in corpus.testingSents:
-        nonCorrectMWEIdxs = []
-        for v in s.identifiedVMWEs:
-            if v.predictingModel == 'linear' or v.predictingModel == 'mlp':
-                nonCorrectMWEIdxs.append(s.identifiedVMWEs.index(v))
-        for idx in sorted(nonCorrectMWEIdxs, reverse=True):
-            s.identifiedVMWEs.pop(idx)
 
 
 def identifyWithLinearInMlp(lang, tuning=False):
+    """
+    A function for training and evaluating MLP model, feed by the predictions of a SVM model (trained with jackkniffing)
+    :param lang:
+    :param tuning:
+    :return:
+    """
     linearModels, linearVecs = jackknifing(lang, True)
     configuration['xp']['linear'] = False
     modifyConf(linear=False, tuning=tuning)
@@ -67,35 +32,41 @@ def identifyWithLinearInMlp(lang, tuning=False):
     return corpus
 
 
-def modifyConf(linear=False, tuning=False):
+def modifyConf(linear=False):
+    """
+    a fucntion for renversing the configurations and adapting them for training a SVM or a MLP model
+    :param linear:
+    :param tuning:
+    :return:
+    """
     if linear:
-        if tuning:
-            config.Generator.svm()
+        if configuration['dataset']['ftb']:
+            config.LinearConf.svmFtb()
+        elif configuration['dataset']['dimsum']:
+            config.LinearConf.svmDiMSUM()
         else:
-            if configuration['dataset']['ftb']:
-                config.LinearConf.svmFtb()
-            elif configuration['dataset']['dimsum']:
-                config.LinearConf.svmDiMSUM()
-            else:
-                config.LinearConf.svm()
+            config.LinearConf.svm()
         configuration['sampling'].update({
             'overSampling': False,
             'importantSentences': False,
         })
     else:
-        if tuning:
-            config.Generator.mlp()
+        if configuration['dataset']['ftb']:
+            config.BestConfig.mlpFtbClosed()
+        elif configuration['dataset']['dimsum']:
+            config.BestConfig.mlpDimsumClosed()
         else:
-            if configuration['dataset']['ftb']:
-                config.BestConfig.mlpFtbClosed()
-            elif configuration['dataset']['dimsum']:
-                config.BestConfig.mlpDimsumClosed()
-            else:
-                config.TrendConfig.mlp()
-                configuration['embedding']['pretrained'] = False
+            config.TrendConfig.mlp()
+            configuration['embedding']['pretrained'] = False
 
 
 def identifyWithMlpInLinear(lang, tuning=False):
+    """
+    A function for training and evaluating SVM model, feed by the predictions of a MLP model (trained with jackkniffing)
+    :param lang:
+    :param tuning:
+    :return:
+    """
     mlpModels, mlpNormalizers = jackknifing(lang, False)
     modifyConf(linear=True, tuning=tuning)
     corpus = Corpus(lang)
@@ -113,6 +84,12 @@ def identifyWithMlpInLinear(lang, tuning=False):
 
 
 def jackknifing(lang, linear=True):
+    """
+    5-fold kackkniffing function used for training auxiliary models (feeding principal model in stacked models)
+    :param lang:
+    :param linear:
+    :return:
+    """
     sys.stdout.write('Jacknfing:' + doubleSep)
     configuration['others']['verbose'] = False
     configuration['xp']['linear'] = linear
@@ -128,6 +105,14 @@ def jackknifing(lang, linear=True):
 
 
 def jackknifingAFold(lang, foldIdx=-1, linear=True, all=False):
+    """
+    fold kackkniffing function used for training a SVM or a MLP model on a given fold or on the whole training set
+    :param lang:
+    :param foldIdx: the given fold to train on
+    :param linear: SVM? MLP?
+    :param all: train on the whole training set
+    :return:
+    """
     corpus = Corpus(lang)
     if not all:
         foldLength = int(len(corpus.trainingSents) / 5)
@@ -143,12 +128,6 @@ def jackknifingAFold(lang, foldIdx=-1, linear=True, all=False):
     if linear:
         network, vectorizer = modelLinear.train(corpus)
     else:
-        network = modelRMLP.Network(corpus)
+        network = modelMLP.Network(corpus)
         network.train(corpus)
-    # parse(corpus.testingSents, network, vectorizer)
-    # evaluate(corpus.testingSents)
-    # corpus.testingSents = corpus.trainingSents
-    # parse(corpus.testingSents, network, vectorizer)
-    # evaluate(corpus.testingSents)
-
     return network, vectorizer
