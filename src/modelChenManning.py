@@ -1,6 +1,7 @@
+import copy
+
 import keras
 import numpy as np
-import copy
 from keras import optimizers
 from keras import regularizers
 from keras.callbacks import EarlyStopping
@@ -9,22 +10,26 @@ from keras.layers import Input, Dense, Flatten, Embedding, Dropout
 from keras.models import Model
 from keras.utils import to_categorical
 from keras.utils.generic_utils import get_custom_objects
-from nltk.parse.transitionparser import TransitionParser, Transition, Configuration
-from numpy import zeros
 from nltk.parse import DependencyEvaluator
-import facebookEmb
+from nltk.parse.transitionparser import TransitionParser, Transition, Configuration
+from numpy import array
+from numpy import zeros
+from scipy import sparse
+
 import reports
+import vocabTools
 from reports import *
 from vocabTools import empty
 from vocabTools import unk
-from scipy import sparse
-from numpy import array
+
 params = configuration['chenParams']
 consts = configuration['chenConstant']
 from sklearn.svm import *
 import tempfile
 from sklearn.datasets import load_svmlight_file
 from copy import deepcopy
+
+
 class Network:
     def __init__(self, corpus):
         self.depLabelDic = dict()
@@ -74,7 +79,7 @@ class Network:
                         elif baseTransition[:4].lower() == Transition.RIGHT_ARC[:4].lower():
                             if operation.right_arc(conf, k.split(":")[1]) != -1:
                                 break
-                        else:#elif baseTransition[:4].lower() == Transition.SHIFT[:4].lower():
+                        else:  # elif baseTransition[:4].lower() == Transition.SHIFT[:4].lower():
                             if operation.shift(conf) != -1:
                                 break
             new_depgraph = copy.deepcopy(depGraph)
@@ -185,7 +190,7 @@ class Network:
         :param vocab: index:word vocabulary
         :return:
         """
-        wordEmbDic = facebookEmb.loadFastTextEmbeddings(lang)
+        wordEmbDic = vocabTools.loadFastTextEmbeddings(lang)
         # idxs = range(0, len(vocab))
         embeddingMatrix = zeros((len(vocab), params['tokenEmb']))
         indexWordVocab = dict()
@@ -251,7 +256,6 @@ class Vocabulary:
 
 class DataFactory(object):
 
-
     @staticmethod
     def printDataEntry(de, vocab, conf, sent):
         reverdedTokenDic, reverdedPOSDic, reverdedSRDic = dict(), dict(), dict()
@@ -265,7 +269,8 @@ class DataFactory(object):
         stack = [r for r in conf.stack if r != 0]
         print  'Buffer=' + ' '.join(sent.tokens[i - 1].text for i in buff)
         print  'Stack=' + ' '.join(sent.tokens[i - 1].text for i in stack)
-        print  'Arcs=' + ' '.join(sent.tokens[a[0] - 1].text +'-'+a[1]+ '-'+sent.tokens[a[2] - 1].text for a in conf.arcs)
+        print  'Arcs=' + ' '.join(
+            sent.tokens[a[0] - 1].text + '-' + a[1] + '-' + sent.tokens[a[2] - 1].text for a in conf.arcs)
         print  'Words=' + ' '.join(reverdedTokenDic[m] for m in de[0])
         print  'POSs=' + ' '.join(reverdedPOSDic[m] for m in de[1])
         print  'SynRels=' + ' '.join(reverdedSRDic[m] for m in de[2])
@@ -462,7 +467,6 @@ class DataFactory(object):
                 return leftMostOfLeftMost[0]
         return None
 
-
     @staticmethod
     def getRightMostOfRightMostChildren(token, sent):
         rightMostChildren = DataFactory.getRightMostChildren(token, sent)
@@ -471,7 +475,6 @@ class DataFactory(object):
             if rightMostOfRightMost:
                 return rightMostOfRightMost[0]
         return None
-
 
     @staticmethod
     def getRightMostChildren(token, sent):
@@ -610,10 +613,10 @@ class NLTKParser:
         for depgraph in depgraphs:
             conf = Configuration(depgraph)
             while len(conf.buffer) > 0:
-                #if not conf.stack and conf.buffer == [0]:
+                # if not conf.stack and conf.buffer == [0]:
                 #    break
                 features = conf.extract_features()
-                col, row, data = [], [],[]
+                col, row, data = [], [], []
                 for feature in features:
                     if feature in transParser._dictionary:
                         col.append(transParser._dictionary[feature])

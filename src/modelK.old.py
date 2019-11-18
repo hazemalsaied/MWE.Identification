@@ -12,7 +12,7 @@ import torch.optim as optim
 from imblearn.over_sampling import RandomOverSampler
 
 import evaluation
-import facebookEmb
+import vocabTools
 import reports
 from config import configuration as c
 # from config import configuration
@@ -48,7 +48,7 @@ class Network(nn.Module):
         self.p_embeddings = nn.Embedding(len(self.posVocab), c['kiperwasser']['posDim'])
         self.w_embeddings = nn.Embedding(len(self.tokenVocab), c['kiperwasser']['wordDim'])
         if c['kiperwasser']['pretrained']:
-            self.tokenVocab, embeddingMatrix = facebookEmb.getEmbMatrix(corpus.langName, self.tokenVocab.keys())
+            self.tokenVocab, embeddingMatrix = vocabTools.getEmbMatrix(corpus.langName, self.tokenVocab.keys())
             self.w_embeddings.load_state_dict({'weight': torch.FloatTensor(embeddingMatrix)})
         embeddingDim = c['kiperwasser']['wordDim'] + c['kiperwasser']['posDim']
         if c['kiperwasser']['gru']:

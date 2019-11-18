@@ -27,6 +27,11 @@ class Network:
         self.model = model
 
     def predict(self, trans):
+        """
+        Predict a transition given a configuration
+        :param trans:
+        :return:
+        """
         inputs = getTransData(trans, self.vocabulary)
         newInputs = [np.asarray([i]) for i in inputs]
         oneHotRep = self.model.predict(newInputs, batch_size=1, verbose=configuration['nn']['predictVerbose'])
@@ -34,6 +39,12 @@ class Network:
 
 
 def createTheModel(tokenVocab, posVocab):
+    """
+    Construct the model in order of given parameters
+    :param tokenVocab:
+    :param posVocab:
+    :return:
+    """
     mlpPhraseConf = configuration['mlpPhrase']
     phraseTokens = Input((mlpPhraseConf['phraseMaxLength'],), name='phraseTokens')
     phrasePoss = Input((mlpPhraseConf['phraseMaxLength'],), name='phrasePoss')
@@ -65,6 +76,11 @@ def createTheModel(tokenVocab, posVocab):
 
 
 def train(corpus):
+    """
+    Trains the model
+    :param corpus:
+    :return:
+    """
     vocab = Vocabulary(corpus)
     model = createTheModel(vocab.tokenIndices, vocab.posIndices)
     labels, data = getLearningData(corpus, vocab)
@@ -101,6 +117,12 @@ def train(corpus):
 
 
 def overSample(labels, data):
+    """
+    Balances the distribution of training data using oversampling
+    :param labels:
+    :param data:
+    :return:
+    """
     elementNumber = 3 + configuration['mlpPhrase']['useB1'] + configuration['mlpPhrase']['useB-1']
     newData = []
     for i in range(len(data[0])):
@@ -123,6 +145,12 @@ def overSample(labels, data):
 
 
 def getLearningData(corpus, vocab):
+    """
+    Generate learning data using training corpus
+    :param corpus:
+    :param vocab:
+    :return:
+    """
     labels, phraseTokenData, phrasePosData, transTokenData, transPosData = [], [], [], [], []
     global importantFrequentWordDic
     importantFrequentWordDic = corpus.importantFrequentWords
@@ -140,6 +168,12 @@ def getLearningData(corpus, vocab):
 
 
 def getTransData(trans, vocabulary):
+    """
+    Generating training data for a given transition
+    :param trans:
+    :param vocabulary:
+    :return:
+    """
     emptyTokenIdx = vocabulary.tokenIndices[empty]
     emptyPosIdx = vocabulary.posIndices[empty]
     tokenIdxs, posIdxs = [], []
@@ -162,6 +196,12 @@ def getTransData(trans, vocabulary):
 
 
 def getPhraseIndices(trans, vocabulary):
+    """
+    Generates trainig data for a given sentence
+    :param trans:
+    :param vocabulary:
+    :return:
+    """
     phraseTokens, phrasePoss = [], []
     for t in trans.sent.tokens:
         tokenIdx, posIdx = getIdx(vocabulary, [t])
@@ -178,6 +218,15 @@ def getPhraseIndices(trans, vocabulary):
 
 
 def getSIndices(sPos, trans, vocabulary, tokenIdxs, posIdxs):
+    """
+    Gets index of stack elements
+    :param sPos:
+    :param trans:
+    :param vocabulary:
+    :param tokenIdxs:
+    :param posIdxs:
+    :return:
+    """
     if trans.configuration.stack and len(trans.configuration.stack) > sPos:
         s0Tokens = getTokens(trans.configuration.stack[len(trans.configuration.stack) - sPos - 1])
         tokenIdx, posIdx = getIdx(vocabulary, s0Tokens)
@@ -189,6 +238,15 @@ def getSIndices(sPos, trans, vocabulary, tokenIdxs, posIdxs):
 
 
 def getBIndices(bPos, trans, vocabulary, tokenIdxs, posIdxs):
+    """
+    Gets index of buffer elements
+    :param bPos:
+    :param trans:
+    :param vocabulary:
+    :param tokenIdxs:
+    :param posIdxs:
+    :return:
+    """
     if trans.configuration.buffer and len(trans.configuration.buffer) > bPos:
         tokenIdx, posIdx = getIdx(vocabulary, [trans.configuration.buffer[bPos]])
         tokenIdxs.append(tokenIdx)

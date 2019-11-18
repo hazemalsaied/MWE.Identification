@@ -15,7 +15,7 @@ import torch.optim as optim
 
 import config
 import evaluation
-import facebookEmb
+import vocabTools
 # from config import configuration
 from corpus import getTokens
 from parser import parse
@@ -47,7 +47,7 @@ class TransitionClassifier(nn.Module):
         self.p_embeddings = nn.Embedding(len(self.posVocab), configuration['kiperwasser']['posDim'])
         self.w_embeddings = nn.Embedding(len(self.tokenVocab), configuration['kiperwasser']['wordDim'])
         if configuration['kiperwasser']['pretrained']:
-            self.tokenVocab, embeddingMatrix = facebookEmb.getEmbMatrix(corpus.langName, self.tokenVocab.keys())
+            self.tokenVocab, embeddingMatrix = vocabTools.getEmbMatrix(corpus.langName, self.tokenVocab.keys())
             self.w_embeddings.load_state_dict({'weight': torch.FloatTensor(embeddingMatrix)})
         embeddingDim = configuration['kiperwasser']['wordDim'] + configuration['kiperwasser']['posDim']
         if configuration['kiperwasser']['gru']:

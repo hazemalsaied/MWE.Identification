@@ -8,7 +8,7 @@ from keras.callbacks import EarlyStopping
 from keras.layers import Input, Dense, Flatten, Embedding, Dropout
 from keras.models import Model
 from keras.utils import to_categorical
-
+from collections import Counter
 import reports
 import sampling
 from corpus import getTokens
@@ -31,12 +31,22 @@ class Network:
             sys.stdout.write(str(self.model.summary()))
 
     def predict(self, trans):
+        """
+        predicts a transition given a configuration
+        :param trans:
+        :return:
+        """
         inputs = getTransData(trans, self.vocabulary)
         inputs = [np.asarray([i]) for i in inputs]
         oneHotRep = self.model.predict(inputs, batch_size=1, verbose=configuration['nn']['predictVerbose'])
         return oneHotRep[0]
 
     def train(self, corpus):
+        """
+        Trains the model
+        :param corpus:
+        :return:
+        """
         labels, data = getLearningData(corpus, self.vocabulary)
         if configuration['others']['verbose']:
             sys.stdout.write(reports.seperator + reports.tabs + 'Sampling' + reports.doubleSep)
@@ -67,6 +77,13 @@ class Network:
         self.trainValidationData(data, labels, history)
 
     def trainValidationData(self, data, labels, history):
+        """
+        Train the model on validation set, used while training
+        :param data:
+        :param labels:
+        :param history:
+        :return:
+        """
         data, labels = getValidationData(data, labels)
         history = self.model.fit(data, labels,
                                  epochs=len(history.epoch),
@@ -76,6 +93,12 @@ class Network:
 
 
 def getValidationData(data, labels):
+    """
+    Returns the validation set
+    :param data:
+    :param labels:
+    :return:
+    """
     validationData = []
     for dataTensor in data:
         validationData.append(dataTensor[int(len(dataTensor) * (1 - configuration['nn']['validationSplit'])):])
@@ -84,6 +107,10 @@ def getValidationData(data, labels):
 
 
 def getOptimizer():
+    """
+    Gives the optimizer to use during learning
+    :return:
+    """
     if configuration['others']['verbose']:
         sys.stdout.write(reports.seperator + reports.tabs +
                          'Optimizer : Adagrad,  learning rate = {0}'.format(configuration['mlp']['lr'])
@@ -98,6 +125,11 @@ class Vocabulary:
         self.posIndices = indexateDic(self.posFreqs)
 
     def getIndices(self, tokens):
+        """
+        gets the indices of tokens and POS inside the vocabulary
+        :param tokens:
+        :return:
+        """
         tokenTxt, posTxt = attachTokens(tokens)
         if tokenTxt in self.tokenIndices:
             tokenIdx = self.tokenIndices[tokenTxt]
@@ -111,6 +143,12 @@ class Vocabulary:
 
 
 def getFrequencyDics(corpus, freqTaux=1):
+    """
+    return dictionaries of tokens and POSs and theirs frequencies
+    :param corpus:
+    :param freqTaux:
+    :return:
+    """
     tokenVocab, posVocab = {unk: freqTaux + 1, empty: freqTaux + 1}, {unk: freqTaux + 1, empty: freqTaux + 1}
     for sent in corpus.trainingSents:
         trans = sent.initialTransition
@@ -169,6 +207,12 @@ def indexateDic(dic):
 
 
 def getLearningData(corpus, vocab):
+    """
+    Generate learning data for the whole training corpus
+    :param corpus:
+    :param vocab:
+    :return:
+    """
     labels, data = [], []
     global importantFrequentWordDic
     for sent in corpus.trainingSents:
@@ -183,6 +227,13 @@ def getLearningData(corpus, vocab):
 
 
 def getTransData(trans, vocabulary, window=configuration['mlp']['posWindow']):
+    """
+    Generate learning data for a given transition
+    :param trans:
+    :param vocabulary:
+    :param window:
+    :return:
+    """
     tokenIdxs, posIdxs, emptyTokenIdx = [], [], vocabulary.tokenIndices[empty]
     if trans.configuration.stack:
         s0Tokens = getTokens(trans.configuration.stack[-1])
@@ -241,6 +292,12 @@ def getTransData(trans, vocabulary, window=configuration['mlp']['posWindow']):
 
 
 def createTheModel(vocabulary, window=configuration['mlp']['posWindow']):
+    """
+    Create the model in condition of given parameters
+    :param vocabulary:
+    :param window:
+    :return:
+    """
     inputLayers, interLayers = [], []
     inputToken = Input((3 + configuration['embedding']['useB1'] + configuration['embedding']['useB-1'],))
     inputLayers.append(inputToken)
@@ -266,6 +323,12 @@ def createTheModel(vocabulary, window=configuration['mlp']['posWindow']):
 
 
 def overSample(labels, data):
+    """
+    Balances the distribution of training data
+    :param labels:
+    :param data:
+    :return:
+    """
     tokenData, posData = [], []
     tokenNum = 3 + configuration['embedding']['useB1'] + configuration['embedding']['useB-1']
     if configuration['others']['verbose']:

@@ -34,7 +34,10 @@ class Network:
 
     @staticmethod
     def build():
-
+        """
+        Builds the model in function of given parameters
+        :return:
+        """
         inputToken = Input((focusedElements,))
         inputPos = Input((focusedElements,))
         inputLayers = [inputToken, inputPos]
@@ -65,11 +68,21 @@ class Network:
         return model
 
     def predict(self, trans):
+        """
+        Predicts a transition given a configuration
+        :param trans:
+        :return:
+        """
         tokenIdxs, posIdxs = DataFactory.getIdxs(trans.configuration)
         oneHotRep = self.model.predict([np.asarray([tokenIdxs]), np.asarray([posIdxs])], batch_size=1)
         return oneHotRep[0]
 
     def train(self, corpus):
+        """
+        Trains the model on the whole training corpus
+        :param corpus:
+        :return:
+        """
         lbls, tokenIdxs, posIdxs = DataFactory.getLearningData(corpus)
         lbls, tokenIdxs, posIdxs = DataFactory.overSample(lbls, tokenIdxs, posIdxs)
         lbls, tokenIdxs, posIdxs = DataFactory.focusedSample(lbls, tokenIdxs, posIdxs, corpus)
@@ -105,6 +118,16 @@ class Network:
 
 
 def trainValidationData(model, tokenData, posData, labels, classWeightDic, history):
+    """
+    Trains the model on the validation set
+    :param model:
+    :param tokenData:
+    :param posData:
+    :param labels:
+    :param classWeightDic:
+    :param history:
+    :return:
+    """
     labels, valTokenData, valPosData = getValidationData(labels, tokenData, posData)
     validationLabelsAsInt = [np.where(r == 1)[0][0] for r in labels]
     sampleWeights = sampling.getSampleWeightArray(validationLabelsAsInt, classWeightDic)
@@ -117,6 +140,13 @@ def trainValidationData(model, tokenData, posData, labels, classWeightDic, histo
 
 
 def getValidationData(labels, tokenData, posData):
+    """
+    Gets the validation set
+    :param labels:
+    :param tokenData:
+    :param posData:
+    :return:
+    """
     valLabels, valTokenData, valPosData = [], [], []
     for i in range(int(len(labels) * (1 - params['validationSplit'])), len(labels)):
         valTokenData.append(tokenData[i])
@@ -127,6 +157,11 @@ def getValidationData(labels, tokenData, posData):
 
 
 def getMWEDicAsIdxs(corpus):
+    """
+
+    :param corpus:
+    :return:
+    """
     result = dict()
     for s in corpus.trainingSents:
         for v in s.vMWEs:
@@ -147,6 +182,11 @@ def getMWEDicAsIdxs(corpus):
 
 
 def getVocab(corpus):
+    """
+    Gets token and POS vocabularies for embedding layers
+    :param corpus:
+    :return:
+    """
     tokenCounter, posCounter = Counter(), Counter()
     for s in corpus.trainingSents:
         for t in s.tokens:
@@ -170,6 +210,11 @@ def getVocab(corpus):
 class DataFactory:
     @staticmethod
     def getLearningData(corpus):
+        """
+        Generates learning data for the whole training corpus
+        :param corpus:
+        :return:
+        """
         lbls, tokenIdxs, posIdxs = [], [], []
         for s in corpus.trainingSents:
             t = s.initialTransition
@@ -183,7 +228,14 @@ class DataFactory:
 
     @staticmethod
     def overSample(lbls, tokenIdxs, posIdxs, ):
-        data = []  # focusedElements =rnnConf['s0TokenNum'] + rnnConf['s1TokenNum'] + rnnConf['bTokenNum']
+        """
+        Balances the distribution of training corpus using oversampling
+        :param lbls:
+        :param tokenIdxs:
+        :param posIdxs:
+        :return:
+        """
+        data = []
         if configuration['others']['verbose']:
             sys.stdout.write(reports.doubleSep + reports.tabs + 'Resampling:' + reports.doubleSep)
             sys.stdout.write(reports.tabs + 'data size before sampling = {0}\n'.format(len(lbls)))
@@ -201,6 +253,14 @@ class DataFactory:
 
     @staticmethod
     def focusedSample(labels, tokenData, posData, corpus):
+        """
+        Balances the distribution of rare MWEs
+        :param labels:
+        :param tokenData:
+        :param posData:
+        :param corpus:
+        :return:
+        """
         if not configuration['sampling']['focused']:
             return labels, tokenData, posData
         newLabels, newTokens, newPOS, traitedMWEs = [], [], [], set()
@@ -238,6 +298,11 @@ class DataFactory:
 
     @staticmethod
     def getIdxs(config):
+        """
+        Gets the indices of important elements of the configuration
+        :param config:
+        :return:
+        """
         idxs, posIdxs = [], []
         global tokenVocab, posVocab
         DataFactory.getBufferIdxs(config, idxs, posIdxs)
@@ -272,7 +337,6 @@ class DataFactory:
                     idxs.append(
                         tokenVocab[t.getTokenOrLemma()] if t.getTokenOrLemma() in tokenVocab else tokenVocab[unk])
                 posIdxs.append(posVocab[t.posTag.lower()] if t.posTag.lower() in posVocab else posVocab[unk])
-        # addEmptyIdx(rnnConf['s0TokenNum'], idxs, posIdxs)
 
     @staticmethod
     def getBufferIdxs(config, idxs, posIdxs):
@@ -284,7 +348,6 @@ class DataFactory:
                     idxs.append(
                         tokenVocab[t.getTokenOrLemma()] if t.getTokenOrLemma() in tokenVocab else tokenVocab[unk])
                 posIdxs.append(posVocab[t.posTag.lower()] if t.posTag.lower() in posVocab else posVocab[unk])
-        # addEmptyIdx(rnnConf['bTokenNum'], idxs, posIdxs)
 
     @staticmethod
     def getBxIdxs(config, idxs, posIdxs):

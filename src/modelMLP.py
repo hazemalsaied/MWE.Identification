@@ -1,4 +1,6 @@
+from collections import Counter
 from random import uniform
+
 import keras
 import numpy as np
 from keras import optimizers
@@ -9,11 +11,10 @@ from keras.models import load_model
 from keras.preprocessing.sequence import pad_sequences
 from keras.utils import to_categorical
 from numpy import zeros
-from collections import Counter
 
-import facebookEmb
 import reports
 import sampling
+import vocabTools
 from corpus import getRelevantModelAndNormalizer
 from corpus import getTokens
 from extractionForMLP import Extractor
@@ -39,6 +40,12 @@ class Network:
             sys.stdout.write(str(self.model.summary()))
 
     def build(self, lang, linearInMLP=False):
+        """
+        Construct the MLP model according to the given parameters
+        :param lang:
+        :param linearInMLP:
+        :return:
+        """
         inputLayers, concLayers = [], []
         inputToken = Input((3 + configuration['embedding']['useB1'] + configuration['embedding']['useB-1'],))
         inputLayers.append(inputToken)
@@ -70,8 +77,14 @@ class Network:
         return inputLayers, softmaxLayer
 
     def getWeightMatrix(self, tokenVocab, lang):
+        """
+        Initialize token embedding
+        :param tokenVocab:
+        :param lang:
+        :return:
+        """
         if configuration['embedding']['pretrained']:
-            self.vocabulary.tokenIndices, embeddingMatrix = facebookEmb.getEmbMatrix(lang, tokenVocab.keys())
+            self.vocabulary.tokenIndices, embeddingMatrix = vocabTools.getEmbMatrix(lang, tokenVocab.keys())
             return [embeddingMatrix]
         elif configuration['embedding']['manual']:
             return [initEmbMatrix(tokenVocab)]
@@ -79,6 +92,13 @@ class Network:
             return None
 
     def predict(self, trans, linearModels=None, linearVecs=None):
+        """
+        Predicts the optimal transition for a given configuration
+        :param trans:
+        :param linearModels:
+        :param linearVecs:
+        :return:
+        """
         inputs = []
         tokenIdxs, posIdxs = self.getAttachedIndices(trans, dynamicVocab=configuration['embedding']['dynamicVocab'],
                                                      parse=True)
@@ -98,6 +118,12 @@ class Network:
         return oneHotRep[0]
 
     def trainWithDynamization(self, s, corpus):
+        """
+        Dtermine whether dynamic fictive entries must be added to the vocabulary
+        :param s:
+        :param corpus:
+        :return:
+        """
         if configuration['embedding']['dynamicVocab']:
             for w in s.vMWEs:
                 for t in w.tokens:
@@ -107,6 +133,18 @@ class Network:
 
     def addTransData(self, trans, sent, corpus, labels, data, linearModels=None, linearNormalizers=None,
                      dynamicVocab=False):
+        """
+        Get training data for a given transition
+        :param trans:
+        :param sent:
+        :param corpus:
+        :param labels:
+        :param data:
+        :param linearModels:
+        :param linearNormalizers:
+        :param dynamicVocab:
+        :return:
+        """
         if not configuration['sampling']['importantTransitions'] or trans.isImportant():
             tokenIdxs, posIdxs = self.getAttachedIndices(trans, dynamicVocab=dynamicVocab)
             if linearModels:
@@ -122,6 +160,13 @@ class Network:
                 trans.next.type.value if enableCategorization else 3))
 
     def getLearningData(self, corpus, linearModels=None, linearNormalizers=None):
+        """
+        Get training data for the whole training corpus
+        :param corpus:
+        :param linearModels:
+        :param linearNormalizers:
+        :return:
+        """
         labels, data = [], []
         global importantFrequentWordDic
         importantFrequentWordDic = corpus.importantFrequentWords
@@ -138,6 +183,13 @@ class Network:
         return labels, data
 
     def getIndices(self, trans, getPos=False, getToken=False):
+        """
+        Gets the indices of important elements of the configuration
+        :param trans:
+        :param getPos:
+        :param getToken:
+        :return:
+        """
         s0elems, s1elems, belems = [], [], []
         emptyIdx = self.vocabulary.getEmptyIdx(getPos=getPos, getToken=getToken)
         if trans.configuration.stack:
@@ -156,6 +208,13 @@ class Network:
         return words
 
     def getAttachedIndices(self, trans, dynamicVocab=False, parse=False):
+        """
+        Gets the indices of important elements of the configuration
+        :param trans:
+        :param dynamicVocab:
+        :param parse:
+        :return:
+        """
         emptyTokenIdx = self.vocabulary.tokenIndices[empty]
         emptyPosIdx = self.vocabulary.posIndices[empty]
         tokenIdxs, posIdxs = [], []
@@ -211,6 +270,13 @@ class Network:
         return np.asarray(tokenIdxs), np.asarray(posIdxs)
 
     def train(self, corpus, linearModels=None, linearNormalizers=None):
+        """
+        Trains the MLP model
+        :param corpus:
+        :param linearModels:
+        :param linearNormalizers:
+        :return:
+        """
         labels, data = self.getLearningData(corpus, linearModels=linearModels,
                                             linearNormalizers=linearNormalizers)
         if configuration['others']['verbose']:
@@ -243,12 +309,20 @@ class Network:
                                  sample_weight=sampleWeights)
         if configuration['nn']['checkPoint']:
             self.model = load_model(
-                os.path.join(configuration['path']['projectPath'], 'Reports-old', configuration['path']['checkPointPath']))
+                os.path.join(configuration['path']['projectPath'], 'Reports-old',
+                             configuration['path']['checkPointPath']))
         # if configuration['others']['verbose']:
         #    sys.stdout.write('Epoch Losses = ' + str(history.history['loss']))
         self.trainValidationData(data, labels, history)
 
     def trainValidationData(self, data, labels, history):
+        """
+        Train the model on the validation set
+        :param data:
+        :param labels:
+        :param history:
+        :return:
+        """
         data, labels = getValidationData(data, labels)
         validationLabelsAsInt = [np.where(r == 1)[0][0] for r in labels]
         sampleWeights = sampling.getSampleWeightArray(validationLabelsAsInt, self.classWeightDic)
@@ -261,6 +335,11 @@ class Network:
 
 
 def initEmbMatrix(vocab):
+    """
+    Initialize embedding matrix
+    :param vocab:
+    :return:
+    """
     if not configuration['embedding']['manual']:
         return None
     vocabWithoutConc, vocabWithConc = dict(), dict()
@@ -292,6 +371,12 @@ def initEmbMatrix(vocab):
 
 
 def getValidationData(data, labels):
+    """
+    Gets the validation set used while training
+    :param data:
+    :param labels:
+    :return:
+    """
     validationData = []
     for dataTensor in data:
         validationData.append(dataTensor[int(len(dataTensor) * (1 - configuration['nn']['validationSplit'])):])
@@ -300,6 +385,10 @@ def getValidationData(data, labels):
 
 
 def getOptimizer():
+    """
+    Get training optimizer
+    :return:
+    """
     if configuration['others']['verbose']:
         sys.stdout.write(reports.seperator + reports.tabs +
                          'Optimizer : Adagrad,  learning rate = {0}'.format(configuration['mlp']['lr'])
@@ -308,6 +397,10 @@ def getOptimizer():
 
 
 def getCallBacks():
+    """
+    Set early stop of learning for avoiding overfitting
+    :return:
+    """
     callbacks = []
     if configuration['nn']['earlyStop']:
         es = EarlyStopping(monitor='val_loss',
@@ -335,6 +428,13 @@ class Vocabulary:
         return res
 
     def getIndices(self, tokens, dynamicVocab=False, parse=False):
+        """
+        return the index of a toke or a set of tokens in token and pos vocabularies
+        :param tokens:
+        :param dynamicVocab:
+        :param parse:
+        :return:
+        """
         if parse:
             tokenTxt, posTxt = attachTokens(tokens, dynamicVocab=False)
         else:
@@ -393,6 +493,12 @@ class Vocabulary:
 
 
 def addDynamicVersion(tokens, corpus):
+    """
+    Add dynamic entry to the vocabulary
+    :param tokens:
+    :param corpus:
+    :return:
+    """
     if not configuration['embedding']['dynamicVocab'] or not tokens or len(tokens) <= 1:
         return None
     shouldDynamize = [True if t.getLemma() in corpus.importantFrequentWords else False for t in tokens]
@@ -403,6 +509,12 @@ def addDynamicVersion(tokens, corpus):
 
 
 def getFrequencyDics(corpus, freqTaux=1):
+    """
+    Return a dictionary of tokens, pos and their frequencies
+    :param corpus:
+    :param freqTaux:
+    :return:
+    """
     dynamicVocab = set()
     tokenVocab, posVocab = {unk: freqTaux + 1, empty: freqTaux + 1}, {unk: freqTaux + 1, empty: freqTaux + 1}
     for sent in corpus.trainingSents:
@@ -433,6 +545,13 @@ def getFrequencyDics(corpus, freqTaux=1):
 
 
 def cleanTokenVocab(tokenVocab, corpus, freqTaux=1):
+    """
+    Could convert to compact vocabulary and remove non important words (not in MWes and frequence = 1)
+    :param tokenVocab:
+    :param corpus:
+    :param freqTaux:
+    :return:
+    """
     if configuration['embedding']['compactVocab']:
         if configuration['others']['verbose']:
             sys.stdout.write(tabs + 'Compact Vocabulary cleaning:' + doubleSep)
@@ -458,6 +577,13 @@ def cleanTokenVocab(tokenVocab, corpus, freqTaux=1):
 
 
 def attachTokens(tokens, dynamicVocab=False, parse=False):
+    """
+    Return the concatenation of lemma/word form and POS of a set of token
+    :param tokens:
+    :param dynamicVocab:
+    :param parse:
+    :return:
+    """
     tokenTxt, posTxt = '', ''
     global importantFrequentWordDic
     if dynamicVocab:
