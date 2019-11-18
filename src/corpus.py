@@ -7,7 +7,6 @@ import random
 import re
 from collections import Counter
 from random import uniform
-
 from nltk.parse import DependencyGraph
 
 from reports import *

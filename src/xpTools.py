@@ -6,7 +6,8 @@ from enum import Enum
 
 from corpus import *
 from identification import identify
-from modelStacking import identifyWithMlpInLinear, identifyWithLinearInMlp, identifyWithBoth
+from modelStacking import identifyWithMlpInLinear, identifyWithLinearInMlp
+from modelComplementing import identifyWithBoth
 
 allSharedtask1Lang = ['BG', 'CS', 'DE', 'EL', 'ES', 'FA', 'FR', 'HE', 'HU', 'IT',
                       'LT', 'MT', 'PL', 'PT', 'RO', 'SV', 'SL', 'TR']

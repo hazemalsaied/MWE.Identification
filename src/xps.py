@@ -1,6 +1,8 @@
-# from rsg import *
+#!/usr/bin/python
+
 from config import TrendConfig, BestConfig, LinearConf
 from xpTools import *
+import sys, getopt
 
 """
 Scrip used for running tuning and evaluation 
@@ -517,12 +519,46 @@ def evaluateIdentAvgJoint():
     xp(allSynSharedtask2Lang, dataset=Dataset.sharedtask2, xpMode=XpMode.multitasking,
        division=Evaluation.trainVsDev)
 
+def main(argv):
+   inputfile = ''
+   outputfile = ''
+   try:
+      opts, args = getopt.getopt(argv,"hi:o:",["ifile=","ofile="])
+   except getopt.GetoptError:
+      print 'test.py -i <inputfile> -o <outputfile>'
+      sys.exit(2)
+   for opt, arg in opts:
+      if opt == '-h':
+         print 'test.py -i <inputfile> -o <outputfile>'
+         sys.exit()
+      elif opt in ("-i", "--ifile"):
+         inputfile = arg
+      elif opt in ("-o", "--ofile"):
+         outputfile = arg
+   print 'Input file is "', inputfile
+   print 'Output file is "', outputfile
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     reload(sys)
     sys.setdefaultencoding('utf8')
+    # main(sys.argv[1:])
+    import argparse
 
-    configuration['tmp']['createDepGraphs'] = False
-    configuration['tmp']['trainTaggerAndIdentifier'] = True
-    TrendConfig.mtJoint()
-    xp(['BG', 'RO'], Dataset.sharedtask2, XpMode.multitasking, Evaluation.trainVsDev)
+    parser = argparse.ArgumentParser(description='Process some integers.')
+    parser.add_argument('integers', metavar='N', type=int, nargs='+',
+                        help='an integer for the accumulator')
+    parser.add_argument('--sum', dest='accumulate', action='store_const',
+                        const=sum, default=max,
+                        help='sum the integers (default: find the max)')
+
+    args = parser.parse_args()
+    print args.accumulate(args.integers)
+
+# if __name__ == '__main__':
+#     reload(sys)
+#     sys.setdefaultencoding('utf8')
+#
+#     configuration['tmp']['xpNonCompocreateDepGraphs'] = False
+#     configuration['tmp']['trainTaggerAndIdentifier'] = True
+#     TrendConfig.mtJoint()
+#     xp(['BG', 'RO'], Dataset.sharedtask2, XpMode.multitasking, Evaluation.trainVsDev)
